@@ -98,7 +98,6 @@
 							<type>p2-installable-unit</type>
 							<artifactId>org.eclipse.sdk.feature.group</artifactId>
 						</dependency>
-						 
 					</dependencies>
 					<useUIHarness>true</useUIHarness>
 					<useUIThread>true</useUIThread>
