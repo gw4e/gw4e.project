@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.cheatsheets.cheatSheetContent">
+      <category
+            name="GW4E"
+            id="gw4e-eclipse-cheatsheet.category">
+      </category>
+      <cheatsheet
+            name="1 - Getting Started Tutorial"
+            category="gw4e-eclipse-cheatsheet.category"
+             contentFile="src/org/gw4e/eclipse/cheatsheet/basic/en/gw4e_composite.xml"
+            composite="true"
+            id="gw4e-eclipse-cheatsheet.gettingstarted">
+         	<description>GW4E Plugin Tutorials</description>
+      </cheatsheet>
+      <cheatsheet
+            name="2 - Getting Started with LifeCycle"
+            category="gw4e-eclipse-cheatsheet.category"
+             contentFile="src/org/gw4e/eclipse/cheatsheet/lifecycle/en/gw4e_composite.xml"
+            composite="true"
+            id="gw4e-eclipse-cheatsheet.lifecycle">
+         	<description>GW4E Plugin Tutorials</description>
+      </cheatsheet>
+      <cheatsheet
+            name="3 - Working with Shared Models"
+            category="gw4e-eclipse-cheatsheet.category"
+             contentFile="src/org/gw4e/eclipse/cheatsheet/sharedmodels/en/gw4e_composite.xml"
+            composite="true"
+            id="gw4e-eclipse-cheatsheet.sharedmodels">
+         	<description>GW4E Plugin Tutorials</description>
+      </cheatsheet>    
+     <cheatsheet
+            name="4 - Trouble Shooting your tests"
+            category="gw4e-eclipse-cheatsheet.category"
+             contentFile="src/org/gw4e/eclipse/cheatsheet/troubleshooting/en/gw4e_composite.xml"
+            composite="true"
+            id="gw4e-eclipse-cheatsheet.troubleshooting">
+         	<description>GW4E Plugin Tutorials</description>
+      </cheatsheet>         
+     <cheatsheet
+            name="5 - Using the Builder Performance Viewer"
+            category="gw4e-eclipse-cheatsheet.category"
+             contentFile="src/org/gw4e/eclipse/cheatsheet/performancebuilder/en/gw4e_composite.xml"
+            composite="true"
+            id="gw4e-eclipse-cheatsheet.performancebuilder">
+         	<description>GW4E Plugin Tutorials</description>
+      </cheatsheet>    
+   </extension>
+</plugin>

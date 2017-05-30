@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  #%L
+  gw4e
+  $Id:$
+  $HeadURL:$
+  %%
+  Copyright (C) 2017 gw4e-project
+  %%
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to deal
+  in the Software without restriction, including without limitation the rights
+  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+  
+  The above copyright notice and this permission notice shall be included in
+  all copies or substantial portions of the Software.
+  
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+  THE SOFTWARE.
+  #L%
+  -->
+
+<compositeCheatsheet name="Getting Started Tutorial">
+   <taskGroup kind="set" name="Getting started with GW4E Eclipse Plugin" skip="false">
+      <intro>
+         GraphWalker <b>http://graphwalker.github.io</b> is an open source Model-based testing tool for test automation. It&apos;s designed to make it easy to design your tests using graphs.
+ It reads models in the shape of directed graphs, and generate [test] paths from these graphs. 
+<br/> <br/>  
+  The plugin provides the ability to use the GraphWalker standard features directly in the Eclipse IDE.
+  In addition, you will also benefit within your workbench the following :<br/> 
+   An integrated editor for graphs editing, <br/> 
+   GraphWalker Online and Offline Tests code generators, <br/> 
+   Automated analyzes and checks of graphs,<br/> 
+   Refactoring capabilities, <br/> 
+   Ability to run and debug GraphWalker tests. <br/>
+<br/>  <br/>  
+         This tutorial outlines the basic features of this plugin. 
+         It includes exercises to familiarize you with creating a project, designing a graph model, 
+generating source code, updating the model build policies, running a first test.
+      </intro>
+      <onCompletion>
+         Congratulations you have completed all the tasks.
+      </onCompletion>
+      <taskGroup kind="set" name="Create project , review a graph , generate and run tests" skip="false">
+         <intro>
+            <b>Introduction</b><br/>
+Before being able to use this plugin, you need to either create a new project or convert existing project.
+         </intro>
+         <onCompletion>
+            <b>Conclusion</b>
+Until now, you created a GW4E project, you selected a template to generate your graph model. After that you have created and configured a build policies file, to tell to the plugin build, on which base it should check and analyze the graph and which severity level it should raise if it finds a problem.
+         </onCompletion>
+         <task kind="cheatsheet" name="Create a project from scratch" skip="false">
+            <intro>
+               In the following steps we will create a project from scratch.
+            </intro>
+            <onCompletion>
+               <b>Conclusion</b>
+            </onCompletion>
+            <param name="path" value="create_new_project_with_simple_template.xml">
+            </param>
+         </task>
+         <task kind="cheatsheet" name="Generating java test source" skip="false">
+            <intro>
+               <b>Introduction</b>
+In this steps you generate java source tests from the graph model.
+            </intro>
+            <onCompletion>
+               <b>Conclusion</b>
+In this steps you generated java source tests from the graph model
+            </onCompletion>
+            <param name="path" value="generating_java_tests.xml">
+            </param>
+         </task>
+         <task kind="cheatsheet" name="Running the tests" skip="false">
+            <intro>
+               <b>Introduction</b>
+In this steps you run the tests you&apos;ve just generated.
+            </intro>
+            <onCompletion>
+               <b>Conclusion</b>
+In this steps you ran the tests you&apos;ve  generated.
+            </onCompletion>
+            <param name="path" value="running_generated_test.xml">
+            </param>
+         </task>
+         <task kind="cheatsheet" name="Displaying graph model properties" skip="false">
+            <intro>
+               <b>Introduction</b>
+            </intro>
+            <onCompletion>
+               <b>Conclusion</b>
+            </onCompletion>
+            <param name="path" value="display_graph_file_properties.xml">
+            </param>
+         </task>
+      </taskGroup>
+      <taskGroup kind="set" name="Designing a graph" skip="false">
+         <intro>
+            <b>Introduction</b>
+In this tutorial you will learn how to design a GraphWmaler graph.
+Before starting close any opened project or close all editors.
+         </intro>
+         <onCompletion>
+            <b>Conclusion</b>
+You know how to design a GraphWalker graph.
+         </onCompletion>
+         <task kind="cheatsheet" name="Create a project with an empty template" skip="false">
+            <intro>
+               <b>Introduction</b>
+This section helps you to be familiar with the graph designer.
+            </intro>
+            <onCompletion>
+               <b>Conclusion</b>
+You know how to design a graph wuth the editor.
+            </onCompletion>
+            <param name="path" value="create_new_project_with_empty_template.xml">
+            </param>
+         </task>
+         <task kind="cheatsheet" name="Create a new graph" skip="false">
+            <intro>
+               <b>Introduction</b>
+            </intro>
+            <onCompletion>
+               <b>Conclusion</b>
+            </onCompletion>
+            <param name="path" value="create_new_graph.xml">
+            </param>
+         </task>
+         <task kind="cheatsheet" name="Update graph properties" skip="false">
+            <intro>
+               <b>Introduction</b>
+            </intro>
+            <onCompletion>
+               <b>Conclusion</b>
+            </onCompletion>
+            <param name="path" value="update_graph_properties.xml">
+            </param>
+         </task>
+         <task kind="cheatsheet" name="Use the graph" skip="false">
+            <intro>
+               <b>Introduction</b>
+Learn how to use the graph editor.
+            </intro>
+            <onCompletion>
+               <b>Conclusion</b>
+You know how to manipulate the editor.
+            </onCompletion>
+            <param name="path" value="update_graph.xml">
+            </param>
+         </task>
+      </taskGroup>
+   </taskGroup>
+</compositeCheatsheet>

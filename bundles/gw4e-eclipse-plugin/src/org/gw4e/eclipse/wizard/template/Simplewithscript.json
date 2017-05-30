@@ -1,0 +1,28 @@
+/*-
+ * #%L
+ * gw4e
+ * $Id:$
+ * $HeadURL:$
+ * %%
+ * Copyright (C) 2017 gw4e-project
+ * %%
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ * #L%
+ */
+{"models":[{"name":"Simplewithscript","id":"4d886b87-6f15-4bf5-ba4f-559ac98a18d9","startElementId":"d71c9cad-f8a8-44e5-a6cd-bfe9f4a46a64","vertices":[{"id":"5a64b3af-199e-420c-8381-40767b31ea4d","name":"v_ClientNotRunning","properties":{"blocked":false,"gw.vertex.init.script":"","x":274,"width":100,"y":164,"description":"","height":100}},{"id":"77bec6bb-5328-4ffd-8f13-2f67dfe3596d","name":"v_Browse","properties":{"blocked":false,"gw.vertex.init.script":"","x":311,"width":100,"y":425,"description":"","height":100}},{"id":"d71c9cad-f8a8-44e5-a6cd-bfe9f4a46a64","name":"Start","properties":{"blocked":false,"gw.vertex.init.script":"","x":309,"width":100,"y":61,"description":"","height":100}},{"id":"d4d1e9e5-8076-4b30-a10f-a8f92444dce9","name":"v_LoginPrompted","properties":{"blocked":false,"gw.vertex.init.script":"","x":287,"width":100,"y":288,"description":"","height":100}}],"edges":[{"id":"99ff0eef-04a1-4db6-8fd0-2de453cf0b03","name":"e_Exit","properties":{"gw.edge.bendpoint.y.1":201,"gw.edge.bendpoint.x.0":581,"gw.edge.bendpoint.y.0":458,"gw.edge.bendpoint.x.1":570,"blocked":false},"weight":0.0,"dependency":0,"sourceVertexId":"77bec6bb-5328-4ffd-8f13-2f67dfe3596d","targetVertexId":"5a64b3af-199e-420c-8381-40767b31ea4d"},{"id":"150c1ca3-63fc-4997-97cc-70c64d7966ba","name":"e_startClient","guard":"rememberMe\u0026\u0026validLogin","properties":{"gw.edge.bendpoint.y.1":451,"gw.edge.bendpoint.x.0":93,"gw.edge.bendpoint.y.0":173,"gw.edge.bendpoint.x.1":83,"blocked":false},"weight":0.0,"dependency":0,"sourceVertexId":"5a64b3af-199e-420c-8381-40767b31ea4d","targetVertexId":"77bec6bb-5328-4ffd-8f13-2f67dfe3596d"},{"id":"77d3d4e8-4716-47c4-b02d-db4f90f8a478","name":"e_close","properties":{"gw.edge.bendpoint.y.1":203,"gw.edge.bendpoint.x.0":161,"gw.edge.bendpoint.y.0":287,"gw.edge.bendpoint.x.1":164,"blocked":false},"weight":0.0,"dependency":0,"sourceVertexId":"d4d1e9e5-8076-4b30-a10f-a8f92444dce9","targetVertexId":"5a64b3af-199e-420c-8381-40767b31ea4d"},{"id":"491a5141-a11c-4080-8718-1035fbf9ee49","name":"e_ToggleRememberMe","actions":["rememberMe\u003d!rememberMe"],"properties":{"gw.edge.bendpoint.y.1":303,"gw.edge.bendpoint.x.0":158,"gw.edge.bendpoint.y.0":336,"gw.edge.bendpoint.x.1":158,"blocked":false},"weight":0.0,"dependency":0,"sourceVertexId":"d4d1e9e5-8076-4b30-a10f-a8f92444dce9","targetVertexId":"d4d1e9e5-8076-4b30-a10f-a8f92444dce9"},{"id":"9b476808-0831-4fe5-b44b-0b34dd10f44d","name":"e_logout","properties":{"gw.edge.bendpoint.x.0":190,"gw.edge.bendpoint.y.0":409,"blocked":false},"weight":0.0,"dependency":0,"sourceVertexId":"77bec6bb-5328-4ffd-8f13-2f67dfe3596d","targetVertexId":"d4d1e9e5-8076-4b30-a10f-a8f92444dce9"},{"id":"11b31d00-3c89-43c3-8372-f787d90e441e","name":"e_InvalidCredentials","actions":["validLogin\u003dfalse;"],"properties":{"gw.edge.bendpoint.y.1":308,"gw.edge.bendpoint.x.0":531,"gw.edge.bendpoint.y.0":353,"gw.edge.bendpoint.x.1":532,"blocked":false},"weight":0.0,"dependency":0,"sourceVertexId":"d4d1e9e5-8076-4b30-a10f-a8f92444dce9","targetVertexId":"d4d1e9e5-8076-4b30-a10f-a8f92444dce9"},{"id":"f77235a9-ab1c-486c-8776-8dc676b3eda1","name":"e_init","actions":["rememberMe\u003dfalse;validLogin\u003dtrue;"],"properties":{"blocked":false},"weight":0.0,"dependency":0,"sourceVertexId":"d71c9cad-f8a8-44e5-a6cd-bfe9f4a46a64","targetVertexId":"5a64b3af-199e-420c-8381-40767b31ea4d"},{"id":"9a897c70-2a77-48c5-be48-24ceed124139","name":"e_StartClient","guard":"!rememberMe || !validLogin","properties":{"blocked":false},"weight":0.0,"dependency":0,"sourceVertexId":"5a64b3af-199e-420c-8381-40767b31ea4d","targetVertexId":"d4d1e9e5-8076-4b30-a10f-a8f92444dce9"},{"id":"ca9c3a98-8062-4224-ad41-0be5e124a058","name":"e_ValidPremiumCredentials","actions":["validLogin\u003dtrue"],"properties":{"blocked":false},"weight":0.0,"dependency":0,"sourceVertexId":"d4d1e9e5-8076-4b30-a10f-a8f92444dce9","targetVertexId":"77bec6bb-5328-4ffd-8f13-2f67dfe3596d"}]}]}

@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  #%L
+  gw4e
+  $Id:$
+  $HeadURL:$
+  %%
+  Copyright (C) 2017 gw4e-project
+  %%
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to deal
+  in the Software without restriction, including without limitation the rights
+  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+  
+  The above copyright notice and this permission notice shall be included in
+  all copies or substantial portions of the Software.
+  
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+  THE SOFTWARE.
+  #L%
+  -->
+
+<cheatsheet
+      title="Update your test">
+   <intro>
+      <description>
+         
+      </description>
+   </intro>
+   <item title="Updating nodes and edges graph elements to extend the test">
+      <description>
+        The java-amazon sample test reaches the amazon web site directly by using the "www.amazon.com" url directly.<br/>
+        For the purpose of this tutorial we want to slightly change the way we reach the amazon web site. We would like to reach it by googling first the keyword "amazon.com",
+        then click on a hyper link resulting from the query search so that we would be redirected to the amazon web site. <br/> 
+      	<b>0</b> - Open the ShoppingCart.json graph model using the GW4E Editor.  <br/> 
+      	<b>1</b> - Expand the palette if not already expanded (Click the arrow in the upper right of the editor)<br/> 
+      	<b>2</b> - Click Vertex in the palette, then click the graph under the <b>v_BrowserStarted</b> vertex, and name it <b>v_QueryEnginePage</b> <br/>
+      	<b>3</b> - Click Vertex in the palette, then click the graph under the <b>v_QueryEnginePage</b> vertex, and name it <b>v_QueryResultListed</b> <br/>
+      	<b>4</b> - Click Edge in the palette, then link <b>v_BrowserStarted</b> vertex  to the <b>v_QueryEnginePage</b> vertex, and name it <b>e_enterQueryEngineURL</b> <br/>
+      	<b>5</b> - Click Edge in the palette, then link <b>v_QueryEnginePage</b> vertex  to the <b>v_QueryResultListed</b> vertex, and name it <b>e_feedQuery</b><br/>
+      	<b>6</b> - Click Edge in the palette, then link <b>v_QueryResultListed</b> vertex  to the <b>v_BaseURL</b>, and name it <b>e_SelectBaseUrl</b> vertex<br/>
+      	<b>7</b> - Click the <b>e_EnterBaseURL</b> edge , select the red cross icon in the toolbar to delete it.<br/>
+      	<b>8</b> - Save the graph.<br/>
+      	<b>9</b> - In the main toolbar, select <b>Project</b> -&gt; <b>Clean...</b>, so that a new build is performed. <br/>
+      	<b>10</b> - An error is shown in the problem view. It tells you that the existing java interface is no longer synchronized with the graph model. It needs to be regenarated. <br/>
+	    <br/>
+        We have done our graph update. It is time now, to regenerate the test interface so that the new added graph element be part of the test.<br/>
+      </description>
+   </item>
+   <item title="Regenerating the test interface">
+      <description>
+        Right click the <b>ShoppingCart.json</b> file in the Package Explorer <br/>
+        Select the <b>GW4E -&gt; Generate Test Interface</b> menu. The test interface reflects now the updated graph.<br/>
+        You can see that the test implementation has errors in the Problem View since some new methods have been added to the interface and the test does not implement them.<br/>
+        <br/>
+        Notice that you can customize the message error level for this kind of situation:<br/>
+        Right click the project <br/>
+        Select <b>Properties</b><br/>
+        Select <b>GW4E</b> in the left pane<br/>
+        Locate <b>Severity problem level for unsynchronized 'ExecutionContext' (I,W,E)</b><br/>
+        Change the value to <b>W</b> so that you get a Warning rather than an Error when building the project<br/>
+        Click <b>OK</b><br/>
+        Select <b>Project</b> -&gt; <b>Clean...</b> and click <b>OK</b> to run a new build<br/>
+        You now have a warning instead of an error in the problem view<br/>
+      </description>
+   </item>   
+   <item title="Updating the test">
+      <description>
+        Open the ShoppingCartTest in the java editor. Use the Eclipse refactoring tool to "Add the unimplemented methods".<br/>
+        Click the red cross marker icon on the left side of the editor<br/>
+        Select "Add the unimplemented methods", new stub methods are now inserted in the ShoppingCartTest class<br/>
+        <br/>
+        You can refer to the following code to implement the change we want to make to this test <br/>
+        <b>1</b> Add the following code to the <b>v_QueryResultListed()</b> method <br/>
+        <b>waiter.until(ExpectedConditions.presenceOfElementLocated(ByPartialLinkText.partialLinkText("Amazon.com: Online Shopping for ")));</b> <br/>
+        <b>2</b> Add the following code to the <b>e_feedQuery()</b> method <br/>
+		<b>waiter.until(ExpectedConditions.presenceOfElementLocated(By.name("q")));</b><br/>
+		<b>waiter.until(ExpectedConditions.visibilityOfElementLocated(By.name("q"))).sendKeys("amazon.com" + Keys.ENTER);</b> <br/>       
+        <b>3</b> Add the following code to the <b>v_QueryEnginePage()</b> method <br/>		 
+		<b>waiter.until(ExpectedConditions.titleContains("Google"));</b> <br/>
+        <b>4</b> Add the following code to the <b>e_enterQueryEngineURL()</b> method <br/>			 
+		<b>driver.get("http://www.google.com");</b>	 <br/>
+        <b>5</b> Add the following code to the <b>e_SelectBaseUrl()</b> method <br/>			 
+		<b>waiter.until(ExpectedConditions.elementToBeClickable(ByPartialLinkText.partialLinkText("Amazon.com: Online Shopping for "))).click();</b> <br/>		
+     	<b>6</b> Press Ctrl,Shift,O , to remove compilation errors.<br/>	
+     	<b>7</b> Press Ctrl,Shift,F , to reformat the java source.<br/>	
+      </description>
+   </item>   
+    <item
+         title="Running the test">
+      <description>
+  		 Run the test by using the GW4E launcher <br/>
+      	 Right-Click the <b>java-amazon/src/main/java/org/graphwalker/ShoppingCartTest.java</b> and select <b>Run as</b> -&gt; <b>GW4E Test</b>.<br/>
+      	 <br/>
+      	 At this point, the test is launched.Test outputs are displayed in the Console view.<br/>
+  	    <br/>
+      </description>
+   </item> 
+
+</cheatsheet>
+
+

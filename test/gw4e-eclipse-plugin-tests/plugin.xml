@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+  	<extension point="org.eclipse.debug.ui.consoleLineTrackers">
+	  <consoleLineTracker 
+	     id="org.gw4e.eclipse.test.fwk.ConsoleTracker"
+	     class="org.gw4e.eclipse.test.fwk.ConsoleTracker"
+	     processType="ConsoleProcessType">
+	  </consoleLineTracker>
+	</extension>
+</plugin>

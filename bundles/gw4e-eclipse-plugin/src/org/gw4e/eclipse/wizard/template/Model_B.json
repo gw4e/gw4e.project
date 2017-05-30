@@ -1,0 +1,117 @@
+/*-
+ * #%L
+ * gw4e
+ * $Id:$
+ * $HeadURL:$
+ * %%
+ * Copyright (C) 2017 gw4e-project
+ * %%
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ * #L%
+ */
+{
+  "models": [
+    {
+      "name": "Model_B",
+      "id": "605c2a79-07f8-410b-a3e5-ea4be80ff7a4",
+      "startElementId": "bf044c5e-daaa-42e3-a4e7-b5cb30059a99",
+      "actions": [
+        "eB=0;eC=0;"
+      ],
+      "vertices": [
+        {
+          "id": "0a9a708b-b20c-451f-acb6-fca860c992f5",
+          "name": "v_B",
+          "sharedState": "SHARED:B",
+          "properties": {
+            "blocked": false,
+            "gw.vertex.init.script": "eB=0;eC=0;",
+            "x": 342,
+            "width": 43,
+            "y": 46,
+            "description": "",
+            "height": 59
+          }
+        },
+        {
+          "id": "31f5f7fa-a77b-4e0c-a3ea-8812519fc9d2",
+          "name": "v_C",
+          "properties": {
+            "blocked": false,
+            "gw.vertex.init.script": "",
+            "x": 340,
+            "width": 43,
+            "y": 220,
+            "description": "",
+            "height": 59
+          }
+        }
+      ],
+      "edges": [
+        {
+          "id": "310a0c7d-73dc-4865-9443-1a6d91b0ce49",
+          "name": "e_v_C_to_v_C",
+          "actions": [
+            "eC++;"
+          ],
+          "properties": {
+            "gw.edge.bendpoint.y.1": 222,
+            "gw.edge.bendpoint.x.0": 473,
+            "gw.edge.bendpoint.y.0": 281,
+            "gw.edge.bendpoint.x.1": 475,
+            "blocked": false
+          },
+          "dependency": 0,
+          "sourceVertexId": "31f5f7fa-a77b-4e0c-a3ea-8812519fc9d2",
+          "targetVertexId": "31f5f7fa-a77b-4e0c-a3ea-8812519fc9d2"
+        },
+        {
+          "id": "bf044c5e-daaa-42e3-a4e7-b5cb30059a99",
+          "name": "e_v_B_to_v_C",
+          "actions": [
+            "eC++;"
+          ],
+          "properties": {
+            "blocked": false
+          },
+          "dependency": 0,
+          "sourceVertexId": "0a9a708b-b20c-451f-acb6-fca860c992f5",
+          "targetVertexId": "31f5f7fa-a77b-4e0c-a3ea-8812519fc9d2"
+        },
+        {
+          "id": "bc0fc63c-36d4-4315-9c15-0e155ccbfa5c",
+          "name": "e_v_C_to_v_B",
+          "actions": [
+            "eB++;"
+          ],
+          "properties": {
+            "gw.edge.bendpoint.y.1": 79,
+            "gw.edge.bendpoint.x.0": 252,
+            "gw.edge.bendpoint.y.0": 254,
+            "gw.edge.bendpoint.x.1": 253,
+            "blocked": false
+          },
+          "dependency": 0,
+          "sourceVertexId": "31f5f7fa-a77b-4e0c-a3ea-8812519fc9d2",
+          "targetVertexId": "0a9a708b-b20c-451f-acb6-fca860c992f5"
+        }
+      ]
+    }
+  ]
+}

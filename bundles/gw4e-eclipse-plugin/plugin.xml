@@ -1,0 +1,640 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   
+   <extension
+         id="gw4eBuilder"
+         name="GW4E Project Builder"
+         point="org.eclipse.core.resources.builders">
+      <builder
+            hasNature="true">
+         <run
+               class="org.gw4e.eclipse.builder.GW4EBuilder">
+         </run>
+      </builder>
+   </extension>
+   
+  <extension
+         point="org.eclipse.ui.decorators">
+         <decorator
+               adaptable="true"
+               class="org.gw4e.eclipse.decorator.ProjectLabelDecorator"
+               id="org.gw4e.eclipse.decorator.project"
+               label="GW4E Decoration"
+               lightweight="false"
+               objectClass="org.eclipse.core.resources.IProject"
+               state="true">
+         <enablement>
+            <objectClass
+                  name="org.eclipse.core.resources.IProject">
+            </objectClass>
+         </enablement>
+      </decorator>
+   </extension>
+	<extension
+	    id="GW4ENature"
+	    name="GW4E Nature"
+	    point="org.eclipse.core.resources.natures">
+	    <runtime>
+	        <run
+	            class="org.gw4e.eclipse.product.GW4ENature">
+	        </run>
+	    </runtime>
+        <builder
+            id="gw4e-eclipse-plugin.gw4eBuilder"/>	    
+	    <requires-nature
+	            id="org.eclipse.jdt.core.javanature">
+	    </requires-nature>	    
+	</extension>
+
+   <extension
+         id="gw4eProblem"
+         name="GW4E Problem"
+         point="org.eclipse.core.resources.markers">
+			<super
+	          	type="org.eclipse.jdt.core.problem">
+	    	</super>
+	   		<super
+	          type="org.eclipse.core.resources.problemmarker">
+	    	</super>
+	    	<super
+	          type="org.eclipse.core.resources.textmarker">
+	   		 </super>
+      <persistent
+            value="true">
+      </persistent>
+   </extension>
+   
+   <extension
+         point="org.eclipse.ui.ide.markerResolution">
+      <markerResolutionGenerator
+            markerType="gw4e-eclipse-plugin.gw4eProblem"
+            class="org.gw4e.eclipse.builder.marker.MarkerResolutionGenerator">
+     </markerResolutionGenerator>
+   </extension>
+    
+ 
+ 	
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            locationURI="popup:org.eclipse.ui.projectConfigure">
+      </menuContribution>
+   </extension>
+  <extension
+         point="org.eclipse.ui.commands">
+      <category
+            name="Convert GW4E Category"
+            id="gw4e-eclipse-plugin.commands.convert.category">
+      </category>
+      <command
+            name="Convert GW4E Command"
+            categoryId="gw4e-eclipse-plugin.commands.convert.category"
+            id="gw4e-eclipse-plugin.commands.convertProjectCommand">
+      </command>
+  
+   </extension>
+      
+ 
+   
+    <extension
+         point="org.eclipse.ui.bindings">
+      <key
+            commandId="gw4e-eclipse-plugin.commands.removeGW4ENatureCommand"
+            contextId="org.eclipse.ui.contexts.window"
+            sequence="Ctrl+7"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration">
+      </key>
+   </extension>
+   
+   <extension
+         point="org.eclipse.ui.commands">
+      <category
+            name="GW4E Category"
+            id="gw4e-eclipse-plugin.commands.category">
+      </category>
+      <command
+            name="Generate Test and Interface Command"
+            categoryId="gw4e-eclipse-plugin.commands.category"
+            id="gw4e-eclipse-plugin.commands.generateSourceCommand">
+      </command>
+     
+      <command
+            name="Synchronization  Command"
+            categoryId="gw4e-eclipse-plugin.commands.category"
+            id="gw4e-eclipse-plugin.commands.SynchronizeBuildPoliciesCommand">
+      </command>      
+      <command
+            name="Convert To Command"
+            categoryId="gw4e-eclipse-plugin.commands.category"
+            id="gw4e-eclipse-plugin.commands.convertToCommand">
+      </command> 
+      <command
+            name="Update Test Interface Command"
+            categoryId="gw4e-eclipse-plugin.commands.category"
+            id="gw4e-eclipse-plugin.commands.updateInterfaceCommand">
+      </command>            
+      <command
+            name="Remove GW4E Nature Command"
+            categoryId="gw4e-eclipse-plugin.commands.category"
+            id="gw4e-eclipse-plugin.commands.removeGW4ENatureCommand">
+      </command>      
+      <command
+          name="Set GW4E Nature Command"
+          categoryId="gw4e-eclipse-plugin.commands.category"
+          id="gw4e-eclipse-plugin.commands.setGW4ENatureCommand">
+      </command>     
+   </extension>
+   
+   <extension
+         point="org.eclipse.ui.handlers">
+      <handler
+            commandId="gw4e-eclipse-plugin.commands.convertToCommand"
+            class="org.gw4e.eclipse.handlers.ConvertToHandler">
+					<enabledWhen>
+					    <with variable="selection">
+					        <iterate ifEmpty="false">
+					           <test property="org.gw4e.eclipse.menu.isConvertToEnabled" forcePluginActivation="true"/>
+					        </iterate>
+					    </with>
+					</enabledWhen> 
+      </handler>
+      <handler
+            commandId="gw4e-eclipse-plugin.commands.updateInterfaceCommand"
+            class="org.gw4e.eclipse.handlers.UpdateTestInterfaceToHandler">
+					<enabledWhen>
+					    <with variable="selection">
+					        <iterate ifEmpty="false">
+					           <test property="org.gw4e.eclipse.menu.isConvertToEnabled" forcePluginActivation="true"/>
+					        </iterate>
+					    </with>
+					</enabledWhen> 
+      </handler>
+  
+      <handler
+            commandId="gw4e-eclipse-plugin.commands.generateSourceCommand"
+            class="org.gw4e.eclipse.handlers.GenerateSourceHandler">
+            	   <enabledWhen>
+	               		<with variable="activeMenuSelection">
+		               		<iterate ifEmpty="false">
+  								<test property="org.gw4e.eclipse.menu.isAuthorizedFolderForGraphDefinition" forcePluginActivation="true"/>
+		               		</iterate>
+	               		</with>
+	               </enabledWhen>
+      </handler>
+  
+      <handler
+            commandId="gw4e-eclipse-plugin.commands.SynchronizeBuildPoliciesCommand"
+            class="org.gw4e.eclipse.handlers.SynchronizeBuildPoliciesHandler">
+            	   <enabledWhen>
+	               		<with variable="selection">
+		               		<iterate ifEmpty="false">
+					            <test property="org.gw4e.eclipse.menu.isAuthorizedContainerForBuildPoliciesSynchronization" forcePluginActivation="true"/>
+					       	</iterate>
+	               		</with>
+	               </enabledWhen>
+      </handler>           
+      <handler
+            commandId="gw4e-eclipse-plugin.commands.removeGW4ENatureCommand"
+            class="org.gw4e.eclipse.handlers.RemoveGW4ENatureHandler">
+               <enabledWhen>
+               		<with variable="selection">
+	               		<iterate ifEmpty="false">
+							<test property="org.gw4e.eclipse.menu.isGW4ENatureSet" forcePluginActivation="true"/>
+	               		</iterate>
+               		</with>
+               </enabledWhen>
+      </handler>      
+      <handler
+            commandId="gw4e-eclipse-plugin.commands.setGW4ENatureCommand"
+            class="org.gw4e.eclipse.handlers.ConvertProjectHandler" >
+            	   <enabledWhen>
+	               		<with variable="selection">
+		               		<iterate ifEmpty="false">
+			               		<not>
+	  								<test property="org.gw4e.eclipse.menu.isGW4ENatureSet" forcePluginActivation="true"/>
+			               		</not>
+		               		</iterate>
+	               		</with>
+	               </enabledWhen>
+ 	  </handler>	     
+   </extension>
+   
+   <extension
+         point="org.eclipse.core.expressions.propertyTesters">
+		 	<propertyTester
+		         namespace="org.gw4e.eclipse.menu"
+		       id="org.gw4e.eclipse.menu.GenerateSource.MenuStateTester"
+		       properties="isAuthorizedFolderForGraphDefinition"
+		       type="org.eclipse.jdt.core.IPackageFragmentRoot"
+		       class="org.gw4e.eclipse.menu.MenuStateTester">
+		     </propertyTester>
+		 	<propertyTester
+		         namespace="org.gw4e.eclipse.menu"
+		       id="org.gw4e.eclipse.menu.ProjectNature.MenuStateTester"
+		       properties="isGW4ENatureSet,isConvertToEnabled"
+		       type="java.lang.Object"
+		       class="org.gw4e.eclipse.menu.MenuStateTester">
+		     </propertyTester>		
+		 	<propertyTester
+		         namespace="org.gw4e.eclipse.menu"
+		       id="org.gw4e.eclipse.menu.Launcher.LauncherTester"
+		       properties="isGW4ERunToEnabled"
+		       type="org.eclipse.jdt.core.IJavaElement"
+		       class="org.gw4e.eclipse.menu.MenuStateTester">
+		     </propertyTester>	
+		 	<propertyTester
+		         namespace="org.gw4e.eclipse.menu"
+		       id="org.gw4e.eclipse.menu.SynchronizeBuildPolicies.MenuStateTester"
+		       properties="isAuthorizedContainerForBuildPoliciesSynchronization"
+		       type="java.lang.Object"
+		       class="org.gw4e.eclipse.menu.MenuStateTester">
+		     </propertyTester>		     	          
+   </extension>
+   
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            locationURI="popup:org.eclipse.jdt.ui.PackageExplorer">
+         <menu
+               label="GW4E"
+               id="gw4e-eclipse-plugin.menus.GW4EMenu">
+            <command
+                  commandId="gw4e-eclipse-plugin.commands.convertToCommand"
+                  label="Convert to..."
+                  id="gw4e-eclipse-plugin.menus.ConvertToCommand">
+					<enabledWhen>
+					    <with variable="selection">
+					        <iterate ifEmpty="false">
+					             <test property="org.gw4e.eclipse.menu.isConvertToEnabled" forcePluginActivation="true"/>
+					        </iterate>
+					    </with>
+					</enabledWhen>                 
+            </command>   
+            <command
+                  commandId="gw4e-eclipse-plugin.commands.updateInterfaceCommand"
+                  label="Generate Test Interface"
+                  id="gw4e-eclipse-plugin.menus.updateInterfaceCommand">
+					<enabledWhen>
+					    <with variable="selection">
+					        <iterate ifEmpty="false">
+					             <test property="org.gw4e.eclipse.menu.isConvertToEnabled" forcePluginActivation="true"/>
+					        </iterate>
+					    </with>
+					</enabledWhen>                 
+            </command>
+            <command
+                  commandId="gw4e-eclipse-plugin.commands.generateSourceCommand"
+                  label="Generate Test and Interface"
+                  id="gw4e-eclipse-plugin.menus.GenerateSourceCommand">
+            	   <enabledWhen>
+	               		<with variable="activeMenuSelection">
+		               		<iterate ifEmpty="false">
+  								<test property="org.gw4e.eclipse.menu.isAuthorizedFolderForGraphDefinition" forcePluginActivation="true"/>
+		               		</iterate>
+	               		</with>
+	               </enabledWhen>                  
+            </command>
+   
+            <command
+                  commandId="gw4e-eclipse-plugin.commands.SynchronizeBuildPoliciesCommand"
+                  label="Synchronize Build Policies Files"
+                  id="gw4e-eclipse-plugin.menus.SynchronizeBuildPoliciesCommand">
+					<enabledWhen>
+					    <with variable="selection">
+					        <iterate ifEmpty="false">
+					        <and>
+					            <test property="org.gw4e.eclipse.menu.isAuthorizedContainerForBuildPoliciesSynchronization" forcePluginActivation="true"/>
+					        </and>
+					        </iterate>
+					    </with>
+					</enabledWhen>                 
+            </command>                       
+			<separator name="separator-id" visible="true"/>
+            <command
+                  commandId="gw4e-eclipse-plugin.commands.removeGW4ENatureCommand"
+                  label="Remove GW4E Nature"
+                  id="gw4e-eclipse-plugin.menus.removeGW4ENatureCommand">
+                   <enabledWhen>
+	               		<with variable="selection">
+		               		<iterate ifEmpty="false">
+  								<test property="org.gw4e.eclipse.menu.isGW4ENatureSet" forcePluginActivation="true"/>
+		               		</iterate>
+	               		</with>
+	               </enabledWhen>
+            </command>
+         </menu>
+      </menuContribution>
+      <menuContribution
+            locationURI="popup:org.eclipse.ui.projectConfigure">
+            <command
+                  commandId="gw4e-eclipse-plugin.commands.setGW4ENatureCommand"
+                  label="Convert to GW4E"
+                  id="gw4e-eclipse-plugin.menus.setGW4ENatureCommand">
+            </command>
+      </menuContribution>      
+   </extension>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            name="GW4E Preferences"
+            class="org.gw4e.eclipse.preferences.GW4EPreferencePage"
+            id="org.gw4e.eclipse.preferences.GW4EPreferencePage">
+      </page>
+   </extension>
+   <extension
+         point="org.eclipse.core.runtime.preferences">
+      <initializer
+            class="org.gw4e.eclipse.preferences.PreferenceInitializer">
+      </initializer>
+   </extension>
+ 
+	<extension 
+		point="org.eclipse.ui.newWizards">
+	  	<wizard
+			id="org.gw4e.eclipse.wizard.GW4EProjectCreationWizard"
+			name="GW4E Project"
+			class="org.gw4e.eclipse.wizard.project.GW4ECreationWizard"
+			category="gw4e-eclipse.plugin"
+			project="true"
+			
+			icon="icons/gw1.png">
+			<description>GW4E project</description>
+	    </wizard>	 
+	</extension>
+	
+	<extension point="org.eclipse.ui.perspectiveExtensions">
+	     <perspectiveExtension targetID="org.eclipse.jdt.ui.JavaPerspective">
+		      <newWizardShortcut
+               id="org.gw4e.eclipse.wizard.GW4EProjectCreationWizard">
+         		</newWizardShortcut>
+         		<newWizardShortcut
+               id="org.gw4e.eclipse.wizard.model.GW4EModelWizard">
+         		</newWizardShortcut>
+	 	 </perspectiveExtension>
+	</extension>
+	
+	<extension
+	     point = "org.eclipse.ui.propertyPages">
+	        <page
+	           	id="org.gw4e.eclipse.property.GraphmlFilePropertyPage"
+	           	name="GW4E"
+		   		objectClass="org.eclipse.core.resources.IFile"
+		   		class="org.gw4e.eclipse.property.GraphModelPropertyPage" 
+		   		nameFilter="*.graphml">
+	        </page>
+	        <page
+	           	id="org.gw4e.eclipse.property.JSONFilePropertyPage"
+	           	name="GW4E"
+		   		objectClass="org.eclipse.core.resources.IFile"
+		   		class="org.gw4e.eclipse.property.GraphModelPropertyPage" 
+		   		nameFilter="*.json">
+	        </page>
+	        <page
+	           	id="org.gw4e.eclipse.property.GWE4FilePropertyPage"
+	           	name="GW4E"
+		   		objectClass="org.eclipse.core.resources.IFile"
+		   		class="org.gw4e.eclipse.property.GraphModelPropertyPage" 
+		   		nameFilter="*.gw4e">
+	        </page>
+	</extension>
+	
+	<extension
+	     point = "org.eclipse.ui.propertyPages">
+	          <page 
+	          	id="org.gw4e.eclipse.property.ProjectPropertyPage"
+	          	name="GW4E"
+         		class="org.gw4e.eclipse.property.ProjectPropertyPage">
+				<enabledWhen>
+				    <adapt type="org.eclipse.core.resources.IProject">
+				        <test property="org.eclipse.core.resources.projectNature" 
+				              value="gw4e-eclipse-plugin.GW4ENature"/>
+				    </adapt>         
+				</enabledWhen>
+    		</page>
+	</extension>
+		
+    <extension point="org.eclipse.debug.core.launchConfigurationTypes">
+	    <launchConfigurationType
+	        name="GW4E Offline Launcher"
+	        delegate="org.gw4e.eclipse.launching.offline.GW4ELaunchConfigurationDelegate"
+	        modes="run"               
+	        id="org.gw4e.eclipse.launching.offline.GW4ElaunchConfigurationTypes">        
+	    </launchConfigurationType>
+	</extension>
+    <extension
+         point="org.eclipse.debug.ui.launchConfigurationTabGroups">
+      <launchConfigurationTabGroup
+            type="org.gw4e.eclipse.launching.offline.GW4ElaunchConfigurationTypes"
+            class="org.gw4e.eclipse.launching.offline.GW4ETabGroup"
+            id="gw4e.eclipse.offline.launchConfigurationTabGroup">
+         <launchMode
+               perspective="org.eclipse.debug.ui.DebugPerspective"
+               description="Debug"
+               mode="debug">
+         </launchMode>
+         <launchMode
+               description="Run"
+               mode="run">
+         </launchMode>
+      </launchConfigurationTabGroup>
+   </extension>
+   <extension
+         point="org.eclipse.debug.ui.launchShortcuts">
+      <shortcut
+            class="org.gw4e.eclipse.launching.GW4ELaunchShortcut"
+            icon="icons/gw1.png"
+            id="org.gw4e.eclipse.launching.GW4ELaunchShortcut"
+            label="GW4E Test"
+            modes="run, debug">
+	 		 <contextualLaunch>
+	           <enablement>
+	             <with variable="selection">
+	 
+	               <iterate>
+	                   <test property="org.eclipse.debug.ui.matchesPattern" value="*.java"/>
+	                   <instanceof value="org.eclipse.jdt.core.IJavaElement"/>
+	                   <test property="org.gw4e.eclipse.menu.isGW4ERunToEnabled" forcePluginActivation="true"/>
+	               </iterate>
+	             </with>
+	           </enablement>
+	  		 </contextualLaunch>           
+         <perspective
+               id="org.eclipse.jdt.ui.JavaPerspective">
+         </perspective>
+         <perspective
+               id="org.eclipse.jdt.ui.JavaHierarchyPerspective">
+         </perspective>
+         <perspective
+               id="org.eclipse.jdt.ui.JavaBrowsingPerspective">
+         </perspective>
+         <perspective
+               id="org.eclipse.debug.ui.DebugPerspective">
+         </perspective>
+      </shortcut>
+   </extension>
+   
+   
+    <extension point="org.eclipse.debug.core.launchConfigurationTypes">
+	    <launchConfigurationType
+	        name="GW4E Test Launcher"
+	        delegate="org.gw4e.eclipse.launching.test.GW4ELaunchConfigurationDelegate"
+	        modes="run,debug"               
+	        sourceLocatorId="org.eclipse.jdt.launching.sourceLocator.JavaSourceLookupDirector"
+            sourcePathComputerId="org.eclipse.jdt.launching.sourceLookup.javaSourcePathComputer"
+	        id="org.gw4e.eclipse.launching.test.GW4ElaunchConfigurationTypes">        
+	    </launchConfigurationType>
+	</extension>
+
+  
+
+
+    <extension
+         point="org.eclipse.debug.ui.launchConfigurationTabGroups">
+      <launchConfigurationTabGroup
+            type="org.gw4e.eclipse.launching.test.GW4ElaunchConfigurationTypes"
+            class="org.gw4e.eclipse.launching.test.GW4ETabGroup"
+            id="gw4e.eclipse.test.launchConfigurationTabGroup">
+         <launchMode
+               perspective="org.eclipse.debug.ui.DebugPerspective"
+               description="Debug"
+               mode="debug">
+         </launchMode>
+         <launchMode
+               description="Run"
+               mode="run">
+         </launchMode>
+      </launchConfigurationTabGroup>
+   </extension>
+   
+      <extension
+       point="org.eclipse.jdt.core.classpathContainerInitializer">
+      <classpathContainerInitializer
+          id="org.gw4e.eclipse.container.libraries"
+          class="org.gw4e.eclipse.container.ContainerInitializer"/>
+   </extension>
+     
+   
+    <extension
+         point="org.eclipse.ui.views">
+      <category
+            name="GW4E"
+            id="org.gw4e.eclipse.gw4e.category">
+      </category>
+      <view
+            name="GW4E Plugin Performance"
+            icon="icons/gw1.png"
+            category="org.gw4e.eclipse.gw4e.category"
+            class="org.gw4e.eclipse.views.PerformanceView"
+            id="org.gw4e.eclipse.views.PerformanceView">
+      </view>
+   </extension> 
+ 	<extension
+         point="org.eclipse.jdt.core.compilationParticipant">
+      <compilationParticipant
+            class="org.gw4e.eclipse.builder.BuildParticipant"
+            createsProblems="true"
+            id="org.gw4e.eclipse.builder.BuildParticipant"
+            modifiesEnvironment="false"
+            requiredSourceLevel="1.7">
+            <managedMarker markerType="gw4e-eclipse-plugin.gw4eProblem"/>
+            
+      </compilationParticipant>
+   </extension>    
+    <extension point="org.eclipse.ui.newWizards">
+      <category
+            id="gw4e-eclipse.plugin"
+            name="GW4E"/>
+      <wizard
+            id="org.gw4e.eclipse.wizard.model.GW4EModelWizard"
+            name="GW4E Model"
+            class="org.gw4e.eclipse.wizard.model.GW4EModelWizard"
+            category="gw4e-eclipse.plugin"
+            icon="icons/gw1.png">
+         <description>Create a GraphWalker model file</description>
+          
+      </wizard>
+   </extension>
+    <extension
+          point="org.eclipse.ui.navigator.navigatorContent">
+       <commonWizard
+             type="new"
+             wizardId="org.gw4e.eclipse.wizard.model.GW4EModelWizard">
+                       
+       </commonWizard>
+    </extension>
+    
+       <extension
+         point="org.eclipse.ui.perspectives">
+      <perspective
+            name="GW4E Perspective"
+            icon="icons/gw1.png"
+            class="org.gw4e.eclipse.perspective.GW4EPerspective"
+            id="org.gw4e.eclipse.perspective.GW4EPerspective">
+      </perspective>
+   </extension>
+   
+    <extension point="org.eclipse.ui.editors">
+  <editor
+    class="org.eclipse.ui.editors.text.TextEditor"
+    default="true"
+    filenames="*.policies"
+    id="org.eclipse.ui.DefaultTextEditor"
+    name="GW4E Build Policies Editor"
+    icon="icons/gw1.png"/>
+	</extension>
+
+	<extension point="org.eclipse.ltk.core.refactoring.moveParticipants">
+    <moveParticipant
+          class="org.gw4e.eclipse.refactoring.MoveGraphParticipant"
+          id="org.gw4e.eclipse.refactoring.MoveGraphParticipant"
+          	name="Move participant for *.graphml and *.json files">
+       <enablement>
+		  <with variable="affectedNatures">
+       	   <iterate operator="or">
+         	 <equals value="gw4e-eclipse-plugin.GW4ENature"/>
+        	</iterate>
+      	  </with>	  	
+       	  <with variable="element">
+		  	<instanceof value="org.eclipse.core.resources.IResource" />
+	  	  </with>
+       </enablement>
+    </moveParticipant>
+	</extension>
+	<extension point="org.eclipse.ltk.core.refactoring.renameParticipants">
+	   <renameParticipant
+	  	id="org.gw4e.eclipse.refactoring.RenameGraphParticipant"
+	  	name="Rename participant for *.graphml and *.json files"
+	  	class="org.gw4e.eclipse.refactoring.RenameGraphParticipant">
+	  	<enablement>
+		  <with variable="affectedNatures">
+       	   <iterate operator="or">
+         	 <equals value="gw4e-eclipse-plugin.GW4ENature"/>
+        	</iterate>
+      	  </with>	  	
+	  	  <with variable="element">
+		  	 <instanceof value="org.eclipse.core.resources.IResource" />
+	  	  </with>
+	  	</enablement>
+	  </renameParticipant>	
+	</extension>
+ <extension
+       point="org.eclipse.ltk.core.refactoring.deleteParticipants">
+    <deleteParticipant
+          class="org.gw4e.eclipse.refactoring.DeleteGraphParticipant"
+          id="org.gw4e.eclipse.refactoring.DeleteGraphParticipant"
+          name="Delete participant for *.graphml and *.json files">
+       <enablement>
+		  <with variable="affectedNatures">
+       	   <iterate operator="or">
+         	 <equals value="gw4e-eclipse-plugin.GW4ENature"/>
+        	</iterate>
+      	  </with>	  	
+	  	  <with variable="element">
+		  	 <instanceof value="org.eclipse.core.resources.IResource" />
+	  	  </with>       
+       </enablement>
+    </deleteParticipant>
+ </extension>
+
+</plugin>

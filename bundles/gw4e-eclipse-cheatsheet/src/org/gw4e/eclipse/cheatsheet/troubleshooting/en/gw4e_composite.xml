@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  #%L
+  gw4e
+  $Id:$
+  $HeadURL:$
+  %%
+  Copyright (C) 2017 gw4e-project
+  %%
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to deal
+  in the Software without restriction, including without limitation the rights
+  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+  
+  The above copyright notice and this permission notice shall be included in
+  all copies or substantial portions of the Software.
+  
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+  THE SOFTWARE.
+  #L%
+  -->
+
+<compositeCheatsheet name="Trouble ShootingTutorial">
+   <taskGroup kind="set" name="Getting started with Offline Runner Test Generation" skip="false">
+      <intro>
+         The GraphWalker documentation states that there are two testing types:<br/>
+         1 - <b>Online</b> testing means that a model-based testing tool connects directly to an SUT and tests it dynamically.<br/>
+         2 - <b>Offline</b> means generating a test sequence once, that can be later run automatically... Notice that in that case, you have to save the output of the Offline tool somewhere, use a java editor to  create a java class and add a test method whose body would be this output reformatted.<br/>
+         <br/>
+         In fact, behind the scene, <b>Online</b> testing takes a graph model, walks thru it. Each time GraphWalker goes thru a graph element (Vertex or Edge), it execute a methods having the same element graph name. Depending on the  GENERATOR(STOP_CONDITION) used to run the test, the path execution might be different. In that way, we can say that <b>Online</b> is dynamic. Have a look at the GENERATOR(STOP_CONDITION) documentation for more information (http://graphwalker.github.io/generators_and_stop_conditions/).<br/><br/>
+         Debugging with <b>Online</b> mode might be cumbersome  since you can not reproduce easily the same execution from one execution to another. This is where <b>Offline</b> mode becomes very handy.    
+         <br/>
+         <b>Offline</b> feature is quite different (static versus dynamic) in a sense where before executing the test, you need a little bit more work to do. This is a three steps features : <br/>
+         1 - Launch the offline command line to get as a result a path (a list of vertices and edges). The generated path depends on the graph model and the GENERATOR(STOP_CONDITION) used when the tool is launched.<br/>
+         2 - Manually, take each path element names as method names, add this sequence as the body of a test method<br/>
+         3 - Because the path might be ramdom depending on the GENERATOR used with the offline tool, you might need to slightly adapt the sequence to match your need.
+         <br/>
+         This plugin helps you to do that automatically, with some configuration to decide where you want to generate the code. You have 3 options : <br/>
+         1 - by inserting the code (sequence of calls)  in a new class<br/>
+         2 - by appending the code in an existng test class <br/>
+         3 - by inserting the code in a new class inheriting from an existing test<br/>
+        
+         Let&apos;s try to do do that now ... but before close any openend project.<br/>
+      </intro>
+      <onCompletion>
+         Congratulations you have completed all the tasks.
+      </onCompletion>
+      <task kind="cheatsheet" name="Create a project" skip="false">
+         <onCompletion>
+            <b>Conclusion</b>
+         </onCompletion>
+         <param name="path" value="create_new_project_with_simple_template.xml">
+         </param>
+      </task>
+      <task kind="cheatsheet" name="Generating offline test sequences within new test class" skip="false">
+         <intro>
+         </intro>
+         <onCompletion>
+            <b>Conclusion</b>
+         </onCompletion>
+         <param name="path" value="generating_an_offline_sequence.xml">
+         </param>
+      </task>
+      <task kind="cheatsheet" name="Generating offline test sequences within an existing test class" skip="false">
+         <intro>
+            <b>Introduction</b>
+         </intro>
+         <onCompletion>
+            <b>Conclusion</b>
+         </onCompletion>
+         <param name="path" value="generating_an_offline_sequence_in_an_existing_test.xml">
+         </param>
+      </task>
+      <task kind="cheatsheet" name="Generating offline test sequences within a new test inheriting an existing test" skip="false">
+         <intro>
+            <b>Introduction</b>
+         </intro>
+         <onCompletion>
+            <b>Conclusion</b>
+         </onCompletion>
+         <param name="path" value="generating_offline_test_sequences_within_a_new_test_inheriting_an_existing_test.xml">
+         </param>
+      </task>
+   </taskGroup>
+</compositeCheatsheet>

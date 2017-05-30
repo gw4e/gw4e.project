@@ -1,0 +1,28 @@
+/*-
+ * #%L
+ * gw4e
+ * $Id:$
+ * $HeadURL:$
+ * %%
+ * Copyright (C) 2017 gw4e-project
+ * %%
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ * #L%
+ */
+{"models":[{"name":"Simple","id":"fb94fbf6-78dc-4ebb-8eb9-539a6774c4f9","startElementId":"20842969-3927-464d-9042-b64e6a732559","vertices":[{"id":"20842969-3927-464d-9042-b64e6a732559","name":"Start","properties":{"blocked":false,"gw.vertex.init.script":"","x":254,"width":100,"y":43,"description":"b","height":100}},{"id":"0457d7d6-c659-46de-9b93-9a026334035f","name":"v_VerifyPreferencePage","properties":{"blocked":false,"gw.vertex.init.script":"","x":192,"width":100,"y":355,"description":"","height":100}},{"id":"b5fceb6b-d831-4528-acea-e53a6f3c3e7b","name":"v_VerifyAppRunning","requirements":["REQ001"],"properties":{"blocked":false,"gw.vertex.init.script":"","x":206,"width":100,"y":190,"description":"","height":100}}],"edges":[{"id":"a030ef25-c699-43ac-9e78-dd24b6fcd2bd","name":"e_ClosePreferencePage","properties":{"gw.edge.bendpoint.y.1":220,"gw.edge.bendpoint.x.0":504,"gw.edge.bendpoint.y.0":385,"gw.edge.bendpoint.x.1":504,"blocked":false},"weight":1.0,"dependency":0,"sourceVertexId":"0457d7d6-c659-46de-9b93-9a026334035f","targetVertexId":"b5fceb6b-d831-4528-acea-e53a6f3c3e7b"},{"id":"933b96e2-dd5d-4b85-8168-018a99fa065b","name":"e_StartApp","properties":{"blocked":false},"weight":1.0,"dependency":0,"sourceVertexId":"20842969-3927-464d-9042-b64e6a732559","targetVertexId":"b5fceb6b-d831-4528-acea-e53a6f3c3e7b"},{"id":"d38ae993-1276-4105-b4a6-bdda540d1f02","name":"e_OpenPreferencesPage","properties":{"blocked":false},"weight":1.0,"dependency":0,"sourceVertexId":"b5fceb6b-d831-4528-acea-e53a6f3c3e7b","targetVertexId":"0457d7d6-c659-46de-9b93-9a026334035f"}]}]}

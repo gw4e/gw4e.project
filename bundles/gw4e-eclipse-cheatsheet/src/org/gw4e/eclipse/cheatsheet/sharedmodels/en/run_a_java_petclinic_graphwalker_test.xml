@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  #%L
+  gw4e
+  $Id:$
+  $HeadURL:$
+  %%
+  Copyright (C) 2017 gw4e-project
+  %%
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to deal
+  in the Software without restriction, including without limitation the rights
+  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+  
+  The above copyright notice and this permission notice shall be included in
+  all copies or substantial portions of the Software.
+  
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+  THE SOFTWARE.
+  #L%
+  -->
+
+<cheatsheet
+      title="Running java-amazon test within the Eclipse IDE">
+   <intro>
+      <description>
+         <b>Let&apos;s do it</b>
+      </description>
+   </intro>
+     <item
+         title="Preparing the run project">
+        <description>
+            Before being able to run the PetClinic Sample, we need to un a web server that will handle the petclinic request.<br/>
+   			Run a shell and execute the following steps in order to get and start the PetClinic Sample Application : <br/>
+   			<b>0</b> - In a command shell, create a temporary directory and make it your current directory<br/>
+   			<b>1</b> - git clone https://github.com/SpringSource/spring-petclinic.git<br/>
+			<b>2</b> - cd spring-petclinic<br/>
+			<b>3</b> - git reset --hard 482eeb1c217789b5d772f5c15c3ab7aa89caf279<br/>
+			<b>4</b> - mvn tomcat7:run<br/>
+			<b>5</b> - Wait until the server is started. You should a log similar to <b>INFO: Starting ProtocolHandler ..</b> <br/>
+			We are now ready to launch the PetClinic test.  
+    </description>
+   </item> 
+   
+    <item
+         title="Running the project">
+      <description>
+  	    In the main menu, select <b>Run</b>-&gt;<b>Run Configuration...</b><br/>
+  	    In the left pane, expand <b>GW4E Test Launcher</b><br/>
+  	    Click the <b>New</b> icon <br/>
+  	    Click the <b>Browse</b> button to select the <b>java-petclinic</b> project<br/>
+  	    Make sure the <b>com.company.modelimplementations.PetClinic</b> is the <b>Main Execution Context</b> selected in the list box. This is the entry point of the test.<br/>
+  	    We need to add the other models that this test needs to be executed. The launcher can help you to determine which shared models can be used for this test.<br/>
+  	    When clicking <b>Hint</b> check box, project models are parsed to look for candidates models by using the SHARED vertices name.<br/>
+  	    Click the <b>Hint</b> check box. 
+  	    Click the <b>Select All</b> button <br/>
+  	    Click Apply<br/>
+   		Click Run<br/>
+   		Be patient, the test might take some time before completing...<br/>
+  	   <br/>
+  	   Results are printed in the Eclipse console. You might notice in the report, the following : <br/>
+  	    <b>"totalCompletedNumberOfModels": 5</b><br/>
+  	    As you can see, all models have been used in the tests.
+      </description>
+   </item> 
+</cheatsheet>

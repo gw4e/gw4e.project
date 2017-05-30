@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  #%L
+  gw4e
+  $Id:$
+  $HeadURL:$
+  %%
+  Copyright (C) 2017 gw4e-project
+  %%
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to deal
+  in the Software without restriction, including without limitation the rights
+  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+  
+  The above copyright notice and this permission notice shall be included in
+  all copies or substantial portions of the Software.
+  
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+  THE SOFTWARE.
+  #L%
+  -->
+
+<cheatsheet
+      title="Importing and Integrating the GraphWalker java-amazon project within the Eclipse IDE">
+   <intro>
+      <description>
+         <b>Let&apos;s do it</b>
+      </description>
+   </intro>
+   <item
+         title="Download and Import the the java-amazon example project">
+      <description>
+         Install <b>Maven</b> (https://maven.apache.org/install.html)<br/>
+         Execute <b>git clone https://github.com/GraphWalker/graphwalker-example.git</b> shell command<br/>        
+         Execute <b>cd graphwalker-example/java-amazon</b> shell command<br/>
+         Execute <b>mvn graphwalker:generate-test-sources</b> shell command<br/>
+      	 Execute <b>mvn eclipse:eclipse</b> to create an eclipse project<br/><br/>
+      	 
+      	 At this point many things happened.	<br/>
+      	 <b>1</b> : The java-amazon project has been installed<br/>
+      	 <b>2</b> : The GraphWalker interface <b>ShoppingCart.java</b> has been generated from the <b>ShoppingCart.graphml</b> file<br/>
+      	 <b>3</b> : The java-amazon project is now an Eclipse one. You can now edit this project with the Eclipse IDE.<br/>
+      	
+      	 Switch back to Eclipse IDE<br/>
+      	 In the menu, select <b>File -&gt; Import... -&gt;</b> -&gt; <b>General</b> <b>Existing Projects Into Workspace</b><br/>
+ 	 	 Select &lt;YOUR_DIRECTORY&gt;/graphwalker-example-master/java-amazon<br/>
+      	 Click <b>Finish</b>, the java-amazon project is imported and can now be edited within Eclipse. <br/>
+      </description>
+   </item>
+    <item
+         title="Converting the project">
+      <description>
+         Now, let's convert the java project into a GW4E one. <br/>
+      	 Right-Click the project and select the <b>Configure</b> -&gt; <b>Convert To GW4E</b>. The project is now converted.<br/>
+      	 <br/><br/>
+      	 At this point many things happened.	<br/>
+ 	     <b>1</b> : The <b>ShoppingCart.graphml</b> file has been duplicated with an equivalent <b>ShoppingCart.json</b> file.<br/>		
+ 	     <b>2</b> : The <b>ShoppingCart.java</b> interface file relies now on the <b>ShoppingCart.json</b> file rather than the <b>ShoppingCart.graphml</b> file. Don't worry the files are equivalent. 
+ 	     Instead of editing the <b>.graphml</b> file with yEd, you can now edit the <b>.json</b> file with the <b>GW4E Eclipse Plugin Editor.</b> <br/>	
+ 	     <b>3</b> : Edit the <b>build.policies</b> file, you can see that : <br/>
+ 	     <b>3.1</b> :The <b>ShoppingCart.graphml</b> file is not taken into account when building the project. <br/>
+ 	     <b>3.2</b> :The <b>ShoppingCart.json</b> is configured to be automatically updated when you will save your <b>ShoppingCartTest.java</b> test.<br/>
+ 	     <b>4</b> : The <b>ShoppingCart.java</b> file has been updated with a @Generated annotation.<br/> 
+       </description>
+   </item> 
+    <item
+         title="Playing with the editor">
+      <description>
+ 	     The <b>ShoppingCart.graphml</b> file has been read and converted into a json format.<br/>
+ 	     Right-click the <b>ShoppingCart.json</b> and select <b>Open With</b> -&gt; <b>GW4E Editor</b><br/>
+	     As you can see the conversion process did it best to make it readable. <br/>
+	     Right-click the graph and select Layout sub-menu items to play with different layout algorithm.<br/>
+      	 Once you got something that seems good to you, you can organize vertices and edges a little bit better to make it 
+      	 a beautiful graph :-)<br/>
+      </description>
+   </item>    
+    <item
+         title="Quick tour of the graph's properties">
+      <description>
+         Switch to the GW4E perspective<br/>
+         Select the <b>Properties</b> view<br/>
+         Select the <b>e_StartBrowser</b> edge<br/>
+ 	     You can see an icon gear around the edge name. It means that there is some action coded here for this edge. Move the cursor above the icon.
+ 	     A tooltip appears with the javascript code.<br/>
+ 	     In the <b>Properties</b> tab click the <b>Action</b> tab, you can see the javascript code. This is where you update the action code for the edge. <br/>
+         <br/>
+         Click the <b>e_AddBookToCart</b><br/>
+         At the beginning of the edge (v_BookInformation vertex side), you can see an arrow icon. It means that there is some guard coded here for this edge. Move the cursor above the icon.
+ 	     A tooltip appears with the javascript code.<br/>
+ 	     In the <b>Properties</b> tab click the <b>Guard</b> tab, you can see the javascript code. This is where you update the guard code for the edge. <br/>
+      	<br/>
+      	Click the <b>v_BookInformation</b><br/>
+      	In the <b>Properties</b> tab , you can see in the Requirement field , that a requirement has been set.
+        <br/>
+        Notice that some other vertices hold requirements. If you are wondering which of the vertices hold requirements, use the filter as follows:<br/>
+      	In the Outline view <br/>
+      	Click the <b>Filter</b> check box<br/>
+      	Expand the <b>Vertex Filters</b> section<br/>
+        In the <b>Req</b> field , enter the <b>*</b> character <br/>
+        You can see that 4 vertices have requirements. Clicking one of these selects the corresponding node in the graph.<br/>
+        Repeat the same steps but instead of a <b>*</b> character enter <b>UC01 2.2</b><br/>
+        You can see that 3 vertices have requirements containing this string.<br/>
+        <br/>
+        Click the graph (not an edge nor a vertex)<br/>
+        Select the <b>Properties</b> tab<br/>
+        You can see that the start element is <b>e_StartBrowser</b><br/>
+        
+      </description>
+   </item>     
+</cheatsheet>

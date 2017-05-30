@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+
+   <extension
+         point="org.eclipse.ui.editors">
+      <editor
+            class="org.gw4e.eclipse.studio.editor.GW4EEditor"
+            contributorClass="org.gw4e.eclipse.studio.toolbar.GW4EEditorActionBarContributor"
+            default="true"
+            extensions="json,gw4e,graphml"
+            icon="icons/gw.png"
+            id="org.gw4e.eclipse.studio.editor.GW4EEditor"
+            name="GW4E Editor">
+      </editor>
+   </extension>
+  
+    <extension
+         point="org.eclipse.ui.commands">
+      <category
+            name="Sample Category"
+            id="gw.commands.category">
+      </category>
+	  <command
+				name="Reset Edge Route"
+				categoryId="gw.commands.category"
+				id="org.gw4e.eclipse.studio.commands.ClearEdgeBendpointLayoutAction">
+		</command>
+		      
+   </extension>
+   
+   
+    <extension
+         point="org.eclipse.ui.views.properties.tabbed.propertyContributor">
+      <propertyContributor contributorId="org.gw4e.eclipse.studio.editor.GW4EEditor">
+         <propertyCategory category="gw4e.property.contributor.category"/>
+      </propertyContributor>
+   </extension>
+   <extension
+         point="org.eclipse.ui.views.properties.tabbed.propertyTabs">
+      <propertyTabs contributorId="org.gw4e.eclipse.studio.editor.GW4EEditor">
+         <propertyTab
+               category="gw4e.property.contributor.category"
+               id="gw4e.properties.DefaultTab"
+               label="Properties"/>
+         <propertyTab
+               afterTab="gw4e.properties.DefaultTab"
+               category="gw4e.property.contributor.category"
+               id="gw4e.graph.properties.CustomPropertiesTab"
+               label="Custom"/> 
+               
+         <propertyTab
+               afterTab="gw4e.properties.BasicTab"
+               category="gw4e.property.contributor.category"
+               id="gw4e.properties.InitTab"
+               label="Init"/>
+         <propertyTab
+               afterTab="gw4e.properties.BasicTab"
+               category="gw4e.property.contributor.category"
+               id="gw4e.properties.GuardTab"
+               label="Guard"/>
+         <propertyTab
+               afterTab="gw4e.properties.GuardTab"
+               category="gw4e.property.contributor.category"
+               id="gw4e.properties.ActionTab"
+               label="Action"/>  
+         <propertyTab
+               afterTab="gw4e.properties.ActionTab"
+               category="gw4e.property.contributor.category"
+               id="gw4e.edge.properties.CustomPropertiesTab"
+               label="Custom"/>    
+        <propertyTab
+               afterTab="gw4e.properties.InitTab"
+               category="gw4e.property.contributor.category"
+               id="gw4e.vertex.properties.CustomPropertiesTab"
+               label="Custom"/>                                                            
+      </propertyTabs>
+   </extension>  
+   
+     <extension
+         point="org.eclipse.ui.views.properties.tabbed.propertySections">
+      <propertySections contributorId="org.gw4e.eclipse.studio.editor.GW4EEditor">
+         <propertySection
+               class="org.gw4e.eclipse.studio.editor.properties.graph.GraphDefaultSection"
+               enablesFor="1"
+               id="gw4e.DefaultGraphSection"
+               tab="gw4e.properties.DefaultTab">
+            <input type="org.gw4e.eclipse.studio.editor.properties.GraphSectionProvider"/>
+         </propertySection>
+         <propertySection
+               class="org.gw4e.eclipse.studio.editor.properties.graph.GraphCustomProperties"
+               enablesFor="1"
+               id="gw4e.graph.CustomPropertiesSection"
+               tab="gw4e.graph.properties.CustomPropertiesTab">
+            <input type="org.gw4e.eclipse.studio.editor.properties.GraphSectionProvider"/>
+         </propertySection>   
+         <propertySection
+               class="org.gw4e.eclipse.studio.editor.properties.vertex.VertexDefaultSection"
+               enablesFor="1"
+               id="gw4e.DefaultVertextSection"
+               tab="gw4e.properties.DefaultTab">
+            <input type="org.gw4e.eclipse.studio.editor.properties.VertexSectionProvider"/>
+         </propertySection>
+         <propertySection
+               class="org.gw4e.eclipse.studio.editor.properties.vertex.VertexInitSection"
+               enablesFor="1"
+               filter="org.gw4e.eclipse.studio.editor.properties.filter.VertexTabPropertiesFilter"
+               id="gw4e.InitSection"
+               tab="gw4e.properties.InitTab">
+            <input type="org.gw4e.eclipse.studio.editor.properties.VertexSectionProvider"/>
+         </propertySection>
+         <propertySection
+               class="org.gw4e.eclipse.studio.editor.properties.vertex.VertexCustomProperties"
+               enablesFor="1"
+               filter="org.gw4e.eclipse.studio.editor.properties.filter.VertexTabPropertiesFilter"
+               id="gw4e.vertex.CustomPropertiesSection"
+               tab="gw4e.vertex.properties.CustomPropertiesTab">
+            <input type="org.gw4e.eclipse.studio.editor.properties.VertexSectionProvider"/>
+         </propertySection>                              
+        <propertySection
+              class="org.gw4e.eclipse.studio.editor.properties.edge.EdgeDefaultSection"
+              enablesFor="1"
+              id="gw4e.DefaultEdgeSection"
+              tab="gw4e.properties.DefaultTab">
+            <input type="org.gw4e.eclipse.studio.editor.properties.EdgeSectionProvider"/>
+         </propertySection>  
+         <propertySection
+               class="org.gw4e.eclipse.studio.editor.properties.edge.EdgeGuardSection"
+               enablesFor="1"
+               id="gw4e.GuardSection"
+               tab="gw4e.properties.GuardTab">
+            <input type="org.gw4e.eclipse.studio.editor.properties.EdgeSectionProvider"/>
+         </propertySection>  
+         <propertySection
+               class="org.gw4e.eclipse.studio.editor.properties.edge.EdgeActionSection"
+               enablesFor="1"
+               id="gw4e.ActionSection"
+               tab="gw4e.properties.ActionTab">
+            <input type="org.gw4e.eclipse.studio.editor.properties.EdgeSectionProvider"/>
+         </propertySection>   
+         <propertySection
+               class="org.gw4e.eclipse.studio.editor.properties.edge.EdgeCustomProperties"
+               enablesFor="1"
+               id="gw4e.edge.CustomPropertiesSection"
+               tab="gw4e.edge.properties.CustomPropertiesTab">
+            <input type="org.gw4e.eclipse.studio.editor.properties.EdgeSectionProvider"/>
+         </propertySection>                              
+                                    
+      </propertySections>      
+   </extension>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            name="GW4E Studio Preferences"
+            class="org.gw4e.eclipse.studio.preference.PreferencePage"
+            id="org.gw4e.eclipse.studio.preference.PreferencePage">
+      </page>
+   </extension>
+   <extension
+         point="org.eclipse.core.runtime.preferences">
+      <initializer
+            class="org.gw4e.eclipse.studio.preference.PreferenceInitializer">
+      </initializer>
+   </extension>
+   
+</plugin>

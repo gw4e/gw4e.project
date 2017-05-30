@@ -1,0 +1,24 @@
+<project>
+ <modelVersion>4.0.0</modelVersion>
+ <parent>
+   <groupId>org.gw4e.tycho</groupId>
+   <artifactId>org.gw4e.tycho.configuration</artifactId>
+   <version>4.0.0-SNAPSHOT</version>
+   <relativePath>./releng/gw4e-tycho-configuration</relativePath>
+ </parent>
+ 
+ <groupId>org.gw4e.tycho</groupId>
+ <artifactId>org.gw4e.tycho.root</artifactId>
+ <version>4.0.0-SNAPSHOT</version>
+ <packaging>pom</packaging>
+
+
+ <modules>
+  <module>gwdependencies</module>
+ 	<module>bundles</module>
+ 	<module>features</module>
+ 	<module>releng</module>
+ 	<module>test</module>
+ </modules>
+</project>
+

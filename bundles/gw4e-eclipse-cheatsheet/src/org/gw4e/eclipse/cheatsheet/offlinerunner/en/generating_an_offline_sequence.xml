@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  #%L
+  gw4e
+  $Id:$
+  $HeadURL:$
+  %%
+  Copyright (C) 2017 gw4e-project
+  %%
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to deal
+  in the Software without restriction, including without limitation the rights
+  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+  
+  The above copyright notice and this permission notice shall be included in
+  all copies or substantial portions of the Software.
+  
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+  THE SOFTWARE.
+  #L%
+  -->
+
+<cheatsheet
+      title="Using the Launcher Configuration">
+   <intro>
+      <description>
+         Let's do it !
+      </description>
+   </intro>  
+   <item
+         title="Creating and Running the launcher">
+      <description>
+          In the main menu, click <b>Run</b> -&gt; <b>Run Configurations...</b><br/>
+          In the left pane, select <b>GW4E Offline Launcher</b>. <br/>
+          In the left pane, click on the <b>New launch configuration</b> icon. The configuration panel is displayed.<br/>
+          Click <b>Browse</b> to select the created project.<br/>
+          Click <b>Browse</b> to select the <b>Simple.json</b> graph model.<br/>
+          Suppose you want to get the sequence that would be generated for a random walk in the model while covering 
+          all the edges. In that case, you would certainly do the following : <br/>
+          Enter <b>random(edge_coverage(100))</b> as <b>GENERATOR(STOP_CONDITION)</b><br/>
+          Let the others options with default value<br/>
+          Click <b>Apply</b> <br/>
+          Click <b>Run</b> <br/>
+          You can examine the results of the execution in the Console View. and use the output sequence in a JUnit test like this:<br/>
+          @Test<br/>
+			public void Simple_Test() {<br/>
+  			e_StartApp ();<br/>
+ 			v_VerifyAppRunning ();<br/>
+ 			e_OpenPreferencesPage ();<br/>
+ 			v_VerifyPreferencePage ();<br/>
+			e_ClosePreferencePage ();<br/>
+ 			v_VerifyAppRunning ();<br/>
+		  }<br/>
+		  <br/>
+		  Notice that this plugin offers an Offline conversion feature that goes one step further. It helps you to combine this, with code generation.<br/>
+		  Have a look at the TroubleShooting tutorial for more information <br/>
+      </description>
+   </item>
+</cheatsheet>

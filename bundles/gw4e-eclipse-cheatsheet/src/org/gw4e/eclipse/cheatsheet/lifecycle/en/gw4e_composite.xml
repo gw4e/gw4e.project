@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  #%L
+  gw4e
+  $Id:$
+  $HeadURL:$
+  %%
+  Copyright (C) 2017 gw4e-project
+  %%
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to deal
+  in the Software without restriction, including without limitation the rights
+  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+  
+  The above copyright notice and this permission notice shall be included in
+  all copies or substantial portions of the Software.
+  
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+  THE SOFTWARE.
+  #L%
+  -->
+
+<compositeCheatsheet name="LifeCycle Tutorial">
+   <taskGroup kind="set" name="Getting started with LifeCycle" skip="false">
+      <onCompletion>
+         Congratulations you have completed all the tasks.
+      </onCompletion>
+      <taskGroup kind="set" name="Use an existing project within Eclipse" skip="false">
+         <intro>
+            <b>Introduction</b><br/>
+We will use the java-amazon project to start. This is a project provided by the GraphWalker project and is available for download.
+         </intro>
+         <onCompletion>
+            <b>Conclusion</b>
+         </onCompletion>
+         <task kind="cheatsheet" name="Convert a project" skip="false">
+            <intro>
+               In the following steps we will convert an existing project. It will be based on the GraphWalker java-amazon example. <br/> <b>https://github.com/GraphWalker/graphwalker-example/tree/master/java-amazon</b>
+            </intro>
+            <onCompletion>
+               <b>Conclusion</b>
+            </onCompletion>
+            <param name="path" value="convert_a_project_to_a_gw4e_project.xml">
+            </param>
+         </task>
+         <task kind="cheatsheet" name="Run a test" skip="false">
+            <intro>
+               <b>Introduction</b>
+After having converted an existing GW4E project, you will launch directly the test within the Eclipse IDE.
+            </intro>
+            <onCompletion>
+               <b>Conclusion</b>
+            </onCompletion>
+            <param name="path" value="run_a_java_amazon_gw4e_test.xml">
+            </param>
+         </task>
+         <task kind="cheatsheet" name="Update the test" skip="false">
+            <intro>
+               <b>Introduction</b>
+While working on your project, you will necessarily update your graph models and then regenerate your tests interfaces and implementations.
+            </intro>
+            <onCompletion>
+               <b>Conclusion</b>
+            </onCompletion>
+            <param name="path" value="update_your_test.xml">
+            </param>
+         </task>
+      </taskGroup>
+      <taskGroup kind="set" name="Refactoring the test" skip="false">
+         <intro>
+            <b>Introduction</b>
+         </intro>
+         <onCompletion>
+            <b>Conclusion</b>
+         </onCompletion>
+         <task kind="cheatsheet" name="Renaming and Moving a graph" skip="false">
+            <intro>
+               <b>Introduction</b>
+            </intro>
+            <onCompletion>
+               <b>Conclusion</b>
+            </onCompletion>
+            <param name="path" value="refactoring.xml">
+            </param>
+         </task>
+      </taskGroup>
+   </taskGroup>
+</compositeCheatsheet>

@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  #%L
+  gw4e
+  $Id:$
+  $HeadURL:$
+  %%
+  Copyright (C) 2017 gw4e-project
+  %%
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to deal
+  in the Software without restriction, including without limitation the rights
+  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+  
+  The above copyright notice and this permission notice shall be included in
+  all copies or substantial portions of the Software.
+  
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+  THE SOFTWARE.
+  #L%
+  -->
+
+<cheatsheet title="Update a graph properties">
+   <intro>
+      <description>
+         Let's do it !
+      </description>
+   </intro>
+   
+   <item title="Edit the graph" >
+      <description>
+      In the Package Explorer, double click the graph you've created earlier, so that the editor is displayed.<br/>  
+      Switch to the GW4E perspective<br/>  
+      Click the <b>Properties</b> view<br/>  
+      <br/>  <br/>  
+      You will now manipulate graph elements properties. Whenever you've updated properties, save your work, by clicking the Save menu toolbar button.<br/>
+      </description>
+   </item> 
+   <item title="Update Start Vertex properties" >
+      <description>
+       Click a <b>Start Vertex</b> (green node) <br/>  
+      Now you can see one available tab to enter properties which is labeled <b>Properties</b>  <br/> 
+       <b>Properties</b> tab :  <br/>
+       <b>Name</b>: the name for the vertex, which will be used as method name when generating a java class test for this graph<br/>
+       <b>Description</b> : A free text property to give some descriptive information to this vertex.<br/>
+      </description>
+   </item>       
+  <item title="Update Vertex properties" >
+      <description>
+      Click a <b>Vertex</b> (blue node) <br/>  
+      Now you can see three available tabs to enter properties which are labeled <br/>
+      <b>Properties</b>,<br/><b>Init</b>,<br/><b>Custom</b> <br/><br/>
+       
+       <b>Properties</b> tab :  <br/>
+       <b>Name</b>: the name for the vertex, which will be used as method name when generating a java class test for this graph.<br/>
+       <b>Shared</b> : a boolean indicating whether this vertex is a shared Vertex or not. When checked you can enter a<b>shared label</b> for this Shared Vertex.<br/>
+       GraphWalker can work with several models in one session. It means that when generating a path, GraphWalker can choose to jump out of one model into another one. 
+       This is very handy when separating different functionality into several models. For example. Let’s say you have a system that you want to test, 
+       and you would need to log in to do that. Then it might make sense to create a single model handling the log in functionality, and other models 
+       to handle whatever else you want to test. The log in model would then be reused for ever other test scenario.<br/>
+       When a path generation reaches a shared vertex in Model "A", it has to consider the<b>shared label</b>. This tells GraphWalker 
+       to search all other models (in the test context) having the same <b>shared label</b>.<br/>
+       <b>Blocked</b> :  A blocked vertex, will be exclude when a path is generated. The vertex will be removed with its in- and out-edges. When blocked a <b>no entry</b> sign is displayed.<br/>
+       <b>Description</b> : A free text property to give some descriptive information to this vertex.<br/>
+       <b>Requirement</b>  : Called up to mark vertices by requirements. <br/>
+       <br/><br/>
+       
+       <b>Init</b> tab : <br/>
+       When using data in a model, the data needs to be initialized. That is what this keyword does.<br/>
+	   This is pure javascript code such as <b>loggedIn=false; rememberMe=true;</b> When set an icon is displayed on top of the vertex to remind you that you've entered script. Moving the cursor on top of this icon will display the script as tooltip.<br/>
+       <br/><br/>
+       <b>Custom</b> tab :  <br/>
+       A key/value pairs of custom properties.
+       Right-click the table and select "Add Entry" menu item to add a key/value pair. To remove an entry, select the item to be removed and select "Remove Entry"<br/>
+      </description> 
+   </item>   
+  <item title="Update Edge properties" >
+      <description>
+      Click an <b>Edge</b> <br/>  
+      Now you can see four available tabs to enter properties which are labeled <br/>
+      <b>Properties</b>,<br/><b>Guard</b>,<br/><b>Action</b>,<br/><b>Custom</b> <br/><br/>
+       
+       <b>Properties</b> tab :  <br/>
+       <b>Name</b>: the name for the edge, which will be used as method name when generating a java class test for this graph.<br/>
+       <b>Blocked</b> :  A blocked edge. It will simply be removed from the graph. When blocked a<b>no entry</b> sign is displayed. <br/>
+       <b>Description</b> : A free text property to give some descriptive information to this edge.<br/>
+       <b>Weight</b>  : to do. <br/>
+       <b>Dependency</b>  : In the real product usage not every edge from the designed (anticipated) model has the 
+       same importance. Some edges are more used than others, and therefore they have higher business value. 
+       One way to depict the importance of a certain edge is by using the dependency value. The dependency of
+        a certain edge shows how much the target vertex depends on the source vertex. The dependency value
+       of the edges can be obtained by applying process mining techniques over production log files. For example, if you use the random(<b>dependency_edge_coverage(80)</b>) as path generator in a test, after running it is expected that 
+       GraphWalker will stop running after visiting the edges that have dependency higher or equal to 80.<br/><br/>
+       <br/> 
+       <b>Guard</b> tab : <br/>
+       Their roles are the same as an if-statement, and makes an edge eligible or not for being walked. The guard is a conditional expression.<br/>
+	   This is pure javascript code such as <b>loggedIn == true;</b>When set an icon is displayed on top of the edge to remind you've entered some guard script. Moving the cursor on top of this icon will display the script as tooltip<br/>
+       <br/>
+       <b>Action</b> tab : <br/>
+       This is javascript code that we want to execute in the model.<br/>
+	   A code such as <b>loggedIn=false; rememberMe=true;</b> .When set an icon is displayed on top of the edge to remind you've entered some action script.Moving the cursor on top of this icon will display the script as tooltip<br/>
+       <br/><br/>
+       <b>Custom</b> tab :  <br/>
+       A key/value pairs of custom properties.
+       Right-click the table and select "Add Entry" menu item to add a key/value pair. To remove an entry, select the item to be removed and select "Remove Entry"<br/>
+      </description> 
+   </item>     
+ <item title="Update Graph properties" >
+      <description>
+      Click the graph. <br/>  
+      Now you can see two available tabs to enter properties which are labeled <br/>
+      <b>Properties</b>,<br/><b>Custom</b> <br/><br/>
+       
+       <b>Properties</b> tab :  <br/>
+       <b>Name</b>: the name for the graph. Reflects the file name.<br/>
+       <b>Start Element</b> :  You select the edge by which the graph walk will start.
+       <br/><br/>
+       <b>Custom</b> tab :  <br/>
+       A key/value pairs of custom properties.
+       Right-click the table and select "Add Entry" menu item to add a key/value pair. To remove an entry, select the item to be removed and select "Remove Entry"<br/>
+      </description> 
+   </item>                  
+</cheatsheet>

@@ -1,0 +1,15 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: gw4e.swtbot.studio.tests
+Bundle-SymbolicName: gw4e-eclipse-studio-tests
+Bundle-Version: 4.0.0.qualifier
+Bundle-Activator: org.gw4e.swtbot.studio.tests.Activator
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.junit;bundle-version="4.12.0",
+ org.eclipse.ui.views;bundle-version="3.8.101",
+ org.eclipse.ui.workbench,
+ gw4e-eclipse-studio-plugin;bundle-version="4.0.0",
+ gw4e-eclipse-plugin;bundle-version="4.0.0"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-ActivationPolicy: lazy
