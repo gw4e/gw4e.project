@@ -8,8 +8,17 @@ branches:
   only:
     - master
 
- 
+os:
+    - linux
+
+matrix:
+  include:
+    - os: linux
+      dist: trusty
+      sudo: required
+      
 before_install:
+ - sudo apt-get update
  - wget https://archive.apache.org/dist/maven/maven-3/3.3.9/binaries/apache-maven-3.3.9-bin.zip
  - unzip -qq apache-maven-3.3.9-bin.zip
  - export M2_HOME=$PWD/apache-maven-3.3.9
