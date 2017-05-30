@@ -42,6 +42,9 @@
             <phase>process-sources</phase>
             <configuration>
               <licenseName>mit</licenseName>
+              <includes>
+                <include>*.java</include>
+              </includes>
               <roots>
                 <root>src</root>
               </roots>
