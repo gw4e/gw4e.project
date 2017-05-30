@@ -1,0 +1,18 @@
+# Eclipse #
+#################
+bin/  
+ 
+
+# Build and unit tests #
+########################
+logs/
+**/lib/
+**/target/
+*/dependency-reduced-pom.xml
+ 
+# Mac stuff #
+#############
+.DS_Store
+
+
+

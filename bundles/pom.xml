@@ -10,6 +10,7 @@
         <groupId>org.gw4e.tycho</groupId>
         <artifactId>org.gw4e.tycho.root</artifactId>
         <version>4.0.0-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath> 
     </parent>
 
     <modules>
