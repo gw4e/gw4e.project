@@ -1357,7 +1357,8 @@ public class JDTManager {
 				OrganizeImportsAction org = new OrganizeImportsAction(targetSite);
 				org.run(cu);
 				try {
-					cu.commitWorkingCopy(true, new NullProgressMonitor ());
+					if (cu.isWorkingCopy())
+						cu.commitWorkingCopy(true, new NullProgressMonitor ());
 				} catch (JavaModelException e) {
 					ResourceManager.logException(e);
 				}

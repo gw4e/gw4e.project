@@ -243,7 +243,7 @@ public class ProjectHelper {
 				p = createProject(name);
 			}
 			GraphWalkerContextManager.configureProject(p.getProject());
-			Job job = new WorkspaceJob("GW4E Configure Job") {
+			Job job = new WorkspaceJob("GW4E Sett Job") {
 				@Override
 				public IStatus runInWorkspace(IProgressMonitor monitor) throws CoreException {
 					try {
@@ -670,20 +670,23 @@ public class ProjectHelper {
 	// Let the class being formatted in 1 line. Used by a specific test
 	// (testFormatUnitSourceCode)
 	public static IFile createDummyClass(IJavaProject project) throws CoreException, IOException {
-		String clazz = "import org.gw4e.core.machine.ExecutionContext ; public class Dummy extends org.gw4e.core.machine.ExecutionContext {}";
+		String clazz = "import org.graphwalker.core.machine.ExecutionContext ; public class Dummy extends org.gw4e.core.machine.ExecutionContext {}";
 		IFolder folder = project.getProject().getFolder("src/test/java");
 		IPackageFragmentRoot srcFolder = project.getPackageFragmentRoot(folder);
 		IPackageFragment pkg = srcFolder.getPackageFragment("");
 		ICompilationUnit cu = pkg.createCompilationUnit("Dummy.java", clazz, false, new NullProgressMonitor());
+		cu.save(new NullProgressMonitor (), true);
+
 		return (IFile) cu.getResource();
 	}
 
 	public static IFile createDummyClassWitherror(IJavaProject project) throws CoreException, IOException {
-		String clazz = "import org.gw4e.core.machine.ExecutionContext ; public class Dummy1 extends org.gw4e.core.machine.ExecutionContext {}";
+		String clazz = "import org.graphwalker.core.machine.ExecutionContext ; public class Dummy1 extends org.gw4e.core.machine.ExecutionContext {}";
 		IFolder folder = project.getProject().getFolder("src/test/java");
 		IPackageFragmentRoot srcFolder = project.getPackageFragmentRoot(folder);
 		IPackageFragment pkg = srcFolder.getPackageFragment("");
 		ICompilationUnit cu = pkg.createCompilationUnit("Dummy.java", clazz, false, new NullProgressMonitor());
+		cu.save(new NullProgressMonitor (), true);
 		return (IFile) cu.getResource();
 	}
 }
