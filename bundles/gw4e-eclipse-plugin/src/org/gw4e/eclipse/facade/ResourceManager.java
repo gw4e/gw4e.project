@@ -665,7 +665,6 @@ public class ResourceManager implements IResourceChangeListener {
 			 IPath pth = list.get(i);
 			 folder  =   folder.getFolder(pth.lastSegment());
 			 folder.create(true, true, new NullProgressMonitor ());
-			 System.out.println("Creating " + folder.getFullPath());
 			 p = pth;
 		}
 	 

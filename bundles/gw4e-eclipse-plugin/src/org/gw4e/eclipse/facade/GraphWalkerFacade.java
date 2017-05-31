@@ -376,8 +376,8 @@ public class GraphWalkerFacade {
 							IFile type = ret.get(ret.size()-1) ;
 							JDTManager.enrichClass(type, dcp, monitor);
 							JDTManager.formatUnitSourceCode(type , monitor);
-							JDTManager.reorganizeImport(JavaCore.createCompilationUnitFrom(type));
 							JDTManager.openEditor(type, ww);
+							JDTManager.reorganizeImport(JavaCore.createCompilationUnitFrom(type));
 						} catch (Exception e) {
 							ResourceManager.logException(e);
 						}

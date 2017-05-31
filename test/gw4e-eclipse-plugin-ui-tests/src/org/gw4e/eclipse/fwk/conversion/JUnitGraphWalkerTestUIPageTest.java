@@ -111,8 +111,6 @@ public class JUnitGraphWalkerTestUIPageTest {
 				SWTBotTableItem item = table.getTableItem(i);
 				int cols = table.columnCount();
 				for (int j = 0; j < cols; j++) {
-					System.out.println(context);
-					System.out.println(item.getText(j));
 					if (item.getText(j).equals(context)) {
 						item.check();
 					};

@@ -113,9 +113,6 @@ public class CustomListWithButtons extends Group implements IPropertyUI {
 		listViewer.getTable().setLinesVisible(true);
 		listViewer.getTable().setData(PROJECT_PROPERTY_PAGE_WIDGET_ID, CUSTOM_LIST_WITH_BUTTON + id );
 		
-		System.out.println(model.getGroupname());
-		
-		
 		TableLayout tableLayout = new TableLayout();
 		listViewer.getTable().setLayout(tableLayout);
 		tableLayout.addColumnData(new ColumnWeightData(100));

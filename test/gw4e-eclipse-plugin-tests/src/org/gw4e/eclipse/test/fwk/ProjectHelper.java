@@ -55,7 +55,6 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
-import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
@@ -68,7 +67,6 @@ import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.ui.PreferenceConstants;
-import org.eclipse.swt.SWTException;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
@@ -205,7 +203,7 @@ public class ProjectHelper {
 			@Override
 			public boolean checkCondition() throws Exception {
 				IJavaProject jp = ProjectHelper.getProject(name);
-				markers[0]  = ProjectHelper.getMarker(jp, GW4EParser.MISSING_POLICIES_FOR_FILE);
+				markers[0] = ProjectHelper.getMarker(jp, GW4EParser.MISSING_POLICIES_FOR_FILE);
 				boolean b = (markers[0] != null);
 				return b;
 			}
@@ -214,7 +212,7 @@ public class ProjectHelper {
 			public String getFailureMessage() {
 				return "Marker not fixed";
 			}
-		},500, 15 * 1000);
+		}, 500, 15 * 1000);
 
 		new SetSyncPoliciesForFileMarkerResolution().run(markers[0]);
 
@@ -245,27 +243,43 @@ public class ProjectHelper {
 				p = createProject(name);
 			}
 			GraphWalkerContextManager.configureProject(p.getProject());
-			GW4ENature.setGW4ENature(p.getProject());
+			Job job = new WorkspaceJob("GW4E Configure Job") {
+				@Override
+				public IStatus runInWorkspace(IProgressMonitor monitor) throws CoreException {
+					try {
+						IJavaProject p = getProject(name);
+						GW4ENature.setGW4ENature(p.getProject());
+						return Status.CANCEL_STATUS;
+					} catch (Throwable e) {
+						return Status.CANCEL_STATUS;
+					}
+				}
+			};
+			job.setRule(ResourceManager.getWorkspaceRoot());
+			job.setUser(true);
+			job.schedule();
 			
-			Waiter.waitUntil(new ICondition () {
+			job.join();
+			
+			Waiter.waitUntil(new ICondition() {
 
 				@Override
 				public boolean checkCondition() throws Exception {
-					IJavaProject p = getProject(name); 
+					IJavaProject p = getProject(name);
 					IFolder folder = p.getProject().getFolder("src/test/resources");
-					return folder!= null && folder.exists();
+					return folder != null && folder.exists();
 				}
 
 				@Override
 				public String getFailureMessage() {
 					// TODO Auto-generated method stub
-					return "src/test/resources" + " does not exists" ;
+					return "src/test/resources" + " does not exists";
 				}
-				
+
 			});
-			
+
 			if (createModel) {
-				p = getProject(name); 
+				p = getProject(name);
 				SimpleTemplate provider = new SimpleTemplate();
 				IFolder folder = p.getProject().getFolder("src/test/resources");
 				String[] resources = provider.getResources();
@@ -277,9 +291,9 @@ public class ProjectHelper {
 						e.printStackTrace();
 					}
 				}
-				
+
 				Display.getDefault().syncExec(() -> provider.openInEditor(PlatformUI.getWorkbench()));
-				
+
 				Waiter.waitUntil(new ICondition() {
 					IFile f;
 
@@ -304,15 +318,15 @@ public class ProjectHelper {
 							p.getProject().getFullPath().append("src/test/resources/Simple.json").toString());
 					IWorkbenchWindow iww = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
 
-					AbstractPostConversion converter = GraphWalkerContextManager.getDefaultGraphConversion(f,false);
-					 
+					AbstractPostConversion converter = GraphWalkerContextManager.getDefaultGraphConversion(f, false);
+
 					ClassExtension ce = converter.getContext().getClassExtension();
 					ce.setGenerateRunFunctionalTest(true);
 					ce.setStartElementForJunitTest("start_app");
-					
+
 					ConversionRunnable runnable = converter.createConversionRunnable(iww);
 					runnable.run(new NullProgressMonitor());
-					
+
 					Waiter.waitUntil(new ICondition() {
 						IFile interf;
 
@@ -374,7 +388,7 @@ public class ProjectHelper {
 			if (createModel) {
 				p = getProject(name);
 				SharedTemplate provider = new SharedTemplate();
-				 
+
 				IFolder folder = p.getProject().getFolder("src/test/resources");
 				String[] resources = provider.getResources();
 				for (String resource : resources) {
@@ -385,8 +399,10 @@ public class ProjectHelper {
 						e.printStackTrace();
 					}
 				}
-				
-				Display.getDefault().syncExec(() -> {provider.openInEditor( PlatformUI.getWorkbench());});
+
+				Display.getDefault().syncExec(() -> {
+					provider.openInEditor(PlatformUI.getWorkbench());
+				});
 
 				Waiter.waitUntil(new ICondition() {
 					IFile fA, fB;
@@ -475,17 +491,12 @@ public class ProjectHelper {
 				Job.getJobManager().join(ResourcesPlugin.FAMILY_MANUAL_BUILD, new NullProgressMonitor());
 				Job.getJobManager().join(ResourcesPlugin.FAMILY_AUTO_BUILD, new NullProgressMonitor());
 				wasInterrupted = false;
-			} catch (OperationCanceledException ignore) {
-			} catch (InterruptedException e) {
+			} catch (Throwable e) {
 				wasInterrupted = true;
-			} catch (SWTException swtex) {
-				
 			}
 		} while (wasInterrupted);
 	}
 
-	
-	
 	public static void deleteProject(String name) throws CoreException, IOException, InterruptedException {
 		IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
 		Job job = new WorkspaceJob("GW4E Delete Project Job") {
@@ -500,13 +511,15 @@ public class ProjectHelper {
 				try {
 					java.nio.file.Files.walkFileTree(directory, new SimpleFileVisitor<java.nio.file.Path>() {
 						@Override
-						public FileVisitResult visitFile(java.nio.file.Path file, BasicFileAttributes attrs) throws IOException {
+						public FileVisitResult visitFile(java.nio.file.Path file, BasicFileAttributes attrs)
+								throws IOException {
 							Files.delete(file);
 							return FileVisitResult.CONTINUE;
 						}
 
 						@Override
-						public FileVisitResult postVisitDirectory(java.nio.file.Path dir, IOException exc) throws IOException {
+						public FileVisitResult postVisitDirectory(java.nio.file.Path dir, IOException exc)
+								throws IOException {
 							Files.delete(dir);
 							return FileVisitResult.CONTINUE;
 						}
@@ -534,7 +547,7 @@ public class ProjectHelper {
 		}
 
 		if (!project.isOpen()) {
-			project.open(new NullProgressMonitor()); 
+			project.open(new NullProgressMonitor());
 		}
 
 		IFolder binFolder = project.getFolder("bin");
@@ -651,24 +664,26 @@ public class ProjectHelper {
 		ms.toArray(ret);
 		return ret;
 	}
-	
-	// Dont remove the import statement. Used by a specific test (testReorganizeImport)
-	// Let the class being formatted in 1 line. Used by a specific test (testFormatUnitSourceCode)
-	public static IFile createDummyClass (IJavaProject project) throws CoreException, IOException {
+
+	// Dont remove the import statement. Used by a specific test
+	// (testReorganizeImport)
+	// Let the class being formatted in 1 line. Used by a specific test
+	// (testFormatUnitSourceCode)
+	public static IFile createDummyClass(IJavaProject project) throws CoreException, IOException {
 		String clazz = "import org.gw4e.core.machine.ExecutionContext ; public class Dummy extends org.gw4e.core.machine.ExecutionContext {}";
 		IFolder folder = project.getProject().getFolder("src/test/java");
 		IPackageFragmentRoot srcFolder = project.getPackageFragmentRoot(folder);
 		IPackageFragment pkg = srcFolder.getPackageFragment("");
-		ICompilationUnit cu = pkg.createCompilationUnit("Dummy.java", clazz, false, new NullProgressMonitor ());
+		ICompilationUnit cu = pkg.createCompilationUnit("Dummy.java", clazz, false, new NullProgressMonitor());
 		return (IFile) cu.getResource();
 	}
-	
-	public static IFile createDummyClassWitherror (IJavaProject project) throws CoreException, IOException {
+
+	public static IFile createDummyClassWitherror(IJavaProject project) throws CoreException, IOException {
 		String clazz = "import org.gw4e.core.machine.ExecutionContext ; public class Dummy1 extends org.gw4e.core.machine.ExecutionContext {}";
 		IFolder folder = project.getProject().getFolder("src/test/java");
 		IPackageFragmentRoot srcFolder = project.getPackageFragmentRoot(folder);
 		IPackageFragment pkg = srcFolder.getPackageFragment("");
-		ICompilationUnit cu = pkg.createCompilationUnit("Dummy.java", clazz, false, new NullProgressMonitor ());
+		ICompilationUnit cu = pkg.createCompilationUnit("Dummy.java", clazz, false, new NullProgressMonitor());
 		return (IFile) cu.getResource();
 	}
 }

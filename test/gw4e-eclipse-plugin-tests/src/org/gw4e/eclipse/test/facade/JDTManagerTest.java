@@ -185,7 +185,6 @@ public class JDTManagerTest extends  TestCase {
 		IJavaProject project = ProjectHelper.getOrCreateSimpleGW4EProject(PROJECT_NAME, true,true);
 		IFile impl = (IFile) ResourceManager
 				.getResource(project.getProject().getFullPath().append("src/test/java/SimpleImpl.java").toString());
-		System.out.println(ResourceManager.getAbsolutePath(impl));
 		
 		IOHelper.appendParseGeneratorCall (impl);
 		IType type = project.findType("SimpleImpl");

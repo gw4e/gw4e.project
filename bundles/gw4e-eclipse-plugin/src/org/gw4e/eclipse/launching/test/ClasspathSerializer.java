@@ -63,7 +63,6 @@ public class ClasspathSerializer {
 		BufferedWriter writer = null;
 		try {
 			tempFile = Files.createTempFile(null, ".gwcp");
-			System.out.println("--> "+tempFile);
 			Charset charset = Charset.forName("US-ASCII");
 			writer = Files.newBufferedWriter(tempFile, charset);
 			writer.write(s, 0, s.length());

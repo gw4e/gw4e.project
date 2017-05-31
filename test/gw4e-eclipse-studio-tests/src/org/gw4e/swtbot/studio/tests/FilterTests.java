@@ -701,7 +701,6 @@ public class FilterTests {
 		try {
 			IViewReference[] views = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getViewReferences();
 			for (IViewReference iViewReference : views) {
-				System.out.println(iViewReference.getTitle());
 				 if ( iViewReference.getTitle().equals( "Welcome" ) ) {
 					 	iViewReference.getPage().hideView(iViewReference);
 						break;

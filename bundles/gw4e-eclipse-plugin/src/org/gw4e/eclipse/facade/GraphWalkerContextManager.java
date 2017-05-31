@@ -260,8 +260,9 @@ public class GraphWalkerContextManager {
 	 * Add the GW4E Builder
 	 * 
 	 * @param project
+	 * @throws InterruptedException 
 	 */
-	public static void configureProject(IProject project) {
+	public static void configureProject(IProject project)   {
 		Job job = new WorkspaceJob("GW4E Configure Job") {
 			@Override
 			public IStatus runInWorkspace(IProgressMonitor monitor) throws CoreException {
@@ -290,7 +291,6 @@ public class GraphWalkerContextManager {
 		job.setRule(ResourceManager.getWorkspaceRoot());
 		job.setUser(true);
 		job.schedule();
-
 	}
 
 	public static void internal_configureProject(IProject project, SubMonitor subMonitor) throws Exception {

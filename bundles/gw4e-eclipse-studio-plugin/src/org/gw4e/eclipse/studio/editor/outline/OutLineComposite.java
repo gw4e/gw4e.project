@@ -488,6 +488,7 @@ public class OutLineComposite extends Composite {
 		Display.getDefault().asyncExec(new Runnable (){
 			@Override
 			public void run() {
+				if (nameText.isDisposed()) return;
 				updateEnableStatus(enabled);
 				expEdgeComp.setExpanded(false);
 				expVertexComp.setExpanded(false);
