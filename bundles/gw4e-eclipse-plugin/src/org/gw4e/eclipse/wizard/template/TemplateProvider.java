@@ -164,6 +164,7 @@ public abstract class TemplateProvider {
 		if (data == null)
 			return null;
 		data = data.replace(new StringBuffer (resource), new StringBuffer (target));
+		System.out.println("xxxxxxxxxxxxxxxx theFileToCreate " + theFileToCreate);
 		ResourceManager.save(theFileToCreate, data, monitor);
 		return theFileToCreate;
 	}
