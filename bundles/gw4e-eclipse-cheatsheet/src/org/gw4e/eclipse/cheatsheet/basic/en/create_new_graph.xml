@@ -110,7 +110,7 @@
  	 <b>26 -</b>  Select <b>Start</b>, in the Start Element list box.<br/>
  	 <b>27 -</b>  Click the <b>Save</b> button in the toolbar.<br/>
      <br/><br/>
-     We will see next how to handle GW4E properties.
+     We will see next how to handle model (vertex,edge,graph) properties.
       </description>
    </item>   
        

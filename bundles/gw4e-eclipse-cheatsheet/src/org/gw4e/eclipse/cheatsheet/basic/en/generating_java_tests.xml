@@ -36,7 +36,9 @@
    
    <item title="Understanding the artifacts generation " >
       <description>
-        There are many ways to generate artifacts from a Graph Model.<br/><br/>
+        
+        There is currently 2 kinds of graph model format : .graphml and .json, and there are many ways to generate artifacts from a Graph Model.<br/> <br/><br/>
+       
         Here the options : <br/><br/>
         json graph model -&gt; "Java Model" Based code. To learn GraphWalker apis usage.<br/>
         json graph model -&gt; "Java Test" Based code. To generate Test Interface and a default java implementation from the graph<br/>

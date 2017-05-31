@@ -37,7 +37,7 @@
      <item
          title="Preparing the run project">
         <description>
-            Before being able to run the PetClinic Sample, we need to un a web server that will handle the petclinic request.<br/>
+            Before being able to run the PetClinic Sample, we need to run a web server that will handle the petclinic request.<br/>
    			Run a shell and execute the following steps in order to get and start the PetClinic Sample Application : <br/>
    			<b>0</b> - In a command shell, create a temporary directory and make it your current directory<br/>
    			<b>1</b> - git clone https://github.com/SpringSource/spring-petclinic.git<br/>

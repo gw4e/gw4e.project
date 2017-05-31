@@ -35,7 +35,7 @@
          2 - <b>Offline</b> means generating a test sequence once, that can be later run automatically... Notice that in that case, you have to save the output of the Offline tool somewhere, use a java editor to  create a java class and add a test method whose body would be this output reformatted.<br/>
          <br/>
          In fact, behind the scene, <b>Online</b> testing takes a graph model, walks thru it. Each time GraphWalker goes thru a graph element (Vertex or Edge), it execute a methods having the same element graph name. Depending on the  GENERATOR(STOP_CONDITION) used to run the test, the path execution might be different. In that way, we can say that <b>Online</b> is dynamic. Have a look at the GENERATOR(STOP_CONDITION) documentation for more information (http://graphwalker.github.io/generators_and_stop_conditions/).<br/><br/>
-         Debugging with <b>Online</b> mode might be cumbersome  since you can not reproduce easily the same execution from one execution to another. This is where <b>Offline</b> mode becomes very handy.    
+         Debugging with <b>Online</b> mode might be cumbersome  since you cannot reproduce easily the same execution from one execution to another. This is where <b>Offline</b> mode becomes very handy.    
          <br/>
          <b>Offline</b> feature is quite different (static versus dynamic) in a sense where before executing the test, you need a little bit more work to do. This is a three steps features : <br/>
          1 - Launch the offline command line to get as a result a path (a list of vertices and edges). The generated path depends on the graph model and the GENERATOR(STOP_CONDITION) used when the tool is launched.<br/>

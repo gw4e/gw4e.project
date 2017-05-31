@@ -49,7 +49,7 @@
       	 <b>3</b> : The java-amazon project is now an Eclipse one. You can now edit this project with the Eclipse IDE.<br/>
       	
       	 Switch back to Eclipse IDE<br/>
-      	 In the menu, select <b>File -&gt; Import... -&gt;</b> -&gt; <b>General</b> <b>Existing Projects Into Workspace</b><br/>
+      	 In the menu, select <b>File -&gt; Import...</b> -&gt; <b>General</b> <b>Existing Projects Into Workspace</b><br/>
  	 	 Select &lt;YOUR_DIRECTORY&gt;/graphwalker-example-master/java-amazon<br/>
       	 Click <b>Finish</b>, the java-amazon project is imported and can now be edited within Eclipse. <br/>
       </description>

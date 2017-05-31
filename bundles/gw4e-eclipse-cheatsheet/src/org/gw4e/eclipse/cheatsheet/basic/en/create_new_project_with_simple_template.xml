@@ -87,7 +87,7 @@
   	  <b>E</b> for <b>Error</b><br/>     
 	<br/> 
 	  Select Window --&gt; Show --&gt; View --&gt; Other... <br/>
-	  Enter Problems and click OK<br/>
+	  Enter <b>Problems</b> and click OK<br/>
 	  Change the <b>random</b> to <b>randomXX</b> <br/>
 	  Save the file<br/>
 	  Errors are now displayed in the Problem view, as you can see the build.policies file is also checked for correct configuration.

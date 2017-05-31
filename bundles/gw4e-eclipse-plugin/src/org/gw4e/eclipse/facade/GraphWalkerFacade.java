@@ -627,7 +627,7 @@ public class GraphWalkerFacade {
 		// assess whether we have 100% coverage on vertex while having a start vertex and start element which is not the Start vertex
 		List<RuntimeVertex>  vertices = context.getModel().getVertices();
 		RuntimeVertex[] filteredVertex =  vertices.stream().filter(item -> item.getName().equalsIgnoreCase(Constant.START_VERTEX_NAME)).toArray(RuntimeVertex[]::new);
-		if (filteredVertex!=null && filteredVertex.length > 0 &&  !context.getNextElement().getName().equalsIgnoreCase(Constant.START_VERTEX_NAME)) {
+		if (filteredVertex!=null && filteredVertex.length > 0 && context!=null && context.getNextElement()!=null && !context.getNextElement().getName().equalsIgnoreCase(Constant.START_VERTEX_NAME)) {
 			PathGenerator<StopCondition> pg = GeneratorFactory.parse(pathgenerator);
 			StopCondition condition = pg.getStopCondition();
 			if (condition instanceof VertexCoverage && condition.getValue().trim().equals("100"))  {

@@ -56,7 +56,7 @@
       	
       	 Switch back to Eclipse IDE<br/>
       	 Close any opened project<br/>
-      	 In the menu, select <b>File -&gt; Import... -&gt;</b> -&gt; <b>General</b> <b>Existing Projects Into Workspace</b><br/>
+      	 In the menu, select <b>File -&gt; Import...</b> -&gt; <b>General</b> <b>Existing Projects Into Workspace</b><br/>
  	 	 Select &lt;YOUR_DIRECTORY&gt;/graphwalker-example-master/java-petclinic<br/>
       	 Click <b>Finish</b>, the java-amazon project is imported and can now be edited within Eclipse. <br/>
       </description>

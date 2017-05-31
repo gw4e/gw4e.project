@@ -31,7 +31,7 @@
       title="Refactoring">
    <intro>
       <description>
-         It is useful sometimes to rename or move artifacts from a folder to another one. As you might have seen in the previous tutorials some annotations or file contain data related to resource locations.
+         It is useful sometimes to rename or move artifacts from a folder to another one. As you might have seen in the previous tutorials some annotations or files contain data related to resources locations.
        The test interface name derives directly from the graph name. In fact only the extension is changed from ".json" to ".java".<br/>
  		The test implementation name follows the same rule except that a suffix is added to the name. The default suffix is <b>Impl</b>.<br/> 
  		For example, a graph model named <b>MyGraph.json</b> will result into an interface named <b>MyGraph.java</b> and a test implementation named <b>MyGraphImpl.java</b><br/>
@@ -47,11 +47,11 @@
  		Locate the <b>Test Impl. Suffix</b> text field in the right pane<br/>
  		Replace <b>Impl</b> by <b>Test</b> value and click <b>OK</b><br/><br/>
 
-        Right click the ShoppingCart.json file<br/>
+        Right click the <b>ShoppingCart.json</b> file<br/>
         Select <b>Refactor -&gt; Rename...</b> , a dialog opens <br/>
         Enter <b>MyShoppingCart.json</b> and click <b>OK</b><br/>
         In the <b>Package Explorer</b> , you can see that the test has been renamed to <b>MyShoppingCartTest</b><br/>
-        Double-click this file , the <b>@Generated</b> annotation has also been updated according to the new name <b>MyShoppingCart.json</b> <br/>
+        Double-click <b>MyShoppingCartTest.java</b>, the <b>@Generated</b> annotation has also been updated according to the new name <b>MyShoppingCart.json</b> <br/>
         In the <b>Package Explorer</b>, you can see that the test interface has been renamed to <b>MyShoppingCart</b><br/><br/>
         Double click the build.policies file, the file is opened<br/>
         The <b>ShoppingCart.json</b>=... entry is now <b>MyShoppingCart.json</b>=...<br/>

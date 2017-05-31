@@ -91,7 +91,7 @@
        <b>Name</b>: the name for the edge, which will be used as method name when generating a java class test for this graph.<br/>
        <b>Blocked</b> :  A blocked edge. It will simply be removed from the graph. When blocked a<b>no entry</b> sign is displayed. <br/>
        <b>Description</b> : A free text property to give some descriptive information to this edge.<br/>
-       <b>Weight</b>  : to do. <br/>
+       <b>Weight</b>  : <br/>
        <b>Dependency</b>  : In the real product usage not every edge from the designed (anticipated) model has the 
        same importance. Some edges are more used than others, and therefore they have higher business value. 
        One way to depict the importance of a certain edge is by using the dependency value. The dependency of
@@ -120,7 +120,7 @@
        
        <b>Properties</b> tab :  <br/>
        <b>Name</b>: the name for the graph. Reflects the file name.<br/>
-       <b>Start Element</b> :  You select the edge by which the graph walk will start.
+       <b>Start Element</b> :  You select the vertex or edge by which the graph walk will start.
        <br/><br/>
        <b>Custom</b> tab :  <br/>
        A key/value pairs of custom properties.

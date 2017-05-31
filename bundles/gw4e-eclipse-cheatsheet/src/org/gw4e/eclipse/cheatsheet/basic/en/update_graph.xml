@@ -49,19 +49,20 @@
        <b>- 2-</b> Click the <b>Vertex</b> element in the palette, move the cursor on top of the graph and click, a new <b>Vertex</b> with a default name is displayed<br/>
        <b>- 3-</b> Modify the name as you want<br/>
        <b>- 4-</b> Click <b>Edge</b> in the palette, then click the <b>Start Vertex</b>, drag your cursor until you are over any vertex, and click it<br/>
-       As you can see a new link between the <b>Start</b> node and the <b>Vertex</b> has been created.<br/>
-       <b>- 5-</b> Click the newly created <b>edge</b><br/>
-       <b>- 6-</b> Click the <b>red</b> cross icon in the menu toolbar, the <b>edge</b> is deleted<br/>
-       <b>- 7-</b> Click the undo <b>yellow</b> icon, the <b>edge</b> is back<br/>
-       <b>- 8-</b> Click the newly created <b>Vertex</b><br/>
-       <b>- 9-</b> Click the <b>red cross</b> icon in the menu toolbar, the <b>Vertex</b> and the <b>edge</b> are deleted<br/>
-       <b>-10-</b>  Click the undo <b>yellow</b> icon, the <b>vertex</b> and the <b>edge</b> are back<br/>
-       <b>-11-</b> Click the created <b>Vertex</b><br/>
-       <b>-12-</b>  Click the <b>Copy</b> icon and then click the graph, the <b>Paste</b> icon is enabled<br/>
-       <b>-13-</b> Click the <b>Paste</b> icon, the <b>Vertex</b> is duplicated<br/>
-       <b>-14-</b>  Right-click the graph, a popup menu appears with the <b>Undo</b>, <b>Redo</b> and <b>Delete</b> menu items we already used just above<br/>
-       <b>-15-</b> Right-click the graph, and click <b>Show In</b>  <b>Package Explorer</b>, the graph file is revealed in the <b>Package Explorer</b><br/>
-       <b>-16-</b> Right-click the graph, and click <b>Layout</b>. You can see many <b>Layout</b> menu options. Depending on the graph the result might be what you're looking for .. or not . This is an experimental feature.<br/>
+       As you can see a no link is created, because the model accepts only one edge and we already have one.  
+	   <b>- 5-</b> Delete the <b>e_init</b> edge and repeat the operation.<br/>
+       <b>- 6-</b> Click the newly created <b>edge</b><br/>
+       <b>- 7-</b> Click the <b>red</b> cross icon in the menu toolbar, the <b>edge</b> is deleted<br/>
+       <b>- 8-</b> Click the undo <b>yellow</b> icon, the <b>edge</b> is back<br/>
+       <b>- 9-</b> Click the newly created <b>Vertex</b><br/>
+       <b>-10-</b> Click the <b>red cross</b> icon in the menu toolbar, the <b>Vertex</b> and the <b>edge</b> are deleted<br/>
+       <b>-11-</b> Click the undo <b>yellow</b> icon, the <b>vertex</b> and the <b>edge</b> are back<br/>
+       <b>-12-</b> Click the created <b>Vertex</b><br/>
+       <b>-13-</b> Click the <b>Copy</b> icon and then click the graph, the <b>Paste</b> icon is enabled<br/>
+       <b>-14-</b> Click the <b>Paste</b> icon, the <b>Vertex</b> is duplicated<br/>
+       <b>-15-</b> Right-click the graph, a popup menu appears with the <b>Undo</b>, <b>Redo</b> and <b>Delete</b> menu items we already used just above<br/>
+       <b>-16-</b> Right-click the graph, and click <b>Show In</b>  <b>Package Explorer</b>, the graph file is revealed in the <b>Package Explorer</b><br/>
+       <b>-17-</b> Right-click the graph, and click <b>Layout</b>. You can see many <b>Layout</b> menu options. Depending on the graph the result might be what you're looking for .. or not . This is an experimental feature.<br/>
       </description>
    </item>       
   <item title="Filtering graph elements" >
