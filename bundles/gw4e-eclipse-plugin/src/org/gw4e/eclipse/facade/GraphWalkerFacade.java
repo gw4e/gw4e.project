@@ -82,6 +82,8 @@ import org.graphwalker.io.factory.ContextFactoryException;
 import org.graphwalker.io.factory.ContextFactoryScanner;
 import org.graphwalker.io.factory.json.JsonContextFactory;
 import org.graphwalker.io.factory.yed.YEdContextFactory;
+import org.graphwalker.io.factory.java.JavaContextFactory;
+import org.graphwalker.io.factory.dot.DotContextFactory;
 import org.graphwalker.java.source.CodeGenerator;
 import org.graphwalker.java.source.SourceFile;
 import org.graphwalker.java.source.cache.CacheEntry;
@@ -459,28 +461,23 @@ public class GraphWalkerFacade {
 	}
 
 	/**
-	 * Return the Context built after having read and parsed the passed graphml
-	 * file
+	 * Return the Context built after having read and parsed the passed graph model
+	 * GraphWalker lookup factory fails in OSGI env. 
 	 * 
 	 * @param modelFileName
 	 * @return
 	 * @throws IOException
 	 */
 	static Map<String, ContextFactory> cache = new HashMap<String, ContextFactory>();
-
+    static {
+    	cache.put("json", new JsonContextFactory());
+    	cache.put("graphml", new YEdContextFactory());
+    	cache.put("dot", new  DotContextFactory());
+    	cache.put("java", new  JavaContextFactory());
+    }
 	private static ContextFactory getContextFactory(Path path) {
 		String extension = FilenameUtils.getExtension(path.toString());
 		ContextFactory factory = cache.get(extension);
-		if (factory == null) {
-			if ("json".equalsIgnoreCase(extension)) {
-				factory = new JsonContextFactory();
-			} else {
-				if ("graphml".equalsIgnoreCase(extension)) {
-					factory = new YEdContextFactory ();
-				}
-			}
-			cache.put(extension, factory);
-		}
 		return factory;
 	}
 
