@@ -35,8 +35,10 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -79,11 +81,10 @@ import org.graphwalker.dsl.antlr.DslException;
 import org.graphwalker.dsl.antlr.generator.GeneratorFactory;
 import org.graphwalker.io.factory.ContextFactory;
 import org.graphwalker.io.factory.ContextFactoryException;
-import org.graphwalker.io.factory.ContextFactoryScanner;
+import org.graphwalker.io.factory.dot.DotContextFactory;
+import org.graphwalker.io.factory.java.JavaContextFactory;
 import org.graphwalker.io.factory.json.JsonContextFactory;
 import org.graphwalker.io.factory.yed.YEdContextFactory;
-import org.graphwalker.io.factory.java.JavaContextFactory;
-import org.graphwalker.io.factory.dot.DotContextFactory;
 import org.graphwalker.java.source.CodeGenerator;
 import org.graphwalker.java.source.SourceFile;
 import org.graphwalker.java.source.cache.CacheEntry;
@@ -226,14 +227,7 @@ public class GraphWalkerFacade {
 	}
 
 	public static String getStartElement(File file) throws IOException {
-		ContextFactory factory = new JsonContextFactory();
-		try {
-			factory = ContextFactoryScanner.get(file.toPath());
-		} catch (Exception ignore) {
-			// gw4e extension file is not recognized by GW today... This format
-			// is a json one
-		}
-
+		ContextFactory factory = getContextFactory (file.toPath());
 		List<Context> readContexts = factory.create(file.toPath());
 
 		// RuntimeModel model = readContexts.get(0).getModel();
@@ -246,7 +240,7 @@ public class GraphWalkerFacade {
 	private static void addContexts(List<Context> executionContexts, Path modelFileName, String generator,
 			String startElement) throws IOException {
  
-		ContextFactory factory = ContextFactoryScanner.get(modelFileName);
+		ContextFactory factory = getContextFactory (modelFileName);
 		List<Context> contexts = factory.create(modelFileName);
 		contexts.get(0).setPathGenerator(GeneratorFactory.parse(generator));
 		Element element = contexts.get(0).getModel().findElements(startElement).get(0);
@@ -462,7 +456,7 @@ public class GraphWalkerFacade {
 
 	/**
 	 * Return the Context built after having read and parsed the passed graph model
-	 * GraphWalker lookup factory fails in OSGI env. 
+	 * GraphWalker lookup factory fails in OSGI env.  
 	 * 
 	 * @param modelFileName
 	 * @return
@@ -475,9 +469,14 @@ public class GraphWalkerFacade {
     	cache.put("dot", new  DotContextFactory());
     	cache.put("java", new  JavaContextFactory());
     }
-	private static ContextFactory getContextFactory(Path path) {
+    
+	public static ContextFactory getContextFactory(Path path) {
 		String extension = FilenameUtils.getExtension(path.toString());
 		ContextFactory factory = cache.get(extension);
+		if (factory ==null) {
+			throw new NullPointerException(" No factory found for : " + path);
+		}
+		System.out.println("path " + path.toString() + " factory " + factory);
 		return factory;
 	}
 

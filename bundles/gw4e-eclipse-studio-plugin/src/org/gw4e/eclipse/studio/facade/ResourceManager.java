@@ -61,9 +61,9 @@ import org.graphwalker.core.model.Model.RuntimeModel;
 import org.graphwalker.core.model.Requirement;
 import org.graphwalker.core.model.Vertex.RuntimeVertex;
 import org.graphwalker.io.factory.ContextFactory;
-import org.graphwalker.io.factory.ContextFactoryScanner;
 import org.graphwalker.io.factory.json.JsonContextFactory;
 import org.gw4e.eclipse.constant.Constant;
+import org.gw4e.eclipse.facade.GraphWalkerFacade;
 import org.gw4e.eclipse.studio.Activator;
 import org.gw4e.eclipse.studio.commands.LinkCreateCommand;
 import org.gw4e.eclipse.studio.commands.VertexCreateCommand;
@@ -245,13 +245,7 @@ public class ResourceManager {
 			String newline = System.getProperty("line.separator");
 			File file = org.gw4e.eclipse.facade.ResourceManager.toFile(input.getFullPath());
 			
-			ContextFactory factory =  new JsonContextFactory ();
-			try {
-				factory = ContextFactoryScanner.get(file.toPath());
-			} catch (Exception ignore) {
-				// gw4e extension file is not recognized by GW today... This format is a json one
-			}
-			
+			ContextFactory factory = GraphWalkerFacade.getContextFactory (file.toPath());
 			List<Context> readContexts =  factory.create(file.toPath());
 			 
 			RuntimeModel model = readContexts.get(0).getModel();

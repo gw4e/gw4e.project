@@ -72,10 +72,10 @@ import org.gw4e.eclipse.message.MessageUtil;
 import org.gw4e.eclipse.preferences.PreferenceManager;
 import org.gw4e.eclipse.product.GW4ENature;
 import org.gw4e.eclipse.wizard.convert.AbstractPostConversion;
+import org.gw4e.eclipse.wizard.convert.AbstractPostConversion.ConversionRunnable;
 import org.gw4e.eclipse.wizard.convert.JavaTestBasedPostConversionImpl;
 import org.gw4e.eclipse.wizard.convert.OffLinePostConversionImpl;
 import org.gw4e.eclipse.wizard.convert.ResourceContext;
-import org.gw4e.eclipse.wizard.convert.AbstractPostConversion.ConversionRunnable;
 
 public class GraphWalkerContextManager {
 

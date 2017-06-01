@@ -9,7 +9,8 @@ logs/
 **/lib/
 **/target/
 */dependency-reduced-pom.xml
- 
+**/screenshots/
+
 # Mac stuff #
 #############
 .DS_Store

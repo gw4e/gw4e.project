@@ -1,5 +1,8 @@
 package org.gw4e.eclipse;
 
+import java.io.IOException;
+import java.net.URL;
+
 /*-
  * #%L
  * gw4e
@@ -31,6 +34,8 @@ package org.gw4e.eclipse;
 import org.eclipse.core.resources.IResourceChangeListener;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.FileLocator;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
@@ -38,54 +43,67 @@ import org.gw4e.eclipse.builder.BuildPoliciesCache;
 import org.gw4e.eclipse.builder.BuildPolicyManager;
 import org.gw4e.eclipse.facade.ResourceManager;
 import org.gw4e.eclipse.facade.SettingsManager;
+import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
+import org.slf4j.LoggerFactory;
+
+import ch.qos.logback.classic.LoggerContext;
+import ch.qos.logback.classic.joran.JoranConfigurator;
+import ch.qos.logback.core.joran.spi.JoranException;
 
 /**
  * The activator class controls the plug-in life cycle
  */
 public class Activator extends AbstractUIPlugin {
- 
+
 	// The plug-in ID
 	public static final String PLUGIN_ID = "gw4e-eclipse-plugin"; //$NON-NLS-1$
 
 	// The shared instance
 	private static Activator plugin;
-	
-	IResourceChangeListener listener ;
+
+	IResourceChangeListener listener;
+
 	/**
 	 * The constructor
 	 */
 	public Activator() {
-		
+
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#start(org.osgi.framework.BundleContext)
+	 * 
+	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#start(org.osgi.framework.
+	 * BundleContext)
 	 */
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 		plugin = this;
 		// Is this ugly ? ... certainly ... anyway it works ...
-		makeSurePreferenceInitalizerIsCalled ();
-		startSaveParticipant ();
-		// Make sure change done the the project preference are reflected in the BuildPolicy stuff
+		makeSurePreferenceInitalizerIsCalled();
+		startSaveParticipant();
+		// Make sure change done the the project preference are reflected in the
+		// BuildPolicy stuff
 		SettingsManager.addListener(new BuildPolicyManager());
 		SettingsManager.addListener(new BuildPoliciesCache());
+		
 	}
-	
-	private void makeSurePreferenceInitalizerIsCalled () {
+
+	private void makeSurePreferenceInitalizerIsCalled() {
 		IPreferenceStore store = Activator.getDefault().getPreferenceStore();
-		store.getString("");		
+		store.getString("");
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#stop(org.osgi.framework.BundleContext)
+	 * 
+	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#stop(org.osgi.framework.
+	 * BundleContext)
 	 */
 	public void stop(BundleContext context) throws Exception {
 		plugin = null;
-		removeSaveParticipant ();
+		removeSaveParticipant();
 		super.stop(context);
 	}
 
@@ -99,35 +117,36 @@ public class Activator extends AbstractUIPlugin {
 	}
 
 	/**
-	 * Returns an image descriptor for the image file at the given
-	 * plug-in relative path
+	 * Returns an image descriptor for the image file at the given plug-in
+	 * relative path
 	 *
-	 * @param path the path
+	 * @param path
+	 *            the path
 	 * @return the image descriptor
 	 */
 	public static ImageDescriptor getImageDescriptor(String path) {
 		return imageDescriptorFromPlugin(PLUGIN_ID, path);
 	}
-	
-	
-	
+
 	public static ImageDescriptor getDefaultImageDescriptor() {
 		return imageDescriptorFromPlugin(PLUGIN_ID, "icons/wizban/gw_64.png");
-	}	
-	/**
-	 * 
-	 */
-	private void removeSaveParticipant () {
-		IWorkspace workspace = ResourcesPlugin.getWorkspace();
-		 workspace.removeResourceChangeListener(listener);
 	}
-	
+
 	/**
 	 * 
 	 */
-	private void startSaveParticipant () {
+	private void removeSaveParticipant() {
+		IWorkspace workspace = ResourcesPlugin.getWorkspace();
+		workspace.removeResourceChangeListener(listener);
+	}
+
+	/**
+	 * 
+	 */
+	private void startSaveParticipant() {
 		IWorkspace workspace = ResourcesPlugin.getWorkspace();
 		listener = new ResourceManager();
 		workspace.addResourceChangeListener(listener);
 	}
+
 }

@@ -37,10 +37,7 @@
     </layout>
   </appender>
 
-  <logger name="org.gw4e" level="INFO"/>
-
-
-  <root level="info">
+  <root level="INFO">
     <appender-ref ref="STDOUT"/>
   </root>
 </configuration>

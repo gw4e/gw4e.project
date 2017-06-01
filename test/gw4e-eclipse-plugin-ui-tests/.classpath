@@ -4,6 +4,5 @@
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
 	<classpathentry excluding="test/resource/|test/resources/" kind="src" path="src"/>
 	<classpathentry kind="src" path="src/test/resources"/>
-	<classpathentry kind="var" path="M2_REPO"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
