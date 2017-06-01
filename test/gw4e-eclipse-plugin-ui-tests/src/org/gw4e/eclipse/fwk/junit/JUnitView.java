@@ -31,6 +31,7 @@ package org.gw4e.eclipse.fwk.junit;
 import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.allOf;
 import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.widgetOfType;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.swt.widgets.Display;
@@ -80,6 +81,7 @@ public class JUnitView {
 	public class RunCompletedCondition extends DefaultCondition {
 		int runCount;
 		SWTBotText runText;
+		List<String> labels = new ArrayList<String> ();
 		public RunCompletedCondition(int runCount) {
 			super();
 			this.runCount = runCount;
@@ -89,6 +91,7 @@ public class JUnitView {
 		public boolean test() throws Exception {
 			SWTBotCTabItem item = bot.cTabItem("JUnit");
 			runText = null;
+			labels.clear();
 			if (item!=null) {
 				runText = bot.textWithLabel("Runs: ");
 				if ( (runCount+"/"+ runCount).equalsIgnoreCase(runText.getText()) ) {
@@ -99,6 +102,7 @@ public class JUnitView {
 						Display.getDefault().syncExec(new Runnable () {
 							@Override
 							public void run() {
+								labels.add(label.getText());
 								if (label.getText().indexOf("Finished after") != -1) {
 									temp [0] =  true;
 								}
@@ -116,7 +120,7 @@ public class JUnitView {
 			if (runText == null) {
 				return "Unable to get the Runs text field";
 			} else {
-				return "test not completed. Only " +  runText.getText() + " ran.";
+				return "test not completed. Only " +  runText.getText() + " ran. " + labels;
 			}
 		}
 	}
