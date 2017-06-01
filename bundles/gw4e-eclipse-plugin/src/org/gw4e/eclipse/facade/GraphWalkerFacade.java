@@ -81,6 +81,7 @@ import org.graphwalker.io.factory.ContextFactory;
 import org.graphwalker.io.factory.ContextFactoryException;
 import org.graphwalker.io.factory.ContextFactoryScanner;
 import org.graphwalker.io.factory.json.JsonContextFactory;
+import org.graphwalker.io.factory.yed.YEdContextFactory;
 import org.graphwalker.java.source.CodeGenerator;
 import org.graphwalker.java.source.SourceFile;
 import org.graphwalker.java.source.cache.CacheEntry;
@@ -471,12 +472,12 @@ public class GraphWalkerFacade {
 		String extension = FilenameUtils.getExtension(path.toString());
 		ContextFactory factory = cache.get(extension);
 		if (factory == null) {
-			factory = new JsonContextFactory();
-			try {
-				factory = ContextFactoryScanner.get(path);
-			} catch (Exception ignore) {
-				// gw4e extension file is not recognized by GW today... This
-				// format is a json one
+			if ("json".equalsIgnoreCase(extension)) {
+				factory = new JsonContextFactory();
+			} else {
+				if ("graphml".equalsIgnoreCase(extension)) {
+					factory = new YEdContextFactory ();
+				}
 			}
 			cache.put(extension, factory);
 		}
