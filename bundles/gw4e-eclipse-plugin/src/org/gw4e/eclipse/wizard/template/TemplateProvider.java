@@ -161,6 +161,9 @@ public abstract class TemplateProvider {
 	public IFile create(IFolder folder, String resource, String targetFile,IProgressMonitor monitor) throws CoreException, IOException {
 		String target = targetFile;
 		if ( (target == null) || (target.trim().length() == 0 )) target = resource;
+		if ( (target == null) || (target.trim().length() == 0 )) {
+			return null;
+		}
 		IFile theFileToCreate = hanldeExistingFile(folder.getFile(target));
 		String data = getData(resource); 
 		if (data == null)
