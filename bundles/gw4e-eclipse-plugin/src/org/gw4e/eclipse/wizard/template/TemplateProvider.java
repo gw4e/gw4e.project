@@ -150,7 +150,9 @@ public abstract class TemplateProvider {
 		int i=0;
 		while (temp.exists()) {
 			String name  = theFileToCreate.getName().substring(0,theFileToCreate.getName().indexOf(".")); 
+			
 			temp = ((IFolder)theFileToCreate.getParent()).getFile(name + i + "." + theFileToCreate.getFileExtension());
+			System.out.println(" hanldeExistingFile >"+ name + "< temp " + temp.getFullPath()); 
 			i++;
 		}
 		return temp;
@@ -158,13 +160,14 @@ public abstract class TemplateProvider {
 	
 	public IFile create(IFolder folder, String resource, String targetFile,IProgressMonitor monitor) throws CoreException, IOException {
 		String target = targetFile;
-		if ( (target == null) || (target.trim().length() ==0 )) target = resource;
+		if ( (target == null) || (target.trim().length() == 0 )) target = resource;
 		IFile theFileToCreate = hanldeExistingFile(folder.getFile(target));
 		String data = getData(resource); 
 		if (data == null)
 			return null;
 		data = data.replace(new StringBuffer (resource), new StringBuffer (target));
-		System.out.println("xxxxxxxxxxxxxxxx theFileToCreate " + theFileToCreate);
+
+		System.out.println("folder " + folder + " target " + target + " resource " + resource + " targetFile " + targetFile ); 
 		ResourceManager.save(theFileToCreate, data, monitor);
 		return theFileToCreate;
 	}

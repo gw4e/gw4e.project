@@ -474,7 +474,6 @@ public class GraphWalkerFacade {
 		if (factory ==null) {
 			throw new NullPointerException(" No factory found for : " + path);
 		}
-		System.out.println("path " + path.toString() + " factory " + factory);
 		return factory;
 	}
 

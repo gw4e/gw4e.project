@@ -214,7 +214,6 @@ public class ResourceManager implements IResourceChangeListener {
 			} else {
 				file.create(new ByteArrayInputStream(source), true, monitor);
 			}
-			
 		} catch (CoreException e) {
 			System.err.println("XXXXXXX " + file.getFullPath());
 			throw e;

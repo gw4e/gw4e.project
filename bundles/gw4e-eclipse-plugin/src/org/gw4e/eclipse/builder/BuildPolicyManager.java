@@ -313,7 +313,13 @@ public class BuildPolicyManager implements ProjectPropertyChangeListener {
 		IFile graphFile = (IFile) ResourceManager.getResource(fullpath.toString());
 		log(project.getName(), "BuildPolicyManager.update " + project.getName() + " " + buildPolicyFile + " "
 				+ graphFilePath + " " + updatedGenerators);
-		final Properties p = loadBuildPolicies(graphFile);
+		Properties p=null;
+		try {
+			p = loadBuildPolicies(graphFile);
+		} catch (Exception ignore) {
+			// might happen in tests when shutting down
+			return;
+		}
 
 		String key = graphFile.getName();
 		String generators = (String) p.get(key);

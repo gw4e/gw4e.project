@@ -229,11 +229,19 @@ public class GW4ELaunchConfigurationTab extends AbstractLaunchConfigurationTab i
 	
 	
 	private void refreshStartElement () {
+		Path path = null;
+		String element = null;
 		try {
-			File f = ResourceManager.toFile(new Path(fModelText.getText()));
-			String element = GraphWalkerFacade.getNextElement(f.getAbsolutePath());
-			if (element == null) {
+			path = new Path(fModelText.getText());
+			IResource resource = ResourceManager.getResource(path.toString());
+			if (resource==null) {
 				element  = "";
+			} else {
+				File f = ResourceManager.toFile(path);
+				element = GraphWalkerFacade.getNextElement(f.getAbsolutePath());
+				if (element == null) {
+					element  = "";
+				}
 			}
 			fStartNodeText.setText(element);
 		} catch (Exception e) {
