@@ -29,13 +29,9 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.ui.console;bundle-version="3.6.201",
  org.eclipse.core.filesystem;bundle-version="1.6.1",
  org.eclipse.ui.views;bundle-version="3.8.101",
- gw4e-eclipse-core;bundle-version="4.0.0";visibility:=reexport,
- ch.qos.logback.core,
- ch.qos.logback.classic,
- org.slf4j.api
+ gw4e-eclipse-core;bundle-version="4.0.0";visibility:=reexport
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Import-Package: ch.qos.logback.classic;version="1.0.7",
- com.google.common.io,
+Import-Package: com.google.common.io,
  com.google.gson,
  org.apache.commons.io,
  org.graphwalker.core,

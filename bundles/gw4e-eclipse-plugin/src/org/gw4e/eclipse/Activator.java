@@ -1,8 +1,5 @@
 package org.gw4e.eclipse;
 
-import java.io.IOException;
-import java.net.URL;
-
 /*-
  * #%L
  * gw4e
@@ -34,8 +31,6 @@ import java.net.URL;
 import org.eclipse.core.resources.IResourceChangeListener;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.core.runtime.FileLocator;
-import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
@@ -43,13 +38,7 @@ import org.gw4e.eclipse.builder.BuildPoliciesCache;
 import org.gw4e.eclipse.builder.BuildPolicyManager;
 import org.gw4e.eclipse.facade.ResourceManager;
 import org.gw4e.eclipse.facade.SettingsManager;
-import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
-import org.slf4j.LoggerFactory;
-
-import ch.qos.logback.classic.LoggerContext;
-import ch.qos.logback.classic.joran.JoranConfigurator;
-import ch.qos.logback.core.joran.spi.JoranException;
 
 /**
  * The activator class controls the plug-in life cycle
