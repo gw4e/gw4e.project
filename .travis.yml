@@ -10,6 +10,12 @@ branches:
 
 os:
     - linux
+
+matrix:
+  include:
+    - os: linux
+      dist: trusty
+
       
 before_install:
  - wget https://archive.apache.org/dist/maven/maven-3/3.3.9/binaries/apache-maven-3.3.9-bin.zip
@@ -23,11 +29,9 @@ before_script:
   - sleep 10 # give xvfb some time to start
 
 
-script: 
+script:
     - "mvn clean install -Pgw4e-eclipse-plugin-tests"
     - "mvn clean install -Pgw4e-eclipse-plugin-ui-tests"
     - "mvn clean install -Pgw4e-eclipse-studio-tests"
     - "mvn clean install -Pgw4e-eclipse-studio-ui-tests"
-      
- 
 
