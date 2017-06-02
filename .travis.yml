@@ -28,10 +28,10 @@ before_script:
   - "sh -e /etc/init.d/xvfb start"
   - sleep 10 # give xvfb some time to start
 
-
-script:
-    - "mvn clean install -Pgw4e-eclipse-plugin-tests"
-    - "mvn clean install -Pgw4e-eclipse-plugin-ui-tests"
-    - "mvn clean install -Pgw4e-eclipse-studio-tests"
-    - "mvn clean install -Pgw4e-eclipse-studio-ui-tests"
-
+jobs:
+  include:
+    - stage: test
+      script: ./runmvnprofile.sh gw4e-eclipse-plugin-tests
+      script: ./runmvnprofile.sh gw4e-eclipse-plugin-ui-tests
+      script: ./runmvnprofile.sh gw4e-eclipse-studio-tests
+      script: ./runmvnprofile.sh gw4e-eclipse-studio-ui-tests
