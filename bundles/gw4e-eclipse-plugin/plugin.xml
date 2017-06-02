@@ -580,8 +580,7 @@
     default="true"
     filenames="*.policies"
     id="org.eclipse.ui.DefaultTextEditor"
-    name="GW4E Build Policies Editor"
-    icon="icons/gw1.png"/>
+    name="GW4E Build Policies Editor"/>
 	</extension>
 
 	<extension point="org.eclipse.ltk.core.refactoring.moveParticipants">

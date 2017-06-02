@@ -176,6 +176,7 @@ public class SettingsManager {
 	 * @param value
 	 */
 	public static void putValues(IProject project, String key, String[] values, boolean projectScoped) {
+		if (!project.isAccessible() || !project.exists() ) return;
 		IEclipsePreferences projectPreferences = null;
 		if (projectScoped) {
 			projectPreferences = getProjectPreference(project);
