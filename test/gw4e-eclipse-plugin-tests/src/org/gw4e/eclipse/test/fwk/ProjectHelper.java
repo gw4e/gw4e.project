@@ -70,6 +70,8 @@ import org.eclipse.jdt.ui.PreferenceConstants;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.actions.ActionFactory;
+import org.eclipse.ui.actions.ActionFactory.IWorkbenchAction;
 import org.gw4e.eclipse.builder.GW4EBuilder;
 import org.gw4e.eclipse.builder.GW4EParser;
 import org.gw4e.eclipse.builder.marker.MissingBuildPoliciesFileMarkerResolution;
@@ -232,9 +234,10 @@ public class ProjectHelper {
 		return jp;
 	}
 
+ 
 	public static IJavaProject getOrCreateSimpleGW4EProject(String name, boolean createModel, boolean generate)
 			throws CoreException, InvocationTargetException, InterruptedException, TimeoutException {
-
+long start = System.currentTimeMillis();
 		boolean autoBuilding = ResourceManager.isAutoBuilding();
 		ResourceManager.setAutoBuilding(false);
 		try {
@@ -243,7 +246,7 @@ public class ProjectHelper {
 				p = createProject(name);
 			}
 			GraphWalkerContextManager.configureProject(p.getProject());
-			Job job = new WorkspaceJob("GW4E Sett Job") {
+			Job job = new WorkspaceJob("GW4E Set Nature Job") {
 				@Override
 				public IStatus runInWorkspace(IProgressMonitor monitor) throws CoreException {
 					try {
@@ -272,12 +275,13 @@ public class ProjectHelper {
 
 				@Override
 				public String getFailureMessage() {
-					// TODO Auto-generated method stub
 					return "src/test/resources" + " does not exists";
 				}
 
 			});
 
+		 
+			
 			if (createModel) {
 				p = getProject(name);
 				SimpleTemplate provider = new SimpleTemplate();
@@ -369,8 +373,9 @@ public class ProjectHelper {
 			return p;
 		} finally {
 			ResourceManager.setAutoBuilding(autoBuilding);
+			long end = System.currentTimeMillis();
+			System.out.println("TIME = " + ((end - start) / 1000));
 		}
-
 	}
 
 	public static IJavaProject getOrCreateSharedGW4Project(String name, boolean createModel)
