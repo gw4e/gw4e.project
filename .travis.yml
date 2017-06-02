@@ -29,9 +29,9 @@ before_script:
   - sleep 10 # give xvfb some time to start
 
 jobs:
-  include:
-    - stage: test
-      script: ./runmvnprofile.sh gw4e-eclipse-plugin-tests
-      script: ./runmvnprofile.sh gw4e-eclipse-plugin-ui-tests
-      script: ./runmvnprofile.sh gw4e-eclipse-studio-tests
-      script: ./runmvnprofile.sh gw4e-eclipse-studio-ui-tests
+include:
+  - stage: test
+    script: ./runmvnprofile.sh gw4e-eclipse-plugin-tests
+  - script: ./runmvnprofile.sh gw4e-eclipse-plugin-ui-tests
+  - script: ./runmvnprofile.sh gw4e-eclipse-studio-tests
+  - script: ./runmvnprofile.sh gw4e-eclipse-studio-ui-tests
