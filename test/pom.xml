@@ -1,24 +1,58 @@
 
 
 <project>
-        <modelVersion>4.0.0</modelVersion>
-        <groupId>org.gw4e.tycho</groupId>
-        <artifactId>org.gw4e.tycho.tests</artifactId>
-        <version>4.0.0-SNAPSHOT</version>
-        <packaging>pom</packaging>
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.gw4e.tycho</groupId>
+	<artifactId>org.gw4e.tycho.tests</artifactId>
+	<version>4.0.0-SNAPSHOT</version>
+	<packaging>pom</packaging>
 
-        <parent>
-                <groupId>org.gw4e.tycho</groupId>
-                <artifactId>org.gw4e.tycho.root</artifactId>
-                <version>4.0.0-SNAPSHOT</version>
-                <relativePath>../pom.xml</relativePath>
-        </parent>
+	<parent>
+		<groupId>org.gw4e.tycho</groupId>
+		<artifactId>org.gw4e.tycho.root</artifactId>
+		<version>4.0.0-SNAPSHOT</version>
+		<relativePath>../pom.xml</relativePath>
+	</parent>
 
-        <modules>
-               <module>gw4e-eclipse-plugin-tests</module>   
-               <module>gw4e-eclipse-plugin-ui-tests</module> 
-                 <module>gw4e-eclipse-studio-tests</module>  
-                <module>gw4e-eclipse-studio-ui-tests</module>  
-        </modules>
+	<profiles>
+		<profile>
+			<id>gw4e-eclipse-all-tests</id>
+			<modules>
+				<module>gw4e-eclipse-plugin-tests</module>
+				<module>gw4e-eclipse-plugin-ui-tests</module>
+				<module>gw4e-eclipse-studio-tests</module>
+				<module>gw4e-eclipse-studio-ui-tests</module>
+			</modules>
+   			<activation>
+    		   <activeByDefault>true</activeByDefault>
+   			</activation>			
+		</profile>
+		<profile>
+			<id>gw4e-eclipse-plugin-tests</id>
+			<modules>
+				<module>gw4e-eclipse-plugin-tests</module>
+			</modules>
+		</profile>
+
+		<profile>
+			<id>gw4e-eclipse-plugin-ui-tests</id>
+			<modules>
+				<module>gw4e-eclipse-plugin-ui-tests</module>
+			</modules>
+		</profile>
+		<profile>
+			<id>gw4e-eclipse-studio-tests</id>
+			<modules>
+				<module>gw4e-eclipse-studio-tests</module>
+			</modules>
+		</profile>
+		<profile>
+			<id>gw4e-eclipse-studio-ui-tests</id>
+			<modules>
+				<module>gw4e-eclipse-studio-ui-tests</module>
+			</modules>
+		</profile>		
+	</profiles>
+
 </project>
 
