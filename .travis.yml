@@ -10,12 +10,6 @@ branches:
 
 os:
     - linux
-
-matrix:
-  include:
-    - os: linux
-      dist: trusty
-
       
 before_install:
  - wget https://archive.apache.org/dist/maven/maven-3/3.3.9/binaries/apache-maven-3.3.9-bin.zip
@@ -31,10 +25,10 @@ before_script:
 jobs:
   include:
     - stage: test
-      script: mvn clean install -Pgw4e-eclipse-plugin-tests
-      script: mvn clean install -Pgw4e-eclipse-plugin-ui-tests
-      script: mvn clean install -Pgw4e-eclipse-studio-tests
-      script: mvn clean install -Pgw4e-eclipse-studio-ui-tests
+      script: "mvn clean install -Pgw4e-eclipse-plugin-tests"
+      script: "mvn clean install -Pgw4e-eclipse-plugin-ui-tests"
+      script: "mvn clean install -Pgw4e-eclipse-studio-tests"
+      script: "mvn clean install -Pgw4e-eclipse-studio-ui-tests"
       
  
 
