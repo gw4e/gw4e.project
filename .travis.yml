@@ -30,13 +30,10 @@ before_script:
 
 jobs:
   include:
-    - stage: gw4e-eclipse-plugin-tests
+    - stage: test
       script: mvn clean install -Pgw4e-eclipse-plugin-tests
-    - stage: gw4e-eclipse-plugin-ui-tests
       script: mvn clean install -Pgw4e-eclipse-plugin-ui-tests
-    - stage: gw4e-eclipse-studio-tests
       script: mvn clean install -Pgw4e-eclipse-studio-tests
-    - stage: gw4e-eclipse-studio-ui-tests
       script: mvn clean install -Pgw4e-eclipse-studio-ui-tests
       
  
