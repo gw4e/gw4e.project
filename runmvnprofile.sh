@@ -1,5 +1,7 @@
 #!/bin/bash
 
+printenv
+
 if [ "$1" != "" ]; then
     mvn clean install -P$1
 else
