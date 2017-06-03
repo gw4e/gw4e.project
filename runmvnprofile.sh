@@ -7,7 +7,9 @@ sleep 10 # give xvfb some time to start
 printenv
 
 if [ "$1" != "" ]; then
-    mvn clean install -P$1
+    mvn clean install -P$1 -DskipTests=true
 else
     echo "Positional parameter 1 is empty"
 fi
+
+
