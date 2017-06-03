@@ -1,6 +1,11 @@
 language: java
 jdk:
 - oraclejdk8
+env:
+  global:
+    - GIT_NAME: Travis CI
+    - GIT_EMAIL: builds@travis-ci.org
+    - GIT_BRANCH: master
 branches:
   only:
   - master
@@ -21,7 +26,11 @@ jobs:
   - script: ./runmvnprofile.sh gw4e-eclipse-studio-tests
   - script: ./runmvnprofile.sh gw4e-eclipse-studio-ui-tests
   - stage: copy
-    script: ./deploy.sh
+    script: ./copy.sh
+
+before_deploy:
+  - ./deploy.sh
+      
 deploy:
   provider: releases
   skip_cleanup: true
@@ -31,3 +40,5 @@ deploy:
   on:
     repo: gw4e/gw4e.project
     tags: true
+    
+ 
