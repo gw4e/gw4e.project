@@ -39,6 +39,6 @@ deploy:
   file: org.gw4e.tycho.update-4.0.0-SNAPSHOT.zip
   on:
     repo: gw4e/gw4e.project
-    tags: true
+   
     
  
