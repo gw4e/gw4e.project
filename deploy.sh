@@ -1,17 +1,14 @@
-#!/bin/bash
-YEAR=$(date +"%Y")
-MONTH=$(date +"%m")
-DAY=$(date +"%d")
-HOUR=$(date +"%k%M")
-git config --global user.email "${GIT_EMAIL}"
-git config --global user.name "${GIT_NAME}"
-git config --global push.default simple
-git remote add gw4e https://github.com/gw4e/gw4e.project.git
-export GIT_TAG=GW4E.$YEAR-$MONTH-$DAY-$HOUR.$TRAVIS_BUILD_NUMBER
-git fetch --tags
-msg="Tag Generated from TravisCI for build $TRAVIS_BUILD_NUMBER"
-if git tag $GIT_TAG -a -m "$msg" 2>/dev/null; then
-git tag $GIT_TAG -a -m "Tag Generated from TravisCI for build $TRAVIS_BUILD_NUMBER"
-git push gw4e master && git push gw4e master --tags
-ls -aR
-else echo Tag already exists!; fi
+#!/bin/sh
+
+echo "CREATE GIT TAG"
+echo "$TRAVIS_BRANCH"
+echo "$TRAVIS_BUILD_NUMBER"
+echo "$TRAVIS_REPO_SLUG"
+git config --global user.email "builds@travis-ci.com"
+git config --global user.name "Travis CI"
+TAG_DATE=$(date -u "+%Y-%m-%d")
+export GIT_TAG="build-$TRAVIS_BRANCH-$TAG_DATE-$TRAVIS_BUILD_NUMBER"
+git tag $GIT_TAG -a -m "Generated tag from TravisCI build $TRAVIS_BUILD_NUMBER"
+echo "TravisCI build tagged with $GIT_TAG"
+export RELEASE_URL="https://github.com/$TRAVIS_REPO_SLUG/releases/download/$GIT_TAG/$ARTIFACT_NAME"
+echo "Set URL to $RELEASE_URL"
