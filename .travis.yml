@@ -25,10 +25,8 @@ jobs:
   - script: ./runmvnprofile.sh gw4e-eclipse-plugin-ui-tests
   - script: ./runmvnprofile.sh gw4e-eclipse-studio-tests
   - script: ./runmvnprofile.sh gw4e-eclipse-studio-ui-tests
-  - stage: copy
-    script: ./copy.sh
   - stage: deploy
-    script: skip     
+    script: ./copy.sh     
     deploy: &releases
         provider: releases
         skip_cleanup: true
