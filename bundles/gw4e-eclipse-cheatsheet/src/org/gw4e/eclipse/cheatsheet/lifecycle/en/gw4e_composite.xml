@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <compositeCheatsheet name="LifeCycle Tutorial">
-   <taskGroup kind="set" name="Getting started with LifeCycle" skip="false">
+   <taskGroup kind="set" name="Managing Graph Models &amp;amp; Tests LifeCycle" skip="false">
       <onCompletion>
          Congratulations you have completed all the tasks.
       </onCompletion>

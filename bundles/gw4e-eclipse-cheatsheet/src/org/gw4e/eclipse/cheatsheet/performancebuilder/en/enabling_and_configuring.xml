@@ -57,8 +57,6 @@
          Click the <b>GW4E Plugin Performance</b> tab view <br/>
          In the upper right corner of the view, click the arrow down icon <b>"Refresh Performance Statistics"</b><br/>
          Statistics are now displayed. Notice the icons in the <b>"Failure"</b> columns. Warnings are displayed when the time spent to process is upper than the value set in the preferences.<br/>
-     	  <br/>
-     	 You learned here how to configure the plugin in order to understand how fast the GW4E process is.
-      </description>
+       </description>
    </item>
 </cheatsheet>

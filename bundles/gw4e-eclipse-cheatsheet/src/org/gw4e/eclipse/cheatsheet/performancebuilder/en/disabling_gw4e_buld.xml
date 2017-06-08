@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  #%L
+  gw4e
+  $Id:$
+  $HeadURL:$
+  %%
+  Copyright (C) 2017 gw4e-project
+  %%
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to deal
+  in the Software without restriction, including without limitation the rights
+  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+  
+  The above copyright notice and this permission notice shall be included in
+  all copies or substantial portions of the Software.
+  
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+  THE SOFTWARE.
+  #L%
+  -->
+
+<cheatsheet
+      title="Disabling GW4E build">
+   <intro>
+      <description>
+ 		While building your project, GW4E will analyze your graph models and depending on your GW4E build configuration and numbers of graphs, this can take some times.        </description>
+   </intro>
+   <item
+         title="Disabling GW4E build">
+      <description> 
+     	 To disable GW4E build analyzes, follow these steps : <br/>
+     	 Right-click your project<br/>
+     	 Select <b>Properties</b><br/>
+     	 Select <b>GW4E</b>, the preferences are shown<br/>
+     	 Uncheck the <b>"Enable GW4E build"</b><br/>
+     	 Click <b>OK</b><br/>
+     	 You can now rebuild your project without GW4E analyzes and you switch back for whenever you want.<br/>
+       </description>
+   </item>
+</cheatsheet>

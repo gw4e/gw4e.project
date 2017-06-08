@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<compositeCheatsheet name="Shared Models Tutorial">
-   <taskGroup kind="set" name="Getting started with Shared Models" skip="false">
+<compositeCheatsheet name="Multiple Models Tutorial">
+   <taskGroup kind="set" name="Getting started with Multiple Models" skip="false">
       <onCompletion>
          Congratulations you have completed all the tasks.
       </onCompletion>
       <taskGroup kind="set" name="Use an existing project within Eclipse" skip="false">
          <intro>
-            <b>Introduction</b> <br/> You will learn how to work with GraphWaler &quot;shared models&quot; with  GW4E.
+            <b>Introduction</b> <br/> You will learn how to work with GraphWalker &quot;multiple models&quot; with  GW4E.
          </intro>
          <onCompletion>
-            <b>Conclusion</b><br/>You know how to work with shared models within GW4E
+            <b>Conclusion</b><br/>You know how to work with multiple models within GW4E
          </onCompletion>
          <task kind="cheatsheet" name="Convert a project" skip="false">
             <intro>
@@ -21,7 +21,7 @@
             <param name="path" value="convert_a_project_to_a_gw4e_project.xml">
             </param>
          </task>
-         <task kind="cheatsheet" name="Navigating Shared Models" skip="false">
+         <task kind="cheatsheet" name="Navigating Multiple Models" skip="false">
             <onCompletion>
                <b>Conclusion</b>
             </onCompletion>
