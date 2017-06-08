@@ -18,6 +18,7 @@ before_install:
 - unzip -qq apache-maven-3.3.9-bin.zip
 - export M2_HOME=$PWD/apache-maven-3.3.9
 - export PATH=$M2_HOME/bin:$PATH
+
 jobs:
   include:
   - stage: test
@@ -32,9 +33,11 @@ jobs:
         skip_cleanup: true
         api_key:
            secure: eZRGzmN3bljjtCLIsc33PYoBq0Uho3jfyywJWnioY3nyh6H3+7CTfZCzyTWqEDGdU8jVaeX18p3zxqwyDupAWGmjgqN131EhC805NCmYzhBGd9Pe8ihW/9yRr00kN6RzW2ywGtg6Q6q4bbmBy0uTWbB8v0yLqRNTbE/Cko9pzMr2pAGAq6Gh+4LPyAgxszeuI4f+neaO/pPS14TGvENOV6AekrADzpRsTtUTIBjx1scMjzh/V1qWhZsAE7yBIhRNyv8Z3HOrzyH0TPIah62dUTGegoBTe1i1Bsam3OzAulFAN4U0L4w6+NtT+HOBIZtXgFx3r4omZbf0yd4j4FYBSNDH+Ic8UsA37+nvSsTonR/8AuMyfjQ3s8XPi+d/yhg/FYDUOXsFQizKfuqU8RvrevKaiSR+U2rNKjX7a/9LqjccL98AQjsTBqP8BU7r4shXkDzr9k5SrCda3+lOt9S5zGP0esGebTqSxtmi7V+d9rus10/xlUMAWe9dOOboyLdtTnmFCh68gYv3Q26PRybr/9cQhxuD1hyXtXnHMCi1rYS1IRjhN8JHCia2j332wsH92bHhllv0ujOGQtkL34BQmMrtk4bx7W247p+rw1UfMGweiHPm3eoi7h9Cj2SKpP0VINjP7hfQrjlDJD+kHrupjwnWRzS+FQdKTFcMcGxK5/E=
-        file: org.gw4e.tycho.update-4.0.0-SNAPSHOT.zip
+        file_glob: true
+        file: p2/*
         on:
             repo: gw4e/gw4e.project
+            
 before_deploy:
   - ./deploy.sh
       
