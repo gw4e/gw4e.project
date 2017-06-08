@@ -15,5 +15,9 @@ logs/
 #############
 .DS_Store
 
+# ssh stuff #
+#############
+*/id_rsa.pub
+
 
 
