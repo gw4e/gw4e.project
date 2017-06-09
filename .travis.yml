@@ -3,6 +3,7 @@ jdk:
 - oraclejdk8
 env:
   global:
+  - GITHUB_REPO: gw4e/gw4e.project
   - GIT_NAME: Travis CI
   - GIT_EMAIL: builds@travis-ci.org
   - GIT_BRANCH: master
