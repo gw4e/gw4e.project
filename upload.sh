@@ -4,7 +4,7 @@ set -e # Exit with nonzero exit code if anything fails
 
 
 SOURCE_BRANCH="master"
-TARGET_BRANCH="p2repo-4.0.0-SNAPSHOT"
+TARGET_BRANCH="p2repo"
 
 
 # Pull requests and commits to other branches shouldn't try to deploy, just build to verify
