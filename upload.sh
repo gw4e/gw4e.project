@@ -23,7 +23,7 @@ echo $REPO
 echo $SSH_REPO
 echo $SHA
 
-# Clone the existing gh-pages for this repo into out/
+# Clone the existing branch for this repo into out/
 # Create a new empty branch if TARGET_BRANCH doesn't exist yet (should only happen on first deply)
 git clone $REPO out
 cd out
@@ -35,13 +35,22 @@ rm -rf out/**/* || exit 0
 
 unzip $HOME/.m2/repository/org/gw4e/tycho/org.gw4e.tycho.update/4.0.0-SNAPSHOT/org.gw4e.tycho.update-4.0.0-SNAPSHOT.zip -d ./out
 
+echo XXXXXX 1
+pwd 
+echo XXXXXX 2
 # Commit the "changes", i.e. the new version.
 # The delta will show diffs between new and old versions.
 git add -A .
+echo XXXXXX 3
+git status
+echo XXXXXX 4
 git commit -m "Deploy to GitHub : ${SHA}"
+echo XXXXXX 5
 
+git show-ref
+echo XXXXXX 6 $SSH_REPO $TARGET_BRANCH
 
-
+ 
 # Now that we're all set up, we can push.
 git push $SSH_REPO $TARGET_BRANCH
 
