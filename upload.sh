@@ -32,15 +32,18 @@ rm -rf out/* || exit 0
 mkdir ./out/repository
 
 unzip $HOME/.m2/repository/org/gw4e/tycho/org.gw4e.tycho.update/4.0.0-SNAPSHOT/org.gw4e.tycho.update-4.0.0-SNAPSHOT.zip -d ./out/repository
+
+cd out
+
 echo *****************
 pwd
 echo *****************
 ls
 echo *****************
 
-find ./out -path ./.git -prune -o \( \! -path ./repository \) -exec rm -rf {} \;
+find . -path ./.git -prune -o \( \! -path ./repository \) -exec rm -rf {} \;
 
-cd out
+
 
 
 # Commit the "changes", i.e. the new version.
