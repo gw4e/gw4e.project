@@ -35,8 +35,7 @@ unzip $HOME/.m2/repository/org/gw4e/tycho/org.gw4e.tycho.update/4.0.0-SNAPSHOT/o
 
 cd out
 
-shopt -s extglob 
-rm -r -- !(repository)
+find ./out/ -type d -not -name repository -exec rm -R {} \;
 
 # Commit the "changes", i.e. the new version.
 # The delta will show diffs between new and old versions.
