@@ -28,9 +28,9 @@ cd ..
 
 # Clean out existing contents
 rm -rf out/* || exit 0
-rm -rf .mvn 
-rm -f .travis.yml
-rm -f .gitignore
+rm -rf out/.mvn 
+rm -f  out/.travis.yml
+rm -f  out/.gitignore
 
 mkdir ./out/repository
 
