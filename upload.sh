@@ -28,6 +28,9 @@ cd ..
 
 # Clean out existing contents
 rm -rf out/* || exit 0
+rm -rf .mvn 
+rm -f .travis.yml
+rm -f .gitignore
 
 mkdir ./out/repository
 
@@ -35,14 +38,11 @@ unzip $HOME/.m2/repository/org/gw4e/tycho/org.gw4e.tycho.update/4.0.0-SNAPSHOT/o
 
 cd out
 
-echo *****************
+echo XXXXXXXXXXXXXXXXX
 pwd
 echo *****************
-ls
+ls -a
 echo *****************
-
-find . -path ./.git -prune -o \( \! -path ./repository \) -exec rm -rf {} \;
-
 
 
 
