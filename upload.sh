@@ -53,7 +53,7 @@ echo XXXXXX 6 $SSH_REPO $TARGET_BRANCH
 
 
 # Now that we're all set up, we can push.
-git push "https://${GH_TOKEN}@$github.com/${GITHUB_REPO}.git" $TARGET_BRANCH
+git push "https://${GH_TOKEN}@github.com/${GITHUB_REPO}.git" $TARGET_BRANCH
 
 
 
