@@ -19,16 +19,16 @@ REPO=`git config remote.origin.url`
 SSH_REPO=${REPO/https:\/\/github.com\//git@github.com:}
 SHA=`git rev-parse --verify HEAD`
 
-echo $REPO
-echo $SSH_REPO
-echo $SHA
+echo XXXXXXXXX $REPO
+echo XXXXXXXXX $SSH_REPO
+echo XXXXXXXXX $SHA
 
 # Clone the existing branch for this repo into out/
 # Create a new empty branch if TARGET_BRANCH doesn't exist yet (should only happen on first deply)
 git clone $REPO out
 cd out
 git checkout $TARGET_BRANCH || git checkout --orphan $TARGET_BRANCH
- 
+cd ..
 
 # Clean out existing contents
 rm -rf out/**/* || exit 0
