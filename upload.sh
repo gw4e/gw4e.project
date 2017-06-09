@@ -25,10 +25,7 @@ git clone $REPO out
 cd out
 git checkout $TARGET_BRANCH || git checkout --orphan $TARGET_BRANCH
 
-echo XXXXXXXXXXXXXXXXX
-ls -a
-echo XXXXXXXXXXXXXXXXX
-
+ 
 cd ..
 
 # Clean out existing contents
@@ -42,14 +39,6 @@ mkdir ./out/repository
 unzip $HOME/.m2/repository/org/gw4e/tycho/org.gw4e.tycho.update/4.0.0-SNAPSHOT/org.gw4e.tycho.update-4.0.0-SNAPSHOT.zip -d ./out/repository
 
 cd out
-
-echo XXXXXXXXXXXXXXXXX
-pwd
-echo XXXXXXXXXXXXXXXXX
-ls -a
-echo XXXXXXXXXXXXXXXXX
-
-
 
 # Commit the "changes", i.e. the new version.
 # The delta will show diffs between new and old versions.
