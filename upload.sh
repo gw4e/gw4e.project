@@ -33,13 +33,15 @@ cd ..
 # Clean out existing contents
 rm -rf out/* || exit 0
 
+mkdir ./out/repository
+
 echo XXXXXXXXXPWD
 pwd
 echo XXXXXXXXXLS
 ls
 echo XXXXXXXXX
 
-unzip $HOME/.m2/repository/org/gw4e/tycho/org.gw4e.tycho.update/4.0.0-SNAPSHOT/org.gw4e.tycho.update-4.0.0-SNAPSHOT.zip -d ./out
+unzip $HOME/.m2/repository/org/gw4e/tycho/org.gw4e.tycho.update/4.0.0-SNAPSHOT/org.gw4e.tycho.update-4.0.0-SNAPSHOT.zip -d ./out/repository
 
 cd out
 pwd 
