@@ -24,6 +24,11 @@ SHA=`git rev-parse --verify HEAD`
 git clone $REPO out
 cd out
 git checkout $TARGET_BRANCH || git checkout --orphan $TARGET_BRANCH
+
+echo XXXXXXXXXXXXXXXXX
+ls -a
+echo XXXXXXXXXXXXXXXXX
+
 cd ..
 
 # Clean out existing contents
@@ -40,9 +45,9 @@ cd out
 
 echo XXXXXXXXXXXXXXXXX
 pwd
-echo *****************
+echo XXXXXXXXXXXXXXXXX
 ls -a
-echo *****************
+echo XXXXXXXXXXXXXXXXX
 
 
 
