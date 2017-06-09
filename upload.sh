@@ -31,7 +31,13 @@ git checkout $TARGET_BRANCH || git checkout --orphan $TARGET_BRANCH
 cd ..
 
 # Clean out existing contents
-rm -rf out/**/* || exit 0
+rm -rf out/* || exit 0
+
+echo XXXXXXXXXPWD
+pwd
+echo XXXXXXXXXLS
+ls
+echo XXXXXXXXX
 
 unzip $HOME/.m2/repository/org/gw4e/tycho/org.gw4e.tycho.update/4.0.0-SNAPSHOT/org.gw4e.tycho.update-4.0.0-SNAPSHOT.zip -d ./out
 
