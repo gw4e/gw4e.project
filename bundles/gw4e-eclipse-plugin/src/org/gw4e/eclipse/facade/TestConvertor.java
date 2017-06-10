@@ -95,7 +95,7 @@ public class TestConvertor {
 		updateCompilationUnitWithNewGraphFile(monitor);
 		updateTests(findTests(monitor),monitor);
 		
-		Job job = new WorkspaceJob("GW4E Completing Coversion Job") {
+		Job job = new WorkspaceJob("GW4E Completing Conversion Job") {
 			@Override
 			public IStatus runInWorkspace(IProgressMonitor monitor) throws CoreException {
 				try {
