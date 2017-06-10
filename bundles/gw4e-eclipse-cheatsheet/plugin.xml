@@ -24,7 +24,7 @@
          	<description>GW4E Plugin Tutorials</description>
       </cheatsheet>
       <cheatsheet
-            name="3 - Working with Shared Models"
+            name="3 - Working with Multiple Models"
             category="gw4e-eclipse-cheatsheet.category"
              contentFile="src/org/gw4e/eclipse/cheatsheet/sharedmodels/en/gw4e_composite.xml"
             composite="true"
