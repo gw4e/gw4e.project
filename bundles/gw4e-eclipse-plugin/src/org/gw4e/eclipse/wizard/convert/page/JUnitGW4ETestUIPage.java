@@ -34,6 +34,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.jface.viewers.CheckboxTableViewer;
@@ -53,6 +54,7 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
@@ -67,6 +69,7 @@ import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.ui.IWorkbench;
 import org.graphwalker.core.machine.Context;
 import org.graphwalker.core.model.Vertex.RuntimeVertex;
+import org.gw4e.eclipse.constant.Constant;
 import org.gw4e.eclipse.facade.GraphWalkerFacade;
 import org.gw4e.eclipse.facade.ResourceManager;
 import org.gw4e.eclipse.message.MessageUtil;
@@ -83,6 +86,7 @@ public class JUnitGW4ETestUIPage extends WizardPage implements Listener {
 	public static final String GW4E_CONVERSION_BUTTON_HINT_ID = "id.gw4e.conversion.button.hint.id";
 	public static final String GW4E_CONVERSION_COMBO_START_ELEMENT = "id.gw4e.conversion.combo.start.element";
 	public static final String GW4E_LAUNCH_TEST_CONFIGURATION_HINT_BUTTON = "gw4e.launch.test.project.hint.button";
+	public static final String GW4E_LAUNCH_TEST_CONFIGURATION_FILTER_GRAPHML_BUTTON = "gw4e.launch.test.project.filtergraphml.button";
 	public static final String GW4E_LAUNCH_TEST_CONFIGURATION_ADDITIONAL_CONTEXT = "gw4e.launch.test.configuration.additional.context";
 
 	/**
@@ -152,6 +156,11 @@ public class JUnitGW4ETestUIPage extends WizardPage implements Listener {
 	 */
 	Button hintButton;
 
+	/**
+	 * 
+	 */
+	Button filterGraphmlButton;
+	
 	public JUnitGW4ETestUIPage(ConvertToFileCreationWizard wizard, IWorkbench workbench,
 			IStructuredSelection selection) {
 		super("JUnitGraphWalkerTestImplementationPage");
@@ -304,7 +313,18 @@ public class JUnitGW4ETestUIPage extends WizardPage implements Listener {
 		labelChooseAdditionalContext.setText(MessageUtil.getString("additionalExecutionContext"));
 		labelChooseAdditionalContext.setEnabled(false);
 		new Label(composite_1, SWT.NONE);
-		new Label(composite_1, SWT.NONE);
+		
+				filterGraphmlButton = new Button(composite_1, SWT.CHECK);
+				filterGraphmlButton.setLayoutData(new GridData(SWT.LEFT, SWT.TOP, false, false, 1, 1));
+				filterGraphmlButton.setSize(44, 18);
+				filterGraphmlButton.setText(MessageUtil.getString("filter_graphml_file"));
+				filterGraphmlButton.addSelectionListener(new SelectionAdapter() {
+					@Override
+					public void widgetSelected(SelectionEvent evt) {
+						hint();
+					}
+				});
+				filterGraphmlButton.setData(GW4E_CONVERSION_WIDGET_ID, GW4E_LAUNCH_TEST_CONFIGURATION_FILTER_GRAPHML_BUTTON);
 
 		fAdditionalTestViewer = CheckboxTableViewer.newCheckList(composite_1, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
 
@@ -321,7 +341,8 @@ public class JUnitGW4ETestUIPage extends WizardPage implements Listener {
 		fAdditionalTestViewer.getTable().setHeaderVisible(true);
 		fAdditionalTestViewer.getTable().setLinesVisible(true);
 		new Label(composite_1, SWT.NONE);
-
+		
+		
 		hintButton = new Button(composite_1, SWT.CHECK);
 		hintButton.setLayoutData(new GridData(SWT.LEFT, SWT.TOP, false, false, 1, 1));
 		hintButton.setSize(44, 18);
@@ -333,7 +354,7 @@ public class JUnitGW4ETestUIPage extends WizardPage implements Listener {
 			}
 		});
 		hintButton.setData(GW4E_CONVERSION_WIDGET_ID, GW4E_LAUNCH_TEST_CONFIGURATION_HINT_BUTTON);
-
+		
 		fAdditionalTestViewer.setContentProvider(new IStructuredContentProvider() {
 			@Override
 			public Object[] getElements(Object inputElement) {
@@ -353,7 +374,12 @@ public class JUnitGW4ETestUIPage extends WizardPage implements Listener {
 									if (hintButton.getSelection()) {
 										all = GraphWalkerFacade.findSharedContexts(ifile, all);
 									}
-									all.remove(ifile);
+									if (filterGraphmlButton.getSelection()) {
+										all = all.stream()
+												.filter(file -> !Constant.GRAPHML_FILE.equals(file.getFileExtension()))
+												.collect(Collectors.toList()); 										
+									}
+ 									all.remove(ifile);
 								} catch (Exception e) {
 									ResourceManager.logException(e);
 									additionalExecutionContexts = new IFile[0];
@@ -411,10 +437,6 @@ public class JUnitGW4ETestUIPage extends WizardPage implements Listener {
 			}
 		});
 
-		Composite composite_2 = new Composite(groupAdditionalTest, SWT.NONE);
-		composite_2.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 10, 1));
-		composite_2.setLayout(new GridLayout(1, false));
-
 		setControl(composite);
 
 		setPageComplete(validatePage());
@@ -466,6 +488,7 @@ public class JUnitGW4ETestUIPage extends WizardPage implements Listener {
 		this.fAdditionalTestViewer.getTable().setEnabled(enabled);
 		this.edgesCombo.getCombo().setEnabled(enabled);
 		this.hintButton.setEnabled(enabled);
+		this.filterGraphmlButton.setEnabled(enabled);
 		setPageComplete(validatePage());
 	}
 
