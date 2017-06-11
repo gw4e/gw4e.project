@@ -1,5 +1,8 @@
 package org.gw4e.eclipse.container;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+
 /*-
  * #%L
  * gw4e
@@ -36,8 +39,11 @@ import org.eclipse.jdt.core.IClasspathContainer;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
+import org.eclipse.swt.widgets.Display;
 import org.gw4e.eclipse.constant.Constant;
+import org.gw4e.eclipse.facade.DialogManager;
 import org.gw4e.eclipse.facade.ResourceManager;
+import org.gw4e.eclipse.message.MessageUtil;
 import org.gw4e.eclipse.preferences.PreferenceManager;
 
 /**
@@ -91,14 +97,16 @@ public class GW4ELibrariesContainer implements IClasspathContainer {
 	 */
 	@Override
 	public IClasspathEntry[] getClasspathEntries() {
+		 
 		String []  libNames = PreferenceManager.getGraphWalkerJavaLibName( );
 		ArrayList<IClasspathEntry> libsList = new ArrayList<IClasspathEntry>();
 		for (int i = 0; i < libNames.length; i++) {
 			try {
 				IPath libPath = new Path(libNames[i]);
+				
 				IClasspathEntry libEntry = JavaCore.newVariableEntry(libPath, null, null);
-				IClasspathEntry entry=null;
-				entry = JavaCore.getResolvedClasspathEntry(libEntry);
+				IClasspathEntry entry = JavaCore.getResolvedClasspathEntry(libEntry);
+				 
 				if (entry==null) {
 					System.out.println("************************");
 					System.out.println("************************");

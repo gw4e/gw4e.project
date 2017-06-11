@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
       id="gw4e.eclipse"
-      label="gw4e-eclipse-feature"
-      version="4.0.0">
+      label="GraphWalker Integration for Eclipse"
+      version="4.0.0"
+      provider-name="GW4E Project">
 
    <description url="">
       GraphWalker http://graphwalker.github.io is an open source Model-based testing tool for test automation. It&apos;s designed to make it easy to design your tests using graphs.It reads models in the shape of directed graphs, and generate [test] paths from these graphs. The plugin provides the ability to use GraphWalker directly in the Eclipse IDE and provides an integrated editor for GraphWalker graphs editing.In addition to the GraphWalker standard features, you will also benefit within your workbench: GraphWalker Online and Offline Tests code generators, automated analyzes and checks of graphs, refactoring, and ability to run and debug GraphWalker tests.
@@ -38,6 +39,7 @@ SOFTWARE.
    </license>
 
    <url>
+      <update label="GW4E" url="https://github.com/gw4e/gw4e.project/raw/p2repo-4.0.0/repository"/>
       <discovery label="GW4E Documentation" url="https://gw4e.github.io/"/>
    </url>
 

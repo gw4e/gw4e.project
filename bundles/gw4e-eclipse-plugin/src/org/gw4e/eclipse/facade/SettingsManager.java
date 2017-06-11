@@ -1,5 +1,8 @@
 package org.gw4e.eclipse.facade;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+
 /*-
  * #%L
  * gw4e
@@ -49,6 +52,7 @@ import org.eclipse.core.runtime.preferences.IScopeContext;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 import org.gw4e.eclipse.Activator;
+import org.gw4e.eclipse.message.MessageUtil;
 import org.gw4e.eclipse.preferences.PreferenceInitializer;
 import org.gw4e.eclipse.preferences.ProjectPropertyChangeListener;
 import org.osgi.service.prefs.BackingStoreException;
@@ -69,7 +73,7 @@ public class SettingsManager {
 	}
 
 	public static void setM2_REPO() throws JavaModelException, InterruptedException {
-		Job job = new WorkspaceJob("GW4E Fix Job") {
+		Job job = new WorkspaceJob("GW4E set M2_REPO  Job") {
 			@Override
 			public IStatus runInWorkspace(IProgressMonitor monitor) throws CoreException {
 				// This setting is done in the following pom.xml file :
@@ -81,12 +85,15 @@ public class SettingsManager {
 				System.out.println("M2_REPO " + path);
 				if (path == null) {
 					String pathTorepo = System.getProperty("gw.mvn.repository", null);
-					System.out.println("M2_REPO " + pathTorepo);
-					path = new Path(pathTorepo);
+					if (pathTorepo!=null) {
+						System.out.println("M2_REPO " + pathTorepo);
+						path = new Path(pathTorepo);
 
-					JavaCore.setClasspathVariables(new String[] { "M2_REPO" }, new IPath[] { path }, monitor);
-					System.out.println("M2_REPO " + pathTorepo + " has been set...");
+						JavaCore.setClasspathVariables(new String[] { "M2_REPO" }, new IPath[] { path }, monitor);
+						System.out.println("M2_REPO " + pathTorepo + " has been set...");
+					} 
 				}
+			 
 				return Status.OK_STATUS;
 			}
 		};
