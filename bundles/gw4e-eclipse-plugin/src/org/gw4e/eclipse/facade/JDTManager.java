@@ -1429,7 +1429,7 @@ public class JDTManager {
 		if (formatEdit != null && formatEdit.hasChildren()) {
 			workingCopy.applyTextEdit(formatEdit, monitor);
 			workingCopy.reconcile(ICompilationUnit.NO_AST, false, null, null);
-			workingCopy.commitWorkingCopy(false, null);
+			workingCopy.commitWorkingCopy(true, null);
 			workingCopy.discardWorkingCopy();
 		}
 		subMonitor.split(20);

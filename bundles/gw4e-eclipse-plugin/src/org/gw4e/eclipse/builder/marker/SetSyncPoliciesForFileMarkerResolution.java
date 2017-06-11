@@ -61,7 +61,7 @@ public final class SetSyncPoliciesForFileMarkerResolution extends MultipleMarker
 	 */
 	@Override
 	public void run(IMarker marker) {
-		Job job = new WorkspaceJob("GW4E Fix Job") {
+		Job job = new WorkspaceJob("GW4E QuickFix Job") {
 			@Override
 			public IStatus runInWorkspace(IProgressMonitor monitor) throws CoreException {
 				fix(marker, monitor);

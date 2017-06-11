@@ -47,6 +47,7 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
+import org.gw4e.eclipse.fwk.conditions.ErrorCountInProblemView;
 import org.gw4e.eclipse.fwk.conditions.ErrorIsInProblemView;
 import org.gw4e.eclipse.fwk.conditions.IsItemSelectedInErrors;
 import org.gw4e.eclipse.fwk.conditions.ProblemsAreGenerated;
@@ -87,6 +88,10 @@ public class ProblemView {
 	 
 	public void close() {
 		this.botView.close();
+	}
+
+	public void waitforErrorCount(String expectedErrorMessageInProblemView,int count) {
+		bot.waitUntil(new ErrorCountInProblemView(this, expectedErrorMessageInProblemView, count));
 	}
 
 	public void executeQuickFixForErrorAllMessage(String expectedErrorMessageInProblemView, String quickfixmessage,
@@ -221,6 +226,18 @@ public class ProblemView {
 
 	}
 
+	public int countErrorWithText(String text) {
+		SWTBotTreeItem item = expandErrorItem();
+		int found=0;
+		SWTBotTreeItem[] child = item.getItems();
+		for (int i = 0; i < child.length; i++) {
+			if (child[i].row().get(0).trim().startsWith(text.trim())) {
+				found++;
+			}
+		}
+		return found;
+	}
+	
 	public SWTBotTreeItem findErrorItemWithText(String text) {
 		SWTBotTreeItem item = expandErrorItem();
 		SWTBotTreeItem[] child = item.getItems();

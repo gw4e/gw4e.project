@@ -379,6 +379,7 @@ public class GW4EFixesTestCase {
  		project.cleanBuild();
  		
 		ProblemView pv = ProblemView.open(bot);
+		pv.waitforErrorCount("No policies found for",5);
 		
 		pv.executeQuickFixForErrorAllMessage(
 				"No policies found for FindOwnersSharedState.graphml",

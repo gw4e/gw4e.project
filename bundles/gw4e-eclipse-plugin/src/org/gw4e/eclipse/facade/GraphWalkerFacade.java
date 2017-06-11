@@ -56,9 +56,11 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.SubMonitor;
+import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IWorkbenchWindow;
@@ -372,13 +374,31 @@ public class GraphWalkerFacade {
 							JDTManager.enrichClass(type, dcp, monitor);
 							JDTManager.formatUnitSourceCode(type , monitor);
 							JDTManager.openEditor(type, ww);
-							JDTManager.reorganizeImport(JavaCore.createCompilationUnitFrom(type));
 						} catch (Exception e) {
 							ResourceManager.logException(e);
 						}
 					}
 				});
-				
+
+				ICompilationUnit cu = JavaCore.createCompilationUnitFrom(type);
+				int count = 0;
+				CompilationUnit ast = null;
+				while (ast==null && count < 10) {
+					Thread.sleep(1000);
+					ast = JDTManager.parse(cu);
+					count++;
+				}
+
+				Display.getDefault().syncExec(new Runnable() {
+					public void run() {
+						try {
+							IFile type = ret.get(ret.size()-1) ;
+							JDTManager.reorganizeImport(JavaCore.createCompilationUnitFrom(type));
+						} catch (Exception e) {
+							ResourceManager.logException(e);
+						}
+					}
+				});				
 				cache.add(dcp.getInputPath(), new CacheEntry(dcp.getInputPath().toFile().lastModified(), true));
 				IFile iFileCache = ResourceManager.toIFile(dcp.getOutputPath().toFile());
 				ResourceManager.resfresh(iFileCache.getParent());
