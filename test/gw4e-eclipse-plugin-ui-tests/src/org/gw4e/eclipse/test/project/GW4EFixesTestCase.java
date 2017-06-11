@@ -378,7 +378,10 @@ public class GW4EFixesTestCase {
  		
  		project.cleanBuild();
  		
-		ProblemView pv = ProblemView.open(bot);
+ 		ProblemView pv = ProblemView.open(bot); 
+		pv.close();//Mandatory 
+		
+		pv = ProblemView.open(bot);
 		pv.waitforErrorCount("No policies found for",5);
 		
 		pv.executeQuickFixForErrorAllMessage(
