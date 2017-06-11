@@ -50,7 +50,7 @@ public class FolderConditionExists implements ICondition {
 	@Override
 	public boolean checkCondition() throws Exception {
 		IFolder folder = project.getFolder("src/test/resources");
-		return project.exists();
+		return project.exists() && folder.exists();
 	}
 
 	@Override
