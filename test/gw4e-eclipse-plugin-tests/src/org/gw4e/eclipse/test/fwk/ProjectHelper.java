@@ -395,6 +395,10 @@ long start = System.currentTimeMillis();
 				SharedTemplate provider = new SharedTemplate();
 
 				IFolder folder = p.getProject().getFolder("src/test/resources");
+				 
+				FolderConditionExists fce = new FolderConditionExists(p.getProject(),"src/test/resources");
+				Waiter.waitUntil(fce);
+				
 				String[] resources = provider.getResources();
 				for (String resource : resources) {
 					try {
