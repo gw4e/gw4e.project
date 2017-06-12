@@ -387,14 +387,40 @@ public class GW4EFixesTestCase {
  		ProblemView pv = ProblemView.open(bot); 
 		pv.close();//Mandatory 
 		
-		pv = ProblemView.open(bot);
-		pv.waitforErrorCount("No policies found for",5);
 		
-		pv.executeQuickFixForErrorAllMessage(
-				"No policies found for FindOwnersSharedState.graphml",
-				GW4EProject.ADD_SYNCED_POLICIES,
-				new ICondition [] {new NoErrorInProblemView(pv)}
-		);
+		ICondition cond = new DefaultCondition () {
+ 			@Override
+			public boolean test() throws Exception {
+				try {
+					project.cleanBuild();
+					ProblemView pv = ProblemView.open(GW4EFixesTestCase.this.bot); 
+					pv.close();//Mandatory 
+					pv = ProblemView.open(GW4EFixesTestCase.this.bot);
+					try {
+						pv.executeQuickFixForErrorAllMessage(
+								"No policies found for FindOwnersSharedState.graphml",
+								GW4EProject.ADD_SYNCED_POLICIES,
+								new ICondition [] {new NoErrorInProblemView(pv)}
+						);
+						return true;
+					} catch (Exception e) {
+					}
+					pv.close();//Mandatory 
+				} catch (Exception e) {
+					 e.printStackTrace();
+				}
+				return false;
+			}
+
+			@Override
+			public String getFailureMessage() {
+				return "Unable to clean the problem view";
+			}
+ 		};
+ 		
+ 		bot.waitUntil(cond, 5 * 60 * 1000);
+		
+		pv = ProblemView.open(bot);
 		pv.close();//Mandatory
 	}
 	
@@ -406,7 +432,7 @@ public class GW4EFixesTestCase {
  		IFile iFile = (IFile)ResourceManager.getResource(gwproject + "/src/test/resources/com/company/build.policies");
  		project.clearBuildPoliciesFile(iFile);
  		
- 		ICondition condition = new DefaultCondition () {
+ 		ICondition cond = new DefaultCondition () {
  			@Override
 			public boolean test() throws Exception {
 				try {
@@ -436,7 +462,7 @@ public class GW4EFixesTestCase {
 			}
  		};
  		
- 		bot.waitUntil(condition, 5 * 60 * 1000);
+ 		bot.waitUntil(cond, 5 * 60 * 1000);
 		
 		String expectedNewGenerator = "random(edge_coverage(50))";
 		IFile veterinarien = PetClinicProject.getVeterinariensSharedStateImplFile(gwproject);
