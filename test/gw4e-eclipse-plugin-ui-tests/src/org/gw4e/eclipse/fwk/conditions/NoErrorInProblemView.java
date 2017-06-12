@@ -45,7 +45,11 @@ public class NoErrorInProblemView extends DefaultCondition {
 
 	public boolean test() throws Exception {
 		try {
-			return pbView.getDisplayedErrorCount() == 0;
+			boolean b = pbView.getDisplayedErrorCount() == 0;
+			if (!b) {
+				pbView.print();
+			}
+			return b;
 		} catch (WidgetNotFoundException e) {
 			 return false;
 		}

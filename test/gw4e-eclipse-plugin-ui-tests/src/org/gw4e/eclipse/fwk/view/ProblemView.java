@@ -79,7 +79,6 @@ public class ProblemView {
 			try {
 				PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView("org.eclipse.ui.views.ProblemView");
 			} catch (PartInitException e1) {
-				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
 		});
@@ -247,6 +246,16 @@ public class ProblemView {
 			}
 		}
 		throw new WidgetNotFoundException("Cannot find the Error " + text);
+	}
+	
+	public void print() {
+		System.out.println();
+		System.out.println("XXXXXXXXXXXXXXXXXXXXXX PROBLEM VIEW CONTENT ");
+		SWTBotTreeItem item = expandErrorItem();
+		SWTBotTreeItem[] child = item.getItems();
+		for (int i = 0; i < child.length; i++) {
+			System.out.println(child[i].row().get(0));
+		}
 	}
 
 	public SWTBotTreeItem expandErrorItem() {
