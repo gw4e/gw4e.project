@@ -406,18 +406,37 @@ public class GW4EFixesTestCase {
  		IFile iFile = (IFile)ResourceManager.getResource(gwproject + "/src/test/resources/com/company/build.policies");
  		project.clearBuildPoliciesFile(iFile);
  		
- 		project.cleanBuild();
+ 		ICondition condition = new DefaultCondition () {
+ 			@Override
+			public boolean test() throws Exception {
+				try {
+					project.cleanBuild();
+					ProblemView pv = ProblemView.open(GW4EFixesTestCase.this.bot); 
+					pv.close();//Mandatory 
+					pv = ProblemView.open(GW4EFixesTestCase.this.bot);
+					try {
+						pv.executeQuickFixForErrorAllMessage(
+								"No policies found for FindOwnersSharedState.graphml",
+								GW4EProject.ADD_NOCHECK_POLICIES,
+								new ICondition [] {new NoErrorInProblemView(pv)}
+						);
+						return true;
+					} catch (Exception e) {
+					}
+					pv.close();//Mandatory 
+				} catch (Exception e) {
+					 e.printStackTrace();
+				}
+				return false;
+			}
+
+			@Override
+			public String getFailureMessage() {
+				return "Unable to clean the problem view";
+			}
+ 		};
  		
-		ProblemView pv = ProblemView.open(bot); 
-		pv.close();//Mandatory 
-		
-		pv = ProblemView.open(bot);
-		pv.executeQuickFixForErrorAllMessage(
-				"No policies found for FindOwnersSharedState.graphml",
-				GW4EProject.ADD_NOCHECK_POLICIES,
-				new ICondition [] {new NoErrorInProblemView(pv)}
-		);
-		pv.close();//Mandatory 
+ 		bot.waitUntil(condition, 5 * 60 * 1000);
 		
 		String expectedNewGenerator = "random(edge_coverage(50))";
 		IFile veterinarien = PetClinicProject.getVeterinariensSharedStateImplFile(gwproject);
@@ -429,7 +448,7 @@ public class GW4EFixesTestCase {
  		assertEquals(newGenerator,expectedNewGenerator);
 		
  		project.cleanBuild();
- 		pv = ProblemView.open(bot);
+ 		ProblemView pv = ProblemView.open(bot);
 		bot.waitUntil(new NoErrorInProblemView(pv));
 		pv.close();//Mandatory
 		
