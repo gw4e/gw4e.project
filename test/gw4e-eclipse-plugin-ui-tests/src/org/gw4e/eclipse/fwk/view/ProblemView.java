@@ -250,6 +250,8 @@ public class ProblemView {
 	
 	public void print() {
 		System.out.println();
+		System.out.println("XXXXXXXXXXXXXXXXXXXXXX STACK ");
+		new Exception ().printStackTrace();
 		System.out.println("XXXXXXXXXXXXXXXXXXXXXX PROBLEM VIEW CONTENT ");
 		SWTBotTreeItem item = expandErrorItem();
 		SWTBotTreeItem[] child = item.getItems();

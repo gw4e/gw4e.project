@@ -123,6 +123,7 @@ public class GW4EFixesTestCase {
 	@Test
 	public void testQuickFixesSetNoCheckMode()
 			throws CoreException, BuildPolicyConfigurationException, IOException {
+		System.out.println("XXXXXXXXXXXXXXXXXXXX testQuickFixesSetNoCheckMode");
 		GW4EProject project = new GW4EProject(bot, gwproject);
 		project.createInitialProject(gwproject,TEST_RESOURCE_FOLDER,PACKAGE_NAME,graphMLFilename);
 		 
@@ -164,7 +165,7 @@ public class GW4EFixesTestCase {
 	@Test
 	public void testQuickFixesSetSyncMode()
 			throws CoreException, BuildPolicyConfigurationException, IOException {
-		
+		System.out.println("XXXXXXXXXXXXXXXXXXXX testQuickFixesSetSyncMode");
 		GW4EProject project = new GW4EProject(bot, gwproject);
 
 		
@@ -211,6 +212,7 @@ public class GW4EFixesTestCase {
 	
 	@Test
 	public void testUpdatePathGeneratorInSourceFileFromMenu () throws CoreException, IOException, InterruptedException {
+		System.out.println("XXXXXXXXXXXXXXXXXXXX testUpdatePathGeneratorInSourceFileFromMenu");
 		GW4EProject project = new GW4EProject(bot, gwproject);
 		project.createProjectWithoutError( TEST_RESOURCE_FOLDER,  PACKAGE_NAME,  graphMLFilename);
 		String targetFormat="test";
@@ -275,6 +277,7 @@ public class GW4EFixesTestCase {
 	
 	@Test
 	public void testInvalidGenerator  () throws CoreException, IOException, InterruptedException {
+		System.out.println("XXXXXXXXXXXXXXXXXXXX testInvalidGenerator");
 		String wrongPathGenerator = "xxx";
 		GW4EProject project = new GW4EProject(bot, gwproject);
 		project.createProjectWithoutError( TEST_RESOURCE_FOLDER,  PACKAGE_NAME,  graphMLFilename);
@@ -315,6 +318,7 @@ public class GW4EFixesTestCase {
 	
 	@Test
 	public void testInvalidSeverity () throws CoreException, IOException, InterruptedException {
+		System.out.println("XXXXXXXXXXXXXXXXXXXX testInvalidSeverity");
 		String wrongSeverity = "Z";
 		String pathGeneratorPrefix = "random(vertex_coverage(100));E;random(edge_coverage(100));";
 		GW4EProject project = new GW4EProject(bot, gwproject);
@@ -347,6 +351,7 @@ public class GW4EFixesTestCase {
 	
 	@Test
 	public void testUpdatePathGeneratorInSourceFile () throws CoreException, FileNotFoundException {
+		System.out.println("XXXXXXXXXXXXXXXXXXXX testUpdatePathGeneratorInSourceFile");
 		String expectedNewGenerator = "random(vertex_coverage(50))";
 		 
  		PetClinicProject.create (bot,gwproject); // At this step the generator is "random(edge_coverage(100))"
@@ -371,6 +376,7 @@ public class GW4EFixesTestCase {
 
 	@Test
 	public void testMissingPoliciesAddSynced () throws CoreException, IOException, InterruptedException {
+		System.out.println("XXXXXXXXXXXXXXXXXXXX testMissingPoliciesAddSynced");
  		PetClinicProject.create (bot,gwproject); // At this step the generator is "random(edge_coverage(100))"
  		GW4EProject project = new GW4EProject(bot, gwproject);
  		IFile iFile = (IFile)ResourceManager.getResource(gwproject + "/src/test/resources/com/company/build.policies");
@@ -394,6 +400,7 @@ public class GW4EFixesTestCase {
 	
 	@Test
 	public void testMissingPoliciesAddNoCheck () throws CoreException, IOException, InterruptedException {
+		System.out.println("XXXXXXXXXXXXXXXXXXXX testMissingPoliciesAddNoCheck");
  		PetClinicProject.create (bot,gwproject); // At this step the generator is "random(edge_coverage(100))"
  		GW4EProject project = new GW4EProject(bot, gwproject);
  		IFile iFile = (IFile)ResourceManager.getResource(gwproject + "/src/test/resources/com/company/build.policies");
@@ -454,6 +461,7 @@ public class GW4EFixesTestCase {
 	
 	@Test
 	public void testFixUnExistingEntry () throws CoreException, IOException, InterruptedException {
+		System.out.println("XXXXXXXXXXXXXXXXXXXX testFixUnExistingEntry");
 		GW4EProject project = new GW4EProject(bot, gwproject);
 		project.resetToJavPerspective();
 		project.createProjectWithoutError(TEST_RESOURCE_FOLDER, PACKAGE_NAME, graphMLFilename);
@@ -474,6 +482,7 @@ public class GW4EFixesTestCase {
 	}
 	@Test
 	public void testInvalidGeneratorInSourceFile () throws CoreException, FileNotFoundException {
+		System.out.println("XXXXXXXXXXXXXXXXXXXX testInvalidGeneratorInSourceFile");
 		String expectedNewGenerator = "xxx";
 		 
  		PetClinicProject.create (bot,gwproject); // At this step the generator is "random(edge_coverage(100))"
