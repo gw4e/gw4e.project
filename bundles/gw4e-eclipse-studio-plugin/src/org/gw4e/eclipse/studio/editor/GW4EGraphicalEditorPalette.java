@@ -48,7 +48,8 @@ public class GW4EGraphicalEditorPalette extends PaletteRoot   {
 	public GW4EGraphicalEditorPalette() {
 		addGroup();
 		addSelectionTool();
-		addGW4EObjectTool();		 
+		addGW4EObjectTool();
+		 
 	}
 
 	private void addSelectionTool() {

@@ -58,6 +58,7 @@ import org.eclipse.gef.ui.actions.ToggleGridAction;
 import org.eclipse.gef.ui.actions.ToggleSnapToGeometryAction;
 import org.eclipse.gef.ui.actions.ZoomInAction;
 import org.eclipse.gef.ui.actions.ZoomOutAction;
+import org.eclipse.gef.ui.palette.FlyoutPaletteComposite;
 import org.eclipse.gef.ui.parts.ContentOutlinePage;
 import org.eclipse.gef.ui.parts.GraphicalEditorWithFlyoutPalette;
 import org.eclipse.gef.ui.parts.GraphicalViewerKeyHandler;
@@ -108,6 +109,7 @@ public class GW4EEditor extends GraphicalEditorWithFlyoutPalette
 
 	public GW4EEditor() {
 		setEditDomain(new DefaultEditDomain(this));
+		getPalettePreferences().setPaletteState(FlyoutPaletteComposite.STATE_PINNED_OPEN);
 	}
 
 	@Override
@@ -380,8 +382,9 @@ public class GW4EEditor extends GraphicalEditorWithFlyoutPalette
 	 * 
 	 * @see org.eclipse.gef.ui.parts.GraphicalEditorWithPalette#getPaletteRoot()
 	 */
-	GW4EGraphicalEditorPalette palette;
+	PaletteRoot palette;
 
+	 
 	protected PaletteRoot getPaletteRoot() {
 		if (palette == null) {
 			palette = new GW4EGraphicalEditorPalette();
