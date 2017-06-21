@@ -1,5 +1,7 @@
 package org.gw4e.eclipse.studio.editor;
 
+import java.util.Iterator;
+
 /*-
  * #%L
  * gw4e
@@ -38,6 +40,7 @@ import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.actions.ActionFactory;
 import org.eclipse.ui.wizards.newresource.BasicNewResourceWizard;
@@ -82,6 +85,38 @@ public class ContextMenuProvider extends org.eclipse.gef.ContextMenuProvider {
 						 
 					}
 					return true;
+				}
+            	
+            };
+            
+          IAction openApiBasedOfflineDialogAction = new EditorPartAction (editor) {
+            	
+            	protected void init() {
+            		setId("grapphwalker.openApiBasedOfflineDialogAction");
+            		setText("Open Api Based Offline Test Dialog");
+            		setToolTipText("Open Api Based Offline Test Dialog");
+            	}
+
+            	public void run() {
+					GraphSelection gs = GraphSelectionManager.ME.getSelection();
+					IStructuredSelection selection = (IStructuredSelection)gs.getCurrentSelection();
+					if (selection!=null) {
+						 Iterator iter = selection.iterator();
+						 while (iter.hasNext()) {
+							Object object = (Object) iter.next();
+							System.out.println(object);
+						}
+					}
+            	}
+            	
+				@Override
+				protected boolean calculateEnabled() {
+					GraphSelection gs = GraphSelectionManager.ME.getSelection();
+					ISelection selection = gs.getCurrentSelection();
+					if (selection!=null) {
+						if (!selection.isEmpty()) return true;
+					}
+					return false;
 				}
             	
             };
@@ -279,8 +314,10 @@ public class ContextMenuProvider extends org.eclipse.gef.ContextMenuProvider {
             subMenuShowIn.add(revealAction);
             menu.appendToGroup(GEFActionConstants.GROUP_VIEW, subMenuShowIn);
 
-            
-            
+            MenuManager subMenuGenerate = new MenuManager("Generate", null);
+            subMenuGenerate.add(openApiBasedOfflineDialogAction);
+            menu.appendToGroup(GEFActionConstants.MB_ADDITIONS, subMenuGenerate);
+             
     }
 
     private ActionRegistry getActionRegistry() {

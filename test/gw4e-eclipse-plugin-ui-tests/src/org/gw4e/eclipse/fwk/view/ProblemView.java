@@ -95,6 +95,9 @@ public class ProblemView {
 
 	public void executeQuickFixForErrorAllMessage(String expectedErrorMessageInProblemView, String quickfixmessage,
 			ICondition[] conditions) {
+		
+		print ();
+		
 		bot.waitUntil(new ErrorIsInProblemView(this, expectedErrorMessageInProblemView));
 
 		SWTBotTreeItem item = findErrorItemWithText(expectedErrorMessageInProblemView);
