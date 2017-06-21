@@ -41,7 +41,6 @@ public abstract class GWLink extends GraphElement implements Comparable<GWLink> 
 
 	public static final String PROPERTY_NAME_UPDATED = "LinkNameUpdated";
 	public static final String PROPERTY_BENDPOINTS_UPDATED = "LinkBendPointUpdated";
-	public static final String PROPERTY_BENDPOINTS_CLEARED = "LinkBendPointCleared";
 	
 	private GWNode source, target;
 	private Double weight;
@@ -155,10 +154,8 @@ public abstract class GWLink extends GraphElement implements Comparable<GWLink> 
 	public void clearBendpoints () {
 		bendpoints.clear();
 		if (getListeners()!=null) {
-			getListeners().firePropertyChange(PROPERTY_BENDPOINTS_CLEARED, null, null);
+			getListeners().firePropertyChange(PROPERTY_BENDPOINTS_UPDATED, null, null);
 		}
-		
-		
 	}
 	
 	public void setDefaultBendpoints(List<Point> points) {

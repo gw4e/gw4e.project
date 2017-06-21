@@ -39,10 +39,10 @@ import org.gw4e.eclipse.studio.Activator;
 
 public class StartVertexFigure extends VertexFigure {
 	 
-	private Ellipse ellipse;
+	private Ellipse rectangle;
 	
 	public StartVertexFigure() {
-		super (false);
+		super (true);
 	}
 	
 	protected void createLayout () {
@@ -50,30 +50,23 @@ public class StartVertexFigure extends VertexFigure {
 		setBackgroundColor(Activator.getStartVertexImageColor());
 		setOpaque(true);
 		this.setBorder(null); 
-		ellipse = new Ellipse();
-		add(ellipse);
+		rectangle = new Ellipse();
+		add(rectangle);
 		name = new Label("");
 		add(name);
 		 
 	}
-	
+	 
 	@Override protected void paintFigure(Graphics graphics) {
 		Rectangle r = getBounds().getCopy();
-		Object tempEllipse = new Rectangle(0, 0, r.width, r.height);
-		if ( constraintRectangle==null || !constraintRectangle.equals(tempEllipse)) {
-			constraintRectangle = tempEllipse;
-			setConstraint(ellipse, constraintRectangle);
-			ellipse.invalidate();
-		}
-		
-		Object tempName = new Rectangle(0, 0, r.width, r.height);
-		if (constraintName==null || !constraintName.equals(tempName)) {
-			constraintName = tempName;
-			setConstraint(name, constraintName);
-			name.invalidate();	
-		}
+		setConstraint(rectangle, new Rectangle(0, 0, r.width, r.height));
+		setConstraint(name, new Rectangle(0, 0, r.width, r.height));
+		if (vertextStateFigure!=null) vertextStateFigure.setConstraint(r);
+		name.invalidate();		
+		rectangle.invalidate();
+		if (vertextStateFigure!=null) vertextStateFigure.invalidate();
 	}
- 
+	
 	public ConnectionAnchor getConnectionAnchor() {
 	    if (connectionAnchor == null) {
 	      connectionAnchor = new EllipseAnchor(this);

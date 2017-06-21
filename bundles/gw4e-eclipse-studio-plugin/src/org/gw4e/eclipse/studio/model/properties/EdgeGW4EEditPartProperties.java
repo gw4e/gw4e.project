@@ -29,6 +29,7 @@ package org.gw4e.eclipse.studio.model.properties;
  */
 
 import java.util.Map;
+import java.util.Properties;
 
 import org.eclipse.gef.commands.CommandStack;
 import org.eclipse.ui.views.properties.IPropertyDescriptor;

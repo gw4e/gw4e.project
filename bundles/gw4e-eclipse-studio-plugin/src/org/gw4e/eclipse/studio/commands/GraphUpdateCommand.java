@@ -31,6 +31,7 @@ package org.gw4e.eclipse.studio.commands;
 import java.util.Map;
 
 import org.eclipse.gef.commands.Command;
+import org.gw4e.eclipse.studio.model.GWEdge;
 import org.gw4e.eclipse.studio.model.GWGraph;
 import org.gw4e.eclipse.studio.model.GWNode;
 

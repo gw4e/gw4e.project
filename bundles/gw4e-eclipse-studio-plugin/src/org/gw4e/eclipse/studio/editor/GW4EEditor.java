@@ -110,7 +110,6 @@ public class GW4EEditor extends GraphicalEditorWithFlyoutPalette
 	public GW4EEditor() {
 		setEditDomain(new DefaultEditDomain(this));
 		getPalettePreferences().setPaletteState(FlyoutPaletteComposite.STATE_PINNED_OPEN);
-		 
 	}
 
 	@Override
@@ -149,6 +148,7 @@ public class GW4EEditor extends GraphicalEditorWithFlyoutPalette
 				}
 			});
 		}
+
 	}
 
 	public Dimension getDimension() {
@@ -166,7 +166,6 @@ public class GW4EEditor extends GraphicalEditorWithFlyoutPalette
 		});
 	}
 
- 
 	public void treeLayout() {
 		Display.getDefault().syncExec(new Runnable() {
 			@Override

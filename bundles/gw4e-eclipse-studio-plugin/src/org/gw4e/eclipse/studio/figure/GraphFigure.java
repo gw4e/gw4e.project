@@ -38,8 +38,11 @@ public class GraphFigure extends AbstractFigure {
 	private Label name =  new Label();
  
 	private XYLayout layout;
+	
+	 
 	 
 	public GraphFigure() {
+
 		layout = new XYLayout();
 		setLayoutManager(layout);
 
@@ -49,6 +52,10 @@ public class GraphFigure extends AbstractFigure {
 		 
 		setForegroundColor(ColorConstants.black);
 		setBorder(new LineBorder(2));
+		
+		 
+		
+	 
 	}
  
 	/**

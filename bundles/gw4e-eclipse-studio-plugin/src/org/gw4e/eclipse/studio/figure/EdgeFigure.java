@@ -31,9 +31,9 @@ package org.gw4e.eclipse.studio.figure;
 import java.util.List;
 import java.util.StringTokenizer;
 
+import org.eclipse.draw2d.BendpointConnectionRouter;
 import org.eclipse.draw2d.BendpointLocator;
 import org.eclipse.draw2d.ColorConstants;
-import org.eclipse.draw2d.ConnectionRouter;
 import org.eclipse.draw2d.Figure;
 import org.eclipse.draw2d.Label;
 import org.eclipse.draw2d.LineBorder;
@@ -42,8 +42,6 @@ import org.eclipse.draw2d.PolylineConnection;
 import org.eclipse.draw2d.PolylineDecoration;
 import org.eclipse.draw2d.RelativeLocator;
 import org.eclipse.draw2d.ToolbarLayout;
-import org.eclipse.draw2d.geometry.Point;
-import org.eclipse.draw2d.geometry.PointList;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.gw4e.eclipse.studio.preference.PreferenceManager;
 import org.gw4e.eclipse.studio.util.ID;
@@ -63,6 +61,8 @@ public class EdgeFigure extends PolylineConnection {
 		
 		this.setLineWidth(this.getLineWidth() * 2);
 		
+	  	this.setConnectionRouter(new BendpointConnectionRouter());
+
 		this.setTargetDecoration(new PolylineDecoration());
  
 		label = new Label("e_"+ID.getId());
@@ -75,63 +75,6 @@ public class EdgeFigure extends PolylineConnection {
 		blockedFigure = new BlockedFigure();
 		actionFigure = new ActionFigure ();
 		add (actionFigure, new RelativeLocator(label,0.5,1.5));
-	}
-	
-	 
-	
-	// Override otherwise when adding a vertex , the edge is redrawn with the
-	// passed router.
-	// which means that we would change the router and trigger a redraw of the
-	// edge. At this
-	public void setConnectionRouter(ConnectionRouter router) {
-		if (this.getConnectionRouter() == ConnectionRouter.NULL) {
-			super.setConnectionRouter(router);
-		}
-	 }
-
-	// Override otherwise infinite loop calling
-	// GW4ELinkBendpointEditPolicy.propertyChange () when the graph is bigger
-	// that the editor
-	PointList cachedPoints = null;
-	public void setPoints(PointList p) {
-		if (cachedPoints != null && cachedPoints.size() == p.size()) {
-			boolean sameBounds = cachedPoints.getBounds().equals(p.getBounds());
-			int size  = cachedPoints.size() ;
-			boolean diff = false;
-			for (int i = 0; i < size; i++) {
-				Point  cachedPoint = cachedPoints.getPoint(i);
-				Point  passedPoint = p.getPoint(i);
-				if (!cachedPoint.equals(passedPoint)) {
-					diff=true;
-					break;
-				}
-			}
-			if (sameBounds && !diff) return;
-		}
-			 
-		cachedPoints = p;
-		super.setPoints(p);
-	}
-	
-	public PointList getPoints() {
-		PointList list = super.getPoints();
-		PointList pl = new PointList() {
-			public Point getPoint(int index) {
-				try {
-					return super.getPoint(index);
-				} catch (Exception e) {
-					 if (index > 0)
-						 return super.getPoint(index-1);
-					 return super.getPoint(0);
-				}
-			}
-		};
-		int max  = list.size();
-		for (int i = 0; i < max; i++) {
-			Point p = new Point(list.getPoint(i).x,list.getPoint(i).y);
-			pl.addPoint(p);
-		}
-		return pl;
 	}
 	
 	public void setTooltipText(String tooltipText) {

@@ -29,9 +29,6 @@ package org.gw4e.eclipse.studio.editor;
  */
 
 import org.eclipse.draw2d.geometry.Point;
-import org.eclipse.gef.EditPart;
-import org.eclipse.gef.EditPartViewer;
-import org.eclipse.gef.editparts.ScalableRootEditPart;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -54,12 +51,6 @@ public class GraphSelectionManager implements ISelectionChangedListener , org.ec
 	}
 
 	public void selectionPartChanged(GraphPart part) {
-		if (part == null) return;
-		EditPart ep = part.getParent();
-		if (ep instanceof ScalableRootEditPart) {
-			ScalableRootEditPart srep = (ScalableRootEditPart) ep;
-			selection.setEditPartViewer(srep.getViewer());
-		}
 		selection.setGpart(part); 
 	}
 	
@@ -90,7 +81,6 @@ public class GraphSelectionManager implements ISelectionChangedListener , org.ec
 		ISelection currentSelection ;
 		Point currentPoint;
 		GraphPart gpart ;
-		EditPartViewer editPartViewer;
 		
 		/**
 		 * @return the gwGraph
@@ -103,15 +93,6 @@ public class GraphSelectionManager implements ISelectionChangedListener , org.ec
 				}
 			}
 			return (GWGraph)gpart.getModel();
-		}
-		
-		
-		private EditPart getCurrentEditPart () {
-			if (currentSelection!=null && ((IStructuredSelection) currentSelection).getFirstElement() instanceof EditPart) {
-				EditPart ep =  (EditPart) ((IStructuredSelection) currentSelection).getFirstElement();
-				return  ep;
-			}
-			return null;
 		}
 		 
 		/**
@@ -154,28 +135,7 @@ public class GraphSelectionManager implements ISelectionChangedListener , org.ec
 		public String toString () {
 			return currentSelection.toString();
 		}
-
-		public EditPartViewer getEditPartViewer() {
-			return editPartViewer;
-		}
-
-		public void setEditPartViewer(EditPartViewer editPartViewer) {
-			this.editPartViewer = editPartViewer;
-		}
-		
-		public void redraw () {
-			if (editPartViewer!=null) {
-				EditPart currentEp = getCurrentEditPart();
-				try {
-					if (gpart!=null) {
-						editPartViewer.select(gpart);
-					}
-				} finally {
-					if (currentEp!=null) {
-						editPartViewer.select(currentEp);
-					}
-				}
-			}
-		}
 	}
+ 
+	 
 }
