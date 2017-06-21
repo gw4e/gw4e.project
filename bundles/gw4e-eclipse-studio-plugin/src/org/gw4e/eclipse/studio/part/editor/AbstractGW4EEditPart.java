@@ -30,13 +30,7 @@ package org.gw4e.eclipse.studio.part.editor;
 
 import java.beans.PropertyChangeListener;
 
-import org.eclipse.draw2d.ConnectionLayer;
-import org.eclipse.draw2d.FanRouter;
-import org.eclipse.draw2d.ShortestPathConnectionRouter;
-import org.eclipse.gef.GraphicalEditPart;
-import org.eclipse.gef.LayerConstants;
 import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
-import org.eclipse.gef.editparts.ScalableRootEditPart;
 import org.gw4e.eclipse.studio.model.GWNode;
 
 public abstract class AbstractGW4EEditPart extends AbstractGraphicalEditPart
@@ -54,15 +48,6 @@ public abstract class AbstractGW4EEditPart extends AbstractGraphicalEditPart
 			getModel().addPropertyChangeListener(this);
 		}
 		super.activate();
- 
-		ScalableRootEditPart root = (ScalableRootEditPart) getViewer().getRootEditPart();
-		ConnectionLayer connLayer = (ConnectionLayer) root.getLayer(LayerConstants.CONNECTION_LAYER);
-		GraphicalEditPart contentEditPart = (GraphicalEditPart) root.getContents();
-		FanRouter router = new FanRouter();
-		router.setSeparation(100);
-		ShortestPathConnectionRouter spRouter = new ShortestPathConnectionRouter(contentEditPart.getFigure());
-		router.setNextRouter(spRouter);
-		connLayer.setConnectionRouter(router);
 	}
 
 	public void deactivate() {

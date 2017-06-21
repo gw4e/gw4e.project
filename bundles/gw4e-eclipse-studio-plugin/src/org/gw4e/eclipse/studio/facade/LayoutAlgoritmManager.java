@@ -42,9 +42,9 @@ import org.eclipse.gef4.layout.algorithms.SpaceTreeLayoutAlgorithm;
 import org.eclipse.gef4.layout.algorithms.SpringLayoutAlgorithm;
 import org.eclipse.gef4.layout.algorithms.SugiyamaLayoutAlgorithm;
 import org.eclipse.gef4.layout.algorithms.SugiyamaLayoutAlgorithm.Direction;
+import org.eclipse.gef4.layout.algorithms.TreeLayoutAlgorithm;
 import org.gw4e.eclipse.studio.model.GWGraph;
 import org.gw4e.eclipse.studio.model.Vertex;
-import org.eclipse.gef4.layout.algorithms.TreeLayoutAlgorithm;
 
  
 

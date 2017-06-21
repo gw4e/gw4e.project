@@ -29,10 +29,8 @@ package org.gw4e.eclipse.studio.editpolicies;
  */
  
 import org.eclipse.gef.commands.Command;
-import org.eclipse.gef.commands.UnexecutableCommand;
 import org.eclipse.gef.editpolicies.DirectEditPolicy;
 import org.eclipse.gef.requests.DirectEditRequest;
-import org.gw4e.eclipse.constant.Constant;
 import org.gw4e.eclipse.studio.commands.GraphElementRenameCommand;
 import org.gw4e.eclipse.studio.figure.EdgeFigure;
 import org.gw4e.eclipse.studio.model.GraphElement;

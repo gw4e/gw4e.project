@@ -36,7 +36,6 @@ import org.eclipse.ui.views.properties.IPropertySource;
 import org.eclipse.ui.views.properties.PropertyDescriptor;
 import org.eclipse.ui.views.properties.TextPropertyDescriptor;
 import org.gw4e.eclipse.studio.commands.GraphUpdateCommand;
-import org.gw4e.eclipse.studio.model.GWEdge;
 import org.gw4e.eclipse.studio.model.GWGraph;
 import org.gw4e.eclipse.studio.model.GWNode;
 import org.gw4e.eclipse.studio.model.ModelProperties;

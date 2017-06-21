@@ -54,11 +54,8 @@ import org.eclipse.ui.views.properties.tabbed.AbstractPropertySection;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetPage;
 import org.gw4e.eclipse.studio.editor.properties.SectionProvider;
 import org.gw4e.eclipse.studio.editor.properties.SectionWidgetID;
-import org.gw4e.eclipse.studio.model.GWEdge;
-import org.gw4e.eclipse.studio.model.GWLink;
 import org.gw4e.eclipse.studio.model.GWNode;
 import org.gw4e.eclipse.studio.model.ModelProperties;
-import org.gw4e.eclipse.studio.model.Vertex;
 import org.gw4e.eclipse.studio.model.properties.AbstractGW4EEditPartProperties;
 import org.gw4e.eclipse.studio.model.properties.GW4EGraphEditPartProperties;
 

@@ -46,7 +46,7 @@ public class VertexChangeLayoutCommand extends AbstractLayoutCommand {
 	}
 	
 	/* (non-Javadoc)
-	 * @see org.gw4e.eclipse.studio.commands.AbstractLayoutCommand#setConstraint(org.eclipse.draw2d.geometry.Rectangle)
+	 * @see org.gw4e.eclipse.studio.commands.AbstractLayoutCommand#setConstraint(org.eclipse.draw2d.Rectangle)
 	 */
 	@Override
 	public void setConstraint(Rectangle rect) {

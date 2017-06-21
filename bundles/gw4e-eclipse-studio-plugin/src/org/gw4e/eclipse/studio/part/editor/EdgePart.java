@@ -46,10 +46,11 @@ import org.eclipse.gef.editparts.AbstractConnectionEditPart;
 import org.eclipse.gef.editpolicies.ConnectionEndpointEditPolicy;
 import org.eclipse.jface.viewers.TextCellEditor;
 import org.eclipse.ui.views.properties.IPropertySource;
+import org.gw4e.eclipse.studio.editor.GraphSelectionManager;
 import org.gw4e.eclipse.studio.editor.properties.EdgeSectionProvider;
-import org.gw4e.eclipse.studio.editpolicies.GW4EdgeDeletePolicy;
 import org.gw4e.eclipse.studio.editpolicies.GW4EEdgeDirectEditPolicy;
 import org.gw4e.eclipse.studio.editpolicies.GW4ELinkBendpointEditPolicy;
+import org.gw4e.eclipse.studio.editpolicies.GW4EdgeDeletePolicy;
 import org.gw4e.eclipse.studio.figure.EdgeFigure;
 import org.gw4e.eclipse.studio.model.GWEdge;
 import org.gw4e.eclipse.studio.model.GWLink;
@@ -130,7 +131,7 @@ public class EdgePart extends AbstractConnectionEditPart implements PropertyChan
 	@Override
 	protected void activateFigure() {
 		super.activateFigure();
-		 getModel().addPropertyChangeListener(this);
+		getModel().addPropertyChangeListener(this);
 		 
 	}
 
@@ -147,7 +148,11 @@ public class EdgePart extends AbstractConnectionEditPart implements PropertyChan
 		}
 		if (evt.getPropertyName().equals(GWLink.PROPERTY_BENDPOINTS_UPDATED)) {
 			refreshVisuals();
-		}
+ 		}
+		if (evt.getPropertyName().equals(GWLink.PROPERTY_BENDPOINTS_CLEARED)) {
+			refreshVisuals();
+			GraphSelectionManager.ME.getSelection().redraw();
+ 		}
 		if (evt.getPropertyName().equals(GWEdge.PROPERTY_UPDATED)) {
 			refreshVisuals();
 		}

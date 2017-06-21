@@ -85,7 +85,6 @@ public class VertexFigure extends AbstractFigure {
 		if (addStatusFigure) {
 			addStatusFigure();
 		}
-
 	}
 
 	protected void createLayout() {
@@ -116,18 +115,37 @@ public class VertexFigure extends AbstractFigure {
 		return vertextStateFigure.hasOpenSharedLinkAvailable();
 	}
 
-	protected void paintFigure(Graphics graphics) {
+	 
+	protected Object constraintRectangle;
+	protected Object constraintName;
+	protected Object constraintStateFigure;
+	 
+	@Override protected void paintFigure(Graphics graphics) {
 		Rectangle r = getBounds().getCopy();
-		setConstraint(rectangle, new Rectangle(0, 0, r.width, r.height));
-		setConstraint(name, new Rectangle(0, 0, r.width, r.height));
-		if (vertextStateFigure != null)
-			vertextStateFigure.setConstraint(r);
-		name.invalidate();
-		rectangle.invalidate();
-		if (vertextStateFigure != null)
-			vertextStateFigure.invalidate();
+		Object tempRectangle = new Rectangle(0, 0, r.width, r.height);
+		if ( constraintRectangle==null || !constraintRectangle.equals(tempRectangle)) {
+			constraintRectangle = tempRectangle;
+			setConstraint(rectangle, constraintRectangle);
+			rectangle.invalidate();
+		}
+		 
+		Object tempName = new Rectangle(0, 0, r.width, r.height);
+		if (constraintName==null || !constraintName.equals(tempName)) {
+			constraintName = tempName;
+			setConstraint(name, constraintName);
+			name.invalidate();	
+		}
+		
+		if (vertextStateFigure!=null) {
+			if (constraintStateFigure==null || !constraintStateFigure.equals(r)) {
+				constraintStateFigure = r; 
+				vertextStateFigure.setConstraint(r);
+				vertextStateFigure.invalidate();
+			}
+		}
 	}
-
+	
+	
 	/**
 	 * @param rect
 	 */

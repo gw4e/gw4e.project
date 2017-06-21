@@ -34,6 +34,7 @@ import java.util.List;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.commands.Command;
+import org.gw4e.eclipse.studio.editor.GraphSelectionManager;
 import org.gw4e.eclipse.studio.part.editor.EdgePart;
 
 public class ClearEdgeBendpointLayoutCommand extends Command {

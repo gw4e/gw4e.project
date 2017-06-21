@@ -1,56 +1,35 @@
 package org.gw4e.eclipse.studio.part.editor;
 
-/*-
- * #%L
- * gw4e
- * $Id:$
- * $HeadURL:$
- * %%
- * Copyright (C) 2017 gw4e-project
- * %%
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- * 
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- * 
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- * #L%
- */
-
-import java.awt.AWTException;
-import java.awt.Robot;
-import java.awt.event.KeyEvent;
 import java.beans.PropertyChangeEvent;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.draw2d.ConnectionLayer;
+import org.eclipse.draw2d.FanRouter;
 import org.eclipse.draw2d.IFigure;
+import org.eclipse.draw2d.ShortestPathConnectionRouter;
 import org.eclipse.gef.CompoundSnapToHelper;
 import org.eclipse.gef.EditPolicy;
+import org.eclipse.gef.GraphicalEditPart;
+import org.eclipse.gef.LayerConstants;
 import org.eclipse.gef.SnapToGeometry;
 import org.eclipse.gef.SnapToGrid;
 import org.eclipse.gef.SnapToHelper;
+import org.eclipse.gef.editparts.ScalableRootEditPart;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Event;
 import org.eclipse.ui.views.properties.IPropertySource;
 import org.eclipse.ui.views.properties.tabbed.ITabbedPropertySheetPageContributor;
-import org.gw4e.eclipse.studio.editor.GraphSelectionManager;
 import org.gw4e.eclipse.studio.editor.GW4EEditor;
+import org.gw4e.eclipse.studio.editor.GraphSelectionManager;
 import org.gw4e.eclipse.studio.editor.properties.GraphSectionProvider;
 import org.gw4e.eclipse.studio.editpolicies.GW4EEditLayoutPolicy;
 import org.gw4e.eclipse.studio.editpolicies.GW4ENodeGraphicalNodeEditPolicy;
 import org.gw4e.eclipse.studio.editpolicies.GW4EVertexDeletePolicy;
 import org.gw4e.eclipse.studio.figure.GraphFigure;
 import org.gw4e.eclipse.studio.model.GWGraph;
+import org.gw4e.eclipse.studio.model.GWLink;
 import org.gw4e.eclipse.studio.model.GWNode;
 import org.gw4e.eclipse.studio.model.Vertex;
 import org.gw4e.eclipse.studio.model.properties.GW4EGraphEditPartProperties;
@@ -67,15 +46,30 @@ public class GraphPart extends AbstractGW4EEditPart implements GraphSectionProvi
 		return figure;
 	}
 
-	
+	FanRouter router = null;
+	@Override
 	public void activate() {
 		super.activate();
+		if (router == null) {
+			ScalableRootEditPart root = (ScalableRootEditPart) getViewer().getRootEditPart();
+			ConnectionLayer connLayer = (ConnectionLayer) root.getLayer(LayerConstants.CONNECTION_LAYER);
+			GraphicalEditPart contentEditPart = (GraphicalEditPart) root.getContents();
+			router = new FanRouter();
+			router.setSeparation(100);
+			ShortestPathConnectionRouter spRouter = new ShortestPathConnectionRouter(contentEditPart.getFigure());
+
+			router.setNextRouter(spRouter);
+			connLayer.setConnectionRouter(router);
+		}
 		GraphSelectionManager.ME.selectionPartChanged(this);
 	}
-	
+
+	@Override
 	public void deactivate() {
-		super.deactivate();
-		GraphSelectionManager.ME.selectionPartChanged(null);
+		if (isActive()) {
+			super.deactivate();
+			GraphSelectionManager.ME.selectionPartChanged(null);
+		}
 	}
 	
 	@Override
@@ -92,6 +86,7 @@ public class GraphPart extends AbstractGW4EEditPart implements GraphSectionProvi
 		GWGraph model = (GWGraph) getModel();
 		figure.setName(model.isReadOnly() ?  "Read only. Convert this graph to Json." : "");
 		figure.setTooltipText(this.getTooltipData());
+		
 	}
 
 	public List<GWNode> getModelChildren() {
@@ -127,18 +122,12 @@ public class GraphPart extends AbstractGW4EEditPart implements GraphSectionProvi
 		if (evt.getPropertyName().equals(GWNode.PROPERTY_UPDATED)) {
 			refreshChildren();
 		}
-		 
+		if (evt.getPropertyName().equals(GWLink.PROPERTY_BENDPOINTS_UPDATED)) {
+			GraphFigure figure = (GraphFigure) getFigure();
+			 
+ 		}
 	}
 
-	// Workaround to ramdom processStale (..) NPE :-(
-	private void escape () {
-		try {
-			Robot robot = new Robot();
-			robot.keyPress(KeyEvent.VK_ESCAPE);
-		} catch (AWTException e) {
-		}
-	}
-	
 	@Override 
 	public Object getAdapter(Class key) {
 	    if (key == SnapToHelper.class) {
