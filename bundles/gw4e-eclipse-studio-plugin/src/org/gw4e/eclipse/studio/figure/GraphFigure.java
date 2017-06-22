@@ -35,35 +35,27 @@ import org.eclipse.draw2d.XYLayout;
 import org.eclipse.draw2d.geometry.Rectangle;
 
 public class GraphFigure extends AbstractFigure {
-	private Label name =  new Label();
- 
+	private Label name = new Label();
 	private XYLayout layout;
-	
-	 
-	 
-	public GraphFigure() {
 
+	public GraphFigure() {
 		layout = new XYLayout();
 		setLayoutManager(layout);
 
 		name.setForegroundColor(ColorConstants.red);
 		add(name);
 		setConstraint(name, new Rectangle(5, 5, -1, -1));
-		 
+
 		setForegroundColor(ColorConstants.black);
 		setBorder(new LineBorder(2));
-		
-		 
-		
-	 
 	}
- 
+
 	/**
-	 * @param name the name to set
+	 * @param name
+	 *            the name to set
 	 */
 	public void setName(String name) {
 		this.name.setText(name);
 	}
 
-	 
 }

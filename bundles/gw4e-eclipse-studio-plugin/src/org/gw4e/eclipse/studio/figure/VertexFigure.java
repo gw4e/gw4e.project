@@ -75,7 +75,8 @@ public class VertexFigure extends AbstractFigure {
 	protected VertextStateFigure vertextStateFigure;
 
 	protected XYLayout layout;
-
+	protected boolean stateUpdate = false;
+	
 	public VertexFigure() {
 		this(true);
 	}
@@ -85,7 +86,6 @@ public class VertexFigure extends AbstractFigure {
 		if (addStatusFigure) {
 			addStatusFigure();
 		}
-
 	}
 
 	protected void createLayout() {
@@ -116,18 +116,39 @@ public class VertexFigure extends AbstractFigure {
 		return vertextStateFigure.hasOpenSharedLinkAvailable();
 	}
 
-	protected void paintFigure(Graphics graphics) {
+	 
+	protected Object constraintRectangle;
+	protected Object constraintName;
+	protected Object constraintStateFigure;
+	 
+	@Override protected void paintFigure(Graphics graphics) {
 		Rectangle r = getBounds().getCopy();
-		setConstraint(rectangle, new Rectangle(0, 0, r.width, r.height));
-		setConstraint(name, new Rectangle(0, 0, r.width, r.height));
-		if (vertextStateFigure != null)
-			vertextStateFigure.setConstraint(r);
-		name.invalidate();
-		rectangle.invalidate();
-		if (vertextStateFigure != null)
-			vertextStateFigure.invalidate();
+		 
+		Object tempRectangle = new Rectangle(0, 0, r.width, r.height);
+		if ( constraintRectangle==null || !constraintRectangle.equals(tempRectangle)) {
+			constraintRectangle = tempRectangle;
+			setConstraint(rectangle, constraintRectangle);
+			rectangle.invalidate();
+		}
+		 
+		Object tempName = new Rectangle(0, 0, r.width, r.height);
+		if (constraintName==null || !constraintName.equals(tempName) || isStateUpdate()) {
+			constraintName = tempName;
+			setConstraint(name, constraintName);
+			name.invalidate();	
+		}
+		
+		if (vertextStateFigure!=null) {
+			if (constraintStateFigure==null || !constraintStateFigure.equals(r) || isStateUpdate()) {
+				constraintStateFigure = r; 
+				setStateUpdate(false);
+				vertextStateFigure.setConstraint(r);
+				vertextStateFigure.invalidate();
+			}
+		}
 	}
-
+	
+	
 	/**
 	 * @param rect
 	 */
@@ -328,8 +349,8 @@ public class VertexFigure extends AbstractFigure {
 				width = width + l.getBounds().width;
 				height = Math.max(height, l.getBounds().height);
 			}
-			VertexFigure.this.setConstraint(this,
-					new Rectangle(r.width - width - 3, r.height - height - 3, r.width, r.height));
+			Rectangle rect = new Rectangle(r.width - width - 3, r.height - height - 3, r.width, r.height);
+			VertexFigure.this.setConstraint(this,rect);
 		}
 	}
 
@@ -393,6 +414,14 @@ public class VertexFigure extends AbstractFigure {
 				}
 			}
 		}
+	}
+
+	public boolean isStateUpdate() {
+		return stateUpdate;
+	}
+
+	public void setStateUpdate(boolean stateUpdate) {
+		this.stateUpdate = stateUpdate;
 	}
 
 }

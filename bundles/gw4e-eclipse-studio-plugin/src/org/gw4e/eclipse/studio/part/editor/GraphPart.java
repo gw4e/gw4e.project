@@ -35,12 +35,18 @@ import java.beans.PropertyChangeEvent;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.draw2d.ConnectionLayer;
+import org.eclipse.draw2d.FanRouter;
 import org.eclipse.draw2d.IFigure;
+import org.eclipse.draw2d.ShortestPathConnectionRouter;
 import org.eclipse.gef.CompoundSnapToHelper;
 import org.eclipse.gef.EditPolicy;
+import org.eclipse.gef.GraphicalEditPart;
+import org.eclipse.gef.LayerConstants;
 import org.eclipse.gef.SnapToGeometry;
 import org.eclipse.gef.SnapToGrid;
 import org.eclipse.gef.SnapToHelper;
+import org.eclipse.gef.editparts.ScalableRootEditPart;
 import org.eclipse.ui.views.properties.IPropertySource;
 import org.eclipse.ui.views.properties.tabbed.ITabbedPropertySheetPageContributor;
 import org.gw4e.eclipse.studio.editor.GraphSelectionManager;
@@ -67,9 +73,17 @@ public class GraphPart extends AbstractGW4EEditPart implements GraphSectionProvi
 		return figure;
 	}
 
-	
+ 
 	public void activate() {
 		super.activate();
+		ScalableRootEditPart root = (ScalableRootEditPart) getViewer().getRootEditPart();
+		ConnectionLayer connLayer = (ConnectionLayer) root.getLayer(LayerConstants.CONNECTION_LAYER);
+		GraphicalEditPart contentEditPart = (GraphicalEditPart) root.getContents();
+		FanRouter router = new FanRouter();
+		router.setSeparation(100);
+		ShortestPathConnectionRouter spRouter = new ShortestPathConnectionRouter(contentEditPart.getFigure());
+		router.setNextRouter(spRouter);
+		connLayer.setConnectionRouter(router);
 		GraphSelectionManager.ME.selectionPartChanged(this);
 	}
 	

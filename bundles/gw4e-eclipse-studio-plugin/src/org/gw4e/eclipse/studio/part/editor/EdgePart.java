@@ -147,6 +147,7 @@ public class EdgePart extends AbstractConnectionEditPart implements PropertyChan
 		}
 		if (evt.getPropertyName().equals(GWLink.PROPERTY_BENDPOINTS_UPDATED)) {
 			refreshVisuals();
+			refreshChildren();
 		}
 		if (evt.getPropertyName().equals(GWEdge.PROPERTY_UPDATED)) {
 			refreshVisuals();

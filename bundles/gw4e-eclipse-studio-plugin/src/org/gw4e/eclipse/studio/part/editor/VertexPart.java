@@ -41,6 +41,7 @@ import org.eclipse.gef.Request;
 import org.eclipse.gef.RequestConstants;
 import org.eclipse.jface.viewers.TextCellEditor;
 import org.eclipse.ui.views.properties.IPropertySource;
+import org.gw4e.eclipse.studio.editor.GraphSelectionManager;
 import org.gw4e.eclipse.studio.editor.properties.VertexSectionProvider;
 import org.gw4e.eclipse.studio.editpolicies.GW4ENodeGraphicalNodeEditPolicy;
 import org.gw4e.eclipse.studio.editpolicies.GW4EVertexDeletePolicy;
@@ -123,7 +124,7 @@ public class VertexPart extends AbstractGW4EEditPart implements NodeEditPart,Ver
 		figure.setLayout(model.getLayout());
 		figure.setTooltipText(this.getTooltipData());
 		figure.setIcons(model.isBlocked(),model.getInitScript().getSource(),model.isShared());
-	}
+ 	}
 
 	/*
 	 * (non-Javadoc)
@@ -154,6 +155,11 @@ public class VertexPart extends AbstractGW4EEditPart implements NodeEditPart,Ver
 		return ((VertexFigure) getFigure()).getConnectionAnchor();
 	}
 
+	private void updateState () {
+		VertexFigure figure = (VertexFigure) getFigure();
+		figure.setStateUpdate(true);
+	}
+	
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
 		if (evt.getPropertyName().equals(Vertex.PROPERTY_NAME_UPDATED)) {
@@ -162,6 +168,7 @@ public class VertexPart extends AbstractGW4EEditPart implements NodeEditPart,Ver
 			refreshTargetConnections();
 		}
 		if (evt.getPropertyName().equals(Vertex.PROPERTY_UPDATED)) {
+			updateState();
 			refreshVisuals();
 			refreshSourceConnections();
 			refreshTargetConnections();
@@ -191,6 +198,7 @@ public class VertexPart extends AbstractGW4EEditPart implements NodeEditPart,Ver
 			refreshVisuals();
 			refreshSourceConnections();
 		}
+		
 	}
 
 	@Override
