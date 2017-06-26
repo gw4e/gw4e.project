@@ -34,6 +34,9 @@ import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchManager;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Widget;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.waits.Conditions;
@@ -62,6 +65,7 @@ public abstract class AbstractRunner  {
 	
 	protected   String getConsoleText(SWTWorkbenchBot bot) {
 		SWTBotView console = waitForConsoleBeDisplayed ();
+		 
 		SWTBotStyledText textWidget = console.bot().styledText();
 		return textWidget.getText();
 	}
@@ -87,6 +91,7 @@ public abstract class AbstractRunner  {
 		bot.waitUntil(Conditions.waitForWidget(console));
 		SWTBotView consoleView = getConsoleView(bot);
 		consoleView.setFocus();
+		 
 		return consoleView;
 	}
 	
@@ -123,11 +128,10 @@ public abstract class AbstractRunner  {
 	}
 	
 	public void  waitForRunCompleted (String[] expectations , long timeout) {
-		 
-		
 		bot.waitUntil(new ICondition (){
 			public boolean test() throws Exception {
 				String result = getConsoleText(bot);
+				System.out.println(result);
 				int count=0;
 				for (int i = 0; i < expectations.length; i++) {
 					if (result.indexOf(expectations[i]) != -1)  count++;

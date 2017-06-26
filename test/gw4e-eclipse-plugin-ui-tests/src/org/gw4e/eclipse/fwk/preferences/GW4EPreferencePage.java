@@ -39,9 +39,12 @@ import org.eclipse.swtbot.eclipse.finder.waits.Conditions;
 import org.eclipse.swtbot.swt.finder.waits.DefaultCondition;
 import org.eclipse.swtbot.swt.finder.waits.ICondition;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotButton;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotCheckBox;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTableItem;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
@@ -68,6 +71,19 @@ public class GW4EPreferencePage {
 	public void open() {
 		shell = showPreferenceDialog();
 		showGW4EPreference(shell);
+	}
+	
+	public void openConsolePreference () {
+		shell = showPreferenceDialog();
+		showConsolePreference(shell);
+	}
+	
+	private void showConsolePreference(SWTBotShell shell) {
+		SWTBotTree tree = bot.tree().select("Run/Debug");
+		SWTBotTreeItem item = tree.getTreeItem("Console");
+		item.click();
+		SWTBotCheckBox button = bot.checkBoxWithLabel("Limit console output");
+		if (button.isChecked()) button.click();
 	}
 	
 	public boolean isGraphWalkerLibrariesSize(int size) {

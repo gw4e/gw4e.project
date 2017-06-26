@@ -47,6 +47,7 @@ import org.gw4e.eclipse.builder.exception.BuildPolicyConfigurationException;
 import org.gw4e.eclipse.facade.ResourceManager;
 import org.gw4e.eclipse.facade.SettingsManager;
 import org.gw4e.eclipse.fwk.perpective.GW4EPerspective;
+import org.gw4e.eclipse.fwk.preferences.ConsolePreferencePage;
 import org.gw4e.eclipse.fwk.project.GW4EProject;
 import org.gw4e.eclipse.fwk.project.PetClinicProject;
 import org.gw4e.eclipse.fwk.run.GW4EOfflineRunner;
@@ -130,6 +131,11 @@ public class GW4ERunnerTestCase {
 	@Test
 	public void testRunAsRunner () throws CoreException, FileNotFoundException {
 		ResourceManager.setAutoBuilding(false);
+		
+		ConsolePreferencePage cpp = new ConsolePreferencePage (bot);
+		cpp.unlimitoutput();
+		
+		
 		gwproject =  gwproject + "1";
 		try {
 			// Changing the project name 
@@ -166,23 +172,7 @@ public class GW4ERunnerTestCase {
 		});
 		
 		GW4ETestRunner gwtr = new  GW4ETestRunner(bot);
-		String[] expected = new String[] { 
-				"Result :",
-				"  \"totalFailedNumberOfModels\": 0,",
-				"  \"totalNotExecutedNumberOfModels\": 0,", 
-				"  \"totalNumberOfUnvisitedVertices\": 0,",
-				"  \"verticesNotVisited\": [],",
-				"  \"totalNumberOfModels\": 1,",
-				"  \"totalCompletedNumberOfModels\": 1,", 
-				"  \"totalNumberOfVisitedEdges\": 7,",
-				"  \"totalIncompleteNumberOfModels\": 0,",
-				"  \"edgesNotVisited\": [],", 
-				"  \"vertexCoverage\": 100,",
-				"  \"totalNumberOfEdges\": 7,",
-				"  \"totalNumberOfVisitedVertices\": 3,", 
-				"  \"edgeCoverage\": 100,",
-				"  \"totalNumberOfVertices\": 3,", 
-				"  \"totalNumberOfUnvisitedEdges\": 0" };
+		String[] expected = new String[] { "com.company.PetClinicSharedStateImpl(RandomPath(EdgeCoverage(100)) )"  };
 		gwtr.waitForRunCompleted (expected,RUN_TIMEOUT);
 	}
 	
@@ -192,6 +182,9 @@ public class GW4ERunnerTestCase {
 	public void testRunAsMultipleRunner () throws CoreException, FileNotFoundException {
 		ResourcesPlugin.getWorkspace().getDescription().setAutoBuilding(false);
 
+		ConsolePreferencePage cpp = new ConsolePreferencePage (bot);
+		cpp.unlimitoutput();
+		
 		// No configuration yet
 		assertEquals(GW4EProject.getGW4ETestRunnerConfigurationCount(),0);
 		
@@ -243,14 +236,14 @@ public class GW4ERunnerTestCase {
 		});
 		
 		GW4ETestRunner gwtr = new  GW4ETestRunner(bot);
-		String[] expected = new String[] { "Result :",   "  \"totalFailedNumberOfModels\": 0,",
-				"  \"totalNotExecutedNumberOfModels\": 0,", "  \"totalNumberOfUnvisitedVertices\": 0,",
-				"  \"verticesNotVisited\": [],", "  \"totalNumberOfModels\": 5,",
-				"  \"totalCompletedNumberOfModels\": 5,", "  \"totalNumberOfVisitedEdges\": 25,",
-				"  \"totalIncompleteNumberOfModels\": 0,", "  \"edgesNotVisited\": [],", "  \"vertexCoverage\": 100,",
-				"  \"totalNumberOfEdges\": 25,", "  \"totalNumberOfVisitedVertices\": 16,", "  \"edgeCoverage\": 100,",
-				"  \"totalNumberOfVertices\": 16,", "  \"totalNumberOfUnvisitedEdges\": 0" };
-
+ 
+		String[] expected = new String[] {
+	    "com.company.FindOwnersSharedStateImpl(RandomPath(EdgeCoverage(100)) )",
+	    "com.company.PetClinicSharedStateImpl(RandomPath(EdgeCoverage(100)) )",
+	    "com.company.VeterinariensSharedStateImpl(RandomPath(EdgeCoverage(100)) )",
+	    "com.company.NewOwnerSharedStateImpl(RandomPath(EdgeCoverage(100)) )",
+	    "com.company.OwnerInformationSharedStateImpl(RandomPath(EdgeCoverage(100)) )",};
+		
 		gwtr.waitForRunCompleted (expected,RUN_TIMEOUT);
  
 		// Configuration should have been created
@@ -283,16 +276,16 @@ public class GW4ERunnerTestCase {
 		String filepath = "/"+gwproject+"/"+TEST_RESOURCE_FOLDER+"/"+PACKAGE_NAME+"/"+graphMLFilename;
 		GW4EOfflineRunner runner = new GW4EOfflineRunner (bot);
 		
- 		String pathGenerator = "random(edge_coverage(100))";
+ 		String pathGenerator = "random(reached_vertex( v_SearchResult ))";
 		runner.addRun		("MyRun",gwproject,filepath,true,true,"e_StartBrowser",pathGenerator);
 		runner.validateRun	("MyRun",gwproject,filepath,true,true,"e_StartBrowser",pathGenerator);
 		
 		runner.run("MyRun",RUN_TIMEOUT);
 		
 		String []  expectations = new String [] {
-				"\"numberOfUnvisitedElements\":0,\"",
+				"\"currentElementName\":\"v_SearchResult\"",
 		};
-		 
+		
 		runner.validateRunResult(expectations);
  	}
 }
