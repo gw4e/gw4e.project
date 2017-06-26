@@ -249,6 +249,28 @@ public class ProblemView {
 	
 	public SWTBotTreeItem findErrorItemWithText(String text) {
 		SWTBotTreeItem item = expandErrorItem();
+		
+		ICondition condition = new DefaultCondition () {
+			@Override
+			public boolean test() throws Exception {
+				SWTBotTreeItem[] child = item.getItems();
+				for (int i = 0; i < child.length; i++) {
+					if (child[i].row().get(0).trim().equalsIgnoreCase(text.trim())) {
+						return true;
+					}
+				}
+				return false;
+			}
+
+			@Override
+			public String getFailureMessage() {
+				return "Cannot find the Error " + text;
+			}
+			
+		};
+		
+		bot.waitUntil(condition);
+		
 		SWTBotTreeItem[] child = item.getItems();
 		for (int i = 0; i < child.length; i++) {
 			if (child[i].row().get(0).trim().equalsIgnoreCase(text.trim())) {
@@ -256,6 +278,17 @@ public class ProblemView {
 			}
 		}
 		throw new WidgetNotFoundException("Cannot find the Error " + text);
+	}
+	
+	public boolean errorIsInProblemView (String expected) throws CoreException {
+		IWorkspace workspace = ResourcesPlugin.getWorkspace();
+		IResource resource = workspace.getRoot();
+		IMarker[] markers = resource.findMarkers(IMarker.MARKER, true, IResource.DEPTH_INFINITE);
+		for (IMarker m : markers) {
+		    String msg = (String)m.getAttribute(IMarker.MESSAGE);
+		    if (expected.equalsIgnoreCase(msg.trim())) return true;
+		}		
+		return false;
 	}
 	
 	public void print() {
@@ -277,6 +310,32 @@ public class ProblemView {
 	}
 
 	public SWTBotTreeItem expandErrorItem() {
+		ICondition condition = new DefaultCondition () {
+
+			@Override
+			public boolean test() throws Exception {
+				SWTBotTree tree = botView.bot().tree();
+				SWTBotTreeItem[] items = tree.getAllItems();
+				for (int i = 0; i < items.length; i++) {
+					System.out.println(items[i].getText());
+					if (items[i].getText().contains("Errors (")) {
+						if (!items[i].isExpanded())
+							items[i].expand();
+						return true;
+					}
+				}
+				return false;
+			}
+
+			@Override
+			public String getFailureMessage() {
+				return "Cannot find the Errors row in the problem view";
+			}
+			
+		};
+		
+		bot.waitUntil(condition);
+
 		SWTBotTree tree = botView.bot().tree();
 		SWTBotTreeItem[] items = tree.getAllItems();
 		for (int i = 0; i < items.length; i++) {

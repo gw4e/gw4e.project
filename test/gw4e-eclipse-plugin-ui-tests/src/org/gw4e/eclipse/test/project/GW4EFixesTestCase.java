@@ -116,8 +116,6 @@ public class GW4EFixesTestCase {
 		GW4EProject.cleanWorkspace();
 		GW4EPerspective.openGWPerspective(bot);
 	}
-
-	
  
 	
 	@Test
@@ -133,8 +131,6 @@ public class GW4EFixesTestCase {
 			new ErrorIsInProblemView(pv, GW4EProject.NO_POLICIES_FOUND_IN_BUILD_POLICIES_FILE_ERROR_MSG),
 			new EditorOpenedCondition(bot,PreferenceManager.getBuildPoliciesFileName(gwproject)),
 		};
-		
-		
 
 		pv.executeQuickFixForErrorMessage(
 				project.getMissingErroMessage (gwproject,TEST_RESOURCE_FOLDER,PACKAGE_NAME,graphMLFilename),
@@ -148,7 +144,6 @@ public class GW4EFixesTestCase {
 				GW4EProject.ADD_NOCHECK_POLICIES,
 				new ICondition [] {new NoErrorInProblemView(pv)}
 		);
-
 		 
 		String buildPoliciPath = gwproject + "/" + TEST_RESOURCE_FOLDER + "/"+ PACKAGE_NAME + "/" + PreferenceManager.getBuildPoliciesFileName(gwproject) ;
 		IFile buildPolicyModel =  (IFile)  ResourceManager.getResource(buildPoliciPath);
