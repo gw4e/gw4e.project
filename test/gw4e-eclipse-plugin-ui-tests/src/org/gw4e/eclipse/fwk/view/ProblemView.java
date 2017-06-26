@@ -30,6 +30,10 @@ package org.gw4e.eclipse.fwk.view;
 
 import java.util.List;
 
+import org.eclipse.core.resources.IMarker;
+import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.IWorkspace;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
@@ -255,14 +259,20 @@ public class ProblemView {
 	}
 	
 	public void print() {
-		System.out.println();
-		System.out.println("XXXXXXXXXXXXXXXXXXXXXX STACK ");
-		new Exception ().printStackTrace();
-		System.out.println("XXXXXXXXXXXXXXXXXXXXXX PROBLEM VIEW CONTENT ");
-		SWTBotTreeItem item = expandErrorItem();
-		SWTBotTreeItem[] child = item.getItems();
-		for (int i = 0; i < child.length; i++) {
-			System.out.println(child[i].row().get(0));
+		try {
+			IWorkspace workspace = ResourcesPlugin.getWorkspace();
+			IResource resource = workspace.getRoot();
+			IMarker[] markers = resource.findMarkers(IMarker.MARKER, true, IResource.DEPTH_INFINITE);
+			for (IMarker m : markers) {
+			    System.out.println("Id: " + m.getId());
+			    System.out.println("Message: " + m.getAttribute(IMarker.MESSAGE));
+			    System.out.println("Source ID: " + m.getAttribute(IMarker.SOURCE_ID));
+			    System.out.println("Location: " + m.getAttribute(IMarker.LOCATION));
+			    System.out.println("Line Number: " + m.getAttribute(IMarker.LINE_NUMBER));
+			    System.out.println("Marker: " + m.getAttribute(IMarker.MARKER));
+			}
+		} catch (CoreException e) {
+			e.printStackTrace();
 		}
 	}
 
@@ -270,6 +280,7 @@ public class ProblemView {
 		SWTBotTree tree = botView.bot().tree();
 		SWTBotTreeItem[] items = tree.getAllItems();
 		for (int i = 0; i < items.length; i++) {
+			System.out.println(items[i].getText());
 			if (items[i].getText().contains("Errors (")) {
 				if (!items[i].isExpanded())
 					items[i].expand();

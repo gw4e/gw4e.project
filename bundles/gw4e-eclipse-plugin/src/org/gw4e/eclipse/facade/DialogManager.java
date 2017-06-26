@@ -131,11 +131,11 @@ public class DialogManager   {
 		StackTraceElement[] stackTraces = Thread.currentThread().getStackTrace();
 
 		for (StackTraceElement stackTrace : stackTraces) {
-			Status status = new Status(IStatus.ERROR, "com.example.e4.rcp.todo", stackTrace.toString());
+			Status status = new Status(IStatus.ERROR, "org.gw4e.eclipse.facade", stackTrace.toString());
 			childStatuses.add(status);
 		}
 
-		MultiStatus ms = new MultiStatus("com.example.e4.rcp.todo", IStatus.ERROR,
+		MultiStatus ms = new MultiStatus("org.gw4e.eclipse.facade", IStatus.ERROR,
 				childStatuses.toArray(new Status[] {}), t.toString(), t);
 		return ms;
 	}
@@ -145,14 +145,24 @@ public class DialogManager   {
 	 * 
 	 * @param message
 	 */
-	public static void displayErrorMessage(String message) {
+	public static void displayErrorMessage( String message) {
+		 displayErrorMessage(MessageUtil.getString("error"), message);
+	}
+	
+	/**
+	 * Display an error message in a Dialog
+	 * 
+	 * @param message
+	 */
+	public static void displayErrorMessage(String title, String message) {
 		MessageDialog dialog = new MessageDialog(Display.getDefault().getActiveShell(),
-				MessageUtil.getString("error"), null, MessageUtil.getString("consult_error_log"),
+				title, null, message,
 				MessageDialog.ERROR, new String[] { MessageUtil.getString("close") }, 0);
 		int result = dialog.open();
 		dialog.close();
 	}
 
+	
 	/**
 	 * Display an error message in a standard UI ErrorDialog
 	 * 

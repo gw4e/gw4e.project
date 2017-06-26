@@ -914,7 +914,6 @@ public class GW4EProject {
 			SWTBotMenu sm = menu.contextMenu(submenu);
 			assertEquals("Invalid state ", substates[i], sm.isEnabled());
 		}
-
 	}
 
 	public void convertExistingProject() throws CoreException {

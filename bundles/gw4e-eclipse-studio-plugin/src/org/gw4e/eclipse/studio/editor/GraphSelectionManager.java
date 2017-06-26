@@ -1,5 +1,7 @@
 package org.gw4e.eclipse.studio.editor;
 
+import java.util.UUID;
+
 /*-
  * #%L
  * gw4e
@@ -40,7 +42,7 @@ import org.gw4e.eclipse.studio.model.GWGraph;
 import org.gw4e.eclipse.studio.part.editor.GraphPart;
 
 public class GraphSelectionManager implements ISelectionChangedListener , org.eclipse.swt.events.MouseListener {
-
+	 
 	public static GraphSelectionManager ME;
 	static {
 		ME = new GraphSelectionManager();
@@ -178,5 +180,7 @@ public class GraphSelectionManager implements ISelectionChangedListener , org.ec
 				}
 			}
 		}
+		
+		
 	}
 }

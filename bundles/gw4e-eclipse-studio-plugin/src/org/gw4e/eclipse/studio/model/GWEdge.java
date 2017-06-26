@@ -31,6 +31,7 @@ package org.gw4e.eclipse.studio.model;
 import java.util.Map;
 import java.util.UUID;
 
+import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.gef4.graph.Edge;
 import org.eclipse.gef4.graph.Node;
  
@@ -105,10 +106,29 @@ public class GWEdge extends GWLink {
 		}
 		return null;
 	}
+	
+	
+	public  GWEdge duplicate (GWGraph graph) {
+		GWEdge edge = new GWEdge(graph,UUID.randomUUID() ,getName(), getId());
+		edge.setAction(this.getAction());
+		edge.setBlocked(this.isBlocked());
+		edge.setDependency(this.getDependency());
+		edge.setGuard(this.getGuard());
+		edge.setLabel(this.getLabel());
+		edge.setLayout(this.getLayout());
+		edge.setName(this.getName());
+		edge.setProperties(this.getProperties());
+		edge.setWeight(this.getWeight());
+		int index=0;
+		for (Point point : bendpoints) {
+			edge.setBendpoints(index, point);
+			index++;
+		}
+		return edge;
+	}
 
 	@Override
 	public Object clone() {
-		 
 		return null;
 	}
 }

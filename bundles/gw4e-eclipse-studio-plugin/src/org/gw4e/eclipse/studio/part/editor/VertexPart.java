@@ -31,6 +31,7 @@ package org.gw4e.eclipse.studio.part.editor;
 import java.beans.PropertyChangeEvent;
 import java.util.List;
 
+import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.draw2d.ConnectionAnchor;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.Label;
@@ -41,7 +42,6 @@ import org.eclipse.gef.Request;
 import org.eclipse.gef.RequestConstants;
 import org.eclipse.jface.viewers.TextCellEditor;
 import org.eclipse.ui.views.properties.IPropertySource;
-import org.gw4e.eclipse.studio.editor.GraphSelectionManager;
 import org.gw4e.eclipse.studio.editor.properties.VertexSectionProvider;
 import org.gw4e.eclipse.studio.editpolicies.GW4ENodeGraphicalNodeEditPolicy;
 import org.gw4e.eclipse.studio.editpolicies.GW4EVertexDeletePolicy;
@@ -52,7 +52,7 @@ import org.gw4e.eclipse.studio.model.GWNode;
 import org.gw4e.eclipse.studio.model.Vertex;
 import org.gw4e.eclipse.studio.model.properties.GW4EVertexEditPartProperties;
 
-public class VertexPart extends AbstractGW4EEditPart implements NodeEditPart,VertexSectionProvider {
+public class VertexPart extends AbstractGW4EEditPart implements NodeEditPart,VertexSectionProvider,IAdaptable  {
 
 	protected IFigure figure = null;
 	protected GW4EVertexEditPartProperties properties= null;
@@ -203,6 +203,8 @@ public class VertexPart extends AbstractGW4EEditPart implements NodeEditPart,Ver
 
 	@Override
 	public Object getAdapter(Class adapter) {
+		Object ret = super.getAdapter(adapter);
+		if (ret!=null) return ret;
 		if (adapter == IPropertySource.class) {
 			if (properties==null) {
 				properties = new GW4EVertexEditPartProperties(this);

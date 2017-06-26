@@ -167,19 +167,31 @@ public class Vertex extends GraphElement implements Cloneable {
 		sb.append(" ").append("start").append(start).append(" ").append(requirement.toString()).append(initScript.toString());
 		return sb.toString();
 	}
-
-
-	public Object clone() {
+	
+	public Vertex duplicate(GWGraph graph) {
+		return duplicate(graph, getLayout().x , getLayout().y, this.getName());
+	}
+	
+	public Vertex duplicate(GWGraph graph, int X , int Y, String name) {
 		UUID uuid = UUID.randomUUID();
-		Vertex vertex = new Vertex (gWGraph,uuid,"v_" + ID.getId(),uuid.toString());
+		if (name==null) {
+			name = "v_" + ID.getId();
+		}
+ 
+		Vertex vertex = new Vertex (graph,uuid,name,uuid.toString());
 		vertex.setBlocked(this.isBlocked());
-		vertex.setGraph(this.getGraph());
+		vertex.setGraph(graph);
 		vertex.setInitScript((InitScript)this.getInitScript().clone());
 		vertex.setLabel(this.getLabel());
 		vertex.setRequirement((Requirement)this.getRequirement().clone());
 		vertex.setShared(this.isShared());
 		vertex.setStart(false);
-		
+		vertex.setProperties(this.getProperties());
+		vertex.setLayout(new Rectangle(X, Y, this.getLayout().width, this.getLayout().height));
+		return vertex;		
+	}
+	
+	public Object clone() {
 		Point p = GraphSelectionManager.ME.getSelection().getCurrentPoint();
 		int X = getLayout().x + 10;
 		int Y = getLayout().y + 10;
@@ -187,8 +199,7 @@ public class Vertex extends GraphElement implements Cloneable {
 			X = p.x();
 			Y = p.y();
 		}
-		vertex.setLayout(new Rectangle(X, Y,getLayout().width, getLayout().height));
-		return vertex;
+		return duplicate (getGraph(),X,Y,null);
 	}
 
 	public static int INDEX = 1;

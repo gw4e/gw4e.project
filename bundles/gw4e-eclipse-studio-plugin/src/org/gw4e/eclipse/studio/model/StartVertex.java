@@ -30,6 +30,9 @@ package org.gw4e.eclipse.studio.model;
 
 import java.util.UUID;
 
+import org.eclipse.draw2d.geometry.Rectangle;
+import org.gw4e.eclipse.studio.util.ID;
+
 public class StartVertex extends Vertex {
 
 	public StartVertex(GWGraph gWGraph,UUID uuid,String name,String id) {
@@ -48,5 +51,24 @@ public class StartVertex extends Vertex {
 		}
 
 		return super.isUpdatable(property);
+	}
+	
+	public Vertex duplicate(GWGraph graph, int X , int Y, String name) {
+		UUID uuid = UUID.randomUUID();
+		if (name==null) {
+			name = "v_" + ID.getId();
+		}
+ 
+		Vertex vertex = new StartVertex (graph,uuid,name,uuid.toString());
+		vertex.setBlocked(this.isBlocked());
+		vertex.setGraph(graph);
+		vertex.setInitScript((InitScript)this.getInitScript().clone());
+		vertex.setLabel(this.getLabel());
+		vertex.setRequirement((Requirement)this.getRequirement().clone());
+		vertex.setShared(this.isShared());
+		vertex.setStart(false);
+		vertex.setProperties(this.getProperties());
+		vertex.setLayout(new Rectangle(X, Y, this.getLayout().width, this.getLayout().height));
+		return vertex;		
 	}
 }

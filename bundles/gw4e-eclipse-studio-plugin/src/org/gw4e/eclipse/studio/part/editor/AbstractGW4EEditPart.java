@@ -30,17 +30,14 @@ package org.gw4e.eclipse.studio.part.editor;
 
 import java.beans.PropertyChangeListener;
 
-import org.eclipse.draw2d.ConnectionLayer;
-import org.eclipse.draw2d.FanRouter;
-import org.eclipse.draw2d.ShortestPathConnectionRouter;
-import org.eclipse.gef.GraphicalEditPart;
-import org.eclipse.gef.LayerConstants;
+import org.eclipse.core.resources.IFile;
+import org.eclipse.gef.EditPart;
 import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
-import org.eclipse.gef.editparts.ScalableRootEditPart;
+import org.gw4e.eclipse.studio.model.GWGraph;
 import org.gw4e.eclipse.studio.model.GWNode;
 
 public abstract class AbstractGW4EEditPart extends AbstractGraphicalEditPart
-		implements PropertyChangeListener   {
+		implements PropertyChangeListener  {
 
 	public AbstractGW4EEditPart() {
 	}
@@ -64,5 +61,22 @@ public abstract class AbstractGW4EEditPart extends AbstractGraphicalEditPart
 	}
 
 	protected abstract String getTooltipData();
-	 
+	
+	@Override
+	public Object getAdapter(Class adapter) {
+		EditPart ep = this;
+		if (adapter == IFile.class) {
+			while (ep!=null && !(ep instanceof GraphPart)) {
+				ep  = ep.getParent();
+			}
+			if (ep!=null) {
+				GraphPart  gp = (GraphPart) ep;
+				GWGraph model = (GWGraph)gp.getModel();
+				return model.getFile();
+			}
+			return null;
+		}
+		
+		return null;
+	}
 }

@@ -48,9 +48,12 @@ public class SharedVertex extends Vertex {
 		this.sharedName = sharedName;
 	}
 
-	public Object clone() {
+	public Vertex duplicate(GWGraph graph, int X , int Y, String name) {
 		UUID uuid = UUID.randomUUID();
-		Vertex vertex = new SharedVertex (gWGraph,uuid,"v_" + ID.getId(),uuid.toString(),this.getSharedName());
+		if (name==null) {
+			name = "v_" + ID.getId();
+		}
+		Vertex vertex = new SharedVertex (this.getGraph(),uuid,name,uuid.toString(),this.getSharedName());
 		vertex.setBlocked(this.isBlocked());
 		vertex.setGraph(this.getGraph());
 		vertex.setInitScript((InitScript)this.getInitScript().clone());
@@ -58,11 +61,18 @@ public class SharedVertex extends Vertex {
 		vertex.setRequirement((Requirement)this.getRequirement().clone());
 		vertex.setShared(this.isShared());
 		vertex.setStart(false);
+		vertex.setProperties(this.getProperties());
 		vertex.setLayout(new Rectangle(
-                					getLayout().x + 10, getLayout().y + 10,
-                					getLayout().width, getLayout().height)
+                					X,
+                					Y,
+                					getLayout().width,
+                					getLayout().height)
 						);
 		return vertex;
+	}
+	
+	public Object clone() {
+		return duplicate(this.gWGraph, getLayout().x + 10 , getLayout().y + 10, null);
 	}
 	 
 }

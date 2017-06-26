@@ -295,6 +295,9 @@ public class GWGraph extends GWNode {
 	}
   
 	public Object getAdapter(Class key) {
+		if (key.equals(IFile.class)) {
+			return this.getFile();
+		}
 		if (key.equals(Graph.class)) {
 			int maxWidth  = -1;
 			int maxHeight = -1;
@@ -393,4 +396,11 @@ public class GWGraph extends GWNode {
 		return file.getProject();
 	}
  
+	public GWGraph duplicate () {
+		GWGraph gWGraph = new GWGraph(UUID.randomUUID(), this.getName(), UUID.randomUUID().toString());
+		gWGraph.setFile(null);
+		gWGraph.setName(this.getName());
+		gWGraph.setProperties(this.getProperties());
+		return gWGraph;
+	}
 }

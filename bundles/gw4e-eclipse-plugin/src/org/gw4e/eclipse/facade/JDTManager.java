@@ -145,6 +145,14 @@ public class JDTManager {
 		return elt.getElementName();
 	}
 
+	
+	public static String getJavaFullyQualifiedName(IJavaElement elt) throws JavaModelException {
+		String name = getFullyQualifiedName(elt);
+		name = name.split("\\.")[0];
+		name = name.replaceAll("\\/", "\\.");
+		return name;
+	}
+	
 	/**
 	 * Find the path of the graph model file that is the origin of the passed
 	 * type The one which has been converted ..
@@ -774,9 +782,16 @@ public class JDTManager {
 		}
 		IType execContextType = unit.getJavaProject().findType(ExecutionContext.class.getName());
 
-		ITypeHierarchy th = types[0].newTypeHierarchy(null);
-
-		return th.contains(execContextType);
+		for (int i = 0; i < types.length; i++) {
+			IType type = types[i];
+			String typeNname = type.getFullyQualifiedName();
+			String compilationUnitName = JDTManager.getJavaFullyQualifiedName(unit);
+			if (typeNname.equals(compilationUnitName)) {
+				ITypeHierarchy th = types[0].newTypeHierarchy(new NullProgressMonitor());
+				return th.contains(execContextType);
+			}
+		}
+		return false;
 	}
 
 	/**
