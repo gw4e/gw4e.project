@@ -30,6 +30,7 @@ package org.gw4e.eclipse.fwk.conditions;
 
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.waits.DefaultCondition;
+import org.gw4e.eclipse.fwk.project.GW4EProject;
 import org.gw4e.eclipse.fwk.view.ProblemView;
 
 public class ErrorIsInProblemView extends DefaultCondition {
@@ -49,7 +50,8 @@ public class ErrorIsInProblemView extends DefaultCondition {
 			pbView.findErrorItemWithText (error);
 			return  true;
 		} catch (WidgetNotFoundException e) {
-			 return false;
+			GW4EProject.cleanBuild();
+			return false;
 		}
 	}
 }

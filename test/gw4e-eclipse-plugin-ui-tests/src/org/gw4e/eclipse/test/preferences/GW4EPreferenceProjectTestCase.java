@@ -105,7 +105,7 @@ public class GW4EPreferenceProjectTestCase {
 	}
 
 	@Test
-	public void testUpdateGenerator() throws CoreException, FileNotFoundException {
+	public void testUpdateGenerator() throws CoreException, InterruptedException, IOException {
 		GW4EProject project = new GW4EProject(bot, gwproject);
 		project.resetToJavPerspective();
 		project.createProjectWithoutError(TEST_RESOURCE_FOLDER, PACKAGE_NAME, graphMLFilename);
@@ -124,7 +124,7 @@ public class GW4EPreferenceProjectTestCase {
 
 	
 	@Test
-	public void testUpdateBuildPolicyName() throws CoreException, FileNotFoundException {
+	public void testUpdateBuildPolicyName() throws CoreException, InterruptedException, IOException {
 		GW4EProject project = new GW4EProject(bot, gwproject);
 		project.resetToJavPerspective();
 		project.createProjectWithoutError(TEST_RESOURCE_FOLDER, PACKAGE_NAME, graphMLFilename);

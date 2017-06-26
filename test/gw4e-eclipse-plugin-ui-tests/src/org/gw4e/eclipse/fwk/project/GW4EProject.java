@@ -95,6 +95,7 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.gw4e.eclipse.builder.BuildPolicyManager;
 import org.gw4e.eclipse.builder.exception.BuildPolicyConfigurationException;
+import org.gw4e.eclipse.builder.exception.NoBuildRequiredException;
 import org.gw4e.eclipse.facade.ClasspathManager;
 import org.gw4e.eclipse.facade.JDTManager;
 import org.gw4e.eclipse.facade.ResourceManager;
@@ -255,23 +256,30 @@ public class GW4EProject {
 	}
 
 	public void createProjectWithoutError(String testResourceFolder, String pkgname, String graphMLFilename)
-			throws CoreException, FileNotFoundException {
+			throws CoreException, InterruptedException, IOException {
 		createProject();
-		createGraphMLFile(testResourceFolder, pkgname, graphMLFilename);
-		ProblemView pv = ProblemView.open(bot);
+		IFile file = createGraphMLFile(testResourceFolder, pkgname, graphMLFilename);
+		
+		IFile buildPolicyFile = BuildPolicyManager.createBuildPoliciesFile(file, new NullProgressMonitor ());
+		 
+		setPathGenerator(buildPolicyFile, file.getFullPath().lastSegment(), NoBuildRequiredException.NO_CHECK);
+	 
+		DefaultCondition condition = new DefaultCondition () {
+			@Override
+			public boolean test() throws Exception {
+				ProblemView pv = ProblemView.open(GW4EProject.this.bot);
+				cleanBuild();
+				boolean b = pv.getDisplayedErrorCount() == 0;
+				return b;
+			}
 
-		ICondition[] conditions = new ICondition[] {
-				new ErrorIsInProblemView(pv, NO_POLICIES_FOUND_IN_BUILD_POLICIES_FILE_ERROR_MSG),
-				new EditorOpenedCondition(bot, PreferenceManager.getBuildPoliciesFileName(projectName)), };
-
-		pv.executeQuickFixForErrorMessage(
-				getMissingErroMessage(projectName, testResourceFolder, pkgname, graphMLFilename),
-				QUICK_FIX_MSG_MISSING_BULD_POLICIES_FILE, conditions);
-		pv.close(); // Mandatory
-
-		pv = ProblemView.open(bot);
-		pv.executeQuickFixForErrorMessage(NO_POLICIES_FOUND_IN_BUILD_POLICIES_FILE_ERROR_MSG, ADD_NOCHECK_POLICIES,
-				new ICondition[] { new NoErrorInProblemView(pv) });
+			@Override
+			public String getFailureMessage() {
+				return "Failed to create a project withour error";
+			}
+		};
+		
+		bot.waitUntil(condition, 3 * 60 * 1000);
 	}
 
 	public void createProject() throws CoreException {
@@ -1079,11 +1087,10 @@ public class GW4EProject {
 
 	}
 
-	public String createGraphMLFile(String folder, String pkg, String graphMLFilename)
+	public IFile createGraphMLFile(String folder, String pkg, String graphMLFilename)
 			throws CoreException, FileNotFoundException {
 		String content = readFile(graphMLFilename);
-		ResourceManager.createFile(this.projectName, folder, pkg, graphMLFilename, content);
-		return graphMLFilename;
+		return ResourceManager.createFile(this.projectName, folder, pkg, graphMLFilename, content);
 	}
 
 	private String readFile(String file) throws FileNotFoundException {
