@@ -1,6 +1,11 @@
 
 package org.gw4e.eclipse.wizard.staticgenerator;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.List;
+
+import org.eclipse.core.resources.IFile;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
@@ -10,12 +15,13 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;
+import org.graphwalker.core.model.Element;
 import org.gw4e.eclipse.Activator;
 import org.gw4e.eclipse.facade.DialogManager;
 import org.gw4e.eclipse.facade.ResourceManager;
 import org.gw4e.eclipse.message.MessageUtil;
+import org.gw4e.eclipse.wizard.staticgenerator.model.GraphElementPage;
 import org.gw4e.eclipse.wizard.staticgenerator.model.ResourcePage;
- 
 
 /**
  * A Wizard to convert a graph model file into another format (java, json, dot)
@@ -29,10 +35,18 @@ public class GeneratorToFileCreationWizard extends Wizard implements INewWizard 
 		WIZARD_BANNER = Activator.getDefaultImageDescriptor();
 	}
 
+	IFile model;
+
 	/**
-	 * The current selection
+	 * The graph elements model
 	 */
-	private IStructuredSelection selection;
+
+	List<Element> elements;
+
+	/**
+	 * The elements id (ordered)
+	 */
+	List<String> ids;
 
 	/**
 	 * The Eclipse workbench
@@ -43,14 +57,19 @@ public class GeneratorToFileCreationWizard extends Wizard implements INewWizard 
 	 *  
 	 */
 	GeneratorResourceUIPage resourceUIPage;
-	
+
+	/**
+	 *  
+	 */
+	GraphElementSelectionUIPage graphElementSelectionUIPage;
+
 	public static void open(IStructuredSelection sel) {
 		try {
 			GeneratorToFileCreationWizard wizard = new GeneratorToFileCreationWizard();
 			wizard.init(PlatformUI.getWorkbench(), (IStructuredSelection) sel);
 			Shell activeShell = Display.getDefault().getActiveShell();
 			if (activeShell == null)
-				return ;
+				return;
 			WizardDialog dialog = new WizardDialog(activeShell, wizard);
 			dialog.open();
 		} catch (Exception e) {
@@ -58,7 +77,6 @@ public class GeneratorToFileCreationWizard extends Wizard implements INewWizard 
 		}
 	}
 
- 
 	/**
 	 * Create an instance of this Wizard
 	 */
@@ -72,11 +90,17 @@ public class GeneratorToFileCreationWizard extends Wizard implements INewWizard 
 	 *            the resourcePage to set
 	 */
 	ResourcePage resourcePage;
+
 	public void setResourcePage(ResourcePage resourcePage) {
 		this.resourcePage = resourcePage;
 	}
 
-	
+	GraphElementPage elementsPage;
+
+	public void setGraphElementPage(GraphElementPage elementsPage) {
+		this.elementsPage = elementsPage;
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -84,8 +108,15 @@ public class GeneratorToFileCreationWizard extends Wizard implements INewWizard 
 	 */
 	@Override
 	public void addPages() {
-		 resourceUIPage = new GeneratorResourceUIPage(workbench, selection);
-		 addPage(resourceUIPage);
+		try {
+			graphElementSelectionUIPage = new GraphElementSelectionUIPage("GraphElementSelectionUIPage", model, ids);
+			addPage(graphElementSelectionUIPage);
+			File file = ResourceManager.toFile(model.getFullPath());
+			resourceUIPage = new GeneratorResourceUIPage(workbench, file);
+			addPage(resourceUIPage);
+		} catch (FileNotFoundException e) {
+			ResourceManager.logException(e);
+		}
 	}
 
 	/*
@@ -97,13 +128,16 @@ public class GeneratorToFileCreationWizard extends Wizard implements INewWizard 
 	@Override
 	public void init(IWorkbench workbench, IStructuredSelection selection) {
 		this.workbench = workbench;
-		this.selection = selection;
 		setWindowTitle((MessageUtil.getString("GraphWalker_Generator_File"))); //$NON-NLS-1$
 		setDefaultPageImageDescriptor(WIZARD_BANNER);
+
+		List models = selection.toList();
+		model = (IFile) models.get(0);
+		ids = (List<String>) models.get(1);
 	}
 
 	public boolean canFinish() {
-		return resourceUIPage.isPageComplete() ;
+		return resourceUIPage.isPageComplete() && graphElementSelectionUIPage.isPageComplete();
 	}
 
 	/*

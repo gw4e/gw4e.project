@@ -43,7 +43,6 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -81,11 +80,7 @@ public class GeneratorResourceUIPage extends WizardPage implements Listener {
 	 */
 	private Button openEditorCheckbox;
 
-	/**
-	 * The model file selected by the end user
-	 */
-	private IStructuredSelection selection;
-
+	 
 	/**
 	 * A listener to wait for the generated file and perform action after the
 	 * conversion
@@ -121,15 +116,15 @@ public class GeneratorResourceUIPage extends WizardPage implements Listener {
 	 * @param workbench
 	 * @param selection
 	 */
-	public GeneratorResourceUIPage(IWorkbench workbench, IStructuredSelection selection) {
+	public GeneratorResourceUIPage(IWorkbench workbench, File model) {
 		super("GeneratorFilePage");
 		setPageComplete(false);
 
 		this.setTitle(MessageUtil.getString("Generate_File")); //$NON-NLS-1$
 		this.setDescription(MessageUtil.getString("Create_a_new_converted_file_resource")); //$NON-NLS-1$
-		this.selection = selection;
+		 
 
-		this.modelFile = ResourceManager.toIFile((File)selection.getFirstElement());
+		this.modelFile = ResourceManager.toIFile(model);
 		this.project = modelFile.getProject();
 	}
 
@@ -160,7 +155,7 @@ public class GeneratorResourceUIPage extends WizardPage implements Listener {
 
 		fsg = new FolderSelectionGroup(composite, this, this.project);
 
-		this.setFileName(ResourceManager.stripFileExtension(selection)); // $NON-NLS-1$
+		this.setFileName(modelFile.getName().split(Pattern.quote("."))[0]); // $NON-NLS-1$
 
 		Group group = new Group(composite, SWT.NONE);
 		group.setLayout(new GridLayout());
@@ -254,22 +249,6 @@ public class GeneratorResourceUIPage extends WizardPage implements Listener {
 		((GeneratorToFileCreationWizard) this.getWizard()).setResourcePage(null);
 		setPageComplete(validatePage());
 		super.setVisible(visible);
-	}
-
-	/**
-	 * 
-	 */
-	private void selectFolder() {
-		IStructuredSelection s = (IStructuredSelection) GeneratorResourceUIPage.this.selection;
-		IFile file = (IFile) s.getFirstElement();
-		try {
-			IPath p = ResourceManager.getPathWithinPackageFragment(file);
-			p = project.getFullPath().append(PreferenceManager.getMainResourceFolder()).append(p);
-			p = p.removeLastSegments(1);
-			GeneratorResourceUIPage.this.fsg.setContainerFullPath(file.getProject(), p);
-		} catch (CoreException e1) {
-			ResourceManager.logException(e1);
-		}
 	}
 
 	/**

@@ -236,6 +236,14 @@ public class GraphWalkerFacade {
 			return null;
 		return startElement.getName();
 	}
+	
+	public static List<Element> getElements(File file) throws IOException {
+		ContextFactory factory = getContextFactory (file.toPath());
+		List<Context> readContexts = factory.create(file.toPath());
+		RuntimeModel model = readContexts.get(0).getModel();
+		List<Element> elements = model.getElements();
+		return elements;
+	}
 
 	private static void addContexts(List<Context> executionContexts, Path modelFileName, String generator,
 			String startElement) throws IOException {

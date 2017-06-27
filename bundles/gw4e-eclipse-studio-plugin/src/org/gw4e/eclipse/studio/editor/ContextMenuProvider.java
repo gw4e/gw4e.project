@@ -2,12 +2,12 @@ package org.gw4e.eclipse.studio.editor;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
@@ -29,15 +29,15 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.actions.ActionFactory;
 import org.eclipse.ui.wizards.newresource.BasicNewResourceWizard;
+import org.graphwalker.core.model.Element;
 import org.gw4e.eclipse.constant.Constant;
 import org.gw4e.eclipse.facade.DialogManager;
+import org.gw4e.eclipse.facade.GraphWalkerFacade;
 import org.gw4e.eclipse.facade.ResourceManager;
 import org.gw4e.eclipse.studio.editor.GraphSelectionManager.GraphSelection;
 import org.gw4e.eclipse.studio.model.GWEdge;
 import org.gw4e.eclipse.studio.model.GWGraph;
-import org.gw4e.eclipse.studio.model.GWLink;
 import org.gw4e.eclipse.studio.model.GraphElement;
-import org.gw4e.eclipse.studio.model.SharedVertex;
 import org.gw4e.eclipse.studio.model.Vertex;
 import org.gw4e.eclipse.studio.part.editor.SharedVertexPart;
 import org.gw4e.eclipse.wizard.staticgenerator.GeneratorToFileCreationWizard;
@@ -98,130 +98,19 @@ public class ContextMenuProvider extends org.eclipse.gef.ContextMenuProvider {
 				IStructuredSelection selection = (IStructuredSelection) gs.getCurrentSelection();
 				if (selection != null) {
 					try {
-
-						GWGraph gwgraph;
-						try {
-							gwgraph = buildGraph(selection);
-						} catch (IllegalStateException e) {
-							String msg = e.getMessage();
-							String explanation = "To have a valid selection, first select a Vertex, then an Edge, and so on, ending with a Vertex.";
-							DialogManager.displayErrorMessage("Invalid Graph Elements Selection",
-									msg + "\n" + explanation);
-							return;
+						Iterator sequence = selection.iterator();
+						List<String> ids = new ArrayList<String> ();
+						while (sequence.hasNext()) {
+							EditPart part = (EditPart) sequence.next();
+							GraphElement element = (GraphElement)part.getModel();
+							ids.add(element.getId());
 						}
-						File file = saveGraph(gwgraph);
-						StructuredSelection sel = new StructuredSelection(new Object[] { file });
+						StructuredSelection sel = new StructuredSelection(new Object[] { editor.getGraph().getFile() , ids });
 						GeneratorToFileCreationWizard.open(sel);
 					} catch (Exception e) {
 						ResourceManager.logException(e);
 					}
 				}
-			}
-
-			private File saveGraph(GWGraph graph) throws CoreException, IOException {
-				IProject project = editor.getGraph().getFile().getProject();
-
-				IFolder folder = ResourceManager.ensureFolder(project, ".gw4eoutput", new NullProgressMonitor());
-
-				String name = UUID.randomUUID() + "." + Constant.GRAPH_JSON_FILE;
-				IFile file = folder.getFile(new Path(name));
-				graph.setName(name);
-				graph.setFile(file);
-
-				boolean success = org.gw4e.eclipse.studio.facade.ResourceManager.save(graph, new NullProgressMonitor());
-				if (!success)
-					throw new IOException("Unable to create graph file");
-
-				File ret = ResourceManager.toFile(file.getFullPath());
-				return ret;
-			}
-
-			private GWGraph buildGraph(IStructuredSelection selection) {
-				Iterator sequence = selection.iterator();
-				GraphSelection gs = GraphSelectionManager.ME.getSelection();
-				GWGraph gWGraph = gs.getGwGraph().duplicate();
-
-				// Vertices
-				Map<Vertex, Vertex> cache = new HashMap<Vertex, Vertex>();
-				while (sequence.hasNext()) {
-					EditPart part = (EditPart) sequence.next();
-					Object model = part.getModel();
-					if (model instanceof Vertex) {
-						Vertex vertex = ((Vertex) model).duplicate(gWGraph);
-						gWGraph.addVertex(vertex, false);
-						cache.put((Vertex) model, vertex);
-					}
-				}
-				// Edges
-				sequence = selection.iterator();
-				while (sequence.hasNext()) {
-					EditPart part = (EditPart) sequence.next();
-					Object model = part.getModel();
-					if (model instanceof GWEdge) {
-						GWEdge edge = ((GWEdge) model).duplicate(gWGraph);
-						Vertex source = (Vertex) ((GWEdge) model).getSource();
-						Vertex target = (Vertex) ((GWEdge) model).getTarget();
-
-						Vertex newSource = cache.get(source);
-						Vertex newTarget = cache.get(target);
-						if (newSource == null) {
-							throw new IllegalStateException("edge " + edge.getName() + " has no source ");
-						}
-						if (newTarget == null) {
-							throw new IllegalStateException("edge " + edge.getName() + " has no target ");
-						}
-						edge.setSource(newSource);
-						edge.setTarget(newTarget);
-						edge.setGraph(gWGraph);
-						gWGraph.addLink(edge);
-					}
-				}
-				return gWGraph;
-			}
-
-			private String validateSelection(IStructuredSelection selection) {
-				Iterator sequence = selection.iterator();
-				boolean shouldbeVertex = true;
-				Vertex lastVertex = null;
-				GWLink lastEdge = null;
-				while (sequence.hasNext()) {
-					EditPart part = (EditPart) sequence.next();
-					Object model = part.getModel();
-					if (shouldbeVertex) {
-						if (model instanceof SharedVertex) {
-							return "Shared Vertex is not supported : " + ((SharedVertex) model).getLabel();
-						}
-						if (model instanceof Vertex) {
-							lastVertex = (Vertex) model;
-							if (lastEdge != null) {
-								if (!lastEdge.getTarget().equals(lastVertex)) {
-									return "Was expecting Vertex node : " + lastEdge.getTarget().getLabel();
-								}
-							}
-						} else {
-							return "Was expecting a Vertex node, but found : " + ((GWLink) model).getName();
-						}
-					} else {
-						if (model instanceof GWLink) {
-							lastEdge = (GWLink) model;
-							if (!lastVertex.getOutNeighbors().contains(lastEdge)) {
-								List edges = lastVertex.getOutNeighbors().stream().map(edge -> edge.getName())
-										.collect(Collectors.toList());
-								return "Was expecting one of Edge(s) : " + edges;
-							}
-						} else {
-							List edges = lastVertex.getOutNeighbors().stream().map(edge -> edge.getName())
-									.collect(Collectors.toList());
-							return "Was expecting one of Edge(s) : " + edges + " but found : "
-									+ ((Vertex) model).getLabel();
-						}
-					}
-					shouldbeVertex = !(shouldbeVertex);
-				}
-				if (shouldbeVertex) {
-					return "Incomplete path. Was expecting Vertex : " + lastEdge.getTarget().getName();
-				}
-				return null;
 			}
 
 			@Override
