@@ -281,11 +281,13 @@ public class ProblemView {
 	}
 	
 	public boolean errorIsInProblemView (String expected) throws CoreException {
+		System.out.println("XXXXXXXXX errorIsInProblemView >"+expected+"<");
 		IWorkspace workspace = ResourcesPlugin.getWorkspace();
 		IResource resource = workspace.getRoot();
 		IMarker[] markers = resource.findMarkers(IMarker.MARKER, true, IResource.DEPTH_INFINITE);
 		for (IMarker m : markers) {
 		    String msg = (String)m.getAttribute(IMarker.MESSAGE);
+		    System.out.println(">"+msg+"<");
 		    if (expected.equalsIgnoreCase(msg.trim())) return true;
 		}		
 		return false;
