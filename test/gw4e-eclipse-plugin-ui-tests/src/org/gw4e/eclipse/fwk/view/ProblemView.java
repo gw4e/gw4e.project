@@ -284,7 +284,7 @@ public class ProblemView {
 		System.out.println("XXXXXXXXX errorIsInProblemView >"+expected+"<");
 		IWorkspace workspace = ResourcesPlugin.getWorkspace();
 		IResource resource = workspace.getRoot();
-		IMarker[] markers = resource.findMarkers(IMarker.MARKER, true, IResource.DEPTH_INFINITE);
+		IMarker[] markers = resource.findMarkers(null, true, IResource.DEPTH_INFINITE);
 		for (IMarker m : markers) {
 		    String msg = (String)m.getAttribute(IMarker.MESSAGE);
 		    System.out.println(">"+msg+"<");
@@ -299,12 +299,7 @@ public class ProblemView {
 			IResource resource = workspace.getRoot();
 			IMarker[] markers = resource.findMarkers(IMarker.MARKER, true, IResource.DEPTH_INFINITE);
 			for (IMarker m : markers) {
-			    System.out.println("Id: " + m.getId());
 			    System.out.println("Message: " + m.getAttribute(IMarker.MESSAGE));
-			    System.out.println("Source ID: " + m.getAttribute(IMarker.SOURCE_ID));
-			    System.out.println("Location: " + m.getAttribute(IMarker.LOCATION));
-			    System.out.println("Line Number: " + m.getAttribute(IMarker.LINE_NUMBER));
-			    System.out.println("Marker: " + m.getAttribute(IMarker.MARKER));
 			}
 		} catch (CoreException e) {
 			e.printStackTrace();

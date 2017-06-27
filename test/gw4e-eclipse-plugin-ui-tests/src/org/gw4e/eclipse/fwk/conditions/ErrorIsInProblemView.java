@@ -21,7 +21,6 @@ public class ErrorIsInProblemView extends DefaultCondition {
 			pbView.errorIsInProblemView (error);
 			return  true;
 		} catch (Exception e) {
-			GW4EProject.cleanBuild();
 			return false;
 		}
 	}
