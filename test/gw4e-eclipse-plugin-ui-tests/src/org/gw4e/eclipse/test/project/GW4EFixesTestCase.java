@@ -431,10 +431,10 @@ public class GW4EFixesTestCase {
  			@Override
 			public boolean test() throws Exception {
 				try {
-					project.cleanBuild();
 					ProblemView pv = ProblemView.open(GW4EFixesTestCase.this.bot); 
 					pv.close();//Mandatory 
 					pv = ProblemView.open(GW4EFixesTestCase.this.bot);
+					project.cleanBuild();
 					try {
 						pv.executeQuickFixForErrorAllMessage(
 								"No policies found for FindOwnersSharedState.graphml",

@@ -99,7 +99,7 @@ public class ProblemView {
 
 	public void executeQuickFixForErrorAllMessage(String expectedErrorMessageInProblemView, String quickfixmessage,
 			ICondition[] conditions) {
-		
+		System.out.println("XXXXXXXXXXXXXXXXXXXX executeQuickFixForErrorAllMessage XXXXXXXXXXXXXXXXXXXXXX");
 		print ();
 		
 		bot.waitUntil(new ErrorIsInProblemView(this, expectedErrorMessageInProblemView));

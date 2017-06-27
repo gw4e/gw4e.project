@@ -770,6 +770,7 @@ public class GW4EProject {
 			try {
 				Job.getJobManager().join(ResourcesPlugin.FAMILY_MANUAL_BUILD, null);
 				Job.getJobManager().join(ResourcesPlugin.FAMILY_AUTO_BUILD, null);
+				 
 				wasInterrupted = false;
 			} catch (OperationCanceledException ignore) {
 			} catch (InterruptedException e) {

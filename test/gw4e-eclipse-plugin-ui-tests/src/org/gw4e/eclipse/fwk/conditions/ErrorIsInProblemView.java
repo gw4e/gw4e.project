@@ -18,7 +18,7 @@ public class ErrorIsInProblemView extends DefaultCondition {
 
 	public boolean test() throws Exception {
 		try {
-			pbView.errorIsInProblemView (error);
+			pbView.findErrorItemWithText(error);
 			return  true;
 		} catch (Exception e) {
 			return false;
