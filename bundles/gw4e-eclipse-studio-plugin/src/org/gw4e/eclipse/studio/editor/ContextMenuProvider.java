@@ -102,6 +102,7 @@ public class ContextMenuProvider extends org.eclipse.gef.ContextMenuProvider {
 						List<String> ids = new ArrayList<String> ();
 						while (sequence.hasNext()) {
 							EditPart part = (EditPart) sequence.next();
+							if (!(part.getModel() instanceof GraphElement)) continue;
 							GraphElement element = (GraphElement)part.getModel();
 							ids.add(element.getId());
 						}

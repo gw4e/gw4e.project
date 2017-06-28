@@ -39,6 +39,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -107,7 +109,16 @@ public class ResourceManager implements IResourceChangeListener {
  
  
  
-
+	/**
+	 * Write a string to a file
+	 * @param file
+	 * @param content
+	 * @throws IOException
+	 */
+	public static void write (File file, String content) throws IOException {
+		Files.write(Paths.get(file.getAbsolutePath()), content.getBytes());	
+	}
+	
 	/**
 	 * Close the edited file, if any ...
 	 * 

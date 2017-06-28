@@ -38,6 +38,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 import javax.annotation.Generated;
 
@@ -106,6 +107,11 @@ import org.eclipse.jdt.ui.actions.OrganizeImportsAction;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.Document;
 import org.eclipse.jface.text.IDocument;
+import org.eclipse.search.core.text.TextSearchEngine;
+import org.eclipse.search.core.text.TextSearchMatchAccess;
+import org.eclipse.search.core.text.TextSearchRequestor;
+import org.eclipse.search.ui.text.FileTextSearchScope;
+import org.eclipse.swt.custom.BusyIndicator;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.text.edits.MalformedTreeException;
 import org.eclipse.text.edits.TextEdit;
@@ -125,10 +131,32 @@ import org.graphwalker.java.annotation.GraphWalker;
 import org.graphwalker.java.annotation.Model;
 import org.gw4e.eclipse.builder.Location;
 import org.gw4e.eclipse.conversion.ClassExtension;
+import org.gw4e.eclipse.refactoring.Helper;
 import org.gw4e.eclipse.wizard.convert.AbstractPostConversion;
 
 public class JDTManager {
 
+
+	public static List<IFile> findAvailableExecutionContextAncestors(IFile file) {
+		List<IFile> files = new ArrayList<IFile>();
+		
+		IResource[] roots = { file.getProject() };
+		String[] fileNamePatterns = new String[] { "*.java" };
+		FileTextSearchScope scope = FileTextSearchScope.newSearchScope(roots, fileNamePatterns, false);
+		IPath path = Helper.buildGeneratedAnnotationValue(file);
+		Pattern pattern = Pattern.compile(Helper.getGeneratedAnnotationRegExp(path));
+		TextSearchRequestor collector = new TextSearchRequestor() {
+			@Override
+			public boolean acceptPatternMatch(TextSearchMatchAccess matchAccess) throws CoreException {
+				IFile file = matchAccess.getFile();
+				files.add(file);
+				return true;
+			}
+		};
+		TextSearchEngine.create().search(scope, collector, pattern, new NullProgressMonitor());
+		return files;
+	}
+	
 	/**
 	 * @param elt
 	 * @return
@@ -1558,6 +1586,13 @@ public class JDTManager {
 		return project;
 	}
 
+	public static IPackageFragment getPackageFragment(IFile file) throws JavaModelException {
+		IPackageFragmentRoot root1 = JDTManager.findPackageFragmentRoot(file.getProject(), file.getFullPath());
+		IPath path = file.getParent().getFullPath().makeRelativeTo(root1.getPath());
+		IPackageFragment pf =root1.getPackageFragment(path.toString().replace("/", "."));
+		return pf;
+	}
+	
 	/**
 	 * Return a package fragment with the passed path
 	 * 

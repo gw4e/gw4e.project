@@ -121,8 +121,8 @@ public class GeneratorChoiceComposite extends Composite {
 
 		this.listener = listener;
 		this.selection = selection;
-
-		loadAncestor();
+		IFile file = (IFile) selection.getFirstElement();
+		loadAncestor(file);
 		findStartElement () ;
 		Label explanationLabel = new Label(this, SWT.NONE);
 		explanationLabel.setLayoutData(new GridData(SWT.FILL));
@@ -340,40 +340,7 @@ public class GeneratorChoiceComposite extends Composite {
 		listener.handleEvent(null);
 	}
 
-	private void loadAncestor() {
-		Display display = Display.getCurrent();
-		Runnable longJob = new Runnable() {
-			public void run() {
-				display.syncExec(new Runnable() {
-					public void run() {
-						ancestors = findAvailableAncestors();
-					}
-				});
-				display.wake();
-			}
-		};
-		BusyIndicator.showWhile(display, longJob);
-	}
 
-	private List<IFile> findAvailableAncestors() {
-		List<IFile> files = new ArrayList<IFile>();
-		IFile file = (IFile) selection.getFirstElement();
-		IResource[] roots = { file.getProject() };
-		String[] fileNamePatterns = new String[] { "*.java" };
-		FileTextSearchScope scope = FileTextSearchScope.newSearchScope(roots, fileNamePatterns, false);
-		IPath path = Helper.buildGeneratedAnnotationValue(file);
-		Pattern pattern = Pattern.compile(Helper.getGeneratedAnnotationRegExp(path));
-		TextSearchRequestor collector = new TextSearchRequestor() {
-			@Override
-			public boolean acceptPatternMatch(TextSearchMatchAccess matchAccess) throws CoreException {
-				IFile file = matchAccess.getFile();
-				files.add(file);
-				return true;
-			}
-		};
-		TextSearchEngine.create().search(scope, collector, pattern, new NullProgressMonitor());
-		return files;
-	}
 
 	/**
 	 * @param parent
@@ -383,6 +350,22 @@ public class GeneratorChoiceComposite extends Composite {
 		lblDummy.setText("");
 		GridData gd = new GridData(GridData.FILL);
 		lblDummy.setLayoutData(gd);
+	}
+
+	private void loadAncestor(IFile file) {
+		Display display = Display.getCurrent();
+		Runnable longJob = new Runnable() {
+			public void run() {
+				display.syncExec(new Runnable() {
+					public void run() {
+						ancestors = JDTManager.findAvailableExecutionContextAncestors(file);
+					}
+				});
+				display.wake();
+			}
+		};
+		BusyIndicator.showWhile(display, longJob);
+		 
 	}
 
 	private void createAppendMode() {

@@ -2,6 +2,7 @@
 package org.gw4e.eclipse.wizard.staticgenerator;
 
 import java.io.File;
+import java.text.MessageFormat;
 
 /*-
  * #%L
@@ -155,7 +156,7 @@ public class GeneratorResourceUIPage extends WizardPage implements Listener {
 
 		fsg = new FolderSelectionGroup(composite, this, this.project);
 
-		this.setFileName(modelFile.getName().split(Pattern.quote("."))[0]); // $NON-NLS-1$
+		this.setFileName(modelFile.getName().split(Pattern.quote("."))[0]+"Static"); // $NON-NLS-1$
 
 		Group group = new Group(composite, SWT.NONE);
 		group.setLayout(new GridLayout());
@@ -386,8 +387,22 @@ public class GeneratorResourceUIPage extends WizardPage implements Listener {
 			}
 		}
 		
-		 	
-
+		String folderSelected = this.fsg.getSelectedContainer().getFullPath().toString();
+		String folderMainSource = project.getFullPath().append(PreferenceManager.getMainSourceFolder()).toString();
+		String foldertestSource = project.getFullPath().append(PreferenceManager.getTestSourceFolder()).toString();
+		
+		if (folderSelected!=null && folderSelected.trim().length()>0) {
+			if (!(folderSelected.startsWith(folderMainSource)) && !(folderSelected.startsWith(foldertestSource))) {
+				String message = MessageUtil.getString("convertto_invalidfolder_you_can_only_choose_format");
+				MessageFormat mf = new MessageFormat(message);
+				String msg = mf.format(new Object[] {folderMainSource, foldertestSource});
+				this.setErrorMessage(msg);
+				return false;
+			}
+		}
+		
+		 
+		
 		ResourcePage rp = new ResourcePage(
 				getContainerFullPath(), 
 				getFileName(), 
@@ -402,6 +417,6 @@ public class GeneratorResourceUIPage extends WizardPage implements Listener {
 	}
 	
 	
-	
+	 
 
 }

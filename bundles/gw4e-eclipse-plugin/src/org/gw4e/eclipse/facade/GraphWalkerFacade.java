@@ -45,6 +45,7 @@ import java.util.SortedSet;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.TreeSet;
+import java.util.UUID;
 
 import org.apache.commons.io.FilenameUtils;
 import org.eclipse.core.resources.IContainer;
@@ -70,9 +71,14 @@ import org.graphwalker.core.event.EventType;
 import org.graphwalker.core.event.Observer;
 import org.graphwalker.core.generator.PathGenerator;
 import org.graphwalker.core.machine.Context;
+import org.graphwalker.core.machine.ExecutionContext;
 import org.graphwalker.core.machine.Machine;
+import org.graphwalker.core.model.Action;
+import org.graphwalker.core.model.Builder;
 import org.graphwalker.core.model.Edge;
+import org.graphwalker.core.model.Edge.RuntimeEdge;
 import org.graphwalker.core.model.Element;
+import org.graphwalker.core.model.Model;
 import org.graphwalker.core.model.Model.RuntimeModel;
 import org.graphwalker.core.model.Requirement;
 import org.graphwalker.core.model.Vertex;
@@ -91,6 +97,7 @@ import org.graphwalker.java.source.cache.CacheEntry;
 import org.graphwalker.java.source.cache.SimpleCache;
 import org.graphwalker.java.test.IsolatedClassLoader;
 import org.graphwalker.java.test.Result;
+import org.graphwalker.java.test.TestExecutionException;
 import org.graphwalker.java.test.TestExecutor;
 import org.graphwalker.modelchecker.ContextsChecker;
 import org.gw4e.eclipse.builder.BuildPolicy;
@@ -238,13 +245,106 @@ public class GraphWalkerFacade {
 	}
 	
 	public static List<Element> getElements(File file) throws IOException {
-		ContextFactory factory = getContextFactory (file.toPath());
-		List<Context> readContexts = factory.create(file.toPath());
-		RuntimeModel model = readContexts.get(0).getModel();
-		List<Element> elements = model.getElements();
+		List<Element> elements = getModel(file).getElements();
 		return elements;
 	}
 
+	public static RuntimeModel getModel(File file) throws IOException {
+		ContextFactory factory = getContextFactory (file.toPath());
+		List<Context> readContexts = factory.create(file.toPath());
+		RuntimeModel model = readContexts.get(0).getModel();
+		return model;
+	}
+	
+	/**
+	 * Filter a model. It keeps only the passed element in the source model (removing the others) 
+	 * @param sourceFileModel
+	 * @param elements
+	 * @return a string representation of the reduced model on json format
+	 * @throws IOException
+	 */
+	public static String reduceModel (File sourceFileModel,String name,Element[] elements) throws IOException {
+		Map<RuntimeVertex,Vertex> mapping = new HashMap<RuntimeVertex,Vertex>();
+		Builder<? extends Element> startElement = null;
+		 
+		RuntimeModel sourceModel = GraphWalkerFacade.getModel(sourceFileModel);
+		Model model = new Model();
+		model.setName(name);
+		model.setProperties(sourceModel.getProperties());
+		model.setId(UUID.randomUUID().toString());
+		List<Vertex.RuntimeVertex> vertices = sourceModel.getVertices();
+		for (RuntimeVertex v : vertices) {
+			boolean found  = false;
+			for (int i = 0; i < elements.length; i++) {
+				Element element = elements[i];
+				if (element.getId().equals(v.getId())) {
+					found = true;
+					break;
+				}
+			}
+			if (!found) continue;
+			org.graphwalker.core.model.Vertex vertex = new org.graphwalker.core.model.Vertex().setName(v.getName()).setId(v.getId());
+			if (elements[0].equals(v)) {
+				startElement = vertex;
+			}
+			vertex.setId(UUID.randomUUID().toString());
+			vertex.setProperties(v.getProperties());
+			vertex.setSharedState(v.getSharedState());
+			vertex.setRequirements(v.getRequirements());
+			List<Action> actions = v.getActions();
+			for (Action action : actions) {
+				model.addAction(action);
+			}
+			model.addVertex(vertex);
+			mapping.put(v, vertex);
+		}
+		List<Edge.RuntimeEdge> edges = sourceModel.getEdges();
+		for (RuntimeEdge runtimeEdge : edges) {
+			boolean found  = false;
+			for (int i = 0; i < elements.length; i++) {
+				Element element = elements[i];
+				if (element.getId().equals(runtimeEdge.getId())) {
+					found = true;
+					break;
+				}
+			}
+			if (!found) continue;
+			
+			org.graphwalker.core.model.Vertex sourceVertex = mapping.get(runtimeEdge.getSourceVertex());
+			org.graphwalker.core.model.Vertex targetVertex = mapping.get(runtimeEdge.getTargetVertex());
+			Edge edge = new Edge()
+					.setSourceVertex(sourceVertex)
+					.setTargetVertex(targetVertex)
+					.setName(runtimeEdge.getName())
+					.setId(UUID.randomUUID().toString());
+
+			if (elements[0].equals(runtimeEdge)) {
+				startElement = edge;
+			}
+			edge.setProperties(runtimeEdge.getProperties());
+			edge.setGuard(runtimeEdge.getGuard());
+			edge.setActions(runtimeEdge.getActions());
+			edge.setDependency(runtimeEdge.getDependency());
+			edge.setRequirements(runtimeEdge.getRequirements());
+			edge.setWeight(runtimeEdge.getWeight());
+			
+			model.addEdge(edge);
+		}
+		Context writeContext = new ExecutionContext() {
+		};
+		writeContext.setModel(model.build());
+		if (startElement!=null) {
+			writeContext.setNextElement(startElement);
+		}
+		
+		List<Context> writeContexts = new ArrayList<>();
+		writeContexts.add(writeContext);
+
+		ContextFactory factory =  new JsonContextFactory ();
+		String content = factory.getAsString(writeContexts);
+		return content;
+	}
+	
 	private static void addContexts(List<Context> executionContexts, Path modelFileName, String generator,
 			String startElement) throws IOException {
  
@@ -305,6 +405,16 @@ public class GraphWalkerFacade {
 			try {
 				Result result = executor.execute();
 				canceller.cancel();
+			} catch (TestExecutionException e) {
+
+				String reason = e.getResult().getResultsAsString();
+				canceller.cancel();
+				ResourceManager.logException(e, reason);
+				 
+				if (!ErrorDialog.AUTOMATED_MODE) { // Avoid displaying a window while running automated mode
+					DialogManager.asyncDisplayErrorMessage(MessageUtil.getString("error"),
+							reason, e);
+				}
 			} catch (Throwable e) {
 				canceller.cancel();
 				ResourceManager.logException(e);
@@ -420,6 +530,9 @@ public class GraphWalkerFacade {
 		}
 		return ret;
 	}
+	
+	
+ 
 
 	/**
 	 * @param factory

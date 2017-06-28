@@ -34,6 +34,7 @@ import org.graphwalker.core.model.Vertex;
 import org.gw4e.eclipse.facade.GraphWalkerFacade;
 import org.gw4e.eclipse.facade.ResourceManager;
 import org.gw4e.eclipse.message.MessageUtil;
+import org.gw4e.eclipse.wizard.staticgenerator.model.GraphElementPage;
 
 /**
  * The Generator page that let the end user entering choices for graph model
@@ -402,7 +403,7 @@ public class GraphElementSelectionUIPage extends WizardPage {
 	}
 
 	protected boolean validatePage() {
-		((GeneratorToFileCreationWizard) this.getWizard()).setResourcePage(null);
+		((GeneratorToFileCreationWizard) this.getWizard()).setGraphElementPage(null);
 		this.setErrorMessage(null);
 		this.setMessage(null);
 		setPageComplete(false);
@@ -411,6 +412,8 @@ public class GraphElementSelectionUIPage extends WizardPage {
 			this.setErrorMessage(msg);
 			return false;
 		}
+		GraphElementPage gep = new GraphElementPage(source, (Element[]) viewerTarget.getInput());
+		((GeneratorToFileCreationWizard) this.getWizard()).setGraphElementPage(gep);
 		setPageComplete(true);
 		return true;
 	}
@@ -455,4 +458,7 @@ public class GraphElementSelectionUIPage extends WizardPage {
 		if (shouldbeVertex) return "Was expecting a vertex node after : " + lastEdge.getName();
 		return null;
 	}
+	
+
+
 }
