@@ -115,7 +115,7 @@ public class ExecutionContextSelectionUIPage extends WizardPage {
 				}
 			}
 		});
-		comboViewer.setData(GW4E_CONVERSION_WIDGET_ID, GW4E_CONVERSION_COMBO_ANCESTOR_EXTEND_TEST);
+		comboViewer.getCombo().setData(GW4E_CONVERSION_WIDGET_ID, GW4E_CONVERSION_COMBO_ANCESTOR_EXTEND_TEST);
 
 		comboViewer.setInput(ancestors);
 		if (hasItems()) {

@@ -318,7 +318,7 @@ public class GraphWalkerFacade {
 					.setName(runtimeEdge.getName())
 					.setId(UUID.randomUUID().toString());
 
-			if (elements[0].equals(runtimeEdge)) {
+			if (elements[0].getId().equals(runtimeEdge.getId())) {
 				startElement = edge;
 			}
 			edge.setProperties(runtimeEdge.getProperties());

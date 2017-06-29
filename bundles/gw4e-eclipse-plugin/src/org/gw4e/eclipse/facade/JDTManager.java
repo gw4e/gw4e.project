@@ -111,7 +111,6 @@ import org.eclipse.search.core.text.TextSearchEngine;
 import org.eclipse.search.core.text.TextSearchMatchAccess;
 import org.eclipse.search.core.text.TextSearchRequestor;
 import org.eclipse.search.ui.text.FileTextSearchScope;
-import org.eclipse.swt.custom.BusyIndicator;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.text.edits.MalformedTreeException;
 import org.eclipse.text.edits.TextEdit;
@@ -1405,6 +1404,10 @@ public class JDTManager {
 				} catch (JavaModelException e) {
 					ResourceManager.logException(e);
 				}
+				try {
+					cu.getCorrespondingResource().refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor ());
+				} catch (Exception e) {
+				}
 			}
 		};
 		Display.getDefault().syncExec(job);
@@ -1443,10 +1446,10 @@ public class JDTManager {
 	 * 
 	 * @param testInterface
 	 * @param monitor
-	 * @throws JavaModelException
+	 * @throws CoreException 
 	 */
 	@SuppressWarnings("unchecked")
-	public static void formatUnitSourceCode(IFile file, IProgressMonitor monitor) throws JavaModelException {
+	public static void formatUnitSourceCode(IFile file, IProgressMonitor monitor) throws CoreException {
 		@SuppressWarnings("rawtypes")
 		SubMonitor subMonitor = SubMonitor.convert(monitor, 100);
 		ICompilationUnit unit = JavaCore.createCompilationUnitFrom(file);
@@ -1469,12 +1472,13 @@ public class JDTManager {
 		TextEdit formatEdit = codeFormatter.format(CodeFormatter.K_COMPILATION_UNIT, unit.getSource(),
 				range.getOffset(), range.getLength(), 0, null);
 		subMonitor.split(30);
-		if (formatEdit != null && formatEdit.hasChildren()) {
+		if (formatEdit != null /* && formatEdit.hasChildren()*/) {
 			workingCopy.applyTextEdit(formatEdit, monitor);
 			workingCopy.reconcile(ICompilationUnit.NO_AST, false, null, null);
 			workingCopy.commitWorkingCopy(true, null);
 			workingCopy.discardWorkingCopy();
 		}
+		file.refreshLocal(IResource.DEPTH_INFINITE, subMonitor);
 		subMonitor.split(20);
 	}
 

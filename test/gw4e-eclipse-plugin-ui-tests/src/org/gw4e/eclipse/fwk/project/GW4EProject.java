@@ -1094,6 +1094,8 @@ public class GW4EProject {
 		return ResourceManager.createFile(this.projectName, folder, pkg, graphMLFilename, content);
 	}
 
+	 
+	
 	private String readFile(String file) throws FileNotFoundException {
 		StringBuilder result = new StringBuilder("");
 		Scanner scanner = null;

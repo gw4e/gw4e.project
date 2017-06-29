@@ -1,5 +1,9 @@
 package org.gw4e.eclipse.fwk.run;
 
+import java.util.List;
+
+import org.eclipse.swt.widgets.Display;
+
 /*-
  * #%L
  * gw4e
@@ -30,16 +34,20 @@ package org.gw4e.eclipse.fwk.run;
 
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.waits.Conditions;
+import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory;
+import org.eclipse.swtbot.swt.finder.waits.DefaultCondition;
 import org.eclipse.swtbot.swt.finder.waits.ICondition;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotButton;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotCheckBox;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotCombo;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTableItem;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotText;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.gw4e.eclipse.launching.test.GW4ELaunchConfigurationTab;
  
@@ -55,7 +63,66 @@ public class GW4ETestRunner extends AbstractRunner {
 		return "GW4E Test Launcher";
 	}
 	
+	public   SWTBotTree getProjectTree() {
+		SWTBotTree tree = getPackageExplorer().bot().tree();
+		return tree;
+	}
+
+	protected   SWTBotView getPackageExplorer() {
+		SWTBotView view = bot.viewByTitle("Package Explorer");
+		return view;
+	}
 	
+	public void runAsJavaApplication (String[] expectations , long timeout,String ... nodes) {
+		ICondition condition = new DefaultCondition () {
+			@Override
+			public boolean test() throws Exception {
+				try {
+					SWTBotTree tree = getProjectTree();
+					SWTBotTreeItem item = tree.expandNode(nodes);
+					item.setFocus();
+					item.select();
+					return true;
+				} catch (Exception e) {
+					return false;
+				}
+			}
+
+			@Override
+			public String getFailureMessage() {
+				StringBuffer sb = new StringBuffer ();
+				for (int i = 0; i < nodes.length; i++) {
+					sb.append(nodes[i]).append("/");
+				}
+				return "Unable to expand " + sb.toString();
+			}
+		};
+		
+		
+		bot.waitUntil(condition);
+		
+		SWTBotTree tree = getProjectTree();
+		SWTBotTreeItem item = tree.expandNode(nodes);
+		item.setFocus();
+		item.select();
+		
+		Display.getDefault().syncExec(new Runnable () {
+			@Override
+			public void run() {
+				String gwRunnerMenuItem = "Java Application";
+				List<String> menus = item.contextMenu("Run As").menuItems();
+				for (String menu : menus) {
+					if (menu.indexOf("Java Application") != -1) {
+						gwRunnerMenuItem = menu;
+					}
+				}
+				
+				SWTBotMenu menu =item.contextMenu("Run As").contextMenu(gwRunnerMenuItem);
+				menu.click();	
+			}
+		});		
+		waitForRunCompleted (expectations , timeout) ;
+	}
 	public void addRun (String configurationName,String projectName,String mainContext,String [] otherContexts) {
 		SWTBotShell shell = openRun ();
 		

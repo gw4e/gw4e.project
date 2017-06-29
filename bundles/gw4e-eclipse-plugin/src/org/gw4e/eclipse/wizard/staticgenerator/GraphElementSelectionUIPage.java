@@ -42,7 +42,16 @@ import org.gw4e.eclipse.wizard.staticgenerator.model.GraphElementPage;
  *
  */
 public class GraphElementSelectionUIPage extends WizardPage {
+	
+	public static final String GW4E_CONVERSION_WIDGET_ID = "id.gw4e.conversion.widget.id";
+	public static final String GW4E_CONVERSION_SOURCE_TABLE_ID = "id.gw4e.conversion.table.source.id";
+	public static final String GW4E_CONVERSION_TARGET_TABLE_ID = "id.gw4e.conversion.table.target.id";
+	public static final String GW4E_CONVERSION_BUTTON_RIGHT_ID = "id.gw4e.conversion.button.right.id";
+	public static final String GW4E_CONVERSION_BUTTON_LEFT_ID = "id.gw4e.conversion.button.left.id";
+	public static final String GW4E_CONVERSION_BUTTON_UP_ID = "id.gw4e.conversion.button.up.id";
+	public static final String GW4E_CONVERSION_BUTTON_DOWN_ID = "id.gw4e.conversion.button.down.id";
 
+	
 	private Table tableSource;
 	private Table tableTarget;
 	private File source;
@@ -91,6 +100,8 @@ public class GraphElementSelectionUIPage extends WizardPage {
 		element.getColumn().pack();
 
 		tableSource = viewerSource.getTable();
+		tableSource.setData(GW4E_CONVERSION_WIDGET_ID, GW4E_CONVERSION_SOURCE_TABLE_ID);
+		
 		tableSource.setHeaderVisible(true);
 		tableSource.setLinesVisible(true);
 		gd = new GridData();
@@ -110,6 +121,7 @@ public class GraphElementSelectionUIPage extends WizardPage {
 		compositeC.setLayoutData(gd);
 
 		Button toright = new Button(compositeC, SWT.PUSH);
+		toright.setData(GW4E_CONVERSION_WIDGET_ID, GW4E_CONVERSION_BUTTON_RIGHT_ID);
 		gd = new GridData();
 		gd.grabExcessVerticalSpace = true;
 		gd.verticalAlignment = SWT.FILL;
@@ -129,6 +141,7 @@ public class GraphElementSelectionUIPage extends WizardPage {
 		});
 
 		Button toleft = new Button(compositeC, SWT.PUSH);
+		toleft.setData(GW4E_CONVERSION_WIDGET_ID, GW4E_CONVERSION_BUTTON_LEFT_ID);
 		gd = new GridData();
 		gd.grabExcessVerticalSpace = true;
 		gd.verticalAlignment = SWT.FILL;
@@ -160,6 +173,8 @@ public class GraphElementSelectionUIPage extends WizardPage {
 		viewerTarget = new TableViewer(compositeR,
 				SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION | SWT.BORDER);
 		tableTarget = viewerTarget.getTable();
+		tableTarget.setData(GW4E_CONVERSION_WIDGET_ID, GW4E_CONVERSION_TARGET_TABLE_ID);
+
 		viewerTarget.setContentProvider(ArrayContentProvider.getInstance());
 		element = new TableViewerColumn(viewerTarget, SWT.NONE);
 
@@ -192,6 +207,7 @@ public class GraphElementSelectionUIPage extends WizardPage {
 		compositeUpDown.setLayout(rl_compositeUpDown);
 
 		Button btnUpButton = new Button(compositeUpDown, SWT.NONE);
+		btnUpButton.setData(GW4E_CONVERSION_WIDGET_ID, GW4E_CONVERSION_BUTTON_UP_ID);
 		btnUpButton.setText("Up");
 		btnUpButton.addListener(SWT.Selection, new Listener() {
 			public void handleEvent(Event e) {
@@ -204,6 +220,7 @@ public class GraphElementSelectionUIPage extends WizardPage {
 		});
 
 		Button btnDownButton = new Button(compositeUpDown, SWT.NONE);
+		btnDownButton.setData(GW4E_CONVERSION_WIDGET_ID, GW4E_CONVERSION_BUTTON_DOWN_ID);
 		btnDownButton.setText("Down");
 		btnDownButton.addListener(SWT.Selection, new Listener() {
 			public void handleEvent(Event e) {
@@ -281,7 +298,7 @@ public class GraphElementSelectionUIPage extends WizardPage {
 
 	private void moveToTarget() {
 		Element[] currentTarget = (Element[]) viewerTarget.getInput();
-		if (sourceSelection != null && currentTarget.length > 0) {
+		if (sourceSelection != null) {
 
 			Element[] elementsTarget = new Element[currentTarget.length + 1];
 			System.arraycopy(currentTarget, 0, elementsTarget, 0, currentTarget.length);
@@ -420,9 +437,14 @@ public class GraphElementSelectionUIPage extends WizardPage {
  
 	private String validateSelection() {
 		Element[] currentTarget = (Element[]) viewerTarget.getInput();
-		boolean shouldbeVertex = true;
+		
 		Vertex.RuntimeVertex lastVertex = null;
 		Edge.RuntimeEdge lastEdge = null;
+		
+		if (currentTarget.length == 0) 
+			return "You need to select target elements";
+		Element startElement = currentTarget[0];
+		boolean shouldbeVertex = (startElement instanceof Vertex.RuntimeVertex);
 		for (int i = 0; i < currentTarget.length; i++) {
 			Element model = currentTarget[i];
 			if (shouldbeVertex) {
@@ -447,7 +469,7 @@ public class GraphElementSelectionUIPage extends WizardPage {
 					lastEdge = (Edge.RuntimeEdge) model;
 					Vertex.RuntimeVertex sourceV  = lastEdge.getSourceVertex();
 					 
-					if (!lastVertex.equals(sourceV)) {
+					if (lastVertex!=null && !lastVertex.equals(sourceV)) {
 						return "Was expecting an edge, but not this one : " + lastEdge.getName();
 					}
 				} else {
@@ -455,7 +477,16 @@ public class GraphElementSelectionUIPage extends WizardPage {
 				}
 			}
 		}
-		if (shouldbeVertex) return "Was expecting a vertex node after : " + lastEdge.getName();
+		if (shouldbeVertex) {
+			boolean found = false;
+			Vertex.RuntimeVertex vertex = lastEdge.getTargetVertex();
+			for (int i = 0; i < currentTarget.length; i++) {
+				if (vertex.equals(currentTarget[i])) {
+					found = true;
+				}
+			}
+			if (!found) return "Was expecting a vertex node " + vertex.getName() + " after : " + lastEdge.getName();
+		}
 		return null;
 	}
 	

@@ -58,7 +58,7 @@ public class JavaModelBasedPostConversionImpl extends AbstractPostConversion {
 	private void formatSource(IFile file, IProgressMonitor monitor) {
 		try {
 			JDTManager.formatUnitSourceCode(file,monitor);
-		} catch (JavaModelException e) {
+		} catch (Exception e) {
 			ResourceManager.logException(e);
 		}
 	}

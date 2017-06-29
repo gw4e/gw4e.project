@@ -67,7 +67,9 @@ import org.gw4e.eclipse.wizard.staticgenerator.model.ResourcePage;
  *
  */
 public class GeneratorResourceUIPage extends WizardPage implements Listener {
-
+	/**
+	 * 
+	 */
 	private Button eraseExistingFile;
 
 	/**
@@ -102,7 +104,10 @@ public class GeneratorResourceUIPage extends WizardPage implements Listener {
 	 * 
 	 */
 	FolderSelectionGroup fsg;
-
+	
+	/**
+	 * 
+	 */
 	IFile modelFile;
 	
 	/**

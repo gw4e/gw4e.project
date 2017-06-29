@@ -60,7 +60,7 @@ public class ConvertDialog {
 	
 
 	
-	private void prepare  (String project,String packageRootFragment, String pkg,String targetFilename,String targetFormat,String checkTestBox){
+	public void prepare  (String project,String packageRootFragment, String pkg,String targetFilename,String targetFormat,String checkTestBox){
 		String [] nodes = 	null;
 		if (pkg==null) {
 			nodes =	new String []  {packageRootFragment} ;
