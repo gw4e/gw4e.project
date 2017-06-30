@@ -91,7 +91,6 @@ public abstract class AbstractRunner  {
 		
 		bot.waitUntil(condition, RUN_TIMEOUT);
 		
-		bot.menu("Run").menu("Run Configurations...").click();
 		bot.waitUntil(Conditions.shellIsActive("Run Configurations"));
 		SWTBotShell shell = bot.shell("Run Configurations");
 		SWTBotTreeItem item = shell.bot().tree().getTreeItem(getLauncherName()).select();
