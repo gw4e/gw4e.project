@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cheatsheet
+      title="Generating and Executing a fixed guided test sequence">
+        <intro>
+      <description>
+         You will now select graph elements in the model and use a specific wizard to generate a test
+      </description>
+   </intro>  
+      
+   <item
+         title="Selecting elements in the graph model and Generating the test">
+      <description>
+          1 - In the Package Explorer, right-click the Simple.jon file<br/>
+          2 - Select <b>Open with</b> -&gt; <b>GW4E Editor</b>.The graph is now opened in its editor. <br/>
+          3 - Select in this order the following graph elements <br/>
+               <b>Start</b> <br/>
+               <b>e_StartApp</b> <br/> 
+               <b>v_VerifyAppRunning</b> <br/> 
+               <b>e_1</b> <br/> 
+               <b>v_MyNewVertex</b> <br/> 
+               <b>e_2</b> <br/> 
+               <b>v_VerifyPreferencePage</b><br/>
+          4 - Now, while having the nodes selected right-click them, and select <b>Generate</b> -&gt; <b>Open Fixed Guided Test Sequence Dialog</b> menu item<br/> 
+          5 - A wizard is now opened. ON the right side you can see, the selected nodes.<br/>
+          6 - Click <b>Next</b><br/>
+          7 - In this page, are listed all available tests related to the current graph model. Click <b>Next</b><br/> 
+          8 - Now, select <b>src/main/java</b> -&gt; <b>com</b> -&gt; <b>company</b> folders<br/> 
+          9 - Notice that the test will be named : <b>SimpleStatic</b>
+         10 - Click <b>Finish</b>.A new java test is opened in the editors.<br/>  <b>This test creates an in memory model, building the path you just have selected.</b><br/> 
+      </description>
+  </item>
+  <item
+         title="Running the generated fixed guided test">
+      <description>
+         1 - In the <b>Package Explorer</b>, right-click the <b>src/main/java/com.company/SimpleStatic.java</b> file and select <b>Run As</b> -&gt; <b>Java Application</b> <br/>
+     	  You can see the result execution in the Eclipse output console.  <br/>
+     	<br/> 
+     	  <b>Tips: </b>  <br/>
+     	 As you might have noticed, the context given to the GraphWalker machine is not directly your existing test.<br/>
+     	 <b>Context context = new ModelTestContext();</b> <br/>
+     	 Rather, it is a (inner) subclass of it named <b>ModelTestContext</b>.<br/>
+     	 This might be handy, if you don't want to change the existing test until you are sure that the fixed guided test works. In that case, you modify the <b>ModelTestContext</b> inner class 
+         by introducing the needed methods and your perform your debugging process. Once your guided test is correct, you just have to report the methods from the inner class to the existing test.<br/>
+         You can now delete your fixed guided test.
+      </description>
+   </item>
+</cheatsheet>

@@ -47,5 +47,13 @@
             id="gw4e-eclipse-cheatsheet.performancebuilder">
          	<description>GW4E Plugin Tutorials</description>
       </cheatsheet>    
+     <cheatsheet
+            name="6 - Creating a fixed guided path to be run for debugging"
+            category="gw4e-eclipse-cheatsheet.category"
+             contentFile="src/org/gw4e/eclipse/cheatsheet/guided/path/generator/en/gw4e_composite.xml"
+            composite="true"
+            id="gw4e-eclipse-cheatsheet.golden.path">
+         	<description>GW4E Plugin Tutorials</description>
+      </cheatsheet>       
    </extension>
 </plugin>

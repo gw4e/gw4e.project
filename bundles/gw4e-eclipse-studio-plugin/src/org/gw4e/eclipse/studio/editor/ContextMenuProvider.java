@@ -88,8 +88,8 @@ public class ContextMenuProvider extends org.eclipse.gef.ContextMenuProvider {
 
 			protected void init() {
 				setId("grapphwalker.openApiBasedOfflineDialogAction");
-				setText("Open Api Based Offline Test Dialog");
-				setToolTipText("Open Api Based Offline Test Dialog");
+				setText("Open Fixed Guided Test Sequence  Dialog");
+				setToolTipText("Open Guided Test Sequence Generation Dialog");
 
 			}
 

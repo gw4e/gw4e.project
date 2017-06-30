@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cheatsheet
+      title="Generating and running test">
+   <intro>
+      <description>
+         <b>So far we created a graph model. We now want to generate a test from this model.</b>
+      </description>
+   </intro>
+   <item
+         title="Generating a test">
+      <description>
+          In the <b>Package Explorer</b>, right-click the <b>src/main/resources</b> folder and select GW4E -&gt; <b>Generate Test and Interface</b> <br/>
+          A java editor is opened with the new created test <b>SimpleImpl</b>. As you might have expected a method has been generated for each graph elements (Vertices and Edges)<br/>
+      </description>
+   </item>
+   <item
+         title="Running a test">
+      <description>
+          In the <b>Package Explorer</b>, right-click the <b>src/main/java/com.company/SimpleImpl.java</b> file and select Run As -&gt; <b>GW4E Test</b> <br/>
+     	  You can see the result execution in the Eclipse output console. For the tutorial purpose, let's say that this is the state you want for your test and your are fine with it.
+     	  So far, so good, your are happy with your test, but in the next steps, you will have a discussion with your test manager to extend it...
+      </description>
+   </item>
+</cheatsheet>
