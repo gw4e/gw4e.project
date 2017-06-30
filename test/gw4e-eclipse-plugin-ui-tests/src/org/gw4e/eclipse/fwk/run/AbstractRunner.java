@@ -34,15 +34,13 @@ import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchManager;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Widget;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.waits.Conditions;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory;
+import org.eclipse.swtbot.swt.finder.waits.DefaultCondition;
 import org.eclipse.swtbot.swt.finder.waits.ICondition;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotButton;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
@@ -52,7 +50,8 @@ import org.gw4e.eclipse.fwk.view.ConsoleView;
 import org.hamcrest.Matcher;
 
 public abstract class AbstractRunner  {
-
+	public static long	RUN_TIMEOUT	= 3 * 60 * 1000;
+	
 	SWTWorkbenchBot bot;
 	
 	public AbstractRunner(SWTWorkbenchBot bot) {
@@ -71,6 +70,27 @@ public abstract class AbstractRunner  {
 	}
 
 	protected SWTBotShell openRun () {
+		ICondition condition = new DefaultCondition () {
+			@Override
+			public boolean test() throws Exception {
+				try {
+					bot.menu("Run").menu("Run Configurations...").click();
+					return true;
+				} catch (Exception e) {
+					return false;
+				}
+			}
+
+			@Override
+			public String getFailureMessage() {
+				 
+				return "Unable to find the 'Run -> Run Configurations...' menu";
+			}
+			
+		};
+		
+		bot.waitUntil(condition, RUN_TIMEOUT);
+		
 		bot.menu("Run").menu("Run Configurations...").click();
 		bot.waitUntil(Conditions.shellIsActive("Run Configurations"));
 		SWTBotShell shell = bot.shell("Run Configurations");
