@@ -46,6 +46,7 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
 	static Map<String, String[] > DEFAULTS = new HashMap<String, String[] > ();
 	static {
 		DEFAULTS.put(PreferenceManager.SUFFIX_PREFERENCE_FOR_TEST_IMPLEMENTATION, new String[] {"Impl"});
+		DEFAULTS.put(PreferenceManager.TIMEOUT_FOR_GRAPHWALKER_TEST_EXECUTION, new String[] {"180"});
 		DEFAULTS.put(PreferenceManager.TIMEOUT_FOR_TEST_OFFLINE_GENERATION, new String[] {"15"});
 		DEFAULTS.put(PreferenceManager.SUFFIX_PREFERENCE_FOR_TEST_OFFLINE_IMPLEMENTATION, new String[] {"OffLineImpl"});
 		DEFAULTS.put(PreferenceManager.BUILD_POLICIES_FILENAME, new String[] {Constant.BUILD_POLICIES_FILENAME});

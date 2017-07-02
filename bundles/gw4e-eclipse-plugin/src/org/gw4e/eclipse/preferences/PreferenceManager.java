@@ -72,6 +72,8 @@ public class PreferenceManager {
 			+ "SUFFIX_PREFERENCE_FOR_TEST_OFFLINE_IMPLEMENTATION";
 	public static String TIMEOUT_FOR_TEST_OFFLINE_GENERATION = PROJECT_SCOPED + GW4E
 			+ "TIMEOUT_FOR_TEST_OFFLINE_GENERATION";
+	public static String TIMEOUT_FOR_GRAPHWALKER_TEST_EXECUTION = PROJECT_SCOPED + GW4E
+			+ "TIMEOUT_FOR_GRAPHWALKER_TEST_EXECUTION";
 	public static String BUILD_POLICIES_FILENAME = PROJECT_SCOPED + GW4E + "BUILD_POLICIES_FILENAME";
 	public static String LOG_INFO_ENABLED = PROJECT_SCOPED + GW4E + "LOG_INFO_ENABLED";
 	public static String PERFORMANCE_CONFIGURATION = PROJECT_SCOPED + GW4E + "PERFORMANCE_CONFIGURATION";
@@ -129,6 +131,7 @@ public class PreferenceManager {
 				PERFORMANCE_CONFIGURATION, 
 				SUFFIX_PREFERENCE_FOR_TEST_OFFLINE_IMPLEMENTATION,
 				TIMEOUT_FOR_TEST_OFFLINE_GENERATION,
+				TIMEOUT_FOR_GRAPHWALKER_TEST_EXECUTION,
 				GRAPHWALKER_VERSION};
 		return values;
 	}
@@ -249,7 +252,7 @@ public class PreferenceManager {
 			return "";
 		}
 	}
-
+	
 	public static int getTimeOutForTestOfflineGeneration(String projectName) {
 		try {
 			IProject project = ResourceManager.getProject(projectName);
@@ -261,6 +264,16 @@ public class PreferenceManager {
 		}
 	}
 	
+	public static int getTimeOutForGraphWalkerTestExecution(String projectName) {
+		try {
+			IProject project = ResourceManager.getProject(projectName);
+			String key = TIMEOUT_FOR_GRAPHWALKER_TEST_EXECUTION;
+			boolean projectScoped = isProjectScoped(key);
+			return Integer.parseInt(SettingsManager.getValues(project, key, projectScoped)[0]);
+		} catch (ArrayIndexOutOfBoundsException e) {
+			return 15;
+		}
+	}
 	/**
 	 * @return the suffix that will be added to the interface name to get the
 	 *         java class name implementation

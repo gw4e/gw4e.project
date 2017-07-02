@@ -47,6 +47,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.StringTokenizer;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
@@ -87,12 +92,16 @@ import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IEditorReference;
+import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.ResourceSelectionDialog;
+import org.eclipse.ui.ide.IDE;
 import org.gw4e.eclipse.Activator;
 import org.gw4e.eclipse.builder.BuildPolicy;
 import org.gw4e.eclipse.builder.BuildPolicyManager;
@@ -106,19 +115,66 @@ import org.gw4e.eclipse.product.GW4ENature;
 
 public class ResourceManager implements IResourceChangeListener {
 
- 
- 
- 
+	public static void waitForTestResult(String projectname, List<IFile> files) throws CoreException {
+
+		ExecutorService executor = Executors.newSingleThreadExecutor();
+		Future<IFile> future = executor.submit(new Callable<IFile>() {
+			@Override
+			public IFile call() throws Exception {
+				try {
+					while (true) {
+						List<IFile> temp = new ArrayList<IFile>();
+						ResourceManager.getAllJUnitResultFiles(projectname, temp);
+						temp.removeAll(files);
+						if (temp.size() > 0) {
+							for (IFile iFile : temp) {
+								if (isJUnitResultFile(iFile)) {
+									return iFile;
+								}
+							}
+						}
+						Thread.sleep(1000);
+					}
+				} catch (Exception e) {
+					ResourceManager.logException(e);
+				}
+				return null;
+			}
+		});
+
+		try {
+			int timeout = PreferenceManager.getTimeOutForGraphWalkerTestExecution(projectname);
+			IFile file = future.get(timeout, TimeUnit.SECONDS);
+			System.out.println(file);
+			Display.getDefault().asyncExec(() -> {
+				try {
+					IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+					if (page != null) {
+						page.showView("org.eclipse.jdt.junit.ResultView");
+						IEditorPart editorPart = IDE.openEditor(page, file, true);
+					}
+
+				} catch (PartInitException e) {
+					ResourceManager.logException(e);
+				}
+			});
+		} catch (Exception e) {
+			future.cancel(true);
+		}
+		executor.shutdownNow();
+	}
+
 	/**
 	 * Write a string to a file
+	 * 
 	 * @param file
 	 * @param content
 	 * @throws IOException
 	 */
-	public static void write (File file, String content) throws IOException {
-		Files.write(Paths.get(file.getAbsolutePath()), content.getBytes());	
+	public static void write(File file, String content) throws IOException {
+		Files.write(Paths.get(file.getAbsolutePath()), content.getBytes());
 	}
-	
+
 	/**
 	 * Close the edited file, if any ...
 	 * 
@@ -276,7 +332,7 @@ public class ResourceManager implements IResourceChangeListener {
 		}
 		return childFolder;
 	}
-	
+
 	/**
 	 * Create a subfolder
 	 * 
@@ -338,6 +394,36 @@ public class ResourceManager implements IResourceChangeListener {
 					files.add(file);
 			}
 		}
+	}
+
+	/**
+	 * @param container
+	 * @param files
+	 * @throws CoreException
+	 */
+	public static void getAllJUnitResultFiles(String projectName, List<IFile> files) throws CoreException {
+		if (projectName == null)
+			return;
+		IContainer container = ResourceManager.getProject(projectName);
+		container.refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor());
+		IResource[] members = container.members();
+		for (IResource member : members) {
+			if (member instanceof IFile) {
+				IFile file = (IFile) member;
+				if (isJUnitResultFile(file)) {
+					files.add(file);
+				}
+			}
+		}
+	}
+
+	public static boolean isJUnitResultFile(IFile file) throws CoreException {
+		String filename = file.getName();
+		String extension = file.getFileExtension();
+		if (filename.startsWith("TEST-GraphWalker-") && "xml".equalsIgnoreCase(extension)) {
+			return true;
+		}
+		return false;
 	}
 
 	/**
@@ -562,12 +648,12 @@ public class ResourceManager implements IResourceChangeListener {
 	}
 
 	/**
-	 * Return the extension of a file (.graphml for example) belonging to a
-	 * GW4E project
+	 * Return the extension of a file (.graphml for example) belonging to a GW4E
+	 * project
 	 * 
 	 * @param receiver
-	 * @return null if the object os not a file or if the project is not a
-	 *         GW4E one
+	 * @return null if the object os not a file or if the project is not a GW4E
+	 *         one
 	 */
 	public static String getExtensionFile(Object receiver) {
 		IFile file = null;
@@ -657,31 +743,29 @@ public class ResourceManager implements IResourceChangeListener {
 		return outputFileName;
 	}
 
-	
 	public static IResource ensureFolderPath(IPath path) throws CoreException {
 		IPath p = path;
 		List<IPath> list = new ArrayList<IPath>();
-		while(p.segmentCount() > 0) {
+		while (p.segmentCount() > 0) {
 			IResource resource = getWorkspaceRoot().findMember(p);
 			if (resource == null) {
-				list.add((IPath)p.clone());
-			}  else {
+				list.add((IPath) p.clone());
+			} else {
 				break;
 			}
 			p = p.removeLastSegments(1);
 		}
-		for (int i = list.size() - 1 ; i >= 0 ; i--) {
-			 IFolder folder  = (IFolder)getWorkspaceRoot().findMember(p);
-			 IPath pth = list.get(i);
-			 folder  =   folder.getFolder(pth.lastSegment());
-			 folder.create(true, true, new NullProgressMonitor ());
-			 p = pth;
+		for (int i = list.size() - 1; i >= 0; i--) {
+			IFolder folder = (IFolder) getWorkspaceRoot().findMember(p);
+			IPath pth = list.get(i);
+			folder = folder.getFolder(pth.lastSegment());
+			folder.create(true, true, new NullProgressMonitor());
+			p = pth;
 		}
-	 
+
 		return getWorkspaceRoot().findMember(path);
 	}
-	
-	
+
 	/**
 	 * Return the resource corresponding to the passed path
 	 * 
@@ -1429,19 +1513,19 @@ public class ResourceManager implements IResourceChangeListener {
 	/**
 	 * @param listener
 	 */
-	public static void removeLogListener (ILogListener listener) {
+	public static void removeLogListener(ILogListener listener) {
 		ILog log = Activator.getDefault().getLog();
 		log.removeLogListener(listener);
 	}
-	
+
 	/**
 	 * @param listener
 	 */
-	public static void addLogListener (ILogListener listener) {
+	public static void addLogListener(ILogListener listener) {
 		ILog log = Activator.getDefault().getLog();
 		log.addLogListener(listener);
 	}
-	
+
 	/**
 	 * @param message
 	 */

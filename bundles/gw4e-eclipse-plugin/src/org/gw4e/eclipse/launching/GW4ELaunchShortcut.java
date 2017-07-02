@@ -43,6 +43,7 @@ import org.eclipse.debug.ui.ILaunchShortcut;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.ITypeRoot;
 import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.jdt.internal.junit.ui.TestRunnerViewPart;
 import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
 import org.eclipse.jdt.ui.JavaUI;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -135,7 +136,7 @@ public class GW4ELaunchShortcut implements ILaunchShortcut {
 		   dialog.open();
 		   return null;
 		}
-		
+		 
 		ILaunchConfigurationType configType= DebugPlugin.getDefault().getLaunchManager().getLaunchConfigurationType(GW4ELAUNCHCONFIGURATIONTYPE);
 		ILaunchConfigurationWorkingCopy wc= configType.newInstance(null, DebugPlugin.getDefault().getLaunchManager().generateLaunchConfigurationName(mainElement.getElementName()));
 		wc.setAttribute(IJavaLaunchConfigurationConstants.ATTR_PROJECT_NAME, elements[0].getJavaProject().getElementName());

@@ -124,6 +124,7 @@ public class ProjectPropertyPage extends PropertyPage {
 				MessageUtil.getString("suffixfortestimplementation"),
 				MessageUtil.getString("suffixforofflinetestimplementation"),
 				MessageUtil.getString("timeoutforofflinetestgeneration"),
+				MessageUtil.getString("waittimeoutforgraphwalkertestexecution"),
 				MessageUtil.getString("targetmainfolderfortestinterface"),
 				MessageUtil.getString("targettestfolderfortestinterface"),
 				MessageUtil.getString("defaultseverity"),
@@ -134,6 +135,7 @@ public class ProjectPropertyPage extends PropertyPage {
 				PreferenceManager.SUFFIX_PREFERENCE_FOR_TEST_IMPLEMENTATION,
 				PreferenceManager.SUFFIX_PREFERENCE_FOR_TEST_OFFLINE_IMPLEMENTATION,
 				PreferenceManager.TIMEOUT_FOR_TEST_OFFLINE_GENERATION,
+				PreferenceManager.TIMEOUT_FOR_GRAPHWALKER_TEST_EXECUTION,
 				PreferenceManager.GW4E_MAIN_SOURCE_GENERATED_INTERFACE,
 				PreferenceManager.GW4E_TEST_SOURCE_GENERATED_INTERFACE,
 				PreferenceManager.DEFAULT_SEVERITY,
@@ -170,7 +172,20 @@ public class ProjectPropertyPage extends PropertyPage {
 							ProjectPropertyPage.this.setErrorMessage(MessageUtil.getString("invalid_timeout"));
 						}
 					}
-				},				
+				},	
+				new PropertyChecker() {
+					public void check (String[] values) {
+						ProjectPropertyPage.this.setErrorMessage(null);
+						ProjectPropertyPage.this.setValid(true);
+						String temp = values[0].trim();
+						try {
+							Integer.parseInt(temp);
+						} catch (NumberFormatException e) {
+							ProjectPropertyPage.this.setValid(false);
+							ProjectPropertyPage.this.setErrorMessage(MessageUtil.getString("invalid_timeout"));
+						}
+					}
+				},	
 				new PropertyChecker() {
 					public void check (String[] values) {
 						ProjectPropertyPage.this.setErrorMessage(null);
@@ -202,17 +217,18 @@ public class ProjectPropertyPage extends PropertyPage {
 			PreferenceManager.suffixForTestImplementation(projectName),
 			PreferenceManager.suffixForTestOfflineImplementation(projectName),
 			PreferenceManager.getTimeOutForTestOfflineGeneration(projectName)+"",
+			PreferenceManager.getTimeOutForGraphWalkerTestExecution(projectName)+"",
 			PreferenceManager.getTargetFolderForTestInterface(projectName,true),
 			PreferenceManager.getTargetFolderForTestInterface(projectName,false),
 			PreferenceManager.getDefaultSeverity(projectName),
 		};
 		
 		boolean [] editable = new boolean  [] {
-			true,true,true,true,false,false,true,
+			true,true,true,true,true,false,false,true,
 		};
 		
 		boolean [] multitext = new boolean [] {
-			false,false,false,false,false,false,false
+			false,false,false,false,false,false,false,false
 		};
 		
 		Property[]  properties = new Property [propertyNames.length];

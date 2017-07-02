@@ -34,8 +34,11 @@ import java.net.URL;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
+import org.eclipse.core.resources.IContainer;
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -44,6 +47,7 @@ import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.jdt.launching.AbstractJavaLaunchConfigurationDelegate;
 import org.eclipse.jdt.launching.ExecutionArguments;
+import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
 import org.eclipse.jdt.launching.IVMRunner;
 import org.eclipse.jdt.launching.SocketUtil;
 import org.eclipse.jdt.launching.VMRunnerConfiguration;
@@ -91,10 +95,9 @@ public class GW4ELaunchConfigurationDelegate extends AbstractJavaLaunchConfigura
 			String [] classpath = updateClassPath (configuration);
 			Path tempFile = ClasspathSerializer.serialize(classpath);
 			
-
 			progArgs.add(tempFile.toFile().getAbsolutePath());
 			
-			String classnames= configuration.getAttribute(CONFIG_TEST_CLASSES,"unknown class");  
+			String classnames = configuration.getAttribute(CONFIG_TEST_CLASSES,"unknown class");  
 			tempFile = TestsSerializer.serialize(classnames);
 			progArgs.add(tempFile.toFile().getAbsolutePath());
 			
@@ -108,7 +111,7 @@ public class GW4ELaunchConfigurationDelegate extends AbstractJavaLaunchConfigura
 			int fPort= SocketUtil.findFreePort();
 			progArgs.add("-port");  
 			progArgs.add(String.valueOf(fPort));
-			System.out.println("Debug Port " + fPort);
+			 
 			// VM-specific attributes
 			Map<String, Object> vmAttributesMap= getVMSpecificAttributesMap(configuration);
 			// Set the properties 
@@ -122,9 +125,14 @@ public class GW4ELaunchConfigurationDelegate extends AbstractJavaLaunchConfigura
 			
 			setDefaultSourceLocator(launch, configuration);
 			
-			// Here we are ... 
-			// 
+			String project = configuration.getAttribute(IJavaLaunchConfigurationConstants.ATTR_PROJECT_NAME,(String)null);
+			List<IFile> files = new ArrayList<IFile>  ();
+		 	ResourceManager.getAllJUnitResultFiles(project, files);
+
 			runner.run(runConfig, launch, monitor);
+			
+			ResourceManager.waitForTestResult (project,files);
+			
 		} finally {
 			monitor.done();
 		}
