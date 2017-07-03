@@ -93,6 +93,8 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotText;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
+import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.PlatformUI;
 import org.gw4e.eclipse.builder.BuildPolicyManager;
 import org.gw4e.eclipse.builder.exception.BuildPolicyConfigurationException;
 import org.gw4e.eclipse.builder.exception.NoBuildRequiredException;
@@ -624,7 +626,15 @@ public class GW4EProject {
 	}
 
 	protected   SWTBotView getPackageExplorer() {
+		Display.getDefault().syncExec(() -> {
+			try {
+				PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView("org.eclipse.jdt.ui.PackageExplorer");
+			} catch (PartInitException e1) {
+				e1.printStackTrace();
+			}
+		});
 		SWTBotView view = bot.viewByTitle("Package Explorer");
+	
 		return view;
 	}
 
