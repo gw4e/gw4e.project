@@ -37,6 +37,7 @@ import java.util.List;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swtbot.swt.finder.SWTBot;
+import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.waits.DefaultCondition;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotCTabItem;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
@@ -54,25 +55,43 @@ public class JUnitView {
 	}
 	
 	public void run (GW4EProject project,String[] nodes, int runCount,int expectedError,int expectedFailure,long timeout) {
-		SWTBotTree tree = project.getProjectTree();
-		SWTBotTreeItem item = tree.expandNode(nodes);
-		item.setFocus();
-		item.select();
-		Display.getDefault().syncExec(new Runnable () {
+		DefaultCondition condition = new DefaultCondition () {
+			boolean found = false;
 			@Override
-			public void run() {
-				String gwRunnerMenuItem = "3 JUnit Test";
-				List<String> menus = item.contextMenu("Run As").menuItems();
-				for (String menu : menus) {
-					if (menu.indexOf("JUnit Test") != -1) {
-						gwRunnerMenuItem = menu;
+			public boolean test() throws Exception {
+				SWTBotTree tree = project.getProjectTree();
+				SWTBotTreeItem item = tree.expandNode(nodes);
+				item.setFocus();
+				item.select();
+				Display.getDefault().syncExec(new Runnable () {
+					@Override
+					public void run() {
+						try {
+							String gwRunnerMenuItem = "3 JUnit Test";
+							List<String> menus = item.contextMenu("Run As").menuItems();
+							for (String menu : menus) {
+								if (menu.indexOf("JUnit Test") != -1) {
+									gwRunnerMenuItem = menu;
+								}
+							}
+							SWTBotMenu menu =item.contextMenu("Run As").contextMenu(gwRunnerMenuItem);
+							menu.click();
+							found = true;
+						} catch (Exception e) {
+						}	
 					}
-				}
-				
-				SWTBotMenu menu =item.contextMenu("Run As").contextMenu(gwRunnerMenuItem);
-				menu.click();	
+				});
+				return found;
 			}
-		});
+
+			@Override
+			public String getFailureMessage() {
+				return "Cannot Run Junit Test";
+			}
+			
+		};
+		
+		bot.waitUntil(condition,timeout);  
 	    bot.waitUntil(new RunCompletedCondition(runCount),timeout);  
 	    bot.waitUntil(new ExpectedErrorCondition(expectedError));  
 	    bot.waitUntil(new ExpectedFailureCondition(expectedFailure));  

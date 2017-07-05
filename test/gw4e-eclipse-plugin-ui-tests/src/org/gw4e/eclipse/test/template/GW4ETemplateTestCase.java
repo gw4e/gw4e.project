@@ -145,10 +145,6 @@ public class GW4ETemplateTestCase {
 				  "\"totalNumberOfPassedRequirement\": 1,",
 				  "\"totalNumberOfUnvisitedEdges\": 0" };
 		
-		
-	  
-		
-		
 		gwtr.validateRunResult (expected);
 		
 		String[] nodes = new String[4];
