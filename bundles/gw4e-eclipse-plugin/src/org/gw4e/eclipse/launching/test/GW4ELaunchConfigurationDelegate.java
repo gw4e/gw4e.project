@@ -37,7 +37,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.FileLocator;
@@ -45,6 +44,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
+import org.eclipse.debug.core.model.IProcess;
 import org.eclipse.jdt.launching.AbstractJavaLaunchConfigurationDelegate;
 import org.eclipse.jdt.launching.ExecutionArguments;
 import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
@@ -73,6 +73,8 @@ public class GW4ELaunchConfigurationDelegate extends AbstractJavaLaunchConfigura
 		try {
 			// A VM runner starts a Java VM running a Java program. 
 			IVMRunner runner= getVMRunner(configuration, mode);
+			
+			
 			// Retrieve the working fir
 			File workingDir = verifyWorkingDirectory(configuration);
 			String workingDirName = null;
@@ -107,7 +109,9 @@ public class GW4ELaunchConfigurationDelegate extends AbstractJavaLaunchConfigura
 			String displayReport= configuration.getAttribute(EXECUTION_TEST_DISPLAY_CONFIGURATION,"true"); 
 			progArgs.add(displayReport);
 			
-			 
+			boolean removedBlockedElements = configuration.getAttribute(EXECUTION_TEST_REMOVE_BLOCKED_ELEMENT_CONFIGURATION,true); 
+			progArgs.add(removedBlockedElements+"");
+			
 			int fPort= SocketUtil.findFreePort();
 			progArgs.add("-port");  
 			progArgs.add(String.valueOf(fPort));
@@ -128,10 +132,12 @@ public class GW4ELaunchConfigurationDelegate extends AbstractJavaLaunchConfigura
 			String project = configuration.getAttribute(IJavaLaunchConfigurationConstants.ATTR_PROJECT_NAME,(String)null);
 			List<IFile> files = new ArrayList<IFile>  ();
 		 	ResourceManager.getAllJUnitResultFiles(project, files);
-
+		 	System.out.println(this.getLaunchManager().getProcesses().length);
 			runner.run(runConfig, launch, monitor);
+			 
+			IProcess process = getLaunchManager().getProcesses() [getLaunchManager().getProcesses().length-1];
 			
-			ResourceManager.waitForTestResult (project,files);
+			ResourceManager.waitForTestResult (process, project,files);
 			
 		} finally {
 			monitor.done();

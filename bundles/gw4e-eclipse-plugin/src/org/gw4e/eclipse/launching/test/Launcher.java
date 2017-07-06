@@ -55,8 +55,9 @@ public class Launcher {
 		File reportDir = new File (args[2]);
 		 
 		boolean displayDetail = Boolean.parseBoolean(args[3]);
-		 
-		GW4EExecutor gwe  = new GW4EExecutor(cp, classnames, reportDir, displayDetail);
+		boolean removedBlocedElements = Boolean.parseBoolean(args[4]);
+		
+		GW4EExecutor gwe  = new GW4EExecutor(cp, classnames, reportDir, displayDetail, removedBlocedElements);
 		gwe.execute();
 	}
 

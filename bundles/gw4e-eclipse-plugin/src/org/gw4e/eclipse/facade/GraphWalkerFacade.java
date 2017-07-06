@@ -898,12 +898,13 @@ public class GraphWalkerFacade {
 		List<String> classnames;
 		File reportDir;
 		boolean displayDetail;
-
+		boolean removedBlockedElements;
+		
 		public GW4EExecutor(List<String> classpathElements, List<String> classnames, File reportDir,
-				boolean displayDetail) {
+				boolean displayDetail,boolean removedBlockedElements) {
 			super();
 			this.classpathElements = classpathElements;
-
+			this.removedBlockedElements=removedBlockedElements;
 			this.reportDir = reportDir;
 			this.displayDetail = displayDetail;
 			this.classnames = new ArrayList<String>();
@@ -912,6 +913,15 @@ public class GraphWalkerFacade {
 					continue;
 				this.classnames.add(clazz);
 			}
+			System.out.println("---------------------------------------------------------------------------");
+			System.out.println("---------------------------------------------------------------------------");
+			System.out.println("reportDir : " + reportDir);
+			System.out.println("displayDetail : " + displayDetail);
+			System.out.println("removedBlockedElements : " + removedBlockedElements);
+			System.out.println("classnames : " + classnames);
+			System.out.println("classpathElements : " + classpathElements);
+			System.out.println("---------------------------------------------------------------------------");
+			System.out.println("---------------------------------------------------------------------------");
 		}
 
 		private void installEntryPointExecutionContext(Class[] contextClasses, List<Context> contextInstances) {
@@ -974,8 +984,14 @@ public class GraphWalkerFacade {
 			TestExecutor executor;
 
 			switchClassLoader(contextClassLoader);
-
+		 
 			executor = new TestExecutor(contexts);
+			
+			List<Context> all = executor.getMachine().getContexts();
+			if (removedBlockedElements) {
+				org.graphwalker.io.common.Util.filterBlockedElements(all);
+			}
+			
 			installEntryPointExecutionContext(contexts, executor.getMachine().getContexts());
 			displayConfiguration(executor.getMachine().getContexts());
 			Result result = null;

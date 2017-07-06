@@ -82,6 +82,8 @@ import org.eclipse.core.runtime.QualifiedName;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.debug.core.ILaunchManager;
+import org.eclipse.debug.core.model.IProcess;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IJavaElement;
@@ -115,7 +117,7 @@ import org.gw4e.eclipse.product.GW4ENature;
 
 public class ResourceManager implements IResourceChangeListener {
 
-	public static void waitForTestResult(String projectname, List<IFile> files) throws CoreException {
+	public static void waitForTestResult(IProcess process, String projectname, List<IFile> files) throws CoreException {
 
 		ExecutorService executor = Executors.newSingleThreadExecutor();
 		Future<IFile> future = executor.submit(new Callable<IFile>() {
@@ -134,6 +136,20 @@ public class ResourceManager implements IResourceChangeListener {
 							}
 						}
 						Thread.sleep(1000);
+						if (process.isTerminated()) {
+							Thread.sleep(500); // pause to give a chance to the file to be persisted
+							temp = new ArrayList<IFile>();
+							ResourceManager.getAllJUnitResultFiles(projectname, temp);
+							temp.removeAll(files);
+							if (temp.size() > 0) {
+								for (IFile iFile : temp) {
+									if (isJUnitResultFile(iFile)) {
+										return iFile;
+									}
+								}
+							}
+						};
+						 
 					}
 				} catch (Exception e) {
 					ResourceManager.logException(e);
@@ -141,11 +157,13 @@ public class ResourceManager implements IResourceChangeListener {
 				return null;
 			}
 		});
+		
+ 
 
 		try {
 			int timeout = PreferenceManager.getTimeOutForGraphWalkerTestExecution(projectname);
 			IFile file = future.get(timeout, TimeUnit.SECONDS);
-			System.out.println(file);
+			if (file==null) return;
 			Display.getDefault().asyncExec(() -> {
 				try {
 					IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();

@@ -86,8 +86,8 @@ public class GW4ELaunchConfigurationTab extends AbstractLaunchConfigurationTab i
 	public static String GW4E_LAUNCH_TEST_CONFIGURATION_ADDITIONAL_TEST = "gw4e.launch.test.project.additional.test";
 	public static String GW4E_LAUNCH_TEST_CONFIGURATION_HINT_BUTTON = "gw4e.launch.test.project.hint.button";
 	public static String GW4E_LAUNCH_TEST_CONFIGURATION_SELECTALL_BUTTON = "gw4e.launch.test.project.selectall.button";
-	
-	
+	public static String GW4E_LAUNCH_TEST_TEST_REMOVE_BLOCKED_ELEMENT_BUTTON = "gw4e.launch.config.test.execution.remove.blocked.elements.configuration";
+
 	private Text 	fProjectText;
 	private Button	fProjectButton;
 	 
@@ -99,7 +99,10 @@ public class GW4ELaunchConfigurationTab extends AbstractLaunchConfigurationTab i
 	private IType additionalExecutionContexts[]; 
 	private IType mainExecutionContexts[];
 	private boolean doHint=false;
+	 
 	private Button hintButton;
+	private Button removeBockedElementButton;
+	private GridData gd_1;
 	
 	public GW4ELaunchConfigurationTab( ) {
 		super();
@@ -127,6 +130,7 @@ public class GW4ELaunchConfigurationTab extends AbstractLaunchConfigurationTab i
 		 
 		createProjectSection (compositeContainer);
 		createTestContainerSelectionGroup(compositeContainer);
+		createRemoveBlockedElementGroup (compositeContainer);
 		createAdditionalExecutionContextContainer (compositeContainer);
 
 	}
@@ -140,14 +144,14 @@ public class GW4ELaunchConfigurationTab extends AbstractLaunchConfigurationTab i
 		label.setLayoutData(gd);
 		label.setText(MessageUtil.getString("label_project_explanation"));
 		
-		
 		gd = new GridData();
 		gd.horizontalSpan = 3;
 		label = new Label(parent, SWT.NONE);
 		label.setText(MessageUtil.getString("label_project1"));
-		gd= new GridData();
-		gd.horizontalIndent = 25;
-		label.setLayoutData(gd);
+		gd_1= new GridData();
+		gd_1.horizontalAlignment = SWT.RIGHT;
+		gd_1.horizontalIndent = 25;
+		label.setLayoutData(gd_1);
 
 		fProjectText= new Text(parent, SWT.SINGLE | SWT.BORDER);
 		fProjectText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
@@ -181,13 +185,13 @@ public class GW4ELaunchConfigurationTab extends AbstractLaunchConfigurationTab i
 	}
 	
 	private void createAdditionalExecutionContextContainer (Composite parent) {
-		new Label(compositeContainer, SWT.NONE);
-		ILabelProvider labelProvider = new JavaElementLabelProvider(JavaElementLabelProvider.SHOW_QUALIFIED);
+
 
 		Label lblNewLabel = new Label(compositeContainer, SWT.NONE);
 		lblNewLabel.setLayoutData(new GridData(SWT.RIGHT, SWT.TOP, false, false, 1, 1));
 		lblNewLabel.setText(MessageUtil.getString("additionalExecutionContext"));
 
+		ILabelProvider labelProvider = new JavaElementLabelProvider(JavaElementLabelProvider.SHOW_QUALIFIED);
 		fAdditionalTestViewer = CheckboxTableViewer.newCheckList(parent, SWT.BORDER);
 		fAdditionalTestViewer.setContentProvider(new IStructuredContentProvider() {
 			@Override
@@ -270,13 +274,13 @@ public class GW4ELaunchConfigurationTab extends AbstractLaunchConfigurationTab i
 			}
 		});
 		hintButton.setData(GW4E_LAUNCH_CONFIGURATION_CONTROL_ID,GW4E_LAUNCH_TEST_CONFIGURATION_HINT_BUTTON);
-	
 
 	}
 	
 	private void createTestContainerSelectionGroup (Composite parent) {
 		Label fTestLabel = new Label(parent, SWT.NONE);
 		GridData gd = new GridData( );
+		gd.horizontalAlignment = SWT.RIGHT;
 		gd.horizontalIndent = 25;
 		gd.verticalAlignment=SWT.TOP;
 		fTestLabel.setLayoutData(gd);
@@ -310,6 +314,26 @@ public class GW4ELaunchConfigurationTab extends AbstractLaunchConfigurationTab i
 		});
 		combo.setData(GW4E_LAUNCH_CONFIGURATION_CONTROL_ID,GW4E_LAUNCH_TEST_CONFIGURATION_MAIN_TEST);
 	}
+	
+	private void createRemoveBlockedElementGroup (Composite parent) {
+		Label lfiller = new Label(compositeContainer, SWT.NONE);
+		lfiller.setText("");
+		
+		Label lblRemoveBlockedElement = new Label(compositeContainer, SWT.NONE);
+		lblRemoveBlockedElement.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
+		lblRemoveBlockedElement.setText(MessageUtil.getString("removeBlockedElement"));
+		
+		removeBockedElementButton = new Button(compositeContainer, SWT.CHECK);
+		removeBockedElementButton.setText("");
+		removeBockedElementButton.setSelection(true);
+		new Label(compositeContainer, SWT.NONE);
+		removeBockedElementButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent evt) {
+				validatePage();
+			}
+		});
+ 	}
 	
 	 
 	private void hint ( ) {
@@ -365,6 +389,7 @@ public class GW4ELaunchConfigurationTab extends AbstractLaunchConfigurationTab i
 	public void setDefaults(ILaunchConfigurationWorkingCopy configuration) {
 		configuration.setAttribute(IJavaLaunchConfigurationConstants.ATTR_PROJECT_NAME, "");
 		configuration.setAttribute(CONFIG_TEST_CLASSES, "");
+		configuration.setAttribute(EXECUTION_TEST_REMOVE_BLOCKED_ELEMENT_CONFIGURATION, true);
 		if (fProjectText!=null) fProjectText.setText("");
 	}
 	
@@ -379,7 +404,7 @@ public class GW4ELaunchConfigurationTab extends AbstractLaunchConfigurationTab i
 				fAdditionalTestViewer.setInput(null);
 			};
 			fProjectText.setText(projectName);
-			 
+			removeBockedElementButton.setSelection(configuration.getAttribute(EXECUTION_TEST_REMOVE_BLOCKED_ELEMENT_CONFIGURATION, true));
 			String classes = configuration.getAttribute(CONFIG_TEST_CLASSES, "");  
 			StringTokenizer st = new StringTokenizer (classes,";");
 			if (st.hasMoreTokens()) {
@@ -408,9 +433,6 @@ public class GW4ELaunchConfigurationTab extends AbstractLaunchConfigurationTab i
 			ResourceManager.logException(e);
 		}
 	}
-
-	
-	 
 	
 	@Override
 	public void performApply(ILaunchConfigurationWorkingCopy configuration) {
@@ -428,6 +450,7 @@ public class GW4ELaunchConfigurationTab extends AbstractLaunchConfigurationTab i
  		  if (checked) sb.append(name).append(";").toString();
  		 }
 		configuration.setAttribute(CONFIG_TEST_CLASSES, sb.toString());
+		configuration.setAttribute(EXECUTION_TEST_REMOVE_BLOCKED_ELEMENT_CONFIGURATION,removeBockedElementButton.getSelection());
  	}
  		
   

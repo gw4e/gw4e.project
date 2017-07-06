@@ -91,6 +91,8 @@ public class GW4ELaunchConfigurationDelegate extends AbstractJavaLaunchConfigura
 			// Specific GraphWalker Offline arguments from the configuration
 			progArgs.add("offline");
 			
+ 			String removeBlockedElements= configuration.getAttribute(CONFIG_LAUNCH_REMOVE_BLOCKED_ELEMENT_CONFIGURATION,"true");  
+
  			String unvisited= configuration.getAttribute(CONFIG_UNVISITED_ELEMENT,(String) null);  
 			String verbose= configuration.getAttribute(CONFIG_VERBOSE,(String) null);  
 			String modelPath= configuration.getAttribute(CONFIG_GRAPH_MODEL_PATH  ,(String) null); 
@@ -127,6 +129,14 @@ public class GW4ELaunchConfigurationDelegate extends AbstractJavaLaunchConfigura
 			if (verbose!=null && Boolean.parseBoolean(verbose)) {
 				progArgs.add("-o");
 			}
+			
+			if (removeBlockedElements!=null && Boolean.parseBoolean(removeBlockedElements)) {
+				progArgs.add("-b");
+				progArgs.add("true");
+			} else  {
+				progArgs.add("-b");
+				progArgs.add("false");
+			}		 
 			
 			// VM-specific attributes
 			Map<String, Object> vmAttributesMap= getVMSpecificAttributesMap(configuration);

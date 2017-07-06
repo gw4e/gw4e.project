@@ -53,6 +53,11 @@ public interface LaunchingConstant {
 	public static String EXECUTION_TEST_DISPLAY_CONFIGURATION = "gw4e.launch.config.test.execution.display.configuration";
 	
 	/**
+	 * The config used to set whether the configuration will be logged before the test execution
+	 */
+	public static String EXECUTION_TEST_REMOVE_BLOCKED_ELEMENT_CONFIGURATION = "gw4e.launch.config.test.execution.remove.blocked.elements.configuration";
+	
+	/**
 	 * The config used to set the launcher class
 	 */
 	public static String CONFIG_LAUNCH_CLASS = "org.gw4e.eclipse.launching.test.Launcher";

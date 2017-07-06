@@ -62,5 +62,11 @@ public interface LaunchingConstant {
 	 * The class launched  to execute the offline command
 	 */
 	public static String CONFIG_LAUNCH_CLASS = "org.graphwalker.cli.CLI";
+	
+	/**
+	 * The config used to set whether the configuration will be logged before the test execution
+	 */
+	public static String CONFIG_LAUNCH_REMOVE_BLOCKED_ELEMENT_CONFIGURATION = "gw4e.launch.config.remove.blocked.elements.configuration";
+
 }
 

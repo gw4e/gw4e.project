@@ -86,6 +86,7 @@ public class GW4ELaunchConfigurationTab extends AbstractLaunchConfigurationTab i
 	private Text fModelText;
 	private Text generatorText;
 	private Button fVerbosedButton;
+	private Button fRemoveBlockedElementsButton;
 	private BuildPoliciesCheckboxTableViewer buildPoliciesViewer;
 	private Button fPrintUnvisitedButton;
 	private Text fStartNodeText;
@@ -95,6 +96,7 @@ public class GW4ELaunchConfigurationTab extends AbstractLaunchConfigurationTab i
 	public static String GW4E_BROWSER_BUTTON_ID_PROJECT ="gw4e.launch.configuration.browse.button.id.project";
 	public static String GW4E_LAUNCH_CONFIGURATION_BUTTON_ID_PRINT_UNVISITED ="gw4e.launch.configuration.browse.button.id.printunvisited";
 	public static String GW4E_LAUNCH_CONFIGURATION_BUTTON_ID_VERBOSE ="gw4e.launch.configuration.browse.button.id.verbose";
+	public static String GW4E_LAUNCH_CONFIGURATION_BUTTON_ID_REMOVE_BLOCKED_ELEMENTS ="gw4e.launch.configuration.browse.button.id.remove.blocked.elements";
 	public static String GW4E_LAUNCH_CONFIGURATION_BROWSER_BUTTON_ID_METHOD ="gw4e.launch.configuration.browse.button.id.model";
 	public static String GW4E_LAUNCH_CONFIGURATION_TEXT_ID_START_ELEMENT ="gw4e.launch.configuration.text.id.start.element";
 	public static String GW4E_LAUNCH_CONFIGURATION_TEXT_ID_GENERATOR ="gw4e.launch.configuration.text.id.generator";
@@ -274,6 +276,7 @@ public class GW4ELaunchConfigurationTab extends AbstractLaunchConfigurationTab i
 			}
 		});
 		fPrintUnvisitedButton.setData(GW4E_LAUNCH_CONFIGURATION_CONTROL_ID,GW4E_LAUNCH_CONFIGURATION_BUTTON_ID_PRINT_UNVISITED);
+	
 		Label fVerbodeLabel = new Label(parent, SWT.NONE);
 		fVerbodeLabel.setText(MessageUtil.getString("launching_verbose"));
 		gd = new GridData();
@@ -293,6 +296,27 @@ public class GW4ELaunchConfigurationTab extends AbstractLaunchConfigurationTab i
 			}
 		});
 		fVerbosedButton.setData(GW4E_LAUNCH_CONFIGURATION_CONTROL_ID,GW4E_LAUNCH_CONFIGURATION_BUTTON_ID_VERBOSE);
+		
+		Label fRemoveBlockedElementsLabel = new Label(parent, SWT.NONE);
+		fRemoveBlockedElementsLabel.setText(MessageUtil.getString("removeBlockedElement"));
+		gd = new GridData();
+		gd.horizontalIndent = 25;
+		fRemoveBlockedElementsLabel.setLayoutData(gd);
+		
+		fRemoveBlockedElementsButton = new Button(parent, SWT.CHECK);
+		fRemoveBlockedElementsButton.setEnabled(true);
+		fRemoveBlockedElementsButton.setSelection(true);
+		fRemoveBlockedElementsButton.setText("");
+		gd = new GridData();
+		gd.horizontalSpan = 2;
+		fRemoveBlockedElementsButton.setLayoutData(gd);
+		fRemoveBlockedElementsButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent evt) {
+				updateConfigState();
+			}
+		});
+		fRemoveBlockedElementsButton.setData(GW4E_LAUNCH_CONFIGURATION_CONTROL_ID,GW4E_LAUNCH_CONFIGURATION_BUTTON_ID_REMOVE_BLOCKED_ELEMENTS);
 	}
 	
 	/**
@@ -508,6 +532,7 @@ public class GW4ELaunchConfigurationTab extends AbstractLaunchConfigurationTab i
 			fVerbosedButton.setSelection(Boolean.parseBoolean(config.getAttribute(CONFIG_VERBOSE, "false")));
 			fStartNodeText.setText(config.getAttribute(CONFIG_LAUNCH_STARTNODE, ""));
 			generatorText.setText(config.getAttribute(CONFIG_GRAPH_GENERATOR_STOP_CONDITIONS, ""));
+			fRemoveBlockedElementsButton.setSelection(config.getAttribute(CONFIG_LAUNCH_REMOVE_BLOCKED_ELEMENT_CONFIGURATION, true));
 		} catch (CoreException e) {
 			ResourceManager.logException(e);
 		}
@@ -525,6 +550,7 @@ public class GW4ELaunchConfigurationTab extends AbstractLaunchConfigurationTab i
 		config.setAttribute(CONFIG_VERBOSE, this.fVerbosedButton.getSelection() + "");
 		config.setAttribute(CONFIG_LAUNCH_STARTNODE, this.fStartNodeText.getText() + "");
 		config.setAttribute(CONFIG_GRAPH_GENERATOR_STOP_CONDITIONS, this.generatorText.getText());
+		config.setAttribute(CONFIG_LAUNCH_REMOVE_BLOCKED_ELEMENT_CONFIGURATION, this.fRemoveBlockedElementsButton.getSelection()+"");
 	}
 
 	/* (non-Javadoc)
@@ -538,6 +564,8 @@ public class GW4ELaunchConfigurationTab extends AbstractLaunchConfigurationTab i
 		config.setAttribute(CONFIG_VERBOSE, "false");
 		config.setAttribute(CONFIG_LAUNCH_STARTNODE, "");
 		config.setAttribute(CONFIG_GRAPH_GENERATOR_STOP_CONDITIONS, "");
+		config.setAttribute(CONFIG_LAUNCH_REMOVE_BLOCKED_ELEMENT_CONFIGURATION, "true");
+		
 	}
 
 	/**
