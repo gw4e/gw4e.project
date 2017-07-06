@@ -44,6 +44,12 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotText;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
+import org.eclipse.ui.IEditorPart;
+import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.ide.IDE;
+import org.gw4e.eclipse.facade.ResourceManager;
 import org.gw4e.eclipse.fwk.project.GW4EProject;
 import org.hamcrest.Matcher;
 
@@ -52,6 +58,19 @@ public class JUnitView {
 	 
 	public JUnitView(SWTBot bot ) {
 		this.bot=bot;
+	}
+	
+	private void openView () {
+		Display.getDefault().syncExec(() -> {
+			try {
+				IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+				if (page != null) {
+					page.showView("org.eclipse.jdt.junit.ResultView");
+				}
+			} catch (PartInitException e) {
+				ResourceManager.logException(e);
+			}
+		});
 	}
 	
 	public void run (GW4EProject project,String[] nodes, int runCount,int expectedError,int expectedFailure,long timeout) {
@@ -104,6 +123,7 @@ public class JUnitView {
 		public RunCompletedCondition(int runCount) {
 			super();
 			this.runCount = runCount;
+			openView ();
 		}
 
 		@Override
@@ -117,6 +137,7 @@ public class JUnitView {
 				if ( (runCount+"/"+ runCount).equalsIgnoreCase(runText.getText()) ) {
 					Matcher matcher = allOf(widgetOfType(Label.class));
 					List<Label> list = bot.getFinder().findControls(matcher);
+					System.out.println("labels found ----> " + list.size());
 					boolean[] temp = new boolean [] {false}; 
 					for (Label label : list) {
 						Display.getDefault().syncExec(new Runnable () {
