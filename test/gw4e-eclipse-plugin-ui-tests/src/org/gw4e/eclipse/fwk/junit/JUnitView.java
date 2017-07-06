@@ -113,6 +113,7 @@ public class JUnitView {
 			labels.clear();
 			if (item!=null) {
 				runText = bot.textWithLabel("Runs: ");
+				System.out.println("runText ----> " + runText.getText());
 				if ( (runCount+"/"+ runCount).equalsIgnoreCase(runText.getText()) ) {
 					Matcher matcher = allOf(widgetOfType(Label.class));
 					List<Label> list = bot.getFinder().findControls(matcher);
@@ -121,6 +122,7 @@ public class JUnitView {
 						Display.getDefault().syncExec(new Runnable () {
 							@Override
 							public void run() {
+								System.out.println("label ----> " + label.getText());
 								labels.add(label.getText());
 								if (label.getText().indexOf("Finished after") != -1) {
 									temp [0] =  true;
