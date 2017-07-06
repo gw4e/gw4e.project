@@ -94,9 +94,15 @@ public class GW4ERunnerTestCase {
 
 	@Before
 	public void setUp() throws CoreException {
-		bot.resetWorkbench();
-		GW4EProject.cleanWorkspace();
-		GW4EPerspective.openGWPerspective(bot);
+		long timeout = SWTBotPreferences.TIMEOUT;
+		try {
+			SWTBotPreferences.TIMEOUT = 3 * 60 * 1000;
+			bot.resetWorkbench();
+			GW4EProject.cleanWorkspace();
+			GW4EPerspective.openGWPerspective(bot);
+		} finally {
+			SWTBotPreferences.TIMEOUT = timeout;
+		}
 	}
 	
 	
