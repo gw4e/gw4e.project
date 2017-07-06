@@ -133,7 +133,7 @@ public class JUnitView {
 			labels.clear();
 			if (item!=null) {
 				runText = bot.textWithLabel("Runs: ");
-				System.out.println("runText ----> " + runText.getText());
+				System.out.println("runText ----> >" + runText.getText() + "<");
 				if ( (runCount+"/"+ runCount).equalsIgnoreCase(runText.getText()) ) {
 					Matcher matcher = allOf(widgetOfType(Label.class));
 					List<Label> list = bot.getFinder().findControls(matcher);
