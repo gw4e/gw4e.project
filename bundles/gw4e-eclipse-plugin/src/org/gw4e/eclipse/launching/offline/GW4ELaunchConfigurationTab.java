@@ -532,7 +532,7 @@ public class GW4ELaunchConfigurationTab extends AbstractLaunchConfigurationTab i
 			fVerbosedButton.setSelection(Boolean.parseBoolean(config.getAttribute(CONFIG_VERBOSE, "false")));
 			fStartNodeText.setText(config.getAttribute(CONFIG_LAUNCH_STARTNODE, ""));
 			generatorText.setText(config.getAttribute(CONFIG_GRAPH_GENERATOR_STOP_CONDITIONS, ""));
-			fRemoveBlockedElementsButton.setSelection(config.getAttribute(CONFIG_LAUNCH_REMOVE_BLOCKED_ELEMENT_CONFIGURATION, true));
+			fRemoveBlockedElementsButton.setSelection(new Boolean(config.getAttribute(CONFIG_LAUNCH_REMOVE_BLOCKED_ELEMENT_CONFIGURATION, "true")));
 		} catch (CoreException e) {
 			ResourceManager.logException(e);
 		}

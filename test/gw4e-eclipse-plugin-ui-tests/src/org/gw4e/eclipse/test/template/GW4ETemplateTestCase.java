@@ -146,7 +146,46 @@ public class GW4ETemplateTestCase {
 				  "\"totalNumberOfUnvisitedEdges\": 0" };
 		
 		gwtr.validateRunResult (expected);
+	
 		
+	}
+	
+	@Test
+	public void testCreateProjectWithSimpleTemplateTestJunit () throws CoreException  {
+		GW4EProject project = new GW4EProject(bot, gwproject);
+		project.createWithSimpleTemplate(gwproject);
+		
+		String mainSourceFolder  = gwproject + "/src/main/java";
+		String pkgFragmentRoot	 =	"src/main/java";
+		String pkg = "com.company";
+		String targetFilename = "SimpleImpl";
+		String targetFormat = "test";
+		String[] graphFilePath = new String []  { gwproject, "src/main/resources", pkg, "Simple.json" };
+		String checkTestBox = "Java Test Based";
+		String [] contexts = new String [0];
+		FileParameters fp = new FileParameters(mainSourceFolder, gwproject, pkgFragmentRoot, pkg, targetFilename,  targetFormat, graphFilePath);
+		ICondition convertPageCompletedCondition = new DefaultCondition () {
+			@Override
+			public boolean test() throws Exception {
+				boolean b  = project.prepareconvertTo(
+						fp.getProject(),
+						fp.getPackageFragmentRoot(),
+						fp.getPackage(), 
+						fp.getTargetFilename(), 
+						targetFormat,
+						checkTestBox,
+						"e_StartApp","v_VerifyPreferencePage", "e_StartApp",contexts,
+						fp.getGraphmlFilePath());
+				return b;
+			}
+
+			@Override
+			public String getFailureMessage() {
+				return "Unable to complete the wizard page.";
+			}
+		};
+		bot.waitUntil(convertPageCompletedCondition, 3 * 60 * 1000);
+ 
 		String[] nodes = new String[4];
 		nodes[0] = gwproject;
 		nodes[1] = "src/main/java";
