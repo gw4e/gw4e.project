@@ -486,9 +486,6 @@
 	    </launchConfigurationType>
 	</extension>
 
-  
-
-
     <extension
          point="org.eclipse.debug.ui.launchConfigurationTabGroups">
       <launchConfigurationTabGroup
@@ -507,7 +504,44 @@
       </launchConfigurationTabGroup>
    </extension>
    
-      <extension
+   <extension point="org.eclipse.debug.core.launchConfigurationTypes">
+	    <launchConfigurationType
+	        name="GW4E Manual Test Launcher"
+	        delegate="org.gw4e.eclipse.launching.runasmanual.GW4ELaunchConfigurationDelegate"
+	        modes="run"               
+	        id="org.gw4e.eclipse.launching.runasmanual.GW4ElaunchConfigurationTypes">        
+	    </launchConfigurationType>
+	</extension>
+
+    <extension
+         point="org.eclipse.debug.ui.launchConfigurationTabGroups">
+      <launchConfigurationTabGroup
+            type="org.gw4e.eclipse.launching.runasmanual.GW4ElaunchConfigurationTypes"
+            class="org.gw4e.eclipse.launching.runasmanual.GW4ETabGroup"
+            id="gw4e.eclipse.runasmanual.launchConfigurationTabGroup">
+         <launchMode
+               description="Run"
+               mode="run">
+         </launchMode>
+      </launchConfigurationTabGroup>
+   </extension>
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   <extension
        point="org.eclipse.jdt.core.classpathContainerInitializer">
       <classpathContainerInitializer
           id="org.gw4e.eclipse.container.libraries"

@@ -786,7 +786,13 @@ public class GraphWalkerFacade {
 	}
 	
 	
-
+	/**
+	 * @param pathgenerator
+	 * @return
+	 */
+	public static PathGenerator createPathGenerator(String pathgenerator) {
+		return GeneratorFactory.parse(pathgenerator);
+	}
 
 	/**
 	 * A listViewer of context for the passed model iterator

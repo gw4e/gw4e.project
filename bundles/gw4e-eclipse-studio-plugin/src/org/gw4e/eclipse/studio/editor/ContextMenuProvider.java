@@ -1,20 +1,10 @@
 package org.gw4e.eclipse.studio.editor;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
-import java.util.UUID;
 
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IFolder;
-import org.eclipse.core.resources.IProject;
-import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.NullProgressMonitor;
-import org.eclipse.core.runtime.Path;
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPartViewer;
 import org.eclipse.gef.ui.actions.ActionRegistry;
@@ -29,17 +19,12 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.actions.ActionFactory;
 import org.eclipse.ui.wizards.newresource.BasicNewResourceWizard;
-import org.graphwalker.core.model.Element;
-import org.gw4e.eclipse.constant.Constant;
-import org.gw4e.eclipse.facade.DialogManager;
-import org.gw4e.eclipse.facade.GraphWalkerFacade;
 import org.gw4e.eclipse.facade.ResourceManager;
 import org.gw4e.eclipse.studio.editor.GraphSelectionManager.GraphSelection;
-import org.gw4e.eclipse.studio.model.GWEdge;
 import org.gw4e.eclipse.studio.model.GWGraph;
 import org.gw4e.eclipse.studio.model.GraphElement;
-import org.gw4e.eclipse.studio.model.Vertex;
 import org.gw4e.eclipse.studio.part.editor.SharedVertexPart;
+import org.gw4e.eclipse.wizard.runasmanual.RunAsManualWizard;
 import org.gw4e.eclipse.wizard.staticgenerator.GeneratorToFileCreationWizard;
 
 public class ContextMenuProvider extends org.eclipse.gef.ContextMenuProvider {
@@ -125,6 +110,7 @@ public class ContextMenuProvider extends org.eclipse.gef.ContextMenuProvider {
 				return false;
 			}
 		};
+		
 
 		IAction revealAction = new EditorPartAction(editor) {
 			protected void init() {

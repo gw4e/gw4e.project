@@ -38,10 +38,13 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CLabel;
+import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
+import org.eclipse.swt.events.MenuDetectEvent;
+import org.eclipse.swt.events.MenuDetectListener;
 import org.eclipse.swt.graphics.FontMetrics;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
@@ -51,9 +54,12 @@ import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Listener;
+import org.eclipse.swt.widgets.Menu;
+import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.forms.widgets.FormToolkit;
@@ -77,7 +83,7 @@ public class VertexDefaultSection extends AbstractPropertySection implements Pro
 
 	private FormToolkit formToolkit;
 	private Text textName;
-	private Text textDescription;
+	private StyledText textDescription;
 	private Text textRequirements;
 	private Text textSharedName;
 	
@@ -356,14 +362,14 @@ public class VertexDefaultSection extends AbstractPropertySection implements Pro
 		labelBlocked.setLayoutData(fd_labelBlocked);
 		labelBlocked.setText("Blocked:");
 
-		textDescription = new Text(composite, SWT.MULTI | SWT.BORDER | SWT.WRAP | SWT.V_SCROLL);
+		textDescription = new StyledText(composite, SWT.MULTI | SWT.BORDER | SWT.WRAP | SWT.V_SCROLL);
 		textDescription.addFocusListener(descriptionListener);
 		textDescription.setData(WIDGET_ID,WIDGET_TEXT_DESCRIPTION);
 		FormData fd_description = new FormData();
 		fd_description.left = new FormAttachment(labelBlocked, 20);
 		fd_description.right = new FormAttachment(100, -5);
 		fd_description.top = new FormAttachment(btnCheckBlocked, 10);
-
+		
 		setHeight(fd_description, textDescription, PreferenceManager.getRowCountForVertexTextDescription());
 		textDescription.setLayoutData(fd_description);
 		formToolkit.adapt(textDescription, true, true);
