@@ -7,7 +7,6 @@ import java.util.List;
 
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.jface.wizard.WizardPage;
@@ -16,11 +15,11 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;
-import org.graphwalker.core.machine.Context;
 import org.graphwalker.core.model.Element;
 import org.gw4e.eclipse.Activator;
 import org.gw4e.eclipse.facade.ResourceManager;
 import org.gw4e.eclipse.launching.runasmanual.Engine;
+import org.gw4e.eclipse.launching.runasmanual.StepDetail;
 import org.gw4e.eclipse.message.MessageUtil;
 
 /**
@@ -94,9 +93,18 @@ public class RunAsManualWizard extends Wizard implements INewWizard {
 			engine = new Engine();
 			try {
 				engine.createMachine(modelPath, additionalPaths, generatorstopcondition, startnode);
+				 
+				List<WizardPage> all = new ArrayList<WizardPage>();
 				while (engine.hasNextstep()) {
 					WizardPage p = computeNextPage(); 
 					addPage(p);
+					all.add(p);
+				}
+				int index = 1;
+				for (WizardPage wizardPage : all) {
+					wizardPage.setMessage(" Step (" + index + "/" + all.size() + ")" );
+				 
+					index++;
 				}
 				WizardPage p = new SummaryExecutionPage ("");
 				p.setTitle("SummaryExecutionPage");
@@ -118,17 +126,12 @@ public class RunAsManualWizard extends Wizard implements INewWizard {
 	Engine engine = null;
 
 	private WizardPage computeNextPage() {
-		Context context = engine.step();
-		if (context == null) {
+		StepDetail detail = engine.step();
+		if (detail == null) {
 			return null;
 		}
-		Element element = context.getCurrentElement();
-		if (element == null) {
-			return null;
-		}
-		String title = context.getCurrentElement().getName();
-		WizardPage p = new StepPage(title);
-		p.setTitle(title);
+		WizardPage p = new StepPage(detail);
+		p.setTitle(detail.getName());
 		p.setPageComplete(true);
 		return p;
 	}
