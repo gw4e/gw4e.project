@@ -51,14 +51,13 @@ import org.eclipse.swtbot.swt.finder.waits.WaitForObjectCondition;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotCheckBox;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotStyledText;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotTableItem;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotText;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.ui.internal.views.properties.tabbed.view.TabbedPropertyList;
 import org.eclipse.ui.internal.views.properties.tabbed.view.TabbedPropertyList.ListElement;
 import org.gw4e.eclipse.fwk.conditions.ViewOpened;
-import org.gw4e.eclipse.studio.editor.GraphSelectionManager;
 import org.gw4e.eclipse.studio.editor.properties.CustomProperties;
 import org.gw4e.eclipse.studio.editor.properties.vertex.VertexDefaultSection;
 import org.gw4e.eclipse.studio.model.GraphElement;
@@ -270,7 +269,15 @@ public class GraphElementProperties   extends GraphHelper {
 		}
 	}
 	
-	
+	protected void focusOut(SWTBotGefEditPart part,SWTBotStyledText text,String tab ) {
+		editor.setFocus();
+		selectPart(part);
+		selectTab(part, tab);
+	 	try {
+			text.setFocus();
+		} catch (Throwable e) {
+		}
+	} 
 	protected void focusOut(SWTBotGefEditPart part,SWTBotText text,String tab ) {
 		editor.setFocus();
 		selectPart(part);
@@ -283,14 +290,14 @@ public class GraphElementProperties   extends GraphHelper {
 	
 	public void setDescription(SWTBotGefEditPart part, String description) {
 		selectPart(part);
-		SWTBotText text = botView.bot().textWithId(VertexDefaultSection.WIDGET_ID,
+		SWTBotStyledText text = botView.bot().styledTextWithId(VertexDefaultSection.WIDGET_ID,
 				VertexDefaultSection.WIDGET_TEXT_DESCRIPTION);
 		text.setText(description);
 		bot.waitUntil(new ICondition() {
 			@Override
 			public boolean test() throws Exception {
 				try {
-					botView.bot().text(description);
+					botView.bot().styledText(description);
 					return true;
 				} catch (Exception e) {
 					return false;
@@ -306,7 +313,7 @@ public class GraphElementProperties   extends GraphHelper {
 				return "Cannot find text with " + description;
 			}
 		});
-		text = botView.bot().text(description);
+		text = botView.bot().styledText(description);
 		focusOut(part,text,PROPERTIES);
 	}
 	
