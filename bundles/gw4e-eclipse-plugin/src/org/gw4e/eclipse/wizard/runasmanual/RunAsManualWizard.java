@@ -97,6 +97,7 @@ public class RunAsManualWizard extends Wizard implements INewWizard {
 				List<WizardPage> all = new ArrayList<WizardPage>();
 				while (engine.hasNextstep()) {
 					WizardPage p = computeNextPage(); 
+					if (p==null) continue;
 					addPage(p);
 					all.add(p);
 				}
@@ -130,7 +131,11 @@ public class RunAsManualWizard extends Wizard implements INewWizard {
 		if (detail == null) {
 			return null;
 		}
+		if (detail.isEdge() && !detail.hasDescription()) {
+			return null;
+		}
 		WizardPage p = new StepPage(detail);
+		
 		p.setTitle(detail.getName());
 		p.setPageComplete(true);
 		return p;

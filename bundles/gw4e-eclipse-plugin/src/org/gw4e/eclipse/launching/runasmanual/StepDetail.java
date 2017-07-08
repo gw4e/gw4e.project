@@ -27,5 +27,10 @@ public class StepDetail {
 	public String getName() {
 		return name;
 	}
-	
+	public boolean hasDescription () {
+		return this.description.trim().length()>0;
+	}
+	public boolean isEdge () {
+		return !vertex;
+	}
 }
