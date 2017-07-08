@@ -38,6 +38,7 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CLabel;
+import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.graphics.FontMetrics;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
@@ -73,7 +74,7 @@ public class EdgeDefaultSection extends AbstractPropertySection implements Prope
 
 	private FormToolkit formToolkit;
 	private Text textName;
-	private Text textDescription;
+	private StyledText textDescription;
 	private Text textWeight;
 	private Text textDependency;
 	private ControlDecoration textWeightDecorator;
@@ -253,7 +254,7 @@ public class EdgeDefaultSection extends AbstractPropertySection implements Prope
 		labelBlocked.setLayoutData(fd_labelBlocked);
 		labelBlocked.setText("Blocked:");
 
-		textDescription = new Text(composite, SWT.MULTI | SWT.BORDER | SWT.WRAP | SWT.V_SCROLL);
+		textDescription = new StyledText(composite, SWT.MULTI | SWT.BORDER | SWT.WRAP | SWT.V_SCROLL);
 		textDescription.setData(WIDGET_ID,WIDGET_TEXT_DESCRIPTION);
 		textDescription.addListener(SWT.FocusOut, descriptionListener);
 		FormData fd_description = new FormData();
