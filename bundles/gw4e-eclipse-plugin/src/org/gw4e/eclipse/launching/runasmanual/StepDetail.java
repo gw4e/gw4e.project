@@ -5,9 +5,12 @@ import java.util.List;
 
 public class StepDetail {
 	String description;
+	String result;
 	List<String> requirements;
 	boolean vertex;
 	String name;
+	boolean failed;
+	boolean performed;
 	public StepDetail(String name, String description, List<String> requirements, boolean vertex) {
 		super();
 		this.name=name;
@@ -33,4 +36,23 @@ public class StepDetail {
 	public boolean isEdge () {
 		return !vertex;
 	}
+	public boolean isFailed() {
+		return failed;
+	}
+	public void setFailed(boolean failed) {
+		this.failed = failed;
+	}
+	public String getResult() {
+		return result;
+	}
+	public void setResult(String result) {
+		this.result = result;
+	}
+	public boolean isPerformed() {
+		return performed;
+	}
+	public void setPerformed(boolean performed) {
+		this.performed = performed;
+	}
+	
 }

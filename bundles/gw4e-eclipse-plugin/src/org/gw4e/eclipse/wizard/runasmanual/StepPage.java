@@ -6,17 +6,22 @@ import org.eclipse.swt.custom.StyleRange;
 import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Listener;
 import org.gw4e.eclipse.launching.runasmanual.StepDetail;
 import org.gw4e.eclipse.message.MessageUtil;
 
 public class StepPage extends WizardPage {
 
+	
 	StepDetail detail;
 
 	protected StepPage(StepDetail detail) {
@@ -48,15 +53,14 @@ public class StepPage extends WizardPage {
 		resultText.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 15, 1));
 		resultText.setEnabled(detail.isVertex());
 		if (detail.isVertex()) {
-			String text = "Enter a result, if verification failed";
-			resultText.setText(text);
+			resultText.setText(RunAsManualWizard.ENTER_DEFAULT_RESULT_MESSAGE);
 			StyleRange styleRange = new StyleRange();
 			styleRange.start = 0;
-			styleRange.length = text.length();
+			styleRange.length = RunAsManualWizard.ENTER_DEFAULT_RESULT_MESSAGE.length();
 			styleRange.fontStyle = SWT.ITALIC;
 			styleRange.foreground = Display.getDefault().getSystemColor(SWT.COLOR_GRAY);
 			resultText.setStyleRange(styleRange);
-			resultText.addMouseListener(new MouseListener () {
+			resultText.addMouseListener(new MouseListener() {
 
 				@Override
 				public void mouseDoubleClick(MouseEvent e) {
@@ -64,7 +68,7 @@ public class StepPage extends WizardPage {
 
 				@Override
 				public void mouseDown(MouseEvent e) {
-					if (resultText.getText().equals(text)) {
+					if (resultText.getText().equals(RunAsManualWizard.ENTER_DEFAULT_RESULT_MESSAGE)) {
 						resultText.setText("");
 					}
 				}
@@ -72,19 +76,61 @@ public class StepPage extends WizardPage {
 				@Override
 				public void mouseUp(MouseEvent e) {
 				}
-				
 			});
-			
+			resultText.addListener(SWT.FocusOut, new Listener() {
+				public void handleEvent(Event e) {
+					if (resultText.getText().trim().length()>0) {
+						detail.setResult(resultText.getText().trim());
+					}
+				}
+			});
 		}
 
 		Label filler = new Label(control, SWT.NONE);
 		filler.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 5, 1));
 		filler.setText("");
 
-		Button btnFailedCheckButton = new Button(control, SWT.CHECK);
-		btnFailedCheckButton.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 15, 1));
+		Composite comp = new Composite(control, SWT.NONE);
+		comp.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
+		comp.setLayout(new GridLayout(3, false));
+		
+		Button btnFailedCheckButton = new Button(comp, SWT.CHECK);
 		btnFailedCheckButton.setText(MessageUtil.getString("failed"));
 		btnFailedCheckButton.setEnabled(detail.isVertex());
+		
+		Button skipButton = new Button(comp, SWT.CHECK);
+		skipButton.setText(MessageUtil.getString("skip_to_summary"));
+		skipButton.setEnabled(false);
+		skipButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				RunAsManualWizard wizard = (RunAsManualWizard) StepPage.this.getWizard();
+				wizard.setSkipToSummary(skipButton.getSelection());
+			}
+		});
+		
+		btnFailedCheckButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				detail.setFailed(btnFailedCheckButton.getSelection());
+				skipButton.setEnabled(btnFailedCheckButton.getSelection());
+				if (!btnFailedCheckButton.getSelection()) {
+					RunAsManualWizard wizard = (RunAsManualWizard) StepPage.this.getWizard();
+					skipButton.setSelection(false);
+					wizard.setSkipToSummary(false);
+				}
+			}
+		});
+	}
+
+	
+	
+	public StepDetail getDetail() {
+		return detail;
+	}
+	
+	public void stepPerformed () {
+		detail.setPerformed(true);
 	}
 
 }

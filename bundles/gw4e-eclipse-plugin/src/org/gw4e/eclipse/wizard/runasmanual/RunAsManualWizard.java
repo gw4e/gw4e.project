@@ -4,9 +4,11 @@ package org.gw4e.eclipse.wizard.runasmanual;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.jface.wizard.WizardPage;
@@ -15,20 +17,17 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;
-import org.graphwalker.core.model.Element;
 import org.gw4e.eclipse.Activator;
 import org.gw4e.eclipse.facade.ResourceManager;
 import org.gw4e.eclipse.launching.runasmanual.Engine;
 import org.gw4e.eclipse.launching.runasmanual.StepDetail;
 import org.gw4e.eclipse.message.MessageUtil;
 
-/**
- * A Wizard to convert a graph model file into another format (java, json, dot)
- *
- */
+ 
 public class RunAsManualWizard extends Wizard implements INewWizard {
 
 	static final ImageDescriptor WIZARD_BANNER;
+	public static String ENTER_DEFAULT_RESULT_MESSAGE = MessageUtil.getString("enter_a_result_if_verification_failed");
 
 	static {
 		WIZARD_BANNER = Activator.getDefaultImageDescriptor();
@@ -39,7 +38,7 @@ public class RunAsManualWizard extends Wizard implements INewWizard {
 	String generatorstopcondition;
 	String startnode;
 	boolean removeBlockedElement;
-
+	boolean skipToSummary = false;
 	/**
 	 * The Eclipse workbench
 	 */
@@ -91,34 +90,60 @@ public class RunAsManualWizard extends Wizard implements INewWizard {
 					generatorstopcondition, startnode, removeBlockedElement);
 			addPage(page);
 			engine = new Engine();
+			List<StepDetail> details = null;
 			try {
 				engine.createMachine(modelPath, additionalPaths, generatorstopcondition, startnode);
-				 
-				List<WizardPage> all = new ArrayList<WizardPage>();
-				while (engine.hasNextstep()) {
-					WizardPage p = computeNextPage(); 
-					if (p==null) continue;
-					addPage(p);
-					all.add(p);
-				}
-				int index = 1;
-				for (WizardPage wizardPage : all) {
-					wizardPage.setMessage(" Step (" + index + "/" + all.size() + ")" );
-				 
-					index++;
-				}
-				WizardPage p = new SummaryExecutionPage ("");
-				p.setTitle("SummaryExecutionPage");
-				p.setPageComplete(true);
-				addPage(p);
-			} catch (IOException e) {
-				return;
-			}
+				details = setupPages (engine);
+			} catch (IOException e) {}
+			WizardPage p = new SummaryExecutionPage (SummaryExecutionPage.NAME,details);
+			p.setTitle(MessageUtil.getString("summaryExecutionPage"));
+			p.setPageComplete(true);
+			addPage(p);
 		} catch (Exception e) {
 			ResourceManager.logException(e);
 		}
 	}
-
+	
+	private List<StepDetail> setupPages (Engine engine) {
+		List<StepPage> all = new ArrayList<StepPage>();
+		while (engine.hasNextstep()) {
+			StepPage p = computeNextPage(); 
+			if (p==null) continue;
+			addPage(p);
+			all.add(p);
+		}
+		int index = 1;
+		for (WizardPage wizardPage : all) {
+			wizardPage.setMessage(" Step (" + index + "/" + all.size() + ")" );
+			index++;
+		}
+		List<StepDetail> ret = all.stream().map(item -> item.getDetail()).collect(Collectors.toList());
+		return ret;
+	}
+	
+	
+	@Override
+	public IWizardPage getPreviousPage(IWizardPage page) {
+		if (this.isSkipToSummary()) {
+			return null;
+		}
+		return super.getPreviousPage(page);
+	}
+	
+	@Override
+	public IWizardPage getNextPage(IWizardPage page) {
+		if (this.isSkipToSummary()) {
+			if (SummaryExecutionPage.NAME.equalsIgnoreCase(page.getName())) return null;
+			return this.getPage(SummaryExecutionPage.NAME);
+		}
+		IWizardPage p = super.getNextPage(page);
+		if (page instanceof StepPage) {
+			StepPage sp =  (StepPage) page;
+			sp.stepPerformed();
+		}
+		return p;
+	}
+	
 	@Override
 	public boolean canFinish() {
 		return !engine.hasNextstep();
@@ -126,7 +151,7 @@ public class RunAsManualWizard extends Wizard implements INewWizard {
 
 	Engine engine = null;
 
-	private WizardPage computeNextPage() {
+	private StepPage computeNextPage() {
 		StepDetail detail = engine.step();
 		if (detail == null) {
 			return null;
@@ -134,13 +159,14 @@ public class RunAsManualWizard extends Wizard implements INewWizard {
 		if (detail.isEdge() && !detail.hasDescription()) {
 			return null;
 		}
-		WizardPage p = new StepPage(detail);
-		
-		p.setTitle(detail.getName());
+		StepPage p = new StepPage(detail);
+		String type = detail.isEdge() ? MessageUtil.getString("action") : MessageUtil.getString("verification");
+		p.setTitle(type + detail.getName());
 		p.setPageComplete(true);
 		return p;
 	}
 
+	 
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -164,6 +190,14 @@ public class RunAsManualWizard extends Wizard implements INewWizard {
 	@Override
 	public boolean performFinish() {
 		return true;
+	}
+
+	public boolean isSkipToSummary() {
+		return skipToSummary;
+	}
+
+	public void setSkipToSummary(boolean skipToSummary) {
+		this.skipToSummary = skipToSummary;
 	}
 
 }
