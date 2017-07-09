@@ -76,6 +76,7 @@ public class GraphDefaultSection extends AbstractPropertySection implements Sect
 
 	private FormToolkit formToolkit;
 	private Text textName;
+	private Text textComponent;
 	private StyledText textDescription;
 	private SectionProvider node;
 	private ComboViewer viewer;
@@ -97,6 +98,21 @@ public class GraphDefaultSection extends AbstractPropertySection implements Sect
 		}
 	};
 
+	FocusListener componentListener = new FocusListener() {
+		@Override
+		public void focusGained(FocusEvent e) {
+		}
+
+		@Override
+		public void focusLost(FocusEvent e) {
+			if (!notification)
+				return;
+			GW4EGraphEditPartProperties properties = (GW4EGraphEditPartProperties) node
+					.getAdapter(IPropertySource.class);
+			properties.setPropertyValue(ModelProperties.PROPERTY_COMPONENT, textComponent.getText());
+		}
+	};
+	
 	public GraphDefaultSection() {
 	}
 
@@ -108,6 +124,7 @@ public class GraphDefaultSection extends AbstractPropertySection implements Sect
 				.getAdapter(IPropertySource.class);
 		textName.setEnabled(properties.isUpdatable(ModelProperties.PROPERTY_NAME));
 		textDescription.setEnabled(properties.isUpdatable(ModelProperties.PROPERTY_DESCRIPTION));
+		textComponent.setEnabled(properties.isUpdatable(ModelProperties.PROPERTY_COMPONENT));
 	}
 
 	/**
@@ -133,12 +150,30 @@ public class GraphDefaultSection extends AbstractPropertySection implements Sect
 		fd_text.top = new FormAttachment(labelName, 0, SWT.CENTER);
 		textName.setLayoutData(fd_text);
 		formToolkit.adapt(textName, true, true);
+		
+		textComponent = new Text(composite, SWT.BORDER);
+		textComponent.addFocusListener(componentListener);
+		FormData fd_component = new FormData();
+		fd_component.left = new FormAttachment(labelName, 5);
+		fd_component.right = new FormAttachment(100, -5);
+		fd_component.top = new FormAttachment(labelName, 0, 5);
+		textComponent.setLayoutData(fd_component);
+		formToolkit.adapt(textComponent, true, true);
 
+		CLabel labelComponent= new CLabel(composite, SWT.NONE);
+		labelComponent.setBackground(composite.getBackground());
+		FormData fd_lblComponentl = new FormData();
+		fd_lblComponentl.top = new FormAttachment(textComponent, 0, SWT.CENTER);
+		fd_lblComponentl.left = new FormAttachment(0, 10);
+		fd_lblComponentl.right = new FormAttachment(START_LEFT, 10);
+		labelComponent.setLayoutData(fd_lblComponentl);
+		labelComponent.setText("Component:");
+		
 		final CCombo combo = new CCombo(composite, SWT.READ_ONLY | SWT.DROP_DOWN | SWT.BORDER);
 
 		FormData fd_btnCheckBlocked = new FormData();
-		fd_btnCheckBlocked.top = new FormAttachment(textName, 5);
-		fd_btnCheckBlocked.left = new FormAttachment(labelName, 5);
+		fd_btnCheckBlocked.top = new FormAttachment(textComponent, 5);
+		fd_btnCheckBlocked.left = new FormAttachment(labelComponent, 5);
 		combo.setLayoutData(fd_btnCheckBlocked);
 		combo.setData(SectionWidgetID.WIDGET_ID, SectionWidgetID.WIDGET_COMBO_EDGE);
 		Rectangle rect = combo.getBounds();
@@ -229,6 +264,7 @@ public class GraphDefaultSection extends AbstractPropertySection implements Sect
 				viewer.setSelection(new StructuredSelection(startElement), true);
 			}
 			textDescription.setText(properties.getDescription());
+			textComponent.setText(properties.getComponent());
 		} finally {
 			notification = true;
 		}

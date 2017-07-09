@@ -98,6 +98,7 @@ public class ResourceManager {
 		model.setName(makeName(gw.getName()));
 		model.setProperties(gw.getProperties());
 		model.setProperty("description", gw.getLabel())  ;
+		model.setProperty("component", gw.getComponent())  ;
 		Map<GWNode, org.graphwalker.core.model.Vertex> outVertices = new HashMap<GWNode, org.graphwalker.core.model.Vertex>();
 		List<GWNode> vertices = gw.getVerticesChildrenArray();
 		for (GWNode gwNode : vertices) {
@@ -254,6 +255,9 @@ public class ResourceManager {
 			gWGraph.setName(model.getName());
 			String description = (String)model.getProperty("description");
 			gWGraph.setLabel(description==null ? "" : description);
+			String component = (String)model.getProperty("component");
+			gWGraph.setComponent(component==null ? "" : component);
+
 			Map<String, Object> modelProps = model.getProperties();
 			Iterator<String> iter = modelProps.keySet().iterator();
 			Map<String, Object> props = new HashMap<String, Object>();

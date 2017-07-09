@@ -37,7 +37,7 @@ public class ModelProperties {
 	public static final String PROPERTY_BLOCKED = "blocked";
 	public static final String PROPERTY_DESCRIPTION = "description";
 	public static final String PROPERTY_CUSTOM = "custom";
-	
+	public static final String PROPERTY_COMPONENT = "component";
 	
 	public static final String PROPERTY_GRAPH_START_ELEMENT = "graph.start.element";
 	

@@ -36,13 +36,17 @@ import org.gw4e.eclipse.studio.model.GWGraph;
 import org.gw4e.eclipse.studio.model.GWNode;
 
 public class GraphUpdateCommand extends Command {
- 
+	public static enum TYPE {
+		  DESCRIPTION,
+		  COMPONENT
+	}
 	private Map<String, Object> properties;
 	private Map<String, Object> old_properties;
 	GWNode startElement;
 	GWNode old_startElement;
-	String description;
-	String old_description;
+	String value;
+	String old_value;
+	TYPE type;
 	private GWGraph model;
 
 
@@ -61,11 +65,12 @@ public class GraphUpdateCommand extends Command {
 		this.model = model;
 	}
 
-	public GraphUpdateCommand(String description, GWGraph model) {
+	public GraphUpdateCommand(TYPE type, String value, GWGraph model) {
 		super();
 		this.properties = null;
-		this.description = description;
+		this.value = value;
 		this.model = model;
+		this.type = type;
 	}
 	
 	@Override
@@ -78,9 +83,14 @@ public class GraphUpdateCommand extends Command {
 			old_startElement =  model.getStartElement();
 			model.update(startElement);
 		}
-		if (this.description !=null) {
-			old_description =  model.getLabel();
-			model.update(description);
+		if (this.value !=null) {
+			if (type.equals(TYPE.DESCRIPTION)) {
+				old_value =  model.getLabel();
+				model.updateDescription(value);
+			} else {
+				old_value =  model.getComponent();
+				model.updateComponent(value);
+			}
 		}
 	}
 
@@ -92,6 +102,14 @@ public class GraphUpdateCommand extends Command {
 		if (this.startElement !=null) {
 			model.update(old_startElement);
 		}
+		if (this.value !=null) {
+			if (type.equals(TYPE.DESCRIPTION)) {
+				model.updateDescription(old_value);
+			} else {
+				model.updateComponent(old_value);
+			}
+		}
+
 	}
  
 }

@@ -57,7 +57,7 @@ public class GWGraph extends GWNode {
 	private HashMap<Integer, GWLink> gWLinks;
 	private boolean readOnly = false;
 	private GWNode startElement = null;
-	
+	private String component;
 
 
 	public GWGraph(UUID uuid,String name,String id) {
@@ -301,6 +301,20 @@ public class GWGraph extends GWNode {
 		}
 	}
 	
+	public void updateDescription(String description) {
+		this.setLabel(description);
+		if (getListeners()!=null) {
+			getListeners().firePropertyChange(PROPERTY_UPDATED, null, this);
+		}
+	}
+	
+	public void updateComponent(String value) {
+		this.setComponent(value);
+		if (getListeners()!=null) {
+			getListeners().firePropertyChange(PROPERTY_UPDATED, null, this);
+		}
+	}
+	
 	public Object getAdapter(Class key) {
 		if (key.equals(IFile.class)) {
 			return this.getFile();
@@ -409,5 +423,13 @@ public class GWGraph extends GWNode {
 		gWGraph.setName(this.getName());
 		gWGraph.setProperties(this.getProperties());
 		return gWGraph;
+	}
+
+	public String getComponent() {
+		return component;
+	}
+
+	public void setComponent(String component) {
+		this.component = component;
 	}
 }
