@@ -294,6 +294,13 @@ public class GWGraph extends GWNode {
 		return super.isUpdatable(property);
 	}
   
+	public void update(String description) {
+		this.setLabel(description);
+		if (getListeners()!=null) {
+			getListeners().firePropertyChange(PROPERTY_UPDATED, null, this);
+		}
+	}
+	
 	public Object getAdapter(Class key) {
 		if (key.equals(IFile.class)) {
 			return this.getFile();

@@ -41,6 +41,8 @@ public class GraphUpdateCommand extends Command {
 	private Map<String, Object> old_properties;
 	GWNode startElement;
 	GWNode old_startElement;
+	String description;
+	String old_description;
 	private GWGraph model;
 
 
@@ -59,6 +61,13 @@ public class GraphUpdateCommand extends Command {
 		this.model = model;
 	}
 
+	public GraphUpdateCommand(String description, GWGraph model) {
+		super();
+		this.properties = null;
+		this.description = description;
+		this.model = model;
+	}
+	
 	@Override
 	public void execute() {
 		if (this.properties !=null) {
@@ -68,6 +77,10 @@ public class GraphUpdateCommand extends Command {
 		if (this.startElement !=null) {
 			old_startElement =  model.getStartElement();
 			model.update(startElement);
+		}
+		if (this.description !=null) {
+			old_description =  model.getLabel();
+			model.update(description);
 		}
 	}
 

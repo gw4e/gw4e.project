@@ -41,11 +41,17 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.custom.CLabel;
+import org.eclipse.swt.custom.StyledText;
+import org.eclipse.swt.events.FocusEvent;
+import org.eclipse.swt.events.FocusListener;
+import org.eclipse.swt.graphics.FontMetrics;
+import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.forms.widgets.FormToolkit;
@@ -61,15 +67,35 @@ import org.gw4e.eclipse.studio.model.ModelProperties;
 import org.gw4e.eclipse.studio.model.Vertex;
 import org.gw4e.eclipse.studio.model.properties.AbstractGW4EEditPartProperties;
 import org.gw4e.eclipse.studio.model.properties.GW4EGraphEditPartProperties;
+import org.gw4e.eclipse.studio.model.properties.GW4EVertexEditPartProperties;
+import org.gw4e.eclipse.studio.preference.PreferenceManager;
 
-public class GraphDefaultSection extends AbstractPropertySection {
+public class GraphDefaultSection extends AbstractPropertySection implements SectionWidgetID {
 
 	private int START_LEFT = 10;
 
 	private FormToolkit formToolkit;
 	private Text textName;
+	private StyledText textDescription;
 	private SectionProvider node;
 	private ComboViewer viewer;
+	private boolean notification = true;
+ 
+
+	FocusListener descriptionListener = new FocusListener() {
+		@Override
+		public void focusGained(FocusEvent e) {
+		}
+
+		@Override
+		public void focusLost(FocusEvent e) {
+			if (!notification)
+				return;
+			GW4EGraphEditPartProperties properties = (GW4EGraphEditPartProperties) node
+					.getAdapter(IPropertySource.class);
+			properties.setPropertyValue(ModelProperties.PROPERTY_DESCRIPTION, textDescription.getText());
+		}
+	};
 
 	public GraphDefaultSection() {
 	}
@@ -81,7 +107,7 @@ public class GraphDefaultSection extends AbstractPropertySection {
 		AbstractGW4EEditPartProperties properties = (AbstractGW4EEditPartProperties) node
 				.getAdapter(IPropertySource.class);
 		textName.setEnabled(properties.isUpdatable(ModelProperties.PROPERTY_NAME));
-
+		textDescription.setEnabled(properties.isUpdatable(ModelProperties.PROPERTY_DESCRIPTION));
 	}
 
 	/**
@@ -114,9 +140,9 @@ public class GraphDefaultSection extends AbstractPropertySection {
 		fd_btnCheckBlocked.top = new FormAttachment(textName, 5);
 		fd_btnCheckBlocked.left = new FormAttachment(labelName, 5);
 		combo.setLayoutData(fd_btnCheckBlocked);
-		combo.setData(SectionWidgetID.WIDGET_ID,SectionWidgetID.WIDGET_COMBO_EDGE);
+		combo.setData(SectionWidgetID.WIDGET_ID, SectionWidgetID.WIDGET_COMBO_EDGE);
 		Rectangle rect = combo.getBounds();
-		combo.setBounds(new Rectangle(rect.x,rect.y,rect.width,rect.height+4));
+		combo.setBounds(new Rectangle(rect.x, rect.y, rect.width, rect.height + 4));
 		CLabel labelBlocked = new CLabel(composite, SWT.NONE);
 		labelBlocked.setBackground(composite.getBackground());
 		FormData fd_labelBlocked = new FormData();
@@ -142,14 +168,38 @@ public class GraphDefaultSection extends AbstractPropertySection {
 			@Override
 			public void selectionChanged(SelectionChangedEvent event) {
 				IStructuredSelection selection = (IStructuredSelection) event.getSelection();
-				GWNode element = (GWNode)selection.getFirstElement(); 
-				GW4EGraphEditPartProperties properties = (GW4EGraphEditPartProperties) node.getAdapter(IPropertySource.class);
-				GWNode startElement  = properties.getGraph().getStartElement();
-				if (startElement!=null && startElement.equals(element)) return;
+				GWNode element = (GWNode) selection.getFirstElement();
+				GW4EGraphEditPartProperties properties = (GW4EGraphEditPartProperties) node
+						.getAdapter(IPropertySource.class);
+				GWNode startElement = properties.getGraph().getStartElement();
+				if (startElement != null && startElement.equals(element))
+					return;
 				IPropertySource p = (IPropertySource) node.getAdapter(IPropertySource.class);
-				p.setPropertyValue(ModelProperties.PROPERTY_GRAPH_START_ELEMENT,  element);
+				p.setPropertyValue(ModelProperties.PROPERTY_GRAPH_START_ELEMENT, element);
 			}
 		});
+
+		textDescription = new StyledText(composite, SWT.MULTI | SWT.BORDER | SWT.WRAP | SWT.V_SCROLL);
+		textDescription.addFocusListener(descriptionListener);
+		textDescription.setData(WIDGET_ID, WIDGET_TEXT_DESCRIPTION);
+		FormData fd_description = new FormData();
+		fd_description.left = new FormAttachment(labelBlocked, 5);
+		fd_description.right = new FormAttachment(100, -5);
+		fd_description.top = new FormAttachment(combo, 10);
+
+		setHeight(fd_description, textDescription, PreferenceManager.getRowCountForVertexTextDescription());
+		textDescription.setLayoutData(fd_description);
+		formToolkit.adapt(textDescription, true, true);
+
+		CLabel labelDescription = new CLabel(composite, SWT.NONE);
+		labelDescription.setBackground(composite.getBackground());
+		FormData fd_lblDescription = new FormData();
+		fd_lblDescription.top = new FormAttachment(textDescription, 0, SWT.CENTER);
+		fd_lblDescription.left = new FormAttachment(0, 10);
+		fd_lblDescription.right = new FormAttachment(START_LEFT, 10);
+		labelDescription.setLayoutData(fd_lblDescription);
+		labelDescription.setText("Description:");
+
 	}
 
 	public void createControls(Composite parent, TabbedPropertySheetPage aTabbedPropertySheetPage) {
@@ -160,20 +210,39 @@ public class GraphDefaultSection extends AbstractPropertySection {
 	}
 
 	public void refresh() {
-		GW4EGraphEditPartProperties properties = (GW4EGraphEditPartProperties) node.getAdapter(IPropertySource.class);
-		textName.setText(properties.getName());
+		notification = false;
+		try {
+			GW4EGraphEditPartProperties properties = (GW4EGraphEditPartProperties) node
+					.getAdapter(IPropertySource.class);
+			textName.setText(properties.getName());
 
-		Set<GWNode> elements = properties.getGraph().getLinks();
-		Set<GWNode> vertices = properties.getGraph().getVertices();
-		elements.addAll(vertices);
-		
-		GWNode[] items = new GWNode[elements.size()];
-		elements.toArray(items);
-		viewer.setInput(items);
-		
-		GWNode startElement  = properties.getGraph().getStartElement();
-		if (startElement!=null) {
-			 viewer.setSelection(new StructuredSelection(startElement), true);
+			Set<GWNode> elements = properties.getGraph().getLinks();
+			Set<GWNode> vertices = properties.getGraph().getVertices();
+			elements.addAll(vertices);
+
+			GWNode[] items = new GWNode[elements.size()];
+			elements.toArray(items);
+			viewer.setInput(items);
+
+			GWNode startElement = properties.getGraph().getStartElement();
+			if (startElement != null) {
+				viewer.setSelection(new StructuredSelection(startElement), true);
+			}
+			textDescription.setText(properties.getDescription());
+		} finally {
+			notification = true;
 		}
 	}
+
+	private void setHeight(FormData fd, Control control, int rowcount) {
+		GC gc = new GC(control);
+		try {
+			gc.setFont(control.getFont());
+			FontMetrics fm = gc.getFontMetrics();
+			fd.height = rowcount * fm.getHeight();
+		} finally {
+			gc.dispose();
+		}
+	}
+
 }

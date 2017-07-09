@@ -40,12 +40,14 @@ import org.gw4e.eclipse.studio.model.GWEdge;
 import org.gw4e.eclipse.studio.model.GWGraph;
 import org.gw4e.eclipse.studio.model.GWNode;
 import org.gw4e.eclipse.studio.model.ModelProperties;
+import org.gw4e.eclipse.studio.model.Vertex;
 import org.gw4e.eclipse.studio.part.editor.AbstractGW4EEditPart;
 
 public class GW4EGraphEditPartProperties extends AbstractGW4EEditPartProperties implements IPropertySource {
  
 	private static final Object PropertiesTable[][] = {
 				{ ModelProperties.PROPERTY_NAME, new TextPropertyDescriptor(ModelProperties.PROPERTY_NAME, "Text") },
+				{ ModelProperties.PROPERTY_DESCRIPTION,new TextPropertyDescriptor(ModelProperties.PROPERTY_DESCRIPTION, "Description") },
 				{ ModelProperties.PROPERTY_CUSTOM,new TextPropertyDescriptor(ModelProperties.PROPERTY_CUSTOM, "Custom") },
 				{ ModelProperties.PROPERTY_GRAPH_START_ELEMENT,new TextPropertyDescriptor(ModelProperties.PROPERTY_GRAPH_START_ELEMENT, "StartElement") },
 			};
@@ -53,14 +55,30 @@ public class GW4EGraphEditPartProperties extends AbstractGW4EEditPartProperties 
  
 	private AbstractGW4EEditPart node;
 	private GWNode startElement;
-	
+	private String description;
 
 	public GW4EGraphEditPartProperties(AbstractGW4EEditPart node) {
 		this.node = node;
 		this.setName(getModel().getName());
 		this.setStartElement(getGraph().getStartElement());
+		this.setDescription(((GWGraph)node.getModel()).getLabel());
 	}
 
+	/**
+	 * @return the description
+	 */
+	public String getDescription() {
+		return description == null ? "" : description;
+	}
+
+	/**
+	 * @param description the description to set
+	 */
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	
 	@Override
 	public Object getEditableValue() {
 		return this;
@@ -98,6 +116,9 @@ public class GW4EGraphEditPartProperties extends AbstractGW4EEditPartProperties 
         if (id.equals(ModelProperties.PROPERTY_GRAPH_START_ELEMENT)) {
             return this.getProperties();
         }
+        if (id.equals(ModelProperties.PROPERTY_DESCRIPTION)) {
+            return this.getDescription();
+        }
         return null;
 	}
 
@@ -111,6 +132,9 @@ public class GW4EGraphEditPartProperties extends AbstractGW4EEditPartProperties 
         }
         if (id.equals(ModelProperties.PROPERTY_GRAPH_START_ELEMENT)) {
             return this.getStartElement()!=null;
+        }
+        if (id.equals(ModelProperties.PROPERTY_DESCRIPTION)) {
+            return this.getDescription()!=null;
         }
 		return false;
 	}
@@ -133,6 +157,10 @@ public class GW4EGraphEditPartProperties extends AbstractGW4EEditPartProperties 
 			this.setStartElement((GWNode) value );
 			firePropertyChanged((String) id, null, this.getStartElement());
 		}
+        if (id.equals(ModelProperties.PROPERTY_DESCRIPTION)) {
+        	this.setDescription((String) value);
+        	firePropertyChanged((String) id, null, this.getDescription());
+        }
 	}
 
 	protected void firePropertyChanged(String propName, Object oldValue, Map<String, Object> value) {
@@ -142,6 +170,12 @@ public class GW4EGraphEditPartProperties extends AbstractGW4EEditPartProperties 
 	}
 	
 	protected void firePropertyChanged(String propName, Object oldValue, GWNode value) {
+		CommandStack stack = node.getViewer().getEditDomain().getCommandStack();
+		GraphUpdateCommand command = new GraphUpdateCommand (value,(GWGraph)node.getModel());
+		stack.execute(command);
+	}
+	
+	protected void firePropertyChanged(String propName, Object oldValue, String value) {
 		CommandStack stack = node.getViewer().getEditDomain().getCommandStack();
 		GraphUpdateCommand command = new GraphUpdateCommand (value,(GWGraph)node.getModel());
 		stack.execute(command);
