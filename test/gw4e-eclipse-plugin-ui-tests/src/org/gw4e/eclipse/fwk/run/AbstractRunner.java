@@ -62,7 +62,7 @@ public abstract class AbstractRunner  {
 	
 	protected abstract String getLauncherName ();
 	
-	protected   String getConsoleText(SWTWorkbenchBot bot) {
+	public   String getConsoleText() {
 		SWTBotView console = waitForConsoleBeDisplayed ();
 		 
 		SWTBotStyledText textWidget = console.bot().styledText();
@@ -149,7 +149,7 @@ public abstract class AbstractRunner  {
 	public void  waitForRunCompleted (String[] expectations , long timeout) {
 		bot.waitUntil(new ICondition (){
 			public boolean test() throws Exception {
-				String result = getConsoleText(bot);
+				String result = getConsoleText( );
 				System.out.println(result);
 				int count=0;
 				for (int i = 0; i < expectations.length; i++) {
@@ -184,7 +184,7 @@ public abstract class AbstractRunner  {
 	}
 	
 	public void validateRunResult (String []  expectations) {
-		 String result = getConsoleText(bot);
+		 String result = getConsoleText( );
 		 for (int i = 0; i < expectations.length; i++) {
 			 if (expectations[i].trim().length()==0) continue;
 			assertTrue("Result does not contain " + expectations[i] , (result.indexOf(expectations[i]) != -1));

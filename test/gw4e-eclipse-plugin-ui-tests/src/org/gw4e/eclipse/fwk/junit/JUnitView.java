@@ -51,6 +51,7 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.ide.IDE;
 import org.gw4e.eclipse.facade.ResourceManager;
 import org.gw4e.eclipse.fwk.project.GW4EProject;
+import org.gw4e.eclipse.fwk.run.GW4ETestRunner;
 import org.hamcrest.Matcher;
 
 public class JUnitView {
@@ -154,6 +155,8 @@ public class JUnitView {
 					}
 				}
 			}
+			 
+			 
 			return false;
 		}
 

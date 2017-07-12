@@ -193,7 +193,7 @@ public class GW4ETemplateTestCase {
 		nodes[3] = "SimpleImpl.java";
 		JUnitView junit = new JUnitView(bot);
 		junit.run(project, nodes, 4, 0, 0,3* 60*1000);
-		
+		System.out.println();
 	}
 	@Test
 	public void testCreateProjectWithSimpleScriptedTemplate () throws CoreException  {
@@ -265,7 +265,16 @@ public class GW4ETemplateTestCase {
 		nodes[2] = "com.company";
 		nodes[3] = "SimplewithscriptImpl.java";
 		JUnitView junit = new JUnitView(bot);
-		junit.run(project, nodes, 4, 0, 0, 15*60*1000);		 
+		try {
+			junit.run(project, nodes, 4, 0, 0, 15*60*1000);
+		} catch (Exception e) {
+			
+			String result = gwtr.getConsoleText();
+			System.out.println("-------------------------");
+			System.out.println(result);
+			System.out.println("-------------------------");
+			throw e;
+		}		 
 	}
 	
 	@Test
