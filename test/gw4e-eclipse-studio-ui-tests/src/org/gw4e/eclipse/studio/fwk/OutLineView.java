@@ -300,19 +300,18 @@ public class OutLineView   extends GraphHelper {
 	}
 	
 	public void select (String name) {
-		SWTBotTree tree = botView.bot().treeWithId(GW4EOutlinePage.GW_WIDGET_ID,GW4EOutlinePage.GW_OUTLINE_ELEMENTS_TREE);
-		SWTBotTreeItem[] items = tree.getAllItems();
-		for (SWTBotTreeItem swtBotTreeItem : items) {
-			if (swtBotTreeItem.getText().equals(name)) {
-				 
-				swtBotTreeItem.select();
-				break;
-			}
-		}
 		ICondition conditon = new ICondition () {
 			@Override
 			public boolean test() throws Exception {
+				SWTBotTree tree = botView.bot().treeWithId(GW4EOutlinePage.GW_WIDGET_ID,GW4EOutlinePage.GW_OUTLINE_ELEMENTS_TREE);
 				SWTBotTreeItem[] items = tree.getAllItems();
+				for (SWTBotTreeItem swtBotTreeItem : items) {
+					if (swtBotTreeItem.getText().equals(name)) {
+						swtBotTreeItem.select();
+						break;
+					}
+				}
+				 
 				SWTBotTreeItem selected = null;
 				for (SWTBotTreeItem swtBotTreeItem : items) {
 					if (swtBotTreeItem.getText().equals(name)) {
