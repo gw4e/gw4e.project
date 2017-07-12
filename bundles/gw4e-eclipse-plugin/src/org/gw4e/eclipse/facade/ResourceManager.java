@@ -116,21 +116,70 @@ import org.gw4e.eclipse.preferences.PreferenceManager;
 import org.gw4e.eclipse.product.GW4ENature;
 
 public class ResourceManager implements IResourceChangeListener {
-	public static void activateJUnitView ( )  {
+ 
+	public static void waitForTestResult(IProcess process, String projectname, List<IFile> files) throws CoreException {
+
+		ExecutorService executor = Executors.newSingleThreadExecutor();
+		Future<IFile> future = executor.submit(new Callable<IFile>() {
+			@Override
+			public IFile call() throws Exception {
+				try {
+					while (true) {
+						List<IFile> temp = new ArrayList<IFile>();
+						ResourceManager.getAllJUnitResultFiles(projectname, temp);
+						temp.removeAll(files);
+						if (temp.size() > 0) {
+							for (IFile iFile : temp) {
+								if (isJUnitResultFile(iFile)) {
+									return iFile;
+								}
+							}
+						}
+						Thread.sleep(1000);
+						if (process.isTerminated()) {
+							Thread.sleep(500); // pause to give a chance to the file to be persisted
+							temp = new ArrayList<IFile>();
+							ResourceManager.getAllJUnitResultFiles(projectname, temp);
+							temp.removeAll(files);
+							if (temp.size() > 0) {
+								for (IFile iFile : temp) {
+									if (isJUnitResultFile(iFile)) {
+										return iFile;
+									}
+								}
+							}
+						};
+						 
+					}
+				} catch (Exception e) {
+					ResourceManager.logException(e);
+				}
+				return null;
+			}
+		});
+		
+ 
+
 		try {
+			int timeout = PreferenceManager.getTimeOutForGraphWalkerTestExecution(projectname);
+			IFile file = future.get(timeout, TimeUnit.SECONDS);
+			if (file==null) return;
 			Display.getDefault().asyncExec(() -> {
 				try {
 					IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
 					if (page != null) {
 						page.showView("org.eclipse.jdt.junit.ResultView");
+						IEditorPart editorPart = IDE.openEditor(page, file, true);
 					}
+
 				} catch (PartInitException e) {
 					ResourceManager.logException(e);
 				}
 			});
-		} catch (Exception e) { 
-			ResourceManager.logException(e);
-		}	
+		} catch (Exception e) {
+			future.cancel(true);
+		}
+		executor.shutdownNow();
 	}
 
 	/**
