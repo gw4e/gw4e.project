@@ -86,6 +86,8 @@ public class PreferenceManager {
 			+ "GW4E_MAIN_SOURCE_GENERATED_INTERFACE";
 	public static String GW4E_TEST_SOURCE_GENERATED_INTERFACE = PROJECT_SCOPED + GW4E
 			+ "GW4E_TEST_SOURCE_GENERATED_INTERFACE";	
+	public static String GW4E_TEST_MAX_STEPS_MANUAL_TEST_WIZARD = PROJECT_SCOPED + GW4E
+			+ "GW4E_TEST_MAX_STEPS_MANUAL_TEST_WIZARD";	
 	
 	
 	public static String GW4E_HOOK_SOURCE = PROJECT_SCOPED + GW4E + "GW4E_HOOK_SOURCE";
@@ -132,7 +134,8 @@ public class PreferenceManager {
 				SUFFIX_PREFERENCE_FOR_TEST_OFFLINE_IMPLEMENTATION,
 				TIMEOUT_FOR_TEST_OFFLINE_GENERATION,
 				TIMEOUT_FOR_GRAPHWALKER_TEST_EXECUTION,
-				GRAPHWALKER_VERSION};
+				GRAPHWALKER_VERSION,
+				GW4E_TEST_MAX_STEPS_MANUAL_TEST_WIZARD};
 		return values;
 	}
 	 
@@ -327,6 +330,23 @@ public class PreferenceManager {
 		return p.toString().indexOf(PreferenceManager.getMainResourceFolder()) != -1;
 	}
 
+
+	/**
+	 * Return the max steps that a wizard can contain
+	 * 
+	 * @return
+	 */
+	public static int getMaxStepsForManualTestWizard(String projectName) {
+		try {
+			IProject project = ResourceManager.getProject(projectName);
+			String key = GW4E_TEST_MAX_STEPS_MANUAL_TEST_WIZARD;
+			boolean projectScoped = isProjectScoped(key);
+			return Integer.parseInt(SettingsManager.getValues(project, key, projectScoped)[0]);
+		} catch (ArrayIndexOutOfBoundsException e) {
+			return 80;
+		}
+	}
+	
 	/**
 	 * Return the folder for test interface (where java test source interface
 	 * are generated)

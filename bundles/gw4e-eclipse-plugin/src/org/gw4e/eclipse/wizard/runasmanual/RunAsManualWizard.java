@@ -18,11 +18,13 @@ import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;
 import org.gw4e.eclipse.Activator;
+import org.gw4e.eclipse.facade.DialogManager;
 import org.gw4e.eclipse.facade.ResourceManager;
 import org.gw4e.eclipse.launching.runasmanual.Engine;
 import org.gw4e.eclipse.launching.runasmanual.StepDetail;
 import org.gw4e.eclipse.launching.ui.ModelData;
 import org.gw4e.eclipse.message.MessageUtil;
+import org.gw4e.eclipse.preferences.PreferenceManager;
 
  
 public class RunAsManualWizard extends Wizard implements INewWizard {
@@ -95,8 +97,9 @@ public class RunAsManualWizard extends Wizard implements INewWizard {
 			engine = new Engine();
 			List<StepDetail> details = null;
 			try {
+				String projectname = ResourceManager.getResource(modelPath).getProject().getName();
 				engine.createMachine(modelPath, additionalModels, generatorstopcondition, startnode, removeBlockedElement);
-				details = setupPages (engine);
+				details = setupPages (projectname,engine);
 			} catch (IOException e) {}
 			WizardPage p = new SummaryExecutionPage (SummaryExecutionPage.NAME,details);
 			p.setTitle(MessageUtil.getString("summaryExecutionPage"));
@@ -109,16 +112,23 @@ public class RunAsManualWizard extends Wizard implements INewWizard {
 		}
 	}
 	
-	private List<StepDetail> setupPages (Engine engine) {
+	private List<StepDetail> setupPages (String projectname, Engine engine) throws Exception {
+		int max = PreferenceManager.getMaxStepsForManualTestWizard(projectname);
 		List<StepPage> all = new ArrayList<StepPage>();
+		int index=0;
 		while (engine.hasNextstep()) {
 			StepPage p = computeNextPage(); 
 			if (p==null) continue;
-			System.out.println("title " + p.getTitle());
+			// System.out.println("title " + p.getTitle());
 			addPage(p);
 			all.add(p);
+			index++;
+			if (index>max) {
+				DialogManager.displayWarning(MessageUtil.getString("incomplete_steps_list_in_manual_wizard"),MessageUtil.getString("max_steps_reached_change_setting_in_preference_project"));
+				break;
+			}
 		}
-		int index = 1;
+		index = 1;
 		for (WizardPage wizardPage : all) {
 			wizardPage.setMessage(" Step (" + index + "/" + all.size() + ")" );
 			index++;

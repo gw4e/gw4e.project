@@ -128,6 +128,7 @@ public class ProjectPropertyPage extends PropertyPage {
 				MessageUtil.getString("targetmainfolderfortestinterface"),
 				MessageUtil.getString("targettestfolderfortestinterface"),
 				MessageUtil.getString("defaultseverity"),
+				MessageUtil.getString("max_steps_for_manual_steps_wizard"),
 		};	
 		
 		propertyNames = new String [] {
@@ -139,6 +140,7 @@ public class ProjectPropertyPage extends PropertyPage {
 				PreferenceManager.GW4E_MAIN_SOURCE_GENERATED_INTERFACE,
 				PreferenceManager.GW4E_TEST_SOURCE_GENERATED_INTERFACE,
 				PreferenceManager.DEFAULT_SEVERITY,
+				PreferenceManager.GW4E_TEST_MAX_STEPS_MANUAL_TEST_WIZARD,
 		};
 		
 		PropertyChecker []  propertyCheckers = new PropertyChecker [] {
@@ -210,6 +212,20 @@ public class ProjectPropertyPage extends PropertyPage {
 						}
 					}
 				},
+				new PropertyChecker() {
+					public void check (String[] values) {
+						ProjectPropertyPage.this.setErrorMessage(null);
+						ProjectPropertyPage.this.setValid(true);
+						String temp = values[0].trim();
+						try {
+							Integer.parseInt(temp);
+						} catch (NumberFormatException e) {
+							ProjectPropertyPage.this.setValid(false);
+							ProjectPropertyPage.this.setErrorMessage(MessageUtil.getString("invalid_number_value"));
+						}
+					}
+				},	
+
 		};
 		
 		values = new String [] {
@@ -221,14 +237,15 @@ public class ProjectPropertyPage extends PropertyPage {
 			PreferenceManager.getTargetFolderForTestInterface(projectName,true),
 			PreferenceManager.getTargetFolderForTestInterface(projectName,false),
 			PreferenceManager.getDefaultSeverity(projectName),
+			PreferenceManager.getMaxStepsForManualTestWizard(projectName)+"",
 		};
 		
 		boolean [] editable = new boolean  [] {
-			true,true,true,true,true,false,false,true,
+			true,true,true,true,true,false,false,true,true
 		};
 		
 		boolean [] multitext = new boolean [] {
-			false,false,false,false,false,false,false,false
+			false,false,false,false,false,false,false,false,false
 		};
 		
 		Property[]  properties = new Property [propertyNames.length];

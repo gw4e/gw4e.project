@@ -75,6 +75,7 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
 		DEFAULTS.put(PreferenceManager.GW4E_RESOURCE_TEST, new String[] {Constant.SOURCE_TEST_RESOURCES});
 		DEFAULTS.put(PreferenceManager.GW4E_MAIN_SOURCE_GENERATED_INTERFACE, new String[] {Constant.SOURCE_GENERATED_INTERFACE });
 		DEFAULTS.put(PreferenceManager.GW4E_TEST_SOURCE_GENERATED_INTERFACE, new String[] {Constant.TEST_GENERATED_INTERFACE });
+		DEFAULTS.put(PreferenceManager.GW4E_TEST_MAX_STEPS_MANUAL_TEST_WIZARD, new String[] { "50" });
 		
 		DEFAULTS.put(PreferenceManager.BUILD_POLICIES_SYNCHRONIZATION_AUTHORIZED, new String[] {Constant.BUILD_POLICIES_SYNCHRONIZATION_AUTHORIZED });
 		DEFAULTS.put(PreferenceManager.SEVERITY_FOR_ABSTRACT_CONTEXT, new String[] {Constant.SEVERITY_FOR_ABSTRACT_CONTEXT });
