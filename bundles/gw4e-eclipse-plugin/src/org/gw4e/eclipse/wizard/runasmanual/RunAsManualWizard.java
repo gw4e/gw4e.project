@@ -21,6 +21,7 @@ import org.gw4e.eclipse.Activator;
 import org.gw4e.eclipse.facade.ResourceManager;
 import org.gw4e.eclipse.launching.runasmanual.Engine;
 import org.gw4e.eclipse.launching.runasmanual.StepDetail;
+import org.gw4e.eclipse.launching.ui.ModelData;
 import org.gw4e.eclipse.message.MessageUtil;
 
  
@@ -34,11 +35,12 @@ public class RunAsManualWizard extends Wizard implements INewWizard {
 	}
 
 	String modelPath;
-	List<String> additionalPaths;
+	ModelData[] additionalModels;
 	String generatorstopcondition;
 	String startnode;
 	boolean removeBlockedElement;
 	boolean skipToSummary = false;
+	boolean omitEgdeswithoutDescription;
 	/**
 	 * The Eclipse workbench
 	 */
@@ -46,12 +48,12 @@ public class RunAsManualWizard extends Wizard implements INewWizard {
 
 	List<WizardPage> pages = new ArrayList<WizardPage>();
 
-	public static void open(String modelPath, List<String> additionalPaths, String generatorstopcondition,
-			String startnode, boolean removeBlockedElements) {
+	public static void open(String modelPath, ModelData[] additionalModels, String generatorstopcondition,
+			String startnode, boolean removeBlockedElements, boolean omitEgdeswithoutDescription) {
 		try {
 			Display.getDefault().asyncExec(() -> {
-				RunAsManualWizard wizard = new RunAsManualWizard(modelPath, additionalPaths, generatorstopcondition,
-						startnode, removeBlockedElements);
+				RunAsManualWizard wizard = new RunAsManualWizard(modelPath, additionalModels, generatorstopcondition,
+						startnode, removeBlockedElements,omitEgdeswithoutDescription);
 				wizard.init(PlatformUI.getWorkbench(), (IStructuredSelection) null);
 				Shell activeShell = Display.getDefault().getActiveShell();
 				if (activeShell == null)
@@ -67,13 +69,14 @@ public class RunAsManualWizard extends Wizard implements INewWizard {
 	/**
 	 * Create an instance of this Wizard
 	 */
-	public RunAsManualWizard(String modelPath, List<String> additionalPaths, String generatorstopcondition,
-			String startnode, boolean removeBlockedElement) {
+	public RunAsManualWizard(String modelPath, ModelData[] additionalModels, String generatorstopcondition,
+			String startnode, boolean removeBlockedElement, boolean omitEgdeswithoutDescription) {
 		super();
 		this.modelPath = modelPath;
-		this.additionalPaths = additionalPaths;
+		this.additionalModels = additionalModels;
 		this.generatorstopcondition = generatorstopcondition;
 		this.startnode = startnode;
+		this.omitEgdeswithoutDescription = omitEgdeswithoutDescription;
 		this.removeBlockedElement = removeBlockedElement;
 		setNeedsProgressMonitor(true);
 	}
@@ -86,17 +89,19 @@ public class RunAsManualWizard extends Wizard implements INewWizard {
 	@Override
 	public void addPages() {
 		try {
-			TestPresentationPage page = new TestPresentationPage("TestPresentationPage", modelPath, additionalPaths,
+			TestPresentationPage page = new TestPresentationPage("TestPresentationPage", modelPath, additionalModels,
 					generatorstopcondition, startnode, removeBlockedElement);
 			addPage(page);
 			engine = new Engine();
 			List<StepDetail> details = null;
 			try {
-				engine.createMachine(modelPath, additionalPaths, generatorstopcondition, startnode);
+				engine.createMachine(modelPath, additionalModels, generatorstopcondition, startnode, removeBlockedElement);
 				details = setupPages (engine);
 			} catch (IOException e) {}
 			WizardPage p = new SummaryExecutionPage (SummaryExecutionPage.NAME,details);
 			p.setTitle(MessageUtil.getString("summaryExecutionPage"));
+			p.setMessage(MessageUtil.getString("summaryMessageExecutionPage"));
+			
 			p.setPageComplete(true);
 			addPage(p);
 		} catch (Exception e) {
@@ -109,6 +114,7 @@ public class RunAsManualWizard extends Wizard implements INewWizard {
 		while (engine.hasNextstep()) {
 			StepPage p = computeNextPage(); 
 			if (p==null) continue;
+			System.out.println("title " + p.getTitle());
 			addPage(p);
 			all.add(p);
 		}
@@ -156,7 +162,7 @@ public class RunAsManualWizard extends Wizard implements INewWizard {
 		if (detail == null) {
 			return null;
 		}
-		if (detail.isEdge() && !detail.hasDescription()) {
+		if (detail.isEdge() && !detail.hasDescription() &&  this.omitEgdeswithoutDescription) {
 			return null;
 		}
 		StepPage p = new StepPage(detail);

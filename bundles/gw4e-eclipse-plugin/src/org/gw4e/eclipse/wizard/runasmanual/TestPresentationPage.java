@@ -13,21 +13,22 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
+import org.gw4e.eclipse.launching.ui.ModelData;
 import org.gw4e.eclipse.message.MessageUtil;
 
 public class TestPresentationPage extends WizardPage {
 	String modelPath;
-	List<String> additionalPaths;
+	ModelData[] additionalModels;
 	String generatorstopcondition;
 	String startnode;
 	boolean removeBlockedElement;
 
-	protected TestPresentationPage(String pageName, String modelPath, List<String> additionalPaths,
+	protected TestPresentationPage(String pageName, String modelPath, ModelData[] additionalModels,
 			String generatorstopcondition, String startnode, boolean removeBlockedElement) {
 		super(pageName);
 		this.setTitle(MessageUtil.getString("summary_of_manual_test"));
 		this.modelPath = modelPath;
-		this.additionalPaths = additionalPaths;
+		this.additionalModels = additionalModels;
 		this.generatorstopcondition = generatorstopcondition;
 		this.startnode = startnode;
 		this.removeBlockedElement = removeBlockedElement;
@@ -47,8 +48,8 @@ public class TestPresentationPage extends WizardPage {
 		text.append(MessageUtil.getString("main_model") + "\n");
 		text.append( modelPath + "\n");
 		text.append(MessageUtil.getString("additional_models") + "\n");
-		for (String path : additionalPaths) {
-			text.append(path + "\n");
+		for (ModelData path : additionalModels) {
+			text.append(path.getFullPath() + "\n");
 		}
 		text.append(MessageUtil.getString("generator_stop_condition" ) + "\n");
 		text.append( generatorstopcondition + "\n");
@@ -67,7 +68,7 @@ public class TestPresentationPage extends WizardPage {
 		start =  start + length;
 		summaryText.setLineBullet(start, length, buildAdditionalTitleModelStyle());
 		start =  start + length;
-		length = additionalPaths.size();
+		length = additionalModels.length;
 		summaryText.setLineBullet(start,length, buildCheckedlStyle());
 		start =  start + length;
 		length = 1;

@@ -29,12 +29,9 @@ package org.gw4e.eclipse.launching.runasmanual;
  */
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
-import java.util.stream.Collectors;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
@@ -51,44 +48,38 @@ import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.layout.PixelConverter;
 import org.eclipse.jface.resource.JFaceResources;
-import org.eclipse.jface.viewers.CheckboxTableViewer;
-import org.eclipse.jface.viewers.ILabelProvider;
-import org.eclipse.jface.viewers.ILabelProviderListener;
+import org.eclipse.jface.viewers.ArrayContentProvider;
+import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
-import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.BusyIndicator;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.graphics.Font;
-import org.eclipse.swt.graphics.FontData;
-import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
-import org.eclipse.swt.widgets.Table;
-import org.eclipse.swt.widgets.TableColumn;
-import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
-import org.graphwalker.core.model.Element;
-import org.gw4e.eclipse.constant.Constant;
+import org.gw4e.eclipse.builder.BuildPolicy;
 import org.gw4e.eclipse.facade.GraphWalkerContextManager;
 import org.gw4e.eclipse.facade.GraphWalkerFacade;
 import org.gw4e.eclipse.facade.JDTManager;
 import org.gw4e.eclipse.facade.ResourceManager;
+import org.gw4e.eclipse.launching.ui.ModelData;
+import org.gw4e.eclipse.launching.ui.ModelPathGenerator;
 import org.gw4e.eclipse.message.MessageUtil;
 import org.gw4e.eclipse.preferences.PreferenceManager;
-import org.gw4e.eclipse.wizard.convert.page.BuildPoliciesCheckboxTableViewer;
-import org.gw4e.eclipse.wizard.convert.page.TableHelper;
 
 /**
  * Launch configuration tab used to specify the GraphWalker Parameters for the
@@ -102,37 +93,38 @@ public class GW4ELaunchConfigurationTab extends AbstractLaunchConfigurationTab i
 	private Button fProjButton;
 	private Button fModelButton;
 	private Label fModelLabel;
-	private Button hintButton;
 	private Text fModelText;
-	private Text generatorText;
+
+	private Button fOmitEmptyEdgeElementsButton;
 	private Button fRemoveBlockedElementsButton;
-	private BuildPoliciesCheckboxTableViewer buildPoliciesViewer;
-	private Text fStartNodeText;
-	private CheckboxTableViewer fAdditionalTestViewer;
-	/**
-	 * 
-	 */
-	private IStructuredSelection selection;
-	/**
-	 * 
-	 */
-	private IFile additionalExecutionContexts[];
+
+ 	private Text fStartNodeText;
 
 	public static String GW4E_LAUNCH_CONFIGURATION_CONTROL_ID = "gw4e.launch.configuration.control.id";
 
 	public static String GW4E_BROWSER_BUTTON_ID_PROJECT = "gw4e.launch.configuration.browse.button.id.project";
-	public static String GW4E_LAUNCH_CONFIGURATION_BUTTON_ID_PRINT_UNVISITED = "gw4e.launch.configuration.browse.button.id.printunvisited";
-	public static String GW4E_LAUNCH_CONFIGURATION_BUTTON_ID_VERBOSE = "gw4e.launch.configuration.browse.button.id.verbose";
+	public static String GW4E_LAUNCH_CONFIGURATION_BUTTON_ID_OMIT_EMPTY_EDGE = "gw4e.launch.configuration.browse.button.id.omit";
 	public static String GW4E_LAUNCH_CONFIGURATION_BUTTON_ID_REMOVE_BLOCKED_ELEMENTS = "gw4e.launch.configuration.browse.button.id.remove.blocked.elements";
 	public static String GW4E_LAUNCH_CONFIGURATION_BROWSER_BUTTON_ID_METHOD = "gw4e.launch.configuration.browse.button.id.model";
 	public static String GW4E_LAUNCH_CONFIGURATION_TEXT_ID_START_ELEMENT = "gw4e.launch.configuration.text.id.start.element";
 	public static String GW4E_LAUNCH_CONFIGURATION_TEXT_ID_GENERATOR = "gw4e.launch.configuration.text.id.generator";
-	public static String GW4E_LAUNCH_TEST_CONFIGURATION_ADDITIONAL_CONTEXT = "gw4e.launch.test.configuration.additional.context";
-	public static String GW4E_LAUNCH_TEST_CONFIGURATION_HINT_BUTTON = "gw4e.launch.test.project.hint.button";
+
 	public static String GW4E_LAUNCH_CONFIGURATION_TEXT_ID_PROJECT = "gw4e.launch.configuration.text.id.project";
 	public static String GW4E_LAUNCH_CONFIGURATION_TEXT_ID_MODEL = "gw4e.launch.configuration.text.id.model";
-	private Label fGeneratorTitleLabel;
+
 	private Composite parent_1;
+	GridData gd;
+	private Composite composite;
+	private Composite composite_1;
+	private Button hintButton;
+	private Button filterGraphmlButton;
+	private Composite composite_2;
+	private Composite composite_3;
+	private Label lblPathGenerator;
+	private Combo combo;
+	private ComboViewer comboViewer;
+	private Label lblNewLabel_1;
+	private ModelPathGenerator mpg;
 
 	/*
 	 * (non-Javadoc)
@@ -186,7 +178,20 @@ public class GW4ELaunchConfigurationTab extends AbstractLaunchConfigurationTab i
 		});
 		fProjText.setData(GW4E_LAUNCH_CONFIGURATION_CONTROL_ID, GW4E_LAUNCH_CONFIGURATION_TEXT_ID_PROJECT);
 
-		fProjButton = new Button(parent, SWT.PUSH);
+	}
+
+	/**
+	 * Create the element that allow to select a model file See the GraphWalker
+	 * offline command for more information
+	 */
+	private void createModelSection(Composite parent) {
+
+		composite_2 = new Composite(parent_1, SWT.NONE);
+		composite_2.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+		composite_2.setLayout(new GridLayout(1, false));
+
+		fProjButton = new Button(composite_2, SWT.PUSH);
+		fProjButton.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		fProjButton.setText(MessageUtil.getString("label_browse"));
 		fProjButton.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -196,150 +201,7 @@ public class GW4ELaunchConfigurationTab extends AbstractLaunchConfigurationTab i
 			}
 		});
 		fProjButton.setData(GW4E_LAUNCH_CONFIGURATION_CONTROL_ID, GW4E_BROWSER_BUTTON_ID_PROJECT);
-
-	}
-
-	private void createAdditionnalModelsSection(Composite parent) {
-		fModelLabel = new Label(parent, SWT.NONE);
-		GridData gd = new GridData();
-		gd.horizontalIndent = 25;
-		fModelLabel.setLayoutData(gd);
-		fModelLabel.setText(MessageUtil.getString("additionalGraphModels"));
-
-		fAdditionalTestViewer = CheckboxTableViewer.newCheckList(parent, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
-
-		Table additionalTable = fAdditionalTestViewer.getTable();
-		additionalTable.setData(GW4E_LAUNCH_CONFIGURATION_CONTROL_ID,
-				GW4E_LAUNCH_TEST_CONFIGURATION_ADDITIONAL_CONTEXT);
-		GridData gd_additionalTable = new GridData(GridData.FILL_HORIZONTAL);
-		gd_additionalTable.verticalAlignment = SWT.FILL;
-		additionalTable.setLayoutData(gd_additionalTable);
-
-		TableColumn additionalColumn = new TableColumn(fAdditionalTestViewer.getTable(), SWT.FILL);
-		additionalColumn.setText(MessageUtil.getString("graphfiles"));
-		additionalColumn.pack();
-		fAdditionalTestViewer.getTable().setHeaderVisible(true);
-		fAdditionalTestViewer.getTable().setLinesVisible(true);
-
-		fAdditionalTestViewer.addSelectionChangedListener(new ISelectionChangedListener() {
-			public void selectionChanged(final SelectionChangedEvent event) {
-				updateConfigState();
-			}
-		});
-
-		Composite compAdditionnalButton = new Composite(parent, SWT.NONE);
-		compAdditionnalButton.setLayoutData(new GridData(SWT.LEFT, SWT.TOP, false, false, 1, 1));
-		compAdditionnalButton.setLayout(new GridLayout(1, false));
-
-		hintButton = new Button(compAdditionnalButton, SWT.CHECK);
-		hintButton.setLayoutData(new GridData(SWT.LEFT, SWT.TOP, false, false, 1, 1));
-		hintButton.setText(MessageUtil.getString("hint"));
-		hintButton.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent evt) {
-				updateConfigState();
-			}
-		});
-		hintButton.setData(GW4E_LAUNCH_CONFIGURATION_CONTROL_ID, GW4E_LAUNCH_TEST_CONFIGURATION_HINT_BUTTON);
-
-		Button filterGraphmlButton = new Button(compAdditionnalButton, SWT.CHECK);
-		filterGraphmlButton.setBounds(0, 0, 94, 18);
-		filterGraphmlButton.setText(MessageUtil.getString("filter_graphml_file"));
-		filterGraphmlButton.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent evt) {
-				updateConfigState();
-			}
-		});
-		//
-		fAdditionalTestViewer.setContentProvider(new IStructuredContentProvider() {
-			@Override
-			public Object[] getElements(Object inputElement) {
-				Display display = Display.getCurrent();
-
-				Runnable longJob = new Runnable() {
-					public void run() {
-						display.syncExec(new Runnable() {
-							public void run() {
-								if (inputElement == null) {
-									additionalExecutionContexts = new IFile[0];
-								}
-								IFile ifile = (IFile) inputElement;
-								List<IFile> all = new ArrayList<IFile>();
-								try {
-									ResourceManager.getAllGraphFiles(ifile.getProject(), all);
-									if (hintButton.getSelection()) {
-										all = GraphWalkerFacade.findSharedContexts(ifile, all);
-									}
-									if (filterGraphmlButton.getSelection()) {
-										all = all.stream()
-												.filter(file -> !Constant.GRAPHML_FILE.equals(file.getFileExtension()))
-												.collect(Collectors.toList());
-									}
-									all.remove(ifile);
-								} catch (Exception e) {
-									ResourceManager.logException(e);
-									additionalExecutionContexts = new IFile[0];
-								}
-								additionalExecutionContexts = new IFile[all.size()];
-								all.toArray(additionalExecutionContexts);
-							}
-						});
-						display.wake();
-					}
-				};
-				BusyIndicator.showWhile(display, longJob);
-				return additionalExecutionContexts;
-			}
-		});
-		ILabelProvider labelProvider = new ILabelProvider() {
-			@Override
-			public void addListener(ILabelProviderListener arg0) {
-			}
-
-			@Override
-			public void dispose() {
-			}
-
-			@Override
-			public boolean isLabelProperty(Object arg0, String arg1) {
-				return false;
-			}
-
-			@Override
-			public void removeListener(ILabelProviderListener arg0) {
-			}
-
-			@Override
-			public Image getImage(Object arg0) {
-				return null;
-			}
-
-			@Override
-			public String getText(Object object) {
-				if (object instanceof IFile) {
-					return ((IFile) object).getFullPath().toString();
-				}
-				return null;
-			}
-
-		};
-
-		fAdditionalTestViewer.setLabelProvider(labelProvider);
-
-		fAdditionalTestViewer.getTable().addListener(SWT.Resize, new Listener() {
-			@Override
-			public void handleEvent(Event event) {
-				TableHelper.handleEvent(event);
-			}
-		});
-	}
-
-	/**
-	 * Create the element that allow to select a model file See the GraphWalker
-	 * offline command for more information
-	 */
-	private void createModelSection(Composite parent) {
+		setButtonGridData(fProjButton);
 		fModelLabel = new Label(parent, SWT.NONE);
 		GridData gd = new GridData();
 		gd.horizontalIndent = 25;
@@ -365,8 +227,8 @@ public class GW4ELaunchConfigurationTab extends AbstractLaunchConfigurationTab i
 											//
 											IFile file = (IFile) ResourceManager
 													.getResource(new Path(fModelText.getText()).toString());
-											if (buildPoliciesViewer != null)
-												buildPoliciesViewer.setFile(file);
+											refreshComboViewer(file);
+											mpg.refresh(file);
 										} catch (Exception e) {
 											ResourceManager.logException(e);
 										}
@@ -386,6 +248,7 @@ public class GW4ELaunchConfigurationTab extends AbstractLaunchConfigurationTab i
 		fModelText.setData(GW4E_LAUNCH_CONFIGURATION_CONTROL_ID, GW4E_LAUNCH_CONFIGURATION_TEXT_ID_MODEL);
 
 		fModelButton = new Button(parent, SWT.PUSH);
+		fModelButton.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 		fModelButton.setEnabled(fProjText.getText().length() > 0);
 		fModelButton.setText(MessageUtil.getString("model_browse"));
 		fModelButton.addSelectionListener(new SelectionAdapter() {
@@ -396,7 +259,43 @@ public class GW4ELaunchConfigurationTab extends AbstractLaunchConfigurationTab i
 			}
 		});
 		fModelButton.setData(GW4E_LAUNCH_CONFIGURATION_CONTROL_ID, GW4E_LAUNCH_CONFIGURATION_BROWSER_BUTTON_ID_METHOD);
+		setButtonGridData(fModelButton);
 
+		lblPathGenerator = new Label(parent, SWT.NONE);
+		lblPathGenerator.setText("New Label");
+		gd = new GridData();
+		gd.horizontalIndent = 25;
+		lblPathGenerator.setLayoutData(gd);
+		lblPathGenerator.setText(MessageUtil.getString("path_generator"));
+
+		comboViewer = new ComboViewer(parent, SWT.READ_ONLY);
+		combo = comboViewer.getCombo();
+		combo.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+
+		comboViewer.setContentProvider(ArrayContentProvider.getInstance());
+		comboViewer.setLabelProvider(new LabelProvider() {
+			@Override
+			public String getText(Object element) {
+				if (element instanceof BuildPolicy) {
+					BuildPolicy bp = (BuildPolicy) element;
+					return bp.getPathGenerator();
+				}
+				return super.getText(element);
+			}
+		});
+		comboViewer.addSelectionChangedListener(new ISelectionChangedListener() {
+		    @Override
+		    public void selectionChanged(SelectionChangedEvent event) {
+		    	updateConfigState();
+		    }
+		});
+		Label lblFiller = new Label(parent, SWT.NONE);
+
+	}
+
+	private void refreshComboViewer(IFile file) {
+		ModelData md = new ModelData(file);
+		comboViewer.setInput(md.getPolicies());
 	}
 
 	private void refreshStartElement() {
@@ -426,9 +325,30 @@ public class GW4ELaunchConfigurationTab extends AbstractLaunchConfigurationTab i
 	 * offline command for more information
 	 */
 	private void createOptionSection(Composite parent) {
+
+		Label fVerbodeLabel = new Label(parent, SWT.NONE);
+		fVerbodeLabel.setText(MessageUtil.getString("omitEdgeElementwithoutDescription"));
+		gd = new GridData();
+		gd.horizontalIndent = 25;
+		fVerbodeLabel.setLayoutData(gd);
+
+		fOmitEmptyEdgeElementsButton = new Button(parent, SWT.CHECK);
+		fOmitEmptyEdgeElementsButton.setEnabled(true);
+		fOmitEmptyEdgeElementsButton.setText("");
+		gd = new GridData();
+		gd.horizontalSpan = 2;
+		fOmitEmptyEdgeElementsButton.setLayoutData(gd);
+		fOmitEmptyEdgeElementsButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent evt) {
+				updateConfigState();
+			}
+		});
+		fOmitEmptyEdgeElementsButton.setData(GW4E_LAUNCH_CONFIGURATION_CONTROL_ID, GW4E_LAUNCH_CONFIGURATION_BUTTON_ID_OMIT_EMPTY_EDGE);
+
 		Label fRemoveBlockedElementsLabel = new Label(parent, SWT.NONE);
-		fRemoveBlockedElementsLabel.setText(MessageUtil.getString("removeBlockedElement"));
-		GridData gd = new GridData();
+		fRemoveBlockedElementsLabel.setText("Remove Blocked Element(s)");
+		gd = new GridData();
 		gd.horizontalIndent = 25;
 		fRemoveBlockedElementsLabel.setLayoutData(gd);
 
@@ -454,24 +374,9 @@ public class GW4ELaunchConfigurationTab extends AbstractLaunchConfigurationTab i
 	 * GraphWalker offline command for more information
 	 */
 	private void createStartElementSection(Composite parent) {
-		Label fDummyGeneratorLabel = new Label(parent, SWT.NONE);
-		fDummyGeneratorLabel.setText("");
-		GridData gd = new GridData();
-		gd.horizontalSpan = 1;
-		fDummyGeneratorLabel.setLayoutData(gd);
-
-		Label fGeneratorTitleLabel = new Label(parent, SWT.NONE);
-		fGeneratorTitleLabel.setText(MessageUtil.getString("EnterStartElement"));
-		FontData fontData = fGeneratorTitleLabel.getFont().getFontData()[0];
-		Font font = new Font(this.getShell().getDisplay(),
-				new FontData(fontData.getName(), fontData.getHeight(), SWT.ITALIC));
-		fGeneratorTitleLabel.setFont(font);
-		gd = new GridData();
-		gd.horizontalSpan = 2;
-		fGeneratorTitleLabel.setLayoutData(gd);
 
 		Label fGeneratorLabel = new Label(parent, SWT.NONE);
-		fGeneratorLabel.setText("");
+		fGeneratorLabel.setText("Start Element");
 		gd = new GridData();
 		gd.horizontalSpan = 1;
 		gd.horizontalIndent = 25;
@@ -488,14 +393,17 @@ public class GW4ELaunchConfigurationTab extends AbstractLaunchConfigurationTab i
 			}
 		});
 		fStartNodeText.setData(GW4E_LAUNCH_CONFIGURATION_CONTROL_ID, GW4E_LAUNCH_CONFIGURATION_TEXT_ID_START_ELEMENT);
+	}
 
-		Composite c = new Composite(parent, SWT.NONE);
-		c.setLayout(new GridLayout(1, false));
+	private void createBuildPoliciesGeneratorSection(Composite parent) {
+		composite = new Composite(parent_1, SWT.NONE);
+		composite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false, 1, 1));
+		GridLayout gl_composite = new GridLayout(1, false);
+		gl_composite.marginWidth = 0;
+		composite.setLayout(gl_composite);
 
-		Button fRefreshButton = new Button(c, SWT.PUSH);
-		fRefreshButton.setAlignment(SWT.LEFT);
-		fRefreshButton.setLayoutData(new GridData(SWT.LEFT, SWT.TOP, true, false, 1, 1));
-
+		Button fRefreshButton = new Button(composite, SWT.PUSH);
+		fRefreshButton.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		fRefreshButton.setEnabled(true);
 		fRefreshButton.setText(MessageUtil.getString("refresh"));
 		fRefreshButton.addSelectionListener(new SelectionAdapter() {
@@ -504,129 +412,44 @@ public class GW4ELaunchConfigurationTab extends AbstractLaunchConfigurationTab i
 				refreshStartElement();
 			}
 		});
-	}
 
-	private int getSelectedPathGeneratorCount() {
-		TableItem[] items = buildPoliciesViewer.getTable().getItems();
-		int count = 0;
-		for (TableItem tableItem : items) {
-			if (tableItem.getChecked()) {
-				count++;
-			}
-		}
-		return count;
-	}
+		lblNewLabel_1 = new Label(parent_1, SWT.NONE);
+		lblNewLabel_1.setText(MessageUtil.getString("additionalGraphModels"));
+		gd = new GridData();
+		gd.horizontalIndent = 25;
+		lblNewLabel_1.setLayoutData(gd);
 
-	private void createBuildPoliciesGeneratorSection(Composite parent) {
-		Listener listener = new Listener() {
+		mpg = new ModelPathGenerator(parent_1, SWT.NONE, new Listener() {
+			@Override
 			public void handleEvent(Event event) {
-				generatorText.setText("");
-				generatorText.setEnabled(false);
-				fGeneratorTitleLabel.setEnabled(false);
-				// event.detail == SWT.CHECK
-				if (buildPoliciesViewer != null) {
-					int count = getSelectedPathGeneratorCount();
-					if (count == 0) {
-						fGeneratorTitleLabel.setEnabled(true);
-						generatorText.setEnabled(true);
-						generatorText.setFocus();
-					}
-					if (count > 0) {
-						TableItem[] items = buildPoliciesViewer.getTable().getItems();
-						for (TableItem tableItem : items) {
-							if (tableItem.getChecked()) {
-								String text = tableItem.getText();
-								generatorText.setText(text);
-								break;
-							}
-						}
-					}
-				}
-				validatePage();
-			}
-		};
-
-		Label fDummyGeneratorLabel = new Label(parent, SWT.NONE);
-		fDummyGeneratorLabel.setText("");
-		GridData gd = new GridData();
-		gd.horizontalSpan = 1;
-		fDummyGeneratorLabel.setLayoutData(gd);
-
-		Label fGeneratorTitleLabel = new Label(parent, SWT.NONE);
-		fGeneratorTitleLabel.setText(MessageUtil.getString("select_a_path_generatpr"));
-		FontData fontData = fGeneratorTitleLabel.getFont().getFontData()[0];
-		Font font = new Font(this.getShell().getDisplay(),
-				new FontData(fontData.getName(), fontData.getHeight(), SWT.ITALIC));
-		fGeneratorTitleLabel.setFont(font);
-		gd = new GridData();
-		gd.horizontalSpan = 2;
-		fGeneratorTitleLabel.setLayoutData(gd);
-
-		Label fGeneratorLabel = new Label(parent, SWT.NONE);
-		fGeneratorLabel.setText("");
-		gd = new GridData();
-		gd.horizontalSpan = 1;
-		gd.horizontalIndent = 25;
-		fGeneratorLabel.setLayoutData(gd);
-
-		gd = new GridData(GridData.FILL_BOTH);
-
-		IResource resource = (IResource) ResourceManager.getResource(new Path(fModelText.getText()).toString());
-		buildPoliciesViewer = BuildPoliciesCheckboxTableViewer.create(resource, parent,
-				SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL, gd, listener);
-
-		Label filler = new Label(parent, SWT.NONE);
-		filler.setText("");
-		filler.setEnabled(false);
-	}
-
-	/**
-	 * Create the element that allow to select a generator & stop condition See
-	 * the GraphWalker offline command for more information
-	 */
-	private void createGeneratorSection(Composite parent) {
-		Label fDummyGeneratorLabel = new Label(parent, SWT.NONE);
-		fDummyGeneratorLabel.setText("");
-		GridData gd = new GridData();
-		gd.horizontalSpan = 1;
-		fDummyGeneratorLabel.setLayoutData(gd);
-
-		fGeneratorTitleLabel = new Label(parent, SWT.NONE);
-		fGeneratorTitleLabel.setText(MessageUtil.getString("enter_generator"));
-		FontData fontData = fGeneratorTitleLabel.getFont().getFontData()[0];
-		Font font = new Font(this.getShell().getDisplay(),
-				new FontData(fontData.getName(), fontData.getHeight(), SWT.ITALIC));
-		fGeneratorTitleLabel.setFont(font);
-		gd = new GridData();
-		gd.horizontalSpan = 2;
-		fGeneratorTitleLabel.setLayoutData(gd);
-
-		Label fGeneratorLabel = new Label(parent, SWT.NONE);
-		fGeneratorLabel.setText("");
-		gd = new GridData();
-		gd.horizontalSpan = 1;
-		gd.horizontalIndent = 25;
-		fGeneratorLabel.setLayoutData(gd);
-
-		generatorText = new Text(parent, SWT.MULTI | SWT.BORDER | SWT.WRAP | SWT.V_SCROLL);
-		gd = new GridData(GridData.FILL_BOTH);
-
-		generatorText.setLayoutData(gd);
-		ModifyListener listener = new ModifyListener() {
-			public void modifyText(ModifyEvent e) {
-				validatePage();
 				updateConfigState();
-				generatorText.setFocus();
 			}
-		};
-		generatorText.addModifyListener(listener);
-		generatorText.setData(GW4E_LAUNCH_CONFIGURATION_CONTROL_ID, GW4E_LAUNCH_CONFIGURATION_TEXT_ID_GENERATOR);
-		generatorText.setEnabled(false);
+		});
+		mpg.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
+		GridLayout gridLayout = (GridLayout) mpg.getLayout();
+		gridLayout.marginWidth = 0;
 
-		Label filler = new Label(parent, SWT.NONE);
-		filler.setText("");
-		filler.setEnabled(false);
+		composite_1 = new Composite(parent_1, SWT.NONE);
+		composite_1.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false, 1, 1));
+		composite_1.setLayout(new GridLayout(1, false));
 
+		hintButton = new Button(composite_1, SWT.CHECK);
+		hintButton.setText(MessageUtil.getString("hint"));
+
+		filterGraphmlButton = new Button(composite_1, SWT.CHECK);
+		filterGraphmlButton.setText(MessageUtil.getString("filter_graphml_file"));
+		Label fDummyGeneratorLabel = new Label(parent, SWT.NONE);
+		GridData gd_1 = new GridData();
+		gd_1.horizontalSpan = 1;
+		fDummyGeneratorLabel.setLayoutData(gd_1);
+
+		mpg.setButtons(hintButton, filterGraphmlButton);
+
+		composite_3 = new Composite(parent_1, SWT.NONE);
+		GridLayout gl_composite_3 = new GridLayout(1, false);
+		gl_composite_3.marginWidth = 0;
+		composite_3.setLayout(gl_composite_3);
+		composite_3.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 	}
 
 	/**
@@ -636,11 +459,9 @@ public class GW4ELaunchConfigurationTab extends AbstractLaunchConfigurationTab i
 	private void createAllSections(Composite parent) {
 		createProjectSection(parent);
 		createModelSection(parent);
-		createAdditionnalModelsSection(parent);
 		createOptionSection(parent);
 		createStartElementSection(parent);
 		createBuildPoliciesGeneratorSection(parent);
-		createGeneratorSection(parent);
 	}
 
 	public boolean isValid(ILaunchConfiguration launchConfig) {
@@ -667,28 +488,17 @@ public class GW4ELaunchConfigurationTab extends AbstractLaunchConfigurationTab i
 	@Override
 	public void initializeFrom(ILaunchConfiguration config) {
 		try {
+			mpg.initialize(getModels(config));
 			fProjText.setText(config.getAttribute(CONFIG_PROJECT, ""));
-			fModelText.setText(config.getAttribute(CONFIG_GRAPH_MODEL_PATH, ""));
+			fModelText.setText(getMainModel(config));
+			fOmitEmptyEdgeElementsButton.setSelection(Boolean.parseBoolean(config.getAttribute(GW4E_LAUNCH_CONFIGURATION_BUTTON_ID_OMIT_EMPTY_EDGE_DESCRIPTION, "false")));
 			fStartNodeText.setText(config.getAttribute(CONFIG_LAUNCH_STARTNODE, ""));
-			generatorText.setText(config.getAttribute(CONFIG_GRAPH_GENERATOR_STOP_CONDITIONS, ""));
 			fRemoveBlockedElementsButton.setSelection(
 					new Boolean(config.getAttribute(CONFIG_LAUNCH_REMOVE_BLOCKED_ELEMENT_CONFIGURATION, "true")));
-			updateConfigState();
-			String models = config.getAttribute(CONFIG_LAUNCH_ADDITIONNAL_MODELS_CONFIGURATION, "");
-			StringTokenizer st = new StringTokenizer(models, ";");
-			while (st.hasMoreTokens()) {
-				String model = st.nextToken();
-				IFile resource = (IFile) ResourceManager.getResource(model);
-				if (resource == null)
-					continue;
 
-				TableItem[] items = this.fAdditionalTestViewer.getTable().getItems();
-				for (int i = 0; i < items.length; ++i) {
-					String name = items[i].getText();
-					if (name.equalsIgnoreCase(model)) {
-						items[i].setChecked(true);
-					}
-				}
+			BuildPolicy bp = getMainPathGenerators(config);
+			if (bp!=null) {
+				comboViewer.setSelection(new StructuredSelection (bp), true); 
 			}
 		} catch (CoreException e) {
 			ResourceManager.logException(e);
@@ -706,24 +516,113 @@ public class GW4ELaunchConfigurationTab extends AbstractLaunchConfigurationTab i
 	public void performApply(ILaunchConfigurationWorkingCopy config) {
 		config.setAttribute(CONFIG_PROJECT, fProjText.getText());
 		config.setAttribute(IJavaLaunchConfigurationConstants.ATTR_PROJECT_NAME, fProjText.getText());
-		config.setAttribute(CONFIG_GRAPH_MODEL_PATH, this.fModelText.getText());
+		try {
+			setModels(config);
+		} catch (CoreException e) {
+			ResourceManager.logException(e);
+		}
+		config.setAttribute(GW4E_LAUNCH_CONFIGURATION_BUTTON_ID_OMIT_EMPTY_EDGE_DESCRIPTION, this.fOmitEmptyEdgeElementsButton.getSelection() + "");
 		config.setAttribute(CONFIG_LAUNCH_STARTNODE, this.fStartNodeText.getText() + "");
-		config.setAttribute(CONFIG_GRAPH_GENERATOR_STOP_CONDITIONS, this.generatorText.getText());
 		config.setAttribute(CONFIG_LAUNCH_REMOVE_BLOCKED_ELEMENT_CONFIGURATION,
 				this.fRemoveBlockedElementsButton.getSelection() + "");
-		StringBuffer sb = new StringBuffer();
-		TableItem[] items = fAdditionalTestViewer.getTable().getItems();
-		for (int i = 0; i < items.length; ++i) {
-			boolean checked = items[i].getChecked();
-			IFile model = (IFile) items[i].getData();
-
-			if (checked)
-				sb.append(model.getFullPath().toString()).append(";").toString();
-		}
-		config.setAttribute(CONFIG_LAUNCH_ADDITIONNAL_MODELS_CONFIGURATION, sb.toString());
-
 	}
 
+	private String getMainModel(ILaunchConfiguration config) throws CoreException {
+		String ret = config.getAttribute(CONFIG_GRAPH_MODEL_PATHS, "");
+		StringTokenizer st = new StringTokenizer(ret, ";");
+		if (st.hasMoreTokens())
+			return st.nextToken();
+		return "";
+	}
+
+	private ModelData[] getModels(ILaunchConfiguration config) throws CoreException {
+		List<ModelData> temp = new ArrayList<ModelData>();
+		String paths = config.getAttribute(CONFIG_GRAPH_MODEL_PATHS, "");
+		 
+		if (paths == null || paths.trim().length() == 0)
+			return new ModelData[0];
+		StringTokenizer st = new StringTokenizer(paths, ";");
+		st.nextToken(); // the main model path
+		st.nextToken(); // main model : Always "1"
+		st.nextToken(); // the main path generator
+		while (st.hasMoreTokens()) {
+			String path = st.nextToken();
+			IFile file = (IFile) ResourceManager
+					.getResource(new Path(path).toString());
+			if (file==null) continue;
+			ModelData data = new ModelData(file);
+			boolean selected = st.nextToken().equalsIgnoreCase("1");
+			String pathGenerator = st.nextToken();
+			data.setSelected(selected);
+			data.setSelectedPolicy(pathGenerator);
+			temp.add(data);
+		}
+		ModelData[] ret = new ModelData[temp.size()];
+		temp.toArray(ret);
+		return ret;
+	}
+
+	private BuildPolicy getMainPathGenerators(ILaunchConfiguration config) throws CoreException {
+		String paths = config.getAttribute(CONFIG_GRAPH_MODEL_PATHS, "");
+		if (paths == null || paths.trim().length() == 0)
+			return null;
+		StringTokenizer stFirst = new StringTokenizer(paths, ";");
+		stFirst.nextToken(); // the main model path
+		stFirst.nextToken(); // main model : Always "1"
+		String generators = stFirst.nextToken(); // the main path generator
+		if (generators == null || generators.trim().length() == 0)
+			return null;
+		StringTokenizer st = new StringTokenizer(generators, ";");
+		if (st.hasMoreTokens()) {
+			String path = st.nextToken();
+			if (path==null || path.trim().length()==0) return null;
+			String model = getMainModel(config);
+			IFile file = (IFile) ResourceManager
+					.getResource(new Path(model).toString());
+			if (file==null) return null;
+			ModelData md = new ModelData(file);
+			BuildPolicy[] policies = md.getPolicies();
+			for (BuildPolicy buildPolicy : policies) {
+				if (path.trim().equals(buildPolicy.getPathGenerator())) {
+					return buildPolicy;
+				}
+			}
+			if (policies.length > 0) return policies[0];
+		}
+		return null;
+	}
+	
+ 
+
+	private void setModels(ILaunchConfigurationWorkingCopy config) throws CoreException {
+		StringBuffer sb = new StringBuffer();
+		// Main 
+		if (fModelText.getText() == null || fModelText.getText().trim().length() == 0) {
+			sb.append("").append(";");
+		} else {
+			sb.append((fModelText.getText().trim())).append(";");
+		}
+		sb.append("1").append(";");
+		IStructuredSelection selection = (IStructuredSelection) comboViewer.getSelection();
+		if (selection == null || selection.getFirstElement() == null) {
+			sb.append("?").append(";");
+		} else {
+			sb.append(((BuildPolicy) selection.getFirstElement()).getPathGenerator()).append(";");
+		}
+		// Others
+		ModelData[] others = mpg.getModel();
+		for (int i = 0; i < others.length; i++) {
+			sb.append(others[i].getFullPath()).append(";");
+			if (others[i].isSelected()) {
+				sb.append("1").append(";");
+			} else {
+				sb.append("0").append(";");
+			}
+			sb.append(others[i].getSelectedPolicy()).append(";");
+		}
+		config.setAttribute(CONFIG_GRAPH_MODEL_PATHS, sb.toString());
+ 	}
+ 
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -734,14 +633,11 @@ public class GW4ELaunchConfigurationTab extends AbstractLaunchConfigurationTab i
 	@Override
 	public void setDefaults(ILaunchConfigurationWorkingCopy config) {
 		config.setAttribute(CONFIG_PROJECT, "");
-		config.setAttribute(CONFIG_GRAPH_MODEL_PATH, "");
+		config.setAttribute(CONFIG_GRAPH_MODEL_PATHS, "");
 		config.setAttribute(CONFIG_UNVISITED_ELEMENT, "false");
-		config.setAttribute(CONFIG_VERBOSE, "false");
+		config.setAttribute(GW4E_LAUNCH_CONFIGURATION_BUTTON_ID_OMIT_EMPTY_EDGE_DESCRIPTION, "false");
 		config.setAttribute(CONFIG_LAUNCH_STARTNODE, "");
-		config.setAttribute(CONFIG_GRAPH_GENERATOR_STOP_CONDITIONS, "");
 		config.setAttribute(CONFIG_LAUNCH_REMOVE_BLOCKED_ELEMENT_CONFIGURATION, "true");
-		config.setAttribute(CONFIG_LAUNCH_ADDITIONNAL_MODELS_CONFIGURATION, "");
-
 	}
 
 	/**
@@ -788,49 +684,35 @@ public class GW4ELaunchConfigurationTab extends AbstractLaunchConfigurationTab i
 				setErrorMessage(MessageUtil.getString("error_graphmodel_not_found"));
 				return false;
 			}
-			TableItem[] items = fAdditionalTestViewer.getTable().getItems();
-			for (int i = 0; i < items.length; ++i) {
-				IFile model = (IFile) items[i].getData();
-				if (!model.exists()) {
-					setErrorMessage(MessageUtil.getString("error_graphmodel_not_found") + " at row : " + (i+1));
-					return false;
-				}
-			}
-			try {
-				IFile model = (IFile)ResourceManager.getResource(modelName);
-				File file = ResourceManager.toFile(model.getFullPath());
-				boolean found = false;
-				List<Element>  elements  = GraphWalkerFacade.getElements(file);
-				for (Element element : elements) {
-					if (fStartNodeText.getText().equals(element.getName())) {
-						found=true;
-						break;
-					}
-				}
-				if (!found) {
-					setErrorMessage(MessageUtil.getString("start_element_not_found") + " : " + fStartNodeText.getText());
-				}
-			} catch (Exception e) {
-				ResourceManager.logException(e);
-				setErrorMessage(e.getMessage());
+
+			String mpgError = mpg.validate();
+			if (mpgError != null) {
+				setErrorMessage(mpgError);
 				return false;
 			}
 
+			IStructuredSelection selection = (IStructuredSelection) comboViewer.getSelection();
+			if (selection == null) {
+				setErrorMessage(MessageUtil.getString("empty_path_generator"));
+				return false;
+			}
+			if (selection.getFirstElement() == null) {
+				setErrorMessage(MessageUtil.getString("empty_path_generator"));
+				return false;
+			}
+			String s = ((BuildPolicy) (selection.getFirstElement())).getPathGenerator();
+			if (s == null || s.trim().length() == 0) {
+				setErrorMessage(MessageUtil.getString("empty_path_generator"));
+				return false;
+			}
+			if (!GraphWalkerFacade.parsePathGenerator(s.trim())) {
+				setErrorMessage(MessageUtil.getString("invalid_path_generator"));
+				return false;
+			}
 		} catch (CoreException e) {
 			ResourceManager.logException(e);
 		}
 
-		int count = getSelectedPathGeneratorCount();
-
-		if (count > 1) {
-			setErrorMessage(MessageUtil.getString("select_only_one_generator_and_stop_condition"));
-			return false;
-		}
-
-		if ((this.generatorText.getText() == null || this.generatorText.getText().trim().length() == 0)) {
-			setErrorMessage(MessageUtil.getString("error_no_generator_and_stop_conditions_set"));
-			return false;
-		}
 		return true;
 	}
 
@@ -845,6 +727,18 @@ public class GW4ELaunchConfigurationTab extends AbstractLaunchConfigurationTab i
 		PixelConverter converter = new PixelConverter(button);
 		int widthHint = converter.convertHorizontalDLUsToPixels(IDialogConstants.BUTTON_WIDTH);
 		return Math.max(widthHint, button.computeSize(SWT.DEFAULT, SWT.DEFAULT, true).x);
+	}
+
+	/**
+	 * A helper method to customize the button
+	 * 
+	 * @param button
+	 */
+	private void setButtonGridData(Button button) {
+		if (gd instanceof GridData) {
+			((GridData) gd).widthHint = getButtonWidthHint(button);
+			((GridData) gd).horizontalAlignment = GridData.FILL;
+		}
 	}
 
 	/**
@@ -908,8 +802,8 @@ public class GW4ELaunchConfigurationTab extends AbstractLaunchConfigurationTab i
 		fModelLabel.setEnabled(false);
 		fModelText.setEnabled(false);
 		fModelButton.setEnabled(false);
+		fOmitEmptyEdgeElementsButton.setEnabled(false);
 		fStartNodeText.setEnabled(false);
-		generatorText.setEnabled(false);
 
 		if (fProjText.getText().trim().length() > 0) {
 			fModelLabel.setEnabled(true);
@@ -918,17 +812,13 @@ public class GW4ELaunchConfigurationTab extends AbstractLaunchConfigurationTab i
 		}
 
 		if (fModelText.getText().trim().length() > 0) {
+			fOmitEmptyEdgeElementsButton.setEnabled(true);
 			if (isGW3SelectedFile()) {
 				fStartNodeText.setEnabled(false);
-				generatorText.setEnabled(false);
 			} else {
 				fStartNodeText.setEnabled(true);
-				generatorText.setEnabled(true);
-				IFile resource = (IFile) ResourceManager.getResource(fModelText.getText());
-				fAdditionalTestViewer.setInput(resource);
 				fStartNodeText.setFocus();
 			}
 		}
-
 	}
 }

@@ -34,9 +34,11 @@ import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.waits.Conditions;
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory;
+import org.eclipse.swtbot.swt.finder.waits.DefaultCondition;
 import org.eclipse.swtbot.swt.finder.waits.ICondition;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotButton;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotCheckBox;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotCombo;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotText;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
@@ -75,8 +77,8 @@ public class GW4EOfflineRunner extends AbstractRunner {
 		SWTBotText startElementText = shell.bot().textWithId(GW4ELaunchConfigurationTab.GW4E_LAUNCH_CONFIGURATION_CONTROL_ID,GW4ELaunchConfigurationTab.GW4E_LAUNCH_CONFIGURATION_TEXT_ID_START_ELEMENT);
 		assertEquals("Wrong start element",startElement,startElementText.getText());
 		
-		SWTBotText generatorText = shell.bot().textWithId(GW4ELaunchConfigurationTab.GW4E_LAUNCH_CONFIGURATION_CONTROL_ID,GW4ELaunchConfigurationTab.GW4E_LAUNCH_CONFIGURATION_TEXT_ID_GENERATOR);
-		assertEquals("Wrong generator value",generator,generatorText.getText());
+		SWTBotCombo generatorCombo = shell.bot().comboBoxWithId(GW4ELaunchConfigurationTab.GW4E_LAUNCH_CONFIGURATION_CONTROL_ID,GW4ELaunchConfigurationTab.GW4E_LAUNCH_CONFIGURATION_COMBO_PATH_GENERATOR_ID_MODEL);
+		assertEquals("Wrong generator value",generator,generatorCombo.getText());
 		
 		SWTBotButton closeButton = bot.button("Close");
 		closeButton.click();
@@ -84,7 +86,7 @@ public class GW4EOfflineRunner extends AbstractRunner {
 		bot.waitUntil(Conditions.shellCloses(shell));
 	}
 	
-	public void addRun (String configurationName,String projectName,String filepath,boolean printUnvisited,boolean verbose,String startElement,String generator) {
+	public void addOfflineRun (String configurationName,String projectName,String filepath,boolean printUnvisited,boolean verbose,String startElement,String generator) {
 		SWTBotShell shell = openRun ();
 		
 		SWTBot bot = shell.bot();
@@ -217,24 +219,10 @@ public class GW4EOfflineRunner extends AbstractRunner {
 			}
 		});
 		
-		SWTBotText generatorText = shell.bot().textWithId(GW4ELaunchConfigurationTab.GW4E_LAUNCH_CONFIGURATION_CONTROL_ID,GW4ELaunchConfigurationTab.GW4E_LAUNCH_CONFIGURATION_TEXT_ID_GENERATOR);
-		generatorText.setText(generator);
-		bot.waitUntil(new ICondition (){
-			@Override
-			public boolean test() throws Exception {
-				return generatorText.getText().equalsIgnoreCase(generator);
-			}
-
-			@Override
-			public void init(SWTBot bot) {
-
-			}
-
-			@Override
-			public String getFailureMessage() {
-				return "Generator text not set";
-			}
-		});
+		
+		ModelPathGeneratorHelper helper = new ModelPathGeneratorHelper(bot);
+		
+		selectComboPathGenerator (generator);
 		
 		SWTBotButton applyButton = shell.bot().button("Apply");
 		applyButton.click();
@@ -252,6 +240,29 @@ public class GW4EOfflineRunner extends AbstractRunner {
 						GW4ELaunchConfigurationTab.GW4E_LAUNCH_CONFIGURATION_CONTROL_ID,
 						GW4ELaunchConfigurationTab.GW4E_LAUNCH_CONFIGURATION_TEXT_ID_PROJECT));
 		return condition;
+	}
+	
+	private void selectComboPathGenerator (String path) {
+		DefaultCondition condition = new DefaultCondition() {
+			@Override
+			public boolean test() throws Exception {
+				try {
+ 
+					SWTBotCombo combo = bot.comboBoxWithId(GW4ELaunchConfigurationTab.GW4E_LAUNCH_CONFIGURATION_CONTROL_ID,GW4ELaunchConfigurationTab.GW4E_LAUNCH_CONFIGURATION_COMBO_PATH_GENERATOR_ID_MODEL);
+					combo.setSelection(path);
+					return true;
+				} catch (Exception e) {
+					e.printStackTrace();
+					return false;
+				}
+			}
+
+			@Override
+			public String getFailureMessage() {
+				return "Unable to open the path generator combo";
+			}
+		};
+		bot.waitUntil(condition);
 	}
 }
 

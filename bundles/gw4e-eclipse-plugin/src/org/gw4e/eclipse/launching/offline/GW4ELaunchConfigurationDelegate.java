@@ -33,6 +33,7 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Map;
+import java.util.StringTokenizer;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -92,30 +93,37 @@ public class GW4ELaunchConfigurationDelegate extends AbstractJavaLaunchConfigura
 			progArgs.add("offline");
 			
  			String removeBlockedElements= configuration.getAttribute(CONFIG_LAUNCH_REMOVE_BLOCKED_ELEMENT_CONFIGURATION,"true");  
-
  			String unvisited= configuration.getAttribute(CONFIG_UNVISITED_ELEMENT,(String) null);  
 			String verbose= configuration.getAttribute(CONFIG_VERBOSE,(String) null);  
-			String modelPath= configuration.getAttribute(CONFIG_GRAPH_MODEL_PATH  ,(String) null); 
-			String generatorstopcondition= configuration.getAttribute(CONFIG_GRAPH_GENERATOR_STOP_CONDITIONS ,(String) null); 
+			String modelPaths= configuration.getAttribute(CONFIG_GRAPH_MODEL_PATHS  ,(String) null); 
 			String startnode= configuration.getAttribute(CONFIG_LAUNCH_STARTNODE ,(String) null); 
 			
-			// Set the model
-			if ( (modelPath==null)  || (modelPath.trim().length()==0)) {
-				throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, -1, MessageUtil.getString("error_nomodelsettoruntheofflinecommand"), new Exception(MessageUtil.getString("error_modelNamenotdefined"))));
-			} else {
-				File modelFile = ResourceManager.stringPathToFile(modelPath.trim());
-				if (!modelFile.exists()) {
-					throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, -1, MessageUtil.getString("error_modelsettoruntheofflinecommanddoesnotexist"), new FileNotFoundException(modelFile.getAbsolutePath().toString())));
+			StringTokenizer stModel = new StringTokenizer (modelPaths,";");
+			while (stModel.hasMoreTokens()) {
+				String modelPath = stModel.nextToken();
+				boolean selected = stModel.nextToken().equalsIgnoreCase("1");
+				String generatorstopcondition = stModel.nextToken();
+
+				// Set the model
+				if (!selected) continue;
+				if ( (modelPath==null)  || (modelPath.trim().length()==0)) {
+					throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, -1, MessageUtil.getString("error_nomodelsettoruntheofflinecommand"), new Exception(MessageUtil.getString("error_modelNamenotdefined"))));
+				} else {
+					File modelFile = ResourceManager.stringPathToFile(modelPath.trim());
+					if (!modelFile.exists()) {
+						throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, -1, MessageUtil.getString("error_modelsettoruntheofflinecommanddoesnotexist"), new FileNotFoundException(modelFile.getAbsolutePath().toString())));
+					}
+					progArgs.add("-m");
+					progArgs.add(modelFile.getAbsolutePath().toString());
 				}
-				progArgs.add("-m");
-				progArgs.add(modelFile.getAbsolutePath().toString());
+				// Set the codegenerator & stop condition
+				if ( (generatorstopcondition==null)  || (generatorstopcondition.trim().length()==0)) {
+					throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, -1, MessageUtil.getString("error_nogeneratorstopconditionsettoruntheofflinecommand"), new Exception(MessageUtil.getString("error_graphmodel_not_found"))));
+				} else {
+					progArgs.add("\"" + generatorstopcondition + "\"");
+				}
 			}
-			// Set the codegenerator & stop condition
-			if ( (generatorstopcondition==null)  || (generatorstopcondition.trim().length()==0)) {
-				throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, -1, MessageUtil.getString("error_nogeneratorstopconditionsettoruntheofflinecommand"), new Exception(MessageUtil.getString("error_graphmodel_not_found"))));
-			} else {
-				progArgs.add("\"" + generatorstopcondition + "\"");
-			}
+			
 			// Specify the optional start element
 			if (!( (startnode==null)  || (startnode.trim().length()==0))) {
 				progArgs.add("-e");

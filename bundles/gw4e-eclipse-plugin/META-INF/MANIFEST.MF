@@ -29,7 +29,8 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.ui.console;bundle-version="3.6.201",
  org.eclipse.core.filesystem;bundle-version="1.6.1",
  org.eclipse.ui.views;bundle-version="3.8.101",
- gw4e-eclipse-core;bundle-version="4.0.0";visibility:=reexport
+ gw4e-eclipse-core;bundle-version="4.0.0";visibility:=reexport,
+ org.eclipse.swt
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Import-Package: com.google.common.io,
  com.google.gson,
@@ -64,6 +65,7 @@ Export-Package: org.gw4e.eclipse,
  org.gw4e.eclipse.launching,
  org.gw4e.eclipse.launching.offline,
  org.gw4e.eclipse.launching.test,
+ org.gw4e.eclipse.launching.ui,
  org.gw4e.eclipse.menu,
  org.gw4e.eclipse.message,
  org.gw4e.eclipse.performance,

@@ -41,7 +41,7 @@ public interface LaunchingConstant {
 	/**
 	 * The config attribute used to get and set the selected model file
 	 */
-	public static String CONFIG_GRAPH_MODEL_PATH = "gw4e.launch.config.graph.model.path";
+	public static String CONFIG_GRAPH_MODEL_PATHS = "gw4e.launch.config.graph.model.path";
 	/**
 	 * The config attribute used to get and set the unvisited option value
 	 */
@@ -49,15 +49,12 @@ public interface LaunchingConstant {
 	/**
 	 *  The config attribute used to get and set the verbose option value
 	 */
-	public static String CONFIG_VERBOSE = "gw4e.launch.config.verbose";
+	public static String GW4E_LAUNCH_CONFIGURATION_BUTTON_ID_OMIT_EMPTY_EDGE_DESCRIPTION = "gw4e.launch.config.omit.empty.edge.description";
 	/**
 	 * The config attribute used to get and set the start element value
 	 */
 	public static String CONFIG_LAUNCH_STARTNODE= "gw4e.launch.config.start.node";
-	/**
-	 * The config attribute used to get and set the generator and stop condition value
-	 */
-	public static String CONFIG_GRAPH_GENERATOR_STOP_CONDITIONS = "gw4e.launch.config.generatorstopconditions";
+	 
 	/**
 	 * The class launched  to execute the offline command
 	 */
@@ -67,6 +64,12 @@ public interface LaunchingConstant {
 	 * The config used to set whether the configuration will be logged before the test execution
 	 */
 	public static String CONFIG_LAUNCH_REMOVE_BLOCKED_ELEMENT_CONFIGURATION = "gw4e.launch.config.remove.blocked.elements.configuration";
+
+	/**
+	 * The config used to set whether the configuration will be logged before the test execution
+	 */
+	public static String CONFIG_OMIT_EDGES_WITHOUT_DESCRIPTION_CONFIGURATION = "gw4e.launch.config.omit.edges.without.description.configuration";
+
 	
 	/**
 	 * The config used to set the additional models used ofr the test

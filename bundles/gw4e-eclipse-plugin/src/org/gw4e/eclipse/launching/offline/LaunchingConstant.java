@@ -41,7 +41,7 @@ public interface LaunchingConstant {
 	/**
 	 * The config attribute used to get and set the selected model file
 	 */
-	public static String CONFIG_GRAPH_MODEL_PATH = "gw4e.launch.config.graph.model.path";
+	public static String CONFIG_GRAPH_MODEL_PATHS = "gw4e.launch.config.graph.model.path";
 	/**
 	 * The config attribute used to get and set the unvisited option value
 	 */
@@ -54,11 +54,7 @@ public interface LaunchingConstant {
 	 * The config attribute used to get and set the start element value
 	 */
 	public static String CONFIG_LAUNCH_STARTNODE= "gw4e.launch.config.start.node";
-	/**
-	 * The config attribute used to get and set the generator and stop condition value
-	 */
-	public static String CONFIG_GRAPH_GENERATOR_STOP_CONDITIONS = "gw4e.launch.config.generatorstopconditions";
-	/**
+ 	/**
 	 * The class launched  to execute the offline command
 	 */
 	public static String CONFIG_LAUNCH_CLASS = "org.graphwalker.cli.CLI";

@@ -31,19 +31,25 @@ package org.gw4e.eclipse.test.run;
 import static org.junit.Assert.assertEquals;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.List;
 
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
 import org.eclipse.swtbot.swt.finder.junit.SWTBotJunit4ClassRunner;
 import org.eclipse.swtbot.swt.finder.utils.SWTBotPreferences;
+import org.eclipse.swtbot.swt.finder.waits.DefaultCondition;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
+import org.gw4e.eclipse.builder.BuildPolicyManager;
 import org.gw4e.eclipse.builder.exception.BuildPolicyConfigurationException;
+import org.gw4e.eclipse.builder.exception.NoBuildRequiredException;
 import org.gw4e.eclipse.facade.ResourceManager;
 import org.gw4e.eclipse.facade.SettingsManager;
 import org.gw4e.eclipse.fwk.perpective.GW4EPerspective;
@@ -52,6 +58,7 @@ import org.gw4e.eclipse.fwk.project.GW4EProject;
 import org.gw4e.eclipse.fwk.project.PetClinicProject;
 import org.gw4e.eclipse.fwk.run.GW4EOfflineRunner;
 import org.gw4e.eclipse.fwk.run.GW4ETestRunner;
+import org.gw4e.eclipse.fwk.view.ProblemView;
 import org.gw4e.eclipse.preferences.PreferenceManager;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -274,16 +281,39 @@ public class GW4ERunnerTestCase {
 	
 	
 	@Test
-	public void testOfflineRunner () throws CoreException, FileNotFoundException, BuildPolicyConfigurationException {
+	public void testOfflineRunner () throws CoreException, BuildPolicyConfigurationException, InterruptedException, IOException {
+		String pathGenerator = "random(reached_vertex( v_SearchResult ))";
+		
 		GW4EProject project = new GW4EProject(bot, gwproject);
 		project.resetToJavPerspective();
 		project.createProject();
-		project.createGraphMLFile(TEST_RESOURCE_FOLDER, PACKAGE_NAME, graphMLFilename);
+		IFile file = project.createGraphMLFile(TEST_RESOURCE_FOLDER, PACKAGE_NAME, graphMLFilename);
+		 
+		IFile buildPolicyFile = BuildPolicyManager.createBuildPoliciesFile(file, new NullProgressMonitor ());
+		 
+		project.setPathGenerator(buildPolicyFile, file.getFullPath().lastSegment(), pathGenerator+";I");
+	 
+		DefaultCondition condition = new DefaultCondition () {
+			@Override
+			public boolean test() throws Exception {
+				ProblemView pv = ProblemView.open(GW4ERunnerTestCase.this.bot);
+				GW4EProject.cleanBuild();
+				boolean b = pv.getDisplayedErrorCount() == 0;
+				return b;
+			}
+
+			@Override
+			public String getFailureMessage() {
+				return "Failed to create a project withour error";
+			}
+		};
+		bot.waitUntil(condition, 3 * 60 * 1000);
+		
 		String filepath = "/"+gwproject+"/"+TEST_RESOURCE_FOLDER+"/"+PACKAGE_NAME+"/"+graphMLFilename;
 		GW4EOfflineRunner runner = new GW4EOfflineRunner (bot);
 		
- 		String pathGenerator = "random(reached_vertex( v_SearchResult ))";
-		runner.addRun		("MyRun",gwproject,filepath,true,true,"e_StartBrowser",pathGenerator);
+ 	
+		runner.addOfflineRun		("MyRun",gwproject,filepath,true,true,"e_StartBrowser",pathGenerator);
 		runner.validateRun	("MyRun",gwproject,filepath,true,true,"e_StartBrowser",pathGenerator);
 		
 		runner.run("MyRun",RUN_TIMEOUT);
