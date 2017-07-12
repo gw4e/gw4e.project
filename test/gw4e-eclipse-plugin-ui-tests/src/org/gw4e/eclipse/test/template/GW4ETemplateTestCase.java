@@ -265,7 +265,7 @@ public class GW4ETemplateTestCase {
 		nodes[2] = "com.company";
 		nodes[3] = "SimplewithscriptImpl.java";
 		JUnitView junit = new JUnitView(bot);
-		junit.run(project, nodes, 4, 0, 0, 5*60*1000);		 
+		junit.run(project, nodes, 4, 0, 0, 15*60*1000);		 
 	}
 	
 	@Test
