@@ -134,7 +134,13 @@ public class JUnitView {
 			labels.clear();
 			if (item!=null) {
 				runText = bot.textWithLabel("Runs: ");
+				System.out.println("STATUS ");
+				SWTBotText failureText = bot.textWithLabel("Failures: ");
+				SWTBotText errorsText = bot.textWithLabel("Errors: ");
+				System.out.println("errorsText ----> >" + errorsText.getText() + "<");
+				System.out.println("failureText ----> >" + failureText.getText() + "<");
 				System.out.println("runText ----> >" + runText.getText() + "<");
+				System.out.println("END STATUS ");
 				if ( (runCount+"/"+ runCount).equalsIgnoreCase(runText.getText()) ) {
 					Matcher matcher = allOf(widgetOfType(Label.class));
 					List<Label> list = bot.getFinder().findControls(matcher);
