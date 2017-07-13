@@ -117,8 +117,8 @@
 					<argLine>-Dgw.mvn.repository=${user.home}/.m2/repository ${ui.test.vmargs}</argLine>
 					<appArgLine>-data ${project.basedir}/target/workspace -nl en -consoleLog</appArgLine>
 					<includes>
-              			<include>**/GW4ETemplateTestCase.class</include>
-         			 </includes>
+              <include>**/*.class</include>
+          </includes>
 				</configuration>
 			</plugin>
 		</plugins>
