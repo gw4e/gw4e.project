@@ -27,7 +27,13 @@
 		    <version>3.16</version>
 		</dependency>		
 	</dependencies>
-
+ 
+	<dependency>
+	    <groupId>org.apache.poi</groupId>
+	    <artifactId>poi-ooxml</artifactId>
+	    <version>3.16</version>
+	</dependency>
+	
 	<properties>
 		<version.template.file>../bundles/gw4e-eclipse-core/src/org/gw4e/eclipse/core/Version.java.template</version.template.file>
 		<version.file>../bundles/gw4e-eclipse-core/src/org/gw4e/eclipse/core/Version.java</version.file>
