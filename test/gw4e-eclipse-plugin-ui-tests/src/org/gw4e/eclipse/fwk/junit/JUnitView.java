@@ -30,6 +30,7 @@ package org.gw4e.eclipse.fwk.junit;
 
 import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.allOf;
 import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.widgetOfType;
+import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -74,7 +75,7 @@ public class JUnitView {
 		});
 	}
 	
-	public void run (GW4EProject project,String[] nodes, int runCount,int expectedError,int expectedFailure,long timeout) {
+	public void run (GW4EProject project,GW4ETestRunner runner,String[] nodes, int runCount,int expectedError,int expectedFailure,long timeout,String ... OptionalExpected) {
 		DefaultCondition condition = new DefaultCondition () {
 			boolean found = false;
 			@Override
@@ -112,7 +113,7 @@ public class JUnitView {
 		};
 		
 		bot.waitUntil(condition,timeout);  
-	    bot.waitUntil(new RunCompletedCondition(runCount),timeout);  
+	    bot.waitUntil(new RunCompletedCondition(runner,runCount,OptionalExpected),timeout);  
 	    bot.waitUntil(new ExpectedErrorCondition(expectedError));  
 	    bot.waitUntil(new ExpectedFailureCondition(expectedFailure));  
 	}
@@ -120,10 +121,14 @@ public class JUnitView {
 	public class RunCompletedCondition extends DefaultCondition {
 		int runCount;
 		SWTBotText runText;
+		GW4ETestRunner runner;
+		String [] OptionalExpected;
 		List<String> labels = new ArrayList<String> ();
-		public RunCompletedCondition(int runCount) {
+		public RunCompletedCondition(GW4ETestRunner runner, int runCount,String ... OptionalExpected) {
 			super();
 			this.runCount = runCount;
+			this.runner = runner;
+			this.OptionalExpected = OptionalExpected;
 			openView ();
 		}
 
@@ -161,8 +166,12 @@ public class JUnitView {
 					}
 				}
 			}
-			 
-			 
+			 // JUnitView does not always display the label "Finished after", give a second chance to see whether the job is completed or not
+			String result =	runner.getConsoleText();
+			if (OptionalExpected!=null && OptionalExpected.length > 0 && validateRunResult (result,OptionalExpected)) {
+				return true;
+			}
+			
 			return false;
 		}
 
@@ -173,6 +182,17 @@ public class JUnitView {
 			} else {
 				return "test not completed. Only " +  runText.getText() + " ran. " + labels;
 			}
+		}
+		
+		private boolean validateRunResult (String result,String []  expectations) {
+			boolean found = true;
+			 for (int i = 0; i < expectations.length; i++) {
+				 if (expectations[i].trim().length()==0) continue;
+				if (result.indexOf(expectations[i])==-1) {
+					found = false;
+				}
+			}
+			 return found;
 		}
 	}
 

@@ -192,7 +192,9 @@ public class GW4ETemplateTestCase {
 		nodes[2] = "com.company";
 		nodes[3] = "SimpleImpl.java";
 		JUnitView junit = new JUnitView(bot);
-		junit.run(project, nodes, 4, 0, 0,3* 60*1000);
+		
+		GW4ETestRunner runner =  new GW4ETestRunner (bot);
+		junit.run(project,runner, nodes, 4, 0, 0,3* 60*1000);
 		System.out.println();
 	}
 	@Test
@@ -266,7 +268,8 @@ public class GW4ETemplateTestCase {
 		nodes[3] = "SimplewithscriptImpl.java";
 		JUnitView junit = new JUnitView(bot);
 		try {
-			junit.run(project, nodes, 4, 0, 0, 15*60*1000);
+			GW4ETestRunner runner =  new GW4ETestRunner (bot);
+			junit.run(project,runner, nodes, 4, 0, 0, 15*60*1000);
 		} catch (Exception e) {
 			
 			String result = gwtr.getConsoleText();
@@ -333,34 +336,28 @@ public class GW4ETemplateTestCase {
  		
 		gwtr.run("Model_AImplMyRunTest",RUN_TIMEOUT);
 		
-		String[] expected = new String[] {
-				  "\"totalFailedNumberOfModels\": 0,",
-				  "\"totalNotExecutedNumberOfModels\": 0,",
-				  "\"totalNumberOfUnvisitedVertices\": 1,",
-				  "\"verticesNotVisited\": [{",
-				    "\"modelName\": \"Model_A\",",
-				    "\"vertexName\": \"Start\",",
-				    "\"vertexId\": \"35570bf4-652f-4269-86b9-414aebfe7fad\"",
-				  "\"totalNumberOfModels\": 2,",
-				  "\"totalCompletedNumberOfModels\": 2,",
-				  "\"totalNumberOfVisitedEdges\": 8,",
-				  "\"totalIncompleteNumberOfModels\": 0,",
-				  "\"edgesNotVisited\": [],",
-				  "\"vertexCoverage\": 80,",
-				  "\"totalNumberOfEdges\": 8,",
-				  "\"totalNumberOfVisitedVertices\": 4,",
-				  "\"edgeCoverage\": 100,",
-				  "\"totalNumberOfVertices\": 5,",
-				  "\"totalNumberOfUnvisitedEdges\": 0",
-		};
-		gwtr.validateRunResult (expected);
-
+ 
 		String[] nodes = new String[4];
 		nodes[0] = gwproject;
 		nodes[1] = "src/main/java";
 		nodes[2] = "com.company";
 		nodes[3] = "Model_AImpl.java";
 		JUnitView junit = new JUnitView(bot);
-		junit.run(project, nodes, 4, 0, 0, 3*60*1000);
+		String[] expected = new String[] {
+				"\"name\": \"e_ToggleRememberMe\"",
+				"\"name\": \"e_InvalidCredentials\"",
+				"\"name\": \"e_ValidPremiumCredentials\"",
+				"\"name\": \"v_ClientNotRunning\"",
+				"\"name\": \"v_LoginPrompted\"",
+				"\"name\": \"v_Browse\"",
+				"\"name\": \"e_close\"",
+				"\"name\": \"e_init\"",
+				"\"name\": \"e_StartClient\"",
+				"\"name\": \"e_logout\"",
+				"\"name\": \"e_Exit\"",
+		};
+		
+		junit.run(project, gwtr, nodes, 4, 0, 0, 3*60*1000, expected);
+		
 	}
 }
