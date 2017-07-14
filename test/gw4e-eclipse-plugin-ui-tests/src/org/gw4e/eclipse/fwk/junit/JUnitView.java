@@ -122,13 +122,13 @@ public class JUnitView {
 		int runCount;
 		SWTBotText runText;
 		GW4ETestRunner runner;
-		String [] OptionalExpected;
+		String [] optionalExpected;
 		List<String> labels = new ArrayList<String> ();
 		public RunCompletedCondition(GW4ETestRunner runner, int runCount,String ... OptionalExpected) {
 			super();
 			this.runCount = runCount;
 			this.runner = runner;
-			this.OptionalExpected = OptionalExpected;
+			this.optionalExpected = OptionalExpected;
 			openView ();
 		}
 
@@ -168,7 +168,7 @@ public class JUnitView {
 			}
 			 // JUnitView does not always display the label "Finished after", give a second chance to see whether the job is completed or not
 			String result =	runner.getConsoleText();
-			if (OptionalExpected!=null && OptionalExpected.length > 0 && validateRunResult (result,OptionalExpected)) {
+			if (optionalExpected!=null && optionalExpected.length > 0 && validateRunResult (result,optionalExpected)) {
 				return true;
 			}
 			
