@@ -44,12 +44,22 @@
           Click <b>Browse</b> to select the <b>Simple.json</b> graph model.<br/>
           Suppose you want to get the sequence that would be generated for a random walk in the model while covering 
           all the edges. In that case, you would certainly do the following : <br/>
-          Enter <b>random(edge_coverage(100))</b> as <b>GENERATOR(STOP_CONDITION)</b><br/>
+          Select <b>random(edge_coverage(100))</b> as <b>Path Generator</b><br/>
           Let the others options with default value<br/>
           Click <b>Apply</b> <br/>
           Click <b>Run</b> <br/>
-          You can examine the results of the execution in the Console View. and use the output sequence in a JUnit test like this:<br/>
-          @Test<br/>
+          You can examine the results of the execution in the Console View.<br/>
+  			e_StartApp <br/>
+ 			v_VerifyAppRunning <br/>
+ 			e_OpenPreferencesPage <br/>
+ 			v_VerifyPreferencePage  <br/>
+			e_ClosePreferencePage  <br/>
+ 			v_VerifyAppRunning  <br/>
+		  <br/>
+		  The main goal of the offline generation is to understand which path will be taken, when you would run an online test with the same path generator.
+		  <br/>
+		  Notice that, in the past, you would have also used the Offline feature, to generate a static test, by re-using the output sequence in a JUnit test like this:<br/>
+         @Test<br/>
 			public void Simple_Test() {<br/>
   			e_StartApp ();<br/>
  			v_VerifyAppRunning ();<br/>
@@ -58,8 +68,8 @@
 			e_ClosePreferencePage ();<br/>
  			v_VerifyAppRunning ();<br/>
 		  }<br/>
-		  <br/>
-		  Notice that this plugin offers an Offline conversion feature that goes one step further. It helps you to combine this, with code generation.<br/>
+		  <br/>	
+		  But it is no longer necessary since, GW4E offers an Offline conversion feature that goes one step further. It helps you to combine this, with code generation.<br/>
 		  Have a look at the TroubleShooting tutorial for more information <br/>
       </description>
    </item>

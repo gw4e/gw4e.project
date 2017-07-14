@@ -54,6 +54,7 @@
 	  Click <b>Run</b> -&gt;  <b>Run Configurations...</b><br/>
 	  On the left pane, select <b>SimpleImpl.java</b> under <b>GW4E Test Launcher</b><br/>
 	  On the right pane, you can see the selected project, the class to test. We will see how to use Additional Execution Context in another tutorial.
+	  You can examine the results of the execution in the Console View or the JUnit view.<br/>
 	  You can now use directly this Run Configuration, whenever needed.<br/>
 	  </description>
    </item> 
@@ -65,7 +66,7 @@
   	  Click <b>Yes</b> , if the <b>Confirm Perspective Switch</b> dialog opens<br/>
   	  The test execution is suspended and , you can now step in through your code, and examine the contents of variables.<br/>
   	  Click the <b>Resume</b> icon so that your test resumes.<br/>
-  	  You can examine the results of the execution in the Console View. 
+  	 You can examine the results of the execution in the Console View or the JUnit view.
 	  </description>
    </item>   
    <item title="Running with JUnit Test Launcher" >
@@ -78,6 +79,7 @@
 	  Click Run -> Run Configurations...<br/>
 	  On the left pane, select <b>SimpleImpl.java</b> under <b>JUnit</b><br/>
 	  On the right pane, you can see the selected project, the class to test. You can now use directly this Run Configuration, whenever needed.<br/>
+	 You can examine the results of the execution the JUnit view.
 	  </description>
    </item>    
 </cheatsheet>
