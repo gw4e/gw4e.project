@@ -1,6 +1,8 @@
 
 package org.gw4e.eclipse.wizard.runasmanual;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +27,7 @@ import org.gw4e.eclipse.launching.runasmanual.StepDetail;
 import org.gw4e.eclipse.launching.ui.ModelData;
 import org.gw4e.eclipse.message.MessageUtil;
 import org.gw4e.eclipse.preferences.PreferenceManager;
+import org.gw4e.eclipse.xl.util.XLFacade;
 
  
 public class RunAsManualWizard extends Wizard implements INewWizard {
@@ -35,7 +38,7 @@ public class RunAsManualWizard extends Wizard implements INewWizard {
 	static {
 		WIZARD_BANNER = Activator.getDefaultImageDescriptor();
 	}
-
+	String projectname = null;
 	String modelPath;
 	ModelData[] additionalModels;
 	String generatorstopcondition;
@@ -96,17 +99,20 @@ public class RunAsManualWizard extends Wizard implements INewWizard {
 			addPage(page);
 			engine = new Engine();
 			List<StepDetail> details = null;
+			
 			try {
-				String projectname = ResourceManager.getResource(modelPath).getProject().getName();
+				projectname = ResourceManager.getResource(modelPath).getProject().getName();
 				engine.createMachine(modelPath, additionalModels, generatorstopcondition, startnode, removeBlockedElement);
 				details = setupPages (projectname,engine);
 			} catch (IOException e) {}
-			WizardPage p = new SummaryExecutionPage (SummaryExecutionPage.NAME,details);
-			p.setTitle(MessageUtil.getString("summaryExecutionPage"));
-			p.setMessage(MessageUtil.getString("summaryMessageExecutionPage"));
+			summaryPage = new SummaryExecutionPage (SummaryExecutionPage.NAME,details);
+			summaryPage.setTitle(MessageUtil.getString("summaryExecutionPage"));
+			summaryPage.setMessage(MessageUtil.getString("summaryMessageExecutionPage"));
+			summaryPage.setPageComplete(true);
+			addPage(summaryPage);
 			
-			p.setPageComplete(true);
-			addPage(p);
+			stp = new SaveTestPage("SaveTestPage",projectname,engine.getComponent());
+			addPage(stp);
 		} catch (Exception e) {
 			ResourceManager.logException(e);
 		}
@@ -146,10 +152,14 @@ public class RunAsManualWizard extends Wizard implements INewWizard {
 		return super.getPreviousPage(page);
 	}
 	
+	private void resetSkipState () {
+		setSkipToSummary(false);
+	}
+	
 	@Override
 	public IWizardPage getNextPage(IWizardPage page) {
 		if (this.isSkipToSummary()) {
-			if (SummaryExecutionPage.NAME.equalsIgnoreCase(page.getName())) return null;
+			resetSkipState ();
 			return this.getPage(SummaryExecutionPage.NAME);
 		}
 		IWizardPage p = super.getNextPage(page);
@@ -162,10 +172,12 @@ public class RunAsManualWizard extends Wizard implements INewWizard {
 	
 	@Override
 	public boolean canFinish() {
-		return !engine.hasNextstep();
+		return !engine.hasNextstep() && stp.isPageComplete();
 	}
 
 	Engine engine = null;
+	private SummaryExecutionPage summaryPage;
+	private SaveTestPage stp;
 
 	private StepPage computeNextPage() {
 		StepDetail detail = engine.step();
@@ -205,7 +217,24 @@ public class RunAsManualWizard extends Wizard implements INewWizard {
 
 	@Override
 	public boolean performFinish() {
-		return true;
+	    try {
+			List<StepDetail> details = this.summaryPage.getStepDetails();
+			File file = stp.getWorkbookFile();
+			String title = stp.getWorkbookTitle();
+			boolean exportAsTemplate = stp.exportAsTemplate();
+			String dateFormat = stp.getDateFormat();
+			String testcaseid = stp.getTestCaseId();
+			String component = stp.getComponentNme();
+			String priority = stp.getPriority();
+			String description = engine.getDescription()+"";
+			boolean updateDetailSheet = stp.isUpdateMode();
+			XLFacade.getPersistenceService().persist(file, title, exportAsTemplate, dateFormat, testcaseid, component, priority, description, updateDetailSheet, details);
+			ResourceManager.resfresh(ResourceManager.getProject(projectname));
+			return true;
+		} catch (Exception e) {
+			ResourceManager.logException(e);
+			return false;
+		}
 	}
 
 	public boolean isSkipToSummary() {

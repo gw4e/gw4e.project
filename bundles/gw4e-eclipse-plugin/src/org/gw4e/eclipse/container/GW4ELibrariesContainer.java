@@ -1,8 +1,5 @@
 package org.gw4e.eclipse.container;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-
 /*-
  * #%L
  * gw4e
@@ -39,11 +36,8 @@ import org.eclipse.jdt.core.IClasspathContainer;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
-import org.eclipse.swt.widgets.Display;
 import org.gw4e.eclipse.constant.Constant;
-import org.gw4e.eclipse.facade.DialogManager;
 import org.gw4e.eclipse.facade.ResourceManager;
-import org.gw4e.eclipse.message.MessageUtil;
 import org.gw4e.eclipse.preferences.PreferenceManager;
 
 /**

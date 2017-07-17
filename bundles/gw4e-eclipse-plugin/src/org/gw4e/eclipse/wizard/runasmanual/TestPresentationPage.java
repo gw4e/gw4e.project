@@ -1,7 +1,5 @@
 package org.gw4e.eclipse.wizard.runasmanual;
 
-import java.util.List;
-
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.Bullet;

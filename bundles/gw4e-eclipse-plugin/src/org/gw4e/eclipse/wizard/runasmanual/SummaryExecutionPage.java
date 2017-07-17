@@ -1,5 +1,6 @@
 package org.gw4e.eclipse.wizard.runasmanual;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -179,13 +180,14 @@ public class SummaryExecutionPage extends WizardPage {
 				StepDetail sd = (StepDetail) element;
 				return sd.getDescription();
 			}
+
 			@Override
 			public String getToolTipText(Object element) {
 				StepDetail sd = (StepDetail) element;
 				return sd.getDescription();
 			}
 		});
-		
+
 		Menu menu = new Menu(table);
 		table.setMenu(menu);
 		MenuItem setStatusItem = new MenuItem(menu, SWT.CASCADE);
@@ -297,13 +299,24 @@ public class SummaryExecutionPage extends WizardPage {
 		for (int i = 0, n = table.getColumnCount(); i < n; i++)
 			table.getColumn(i).pack();
 	}
-	
+
 	public void dispose() {
 		try {
 			buttons.values().stream().forEach(item -> item.dispose());
 		} catch (Exception e) {
-			
+
 		}
 		super.dispose();
 	}
+
+	public List<StepDetail> getStepDetails() {
+		TableItem[] items = table.getItems();
+		List<StepDetail> details = new ArrayList<StepDetail>();
+		for (TableItem tableItem : items) {
+			StepDetail sd = (StepDetail) tableItem.getData();
+			details.add(sd);
+		}
+		return details;
+	}
+
 }

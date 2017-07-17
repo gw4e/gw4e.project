@@ -31,7 +31,6 @@ package org.gw4e.eclipse.wizard.convert;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.SubMonitor;
-import org.eclipse.jdt.core.JavaModelException;
 import org.gw4e.eclipse.facade.JDTManager;
 import org.gw4e.eclipse.facade.ResourceManager;
 

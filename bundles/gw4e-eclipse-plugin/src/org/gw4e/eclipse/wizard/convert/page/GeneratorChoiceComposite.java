@@ -29,16 +29,13 @@ package org.gw4e.eclipse.wizard.convert.page;
  */
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IResource;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
-import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IPackageFragment;
@@ -52,10 +49,6 @@ import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
-import org.eclipse.search.core.text.TextSearchEngine;
-import org.eclipse.search.core.text.TextSearchMatchAccess;
-import org.eclipse.search.core.text.TextSearchRequestor;
-import org.eclipse.search.ui.text.FileTextSearchScope;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.BusyIndicator;
 import org.eclipse.swt.events.ModifyEvent;
@@ -74,7 +67,6 @@ import org.gw4e.eclipse.facade.GraphWalkerFacade;
 import org.gw4e.eclipse.facade.JDTManager;
 import org.gw4e.eclipse.facade.ResourceManager;
 import org.gw4e.eclipse.message.MessageUtil;
-import org.gw4e.eclipse.refactoring.Helper;
 import org.gw4e.eclipse.wizard.convert.ResourceContext;
 
 public class GeneratorChoiceComposite extends Composite {

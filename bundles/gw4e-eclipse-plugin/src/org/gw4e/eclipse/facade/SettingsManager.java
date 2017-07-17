@@ -1,8 +1,5 @@
 package org.gw4e.eclipse.facade;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-
 /*-
  * #%L
  * gw4e
@@ -52,7 +49,6 @@ import org.eclipse.core.runtime.preferences.IScopeContext;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 import org.gw4e.eclipse.Activator;
-import org.gw4e.eclipse.message.MessageUtil;
 import org.gw4e.eclipse.preferences.PreferenceInitializer;
 import org.gw4e.eclipse.preferences.ProjectPropertyChangeListener;
 import org.osgi.service.prefs.BackingStoreException;

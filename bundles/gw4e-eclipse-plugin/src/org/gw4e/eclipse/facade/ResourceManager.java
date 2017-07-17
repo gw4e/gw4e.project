@@ -82,7 +82,6 @@ import org.eclipse.core.runtime.QualifiedName;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.core.runtime.jobs.Job;
-import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.debug.core.model.IProcess;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.ICompilationUnit;
@@ -435,6 +434,31 @@ public class ResourceManager implements IResourceChangeListener {
 		}
 	}
 
+	public static void getAllWorkBookFiles(String projectName, List<IFile> files) throws CoreException {
+		if (projectName == null)
+			return;
+		IContainer container = ResourceManager.getProject(projectName);
+		container.refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor());
+		IResource[] members = container.members();
+		for (IResource member : members) {
+			if (member instanceof IFile) {
+				IFile file = (IFile) member;
+				if (isWorkBookFile(file)) {
+					files.add(file);
+				}
+			}
+		}
+	}
+
+	public static boolean isWorkBookFile(IFile file) throws CoreException {
+		String extension = file.getFileExtension();
+		if ("xlsx".equalsIgnoreCase(extension)) {
+			return true;
+		}
+		return false;
+	}
+
+	
 	public static boolean isJUnitResultFile(IFile file) throws CoreException {
 		String filename = file.getName();
 		String extension = file.getFileExtension();
@@ -587,6 +611,22 @@ public class ResourceManager implements IResourceChangeListener {
 		return new File(file);
 	}
 
+	public static File getProjectLocation(String project) throws FileNotFoundException {
+		if ( project == null)
+			throw new FileNotFoundException("");
+
+		IResource resource = getWorkspaceRoot().findMember(project);
+		if (resource == null)
+			throw new FileNotFoundException(project.toString());
+		IPath path = resource.getRawLocation();
+		if (path == null) {
+			path = resource.getLocation();
+		}
+		String file = path.makeAbsolute().toString();
+		return new File(file);
+	}
+
+	
 	/**
 	 * @param ipath
 	 * @return

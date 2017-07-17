@@ -9,7 +9,6 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.eclipse.core.resources.IFile;
-import org.graphwalker.core.generator.PathGenerator;
 import org.graphwalker.core.machine.Context;
 import org.graphwalker.core.machine.ExecutionContext;
 import org.graphwalker.core.machine.Machine;
@@ -24,7 +23,8 @@ import org.gw4e.eclipse.launching.ui.ModelData;
 public class Engine {
 	Machine machine ;
 	Map<Context,File> contexts = new HashMap<Context,File> ();
-	
+	String description;
+	String component;
 	public final class ModelTestContext extends ExecutionContext {
 	}
 
@@ -35,6 +35,8 @@ public class Engine {
 		File mainFile = ResourceManager.toFile(f.getFullPath());
 
 		RuntimeModel rm = GraphWalkerFacade.getModel(mainFile);
+		description = rm.getProperty("description")+"";
+		component = rm.getProperty("component")+"";
  		context.setModel(rm).setPathGenerator(GraphWalkerFacade.createPathGenerator(pathgenerator));
 		context.setNextElement(context.getModel().findElements(startElement).get(0));
 		contexts.put(context, mainFile);
@@ -84,5 +86,13 @@ public class Engine {
 		String description = (String) elt.getProperty("description");
 		List<String> requirements = elt.getRequirements().stream().map(item -> item.getKey()).collect(Collectors.toList());
 		return new StepDetail(name,description,requirements, elt instanceof RuntimeVertex )  ;      
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public String getComponent() {
+		return component;
 	}
 }
