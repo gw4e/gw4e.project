@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<site>
-   <feature url="features/gw4e.eclipse.feature_4.0.0.jar" id="gw4e.eclipse" version="4.0.0"/>
-   <category-def name="GraphWalker" label="GraphWalker"/>
-</site>

@@ -1,7 +1,0 @@
-#
-#Wed Nov 30 14:09:57 CET 2016
-OwnerInformationSharedState.graphml=random(vertex_coverage(100));I;random(edge_coverage(100));I;
-NewOwnerSharedState.graphml=random(vertex_coverage(100));I;random(edge_coverage(100));I;
-VeterinariensSharedState.graphml=random(vertex_coverage(100));I;random(edge_coverage(100));I;
-FindOwnersSharedState.graphml=random(vertex_coverage(100));I;random(edge_coverage(100));I;
-PetClinicSharedState.graphml=random(vertex_coverage(100));I;random(edge_coverage(100));I;
