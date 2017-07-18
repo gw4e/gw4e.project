@@ -40,7 +40,7 @@
 		<version.file>../bundles/gw4e-eclipse-core/src/org/gw4e/eclipse/core/Version.java</version.file>
 		<plugin.core.lib>${basedir}/../bundles/gw4e-eclipse-core/lib</plugin.core.lib>
 		<graphwalker.cli>graphwalker-cli-${project.version}.jar</graphwalker.cli>
-		<graphwalker.cli.url>http://graphwalker.github.io/content/archive/${graphwalker.cli}</graphwalker.cli.url>
+		<graphwalker.cli.url>https://github.com/gw4e/gw4e.project/raw/gw-repo-4.0.0/${graphwalker.cli}</graphwalker.cli.url>
 	</properties>
 
 	<build>
