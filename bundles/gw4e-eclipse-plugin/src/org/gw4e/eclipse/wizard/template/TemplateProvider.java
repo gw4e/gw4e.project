@@ -152,7 +152,6 @@ public abstract class TemplateProvider {
 			String name  = theFileToCreate.getName().substring(0,theFileToCreate.getName().indexOf(".")); 
 			
 			temp = ((IFolder)theFileToCreate.getParent()).getFile(name + i + "." + theFileToCreate.getFileExtension());
-			System.out.println(" hanldeExistingFile >"+ name + "< temp " + temp.getFullPath()); 
 			i++;
 		}
 		return temp;
