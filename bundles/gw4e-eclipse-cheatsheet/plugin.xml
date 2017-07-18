@@ -55,5 +55,14 @@
             id="gw4e-eclipse-cheatsheet.golden.path">
          	<description>GW4E Plugin Tutorials</description>
       </cheatsheet>       
+     <cheatsheet
+            name="7 - Generating a manual test case from a graph model"
+            category="gw4e-eclipse-cheatsheet.category"
+             contentFile="src/org/gw4e/eclipse/cheatsheet/manual/test/en/gw4e_composite.xml"
+            composite="true"
+            id="gw4e-eclipse-cheatsheet.generating.manual.path">
+         	<description>GW4E Plugin Tutorials</description>
+      </cheatsheet>       
+
    </extension>
 </plugin>
