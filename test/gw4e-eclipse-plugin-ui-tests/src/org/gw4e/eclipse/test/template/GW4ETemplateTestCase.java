@@ -269,7 +269,12 @@ public class GW4ETemplateTestCase {
 		JUnitView junit = new JUnitView(bot);
 		try {
 			GW4ETestRunner runner =  new GW4ETestRunner (bot);
-			junit.run(project,runner, nodes, 4, 0, 0, 15*60*1000);
+			
+			 expected = new String[] {
+					"\"name\": \"e_Exit\"",
+			};
+			
+			junit.run(project,runner, nodes, 4, 0, 0, 15*60*1000,expected);
 		} catch (Exception e) {
 			
 			String result = gwtr.getConsoleText();
