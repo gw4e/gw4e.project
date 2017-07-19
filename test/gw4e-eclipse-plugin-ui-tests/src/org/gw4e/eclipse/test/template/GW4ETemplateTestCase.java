@@ -45,19 +45,21 @@ import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
+
 @RunWith(SWTBotJunit4ClassRunner.class)
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class GW4ETemplateTestCase {
-	 
+
 	private static SWTWorkbenchBot bot;
 	private static String gwproject = "gwproject";
-	public static long	RUN_TIMEOUT	= 3 * 60 * 1000;
+	public static long RUN_TIMEOUT = 3 * 60 * 1000;
+
 	@BeforeClass
 	public static void beforeClass() throws Exception {
 		SWTBotPreferences.KEYBOARD_LAYOUT = "EN_US";
 		SWTBotPreferences.TIMEOUT = 6000;
 		bot = new SWTWorkbenchBot();
-		try { 
+		try {
 			bot.viewByTitle("Welcome").close();
 		} catch (Exception e) {
 		}
@@ -73,33 +75,28 @@ public class GW4ETemplateTestCase {
 		bot.resetWorkbench();
 		GW4EProject.cleanWorkspace();
 	}
-	
+
 	@Test
-	public void testCreateProjectWithSimpleTemplate () throws CoreException  {
+	public void testCreateProjectWithSimpleTemplate() throws CoreException {
 		GW4EProject project = new GW4EProject(bot, gwproject);
 		project.createWithSimpleTemplate(gwproject);
-		
-		String mainSourceFolder  = gwproject + "/src/main/java";
-		String pkgFragmentRoot	 =	"src/main/java";
+
+		String mainSourceFolder = gwproject + "/src/main/java";
+		String pkgFragmentRoot = "src/main/java";
 		String pkg = "com.company";
 		String targetFilename = "SimpleImpl";
 		String targetFormat = "test";
-		String[] graphFilePath = new String []  { gwproject, "src/main/resources", pkg, "Simple.json" };
+		String[] graphFilePath = new String[] { gwproject, "src/main/resources", pkg, "Simple.json" };
 		String checkTestBox = "Java Test Based";
-		String [] contexts = new String [0];
-		FileParameters fp = new FileParameters(mainSourceFolder, gwproject, pkgFragmentRoot, pkg, targetFilename,  targetFormat, graphFilePath);
-		ICondition convertPageCompletedCondition = new DefaultCondition () {
+		String[] contexts = new String[0];
+		FileParameters fp = new FileParameters(mainSourceFolder, gwproject, pkgFragmentRoot, pkg, targetFilename,
+				targetFormat, graphFilePath);
+		ICondition convertPageCompletedCondition = new DefaultCondition() {
 			@Override
 			public boolean test() throws Exception {
-				boolean b  = project.prepareconvertTo(
-						fp.getProject(),
-						fp.getPackageFragmentRoot(),
-						fp.getPackage(), 
-						fp.getTargetFilename(), 
-						targetFormat,
-						checkTestBox,
-						"e_StartApp","v_VerifyPreferencePage", "e_StartApp",contexts,
-						fp.getGraphmlFilePath());
+				boolean b = project.prepareconvertTo(fp.getProject(), fp.getPackageFragmentRoot(), fp.getPackage(),
+						fp.getTargetFilename(), targetFormat, checkTestBox, "e_StartApp", "v_VerifyPreferencePage",
+						"e_StartApp", contexts, fp.getGraphmlFilePath());
 				return b;
 			}
 
@@ -109,73 +106,52 @@ public class GW4ETemplateTestCase {
 			}
 		};
 		bot.waitUntil(convertPageCompletedCondition, 3 * 60 * 1000);
-		
-		GW4ETestRunner gwtr = new  GW4ETestRunner(bot);
-		
-		String [] otherContexts = new String [0];
+
+		GW4ETestRunner gwtr = new GW4ETestRunner(bot);
+
+		String[] otherContexts = new String[0];
 		String mainContext = "com.company.SimpleImpl";
 		gwtr.addRun("SimpleImplMyRunTest", gwproject, mainContext, otherContexts);
- 		
-		gwtr.run("SimpleImplMyRunTest",RUN_TIMEOUT);
-	
-		String[] expected = new String[] {
-				  "\"totalFailedNumberOfModels\": 0,",
-				  "\"totalNotExecutedNumberOfModels\": 0,",
-				  "\"totalNumberOfUnvisitedVertices\": 1,",
-				   
-				  "\"totalNumberOfFailedRequirement\": 0,",
-				  "\"totalNumberOfModels\": 1,",
-				  "\"totalCompletedNumberOfModels\": 1,",
-				  "\"requirementsNotCovered\": [],",
-				  "\"totalNumberOfVisitedEdges\": 3,",
-				  "\"totalIncompleteNumberOfModels\": 0,",
-				  "\"edgesNotVisited\": [],",
-				  "\"requirementCoverage\": 100,",
-				  "\"requirementsPassed\": [{",
-				    "\"modelName\": \"Simple\",",
-				    "\"requirementKey\": \"REQ001\"",
-				  "\"requirementsFailed\": [],",
-				  "\"vertexCoverage\": 66,",
-				  "\"totalNumberOfEdges\": 3,",
-				  "\"totalNumberOfVisitedVertices\": 2,",
-				  "\"totalNumberOfRequirement\": 1,",
-				  "\"totalNumberOfUncoveredRequirement\": 0,",
-				  "\"edgeCoverage\": 100,",
-				  "\"totalNumberOfVertices\": 3,",
-				  "\"totalNumberOfPassedRequirement\": 1,",
-				  "\"totalNumberOfUnvisitedEdges\": 0" };
-		
-		gwtr.validateRunResult (expected);
-	
-		
+
+		gwtr.run("SimpleImplMyRunTest", RUN_TIMEOUT);
+
+		String[] expected = new String[] { "\"totalFailedNumberOfModels\": 0,",
+				"\"totalNotExecutedNumberOfModels\": 0,", "\"totalNumberOfUnvisitedVertices\": 1,",
+
+				"\"totalNumberOfFailedRequirement\": 0,", "\"totalNumberOfModels\": 1,",
+				"\"totalCompletedNumberOfModels\": 1,", "\"requirementsNotCovered\": [],",
+				"\"totalNumberOfVisitedEdges\": 3,", "\"totalIncompleteNumberOfModels\": 0,",
+				"\"edgesNotVisited\": [],", "\"requirementCoverage\": 100,", "\"requirementsPassed\": [{",
+				"\"modelName\": \"Simple\",", "\"requirementKey\": \"REQ001\"", "\"requirementsFailed\": [],",
+				"\"vertexCoverage\": 66,", "\"totalNumberOfEdges\": 3,", "\"totalNumberOfVisitedVertices\": 2,",
+				"\"totalNumberOfRequirement\": 1,", "\"totalNumberOfUncoveredRequirement\": 0,",
+				"\"edgeCoverage\": 100,", "\"totalNumberOfVertices\": 3,", "\"totalNumberOfPassedRequirement\": 1,",
+				"\"totalNumberOfUnvisitedEdges\": 0" };
+
+		gwtr.validateRunResult(expected);
 	}
-	
+
 	@Test
-	public void testCreateProjectWithSimpleTemplateTestJunit () throws CoreException  {
+	public void testCreateProjectWithSimpleTemplateTestJunit() throws CoreException {
 		GW4EProject project = new GW4EProject(bot, gwproject);
 		project.createWithSimpleTemplate(gwproject);
-		
-		String mainSourceFolder  = gwproject + "/src/main/java";
-		String pkgFragmentRoot	 =	"src/main/java";
+
+		String mainSourceFolder = gwproject + "/src/main/java";
+		String pkgFragmentRoot = "src/main/java";
 		String pkg = "com.company";
 		String targetFilename = "SimpleImpl";
 		String targetFormat = "test";
-		String[] graphFilePath = new String []  { gwproject, "src/main/resources", pkg, "Simple.json" };
+		String[] graphFilePath = new String[] { gwproject, "src/main/resources", pkg, "Simple.json" };
 		String checkTestBox = "Java Test Based";
-		String [] contexts = new String [0];
-		FileParameters fp = new FileParameters(mainSourceFolder, gwproject, pkgFragmentRoot, pkg, targetFilename,  targetFormat, graphFilePath);
-		ICondition convertPageCompletedCondition = new DefaultCondition () {
+		String[] contexts = new String[0];
+		FileParameters fp = new FileParameters(mainSourceFolder, gwproject, pkgFragmentRoot, pkg, targetFilename,
+				targetFormat, graphFilePath);
+		ICondition convertPageCompletedCondition = new DefaultCondition() {
 			@Override
 			public boolean test() throws Exception {
-				boolean b  = project.prepareconvertTo(
-						fp.getProject(),
-						fp.getPackageFragmentRoot(),
-						fp.getPackage(), 
-						fp.getTargetFilename(), 
-						targetFormat,
-						checkTestBox,
-						"e_StartApp","v_VerifyPreferencePage", "e_StartApp",contexts,
-						fp.getGraphmlFilePath());
+				boolean b = project.prepareconvertTo(fp.getProject(), fp.getPackageFragmentRoot(), fp.getPackage(),
+						fp.getTargetFilename(), targetFormat, checkTestBox, "e_StartApp", "v_VerifyPreferencePage",
+						"e_StartApp", contexts, fp.getGraphmlFilePath());
 				return b;
 			}
 
@@ -185,43 +161,48 @@ public class GW4ETemplateTestCase {
 			}
 		};
 		bot.waitUntil(convertPageCompletedCondition, 3 * 60 * 1000);
- 
+
 		String[] nodes = new String[4];
 		nodes[0] = gwproject;
 		nodes[1] = "src/main/java";
 		nodes[2] = "com.company";
 		nodes[3] = "SimpleImpl.java";
 		JUnitView junit = new JUnitView(bot);
-		
-		GW4ETestRunner runner =  new GW4ETestRunner (bot);
-		junit.run(project,runner, nodes, 4, 0, 0,3* 60*1000);
-		System.out.println();
+
+		GW4ETestRunner runner = new GW4ETestRunner(bot);
+		GW4ETestRunner gwtr = new GW4ETestRunner(bot);
+		String[] expected = new String[] { "\"name\": \"performance\""};
+		try {
+			junit.run(project, runner, nodes, 4, 0, 0, 3 * 60 * 1000,expected);
+		} catch (Exception e) {
+			String result = gwtr.getConsoleText();
+			System.out.println("+-+-+-+-+-+-+- testCreateProjectWithSimpleTemplateTestJunit +-+-+-+- ");
+			System.out.println(result);
+			System.out.println("-------------------------");
+			throw e;
+		}
+		 
 	}
-	@Test
-	public void testCreateProjectWithSimpleScriptedTemplate () throws CoreException  {
+
+	public void createProjectWithSimpleScriptedTemplate() throws CoreException {
 		GW4EProject project = new GW4EProject(bot, gwproject);
 		project.createtWithSimpleScriptedTemplate(gwproject);
-		
-		String mainSourceFolder  = gwproject + "/src/main/java";
-		String pkgFragmentRoot	 =	"src/main/java";
+
+		String mainSourceFolder = gwproject + "/src/main/java";
+		String pkgFragmentRoot = "src/main/java";
 		String pkg = "com.company";
 		String targetFilename = "SimplewithscriptImpl";
 		String targetFormat = "test";
-		String[] graphFilePath = new String []  { gwproject, "src/main/resources",  pkg, "Simplewithscript.json" };
+		String[] graphFilePath = new String[] { gwproject, "src/main/resources", pkg, "Simplewithscript.json" };
 		String checkTestBox = "Java Test Based";
-		String [] contexts = new String [0];
-		FileParameters fp = new FileParameters(mainSourceFolder, gwproject, pkgFragmentRoot, pkg, targetFilename,  targetFormat, graphFilePath);
-		ICondition convertPageCompletedCondition = new DefaultCondition () {
+		String[] contexts = new String[0];
+		FileParameters fp = new FileParameters(mainSourceFolder, gwproject, pkgFragmentRoot, pkg, targetFilename,
+				targetFormat, graphFilePath);
+		ICondition convertPageCompletedCondition = new DefaultCondition() {
 			@Override
 			public boolean test() throws Exception {
-				boolean b  = project.prepareconvertTo(
-						fp.getProject(),
-						fp.getPackageFragmentRoot(),
-						fp.getPackage(), 
-						fp.getTargetFilename(), 
-						targetFormat,
-						checkTestBox,
-						"e_init", "v_Browse", "e_init",contexts,
+				boolean b = project.prepareconvertTo(fp.getProject(), fp.getPackageFragmentRoot(), fp.getPackage(),
+						fp.getTargetFilename(), targetFormat, checkTestBox, "e_init", "v_Browse", "e_init", contexts,
 						fp.getGraphmlFilePath());
 				return b;
 			}
@@ -232,34 +213,32 @@ public class GW4ETemplateTestCase {
 			}
 		};
 		bot.waitUntil(convertPageCompletedCondition, 3 * 60 * 1000);
-		
-		GW4ETestRunner gwtr = new  GW4ETestRunner(bot);
-		
-		String [] otherContexts = new String [0];
+	}
+
+	@Test
+	public void testCreateProjectWithSimpleScriptedTemplate() throws CoreException {
+		createProjectWithSimpleScriptedTemplate();
+		GW4ETestRunner gwtr = new GW4ETestRunner(bot);
+
+		String[] otherContexts = new String[0];
 		String mainContext = "com.company.SimplewithscriptImpl";
 		gwtr.addRun("SimplewithscriptImplMyRunTest", gwproject, mainContext, otherContexts);
- 		
-		gwtr.run("SimplewithscriptImplMyRunTest",RUN_TIMEOUT);
-		String[] expected = new String[] {
-				  "\"totalFailedNumberOfModels\": 0,",
-				  "\"totalNotExecutedNumberOfModels\": 0,",
-				  "\"totalNumberOfUnvisitedVertices\": 1,",
-				  "\"verticesNotVisited\":",
-				    "\"modelName\": \"Simplewithscript\",",
-				    "\"vertexName\": \"Start\",",
-				    "\"vertexId\": \"d71c9cad-f8a8-44e5-a6cd-bfe9f4a46a64\"",
-				  "\"totalNumberOfModels\": 1,",
-				  "\"totalCompletedNumberOfModels\": 1,",
-				  "\"totalNumberOfVisitedEdges\": 9,",
-				  "\"totalIncompleteNumberOfModels\": 0,",
-				  "\"edgesNotVisited\": [],",
-				  "\"vertexCoverage\": 75,",
-				  "\"totalNumberOfEdges\": 9,",
-				  "\"totalNumberOfVisitedVertices\": 3,",
-				  "\"edgeCoverage\": 100,",
-				  "\"totalNumberOfVertices\": 4,",
-				  "\"totalNumberOfUnvisitedEdges\": 0"};
-		gwtr.validateRunResult (expected);
+
+		gwtr.run("SimplewithscriptImplMyRunTest", RUN_TIMEOUT);
+
+		String[] expected = new String[] { "\"totalFailedNumberOfModels\": 0", "\"totalNumberOfModels\": 1",
+				"\"totalCompletedNumberOfModels\": 1", "\"edgeCoverage\": 100", };
+
+		gwtr.validateRunResult(expected);
+
+	}
+
+	@Test
+	public void testCreateProjectWithSimpleScriptedTemplate2() throws CoreException {
+		createProjectWithSimpleScriptedTemplate();
+
+		GW4EProject project = new GW4EProject(bot, gwproject);
+		GW4ETestRunner gwtr = new GW4ETestRunner(bot);
 
 		String[] nodes = new String[4];
 		nodes[0] = gwproject;
@@ -268,55 +247,44 @@ public class GW4ETemplateTestCase {
 		nodes[3] = "SimplewithscriptImpl.java";
 		JUnitView junit = new JUnitView(bot);
 		try {
-			GW4ETestRunner runner =  new GW4ETestRunner (bot);
-			
-			 expected = new String[] {
-					"\"name\": \"e_Exit\"",
-			};
-			
-			junit.run(project,runner, nodes, 4, 0, 0, 15*60*1000,expected);
+			GW4ETestRunner runner = new GW4ETestRunner(bot);
+			String[] expected = new String[] { "\"name\": \"e_Exit\"", };
+			junit.run(project, runner, nodes, 4, 0, 0, 3 * 60 * 1000, expected);
 		} catch (Exception e) {
-			
 			String result = gwtr.getConsoleText();
-			System.out.println("-------------------------");
+			System.out.println("+-+-+-+-+-+-+- testCreateProjectWithSimpleScriptedTemplate2 +-+-+-+- ");
 			System.out.println(result);
 			System.out.println("-------------------------");
 			throw e;
-		}		 
+		}
 	}
-	
+
 	@Test
-	public void testCreateProjectWithEmptyTemplate () throws CoreException  {
+	public void testCreateProjectWithEmptyTemplate() throws CoreException {
 		GW4EProject project = new GW4EProject(bot, gwproject);
 		project.createWithEmptyTemplate(gwproject);
 	}
-	
-	
+
 	@Test
-	public void testCreateProjectWithSharedTemplate () throws CoreException  {
+	public void testCreateProjectWithSharedTemplate() throws CoreException {
 		GW4EProject project = new GW4EProject(bot, gwproject);
 		project.createWithSharedTemplate(gwproject);
-		
-		String mainSourceFolder  = gwproject + "/src/main/java";
-		String pkgFragmentRoot	 =	"src/main/java";
+
+		String mainSourceFolder = gwproject + "/src/main/java";
+		String pkgFragmentRoot = "src/main/java";
 		String pkg = "com.company";
 		String targetFilename = "Model_AImpl";
 		String targetFormat = "test";
-		String[] graphFilePath = new String []  { gwproject, "src/main/resources", pkg,"Model_A.json" };
+		String[] graphFilePath = new String[] { gwproject, "src/main/resources", pkg, "Model_A.json" };
 		String checkTestBox = "Java Test Based";
-		String [] contexts = new String [] {"/gwproject/src/main/resources/com/company/Model_B.json"};
-		FileParameters fp = new FileParameters(mainSourceFolder, gwproject, pkgFragmentRoot, pkg, targetFilename,  targetFormat, graphFilePath);
-		ICondition convertPageCompletedCondition = new DefaultCondition () {
+		String[] contexts = new String[] { "/gwproject/src/main/resources/com/company/Model_B.json" };
+		FileParameters fp = new FileParameters(mainSourceFolder, gwproject, pkgFragmentRoot, pkg, targetFilename,
+				targetFormat, graphFilePath);
+		ICondition convertPageCompletedCondition = new DefaultCondition() {
 			@Override
 			public boolean test() throws Exception {
-				boolean b  = project.prepareconvertTo(
-						fp.getProject(),
-						fp.getPackageFragmentRoot(),
-						fp.getPackage(), 
-						fp.getTargetFilename(),   
-						targetFormat,
-						checkTestBox,
-						"e_to_V_A", "v_B", "e_to_V_A",contexts,
+				boolean b = project.prepareconvertTo(fp.getProject(), fp.getPackageFragmentRoot(), fp.getPackage(),
+						fp.getTargetFilename(), targetFormat, checkTestBox, "e_to_V_A", "v_B", "e_to_V_A", contexts,
 						fp.getGraphmlFilePath());
 				return b;
 			}
@@ -328,41 +296,43 @@ public class GW4ETemplateTestCase {
 		};
 		bot.waitUntil(convertPageCompletedCondition, 3 * 60 * 1000);
 	}
-	
+
 	@Test
-	public void testCreateProjectWithSharedTemplateWithRun () throws CoreException  {
-		testCreateProjectWithSharedTemplate ();
+	public void testCreateProjectWithSharedTemplateWithRun() throws CoreException {
+		testCreateProjectWithSharedTemplate();
 		GW4EProject project = new GW4EProject(bot, gwproject);
-		GW4ETestRunner gwtr = new  GW4ETestRunner(bot);
-		
-		String [] otherContexts = new String [ ] {"com.company.Model_BImpl"};
-		String mainContext = "com.company.Model_AImpl";
-		gwtr.addRun("Model_AImplMyRunTest", gwproject, mainContext, otherContexts);
- 		
-		gwtr.run("Model_AImplMyRunTest",RUN_TIMEOUT);
-		
- 
+		GW4ETestRunner gwtr = new GW4ETestRunner(bot);
+
 		String[] nodes = new String[4];
 		nodes[0] = gwproject;
 		nodes[1] = "src/main/java";
 		nodes[2] = "com.company";
 		nodes[3] = "Model_AImpl.java";
 		JUnitView junit = new JUnitView(bot);
-		String[] expected = new String[] {
-				"\"name\": \"e_ToggleRememberMe\"",
-				"\"name\": \"e_InvalidCredentials\"",
-				"\"name\": \"e_ValidPremiumCredentials\"",
-				"\"name\": \"v_ClientNotRunning\"",
-				"\"name\": \"v_LoginPrompted\"",
-				"\"name\": \"v_Browse\"",
-				"\"name\": \"e_close\"",
-				"\"name\": \"e_init\"",
-				"\"name\": \"e_StartClient\"",
-				"\"name\": \"e_logout\"",
-				"\"name\": \"e_Exit\"",
-		};
-		
-		junit.run(project, gwtr, nodes, 4, 0, 0, 3*60*1000, expected);
-		
+		String[] expected = new String[] { "\"name\": \"e_ToggleRememberMe\"", "\"name\": \"e_InvalidCredentials\"",
+				"\"name\": \"e_ValidPremiumCredentials\"", "\"name\": \"v_ClientNotRunning\"",
+				"\"name\": \"v_LoginPrompted\"", "\"name\": \"v_Browse\"", "\"name\": \"e_close\"",
+				"\"name\": \"e_init\"", "\"name\": \"e_StartClient\"", "\"name\": \"e_logout\"",
+				"\"name\": \"e_Exit\"", };
+
+		junit.run(project, gwtr, nodes, 4, 0, 0, 3 * 60 * 1000, expected);
+
+	}
+
+	@Test
+	public void testCreateProjectWithSharedTemplateWithRun2() throws CoreException {
+		testCreateProjectWithSharedTemplate();
+
+		GW4ETestRunner gwtr = new GW4ETestRunner(bot);
+
+		String[] otherContexts = new String[] { "com.company.Model_BImpl" };
+		String mainContext = "com.company.Model_AImpl";
+		gwtr.addRun("Model_AImplMyRunTest", gwproject, mainContext, otherContexts);
+
+		gwtr.run("Model_AImplMyRunTest", RUN_TIMEOUT);
+		String[] expected = new String[] { "\"totalFailedNumberOfModels\": 0", "\"totalNumberOfModels\": 2",
+				"\"edgeCoverage\": 100", };
+
+		gwtr.validateRunResult(expected);
 	}
 }
