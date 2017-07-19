@@ -47,6 +47,12 @@ public class SaveTestPage extends WizardPage {
 	private Button exportAsTestResultButton;
 	private Button btnUpdateIfTestcaseid;
 
+	public static final String GW4E_MANUAL_ELEMENT_ID = "id.gw4e.manual.id";
+	public static final String GW4E_MANUAL_TEXTCASE_ID = "id.gw4e.manual.textCaseId";
+	public static final String GW4E_MANUAL_TESTEXT_DATE_FORMAT_ID = "id.gw4e.manual.textDateFormat";
+	public static final String GW4E_MANUAL_TEXT_WORKBOOK_TITLE_ID = "id.gw4e.manual.textWorkbookTitle";
+
+	
 	protected SaveTestPage(String pageName, String projectname,String component) {
 		super(pageName);
 		this.projectname = projectname;
@@ -145,6 +151,7 @@ public class SaveTestPage extends WizardPage {
 		lblNewLabel_4.setText(MessageUtil.getString("manual_export_enter_workbooktitle"));
 
 		textWorkbookTitle = new Text(control, SWT.BORDER);
+		textWorkbookTitle.setData(GW4E_MANUAL_ELEMENT_ID,GW4E_MANUAL_TEXT_WORKBOOK_TITLE_ID);
 		textWorkbookTitle.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		textWorkbookTitle.addModifyListener (new ModifyListener () {
 			@Override
@@ -157,6 +164,7 @@ public class SaveTestPage extends WizardPage {
 		lblNewLabel_2.setText(MessageUtil.getString("manual_export_enter_a_testcaseid"));
 
 		textCaseId = new Text(control, SWT.BORDER);
+		textCaseId.setData(GW4E_MANUAL_ELEMENT_ID,GW4E_MANUAL_TEXTCASE_ID);
 		textCaseId.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		textCaseId.addModifyListener (new ModifyListener () {
 			@Override
@@ -215,6 +223,7 @@ public class SaveTestPage extends WizardPage {
 		lblNewLabel_3.setText(MessageUtil.getString("manual_export_enter_date_format"));
 
 		textDateFormat = new Text(control, SWT.BORDER);
+		textDateFormat.setData(GW4E_MANUAL_ELEMENT_ID,GW4E_MANUAL_TESTEXT_DATE_FORMAT_ID);
 		textDateFormat.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		textDateFormat.setText("m/d/yy");
 		textDateFormat.addModifyListener (new ModifyListener () {
