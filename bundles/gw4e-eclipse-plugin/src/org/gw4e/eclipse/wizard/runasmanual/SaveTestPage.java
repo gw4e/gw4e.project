@@ -51,7 +51,13 @@ public class SaveTestPage extends WizardPage {
 	public static final String GW4E_MANUAL_TEXTCASE_ID = "id.gw4e.manual.textCaseId";
 	public static final String GW4E_MANUAL_TESTEXT_DATE_FORMAT_ID = "id.gw4e.manual.textDateFormat";
 	public static final String GW4E_MANUAL_TEXT_WORKBOOK_TITLE_ID = "id.gw4e.manual.textWorkbookTitle";
-
+	public static final String GW4E_MANUAL_TEXT_WORKBOOK_ID = "id.gw4e.manual.textWorkbook";
+	public static final String GW4E_MANUAL_COMBO_WORKBOOK_ID = "id.gw4e.manual.comboWorkBookViewer";
+	public static final String GW4E_MANUAL_TEXT_COMPONENT = "id.gw4e.manual.textComponentName";
+	public static final String GW4E_MANUAL_COMBO_PRIORITY= "id.gw4e.manual.comboViewerPriority";
+	public static final String GW4E_MANUAL_BUTTON_EXPORT_AS_TEMPLATE= "id.gw4e.manual.exportAsTestTemplateButton";
+	public static final String GW4E_MANUAL_BUTTON_EXPORT_AS_RESULT= "id.gw4e.manual.exportAsTestResultButton";
+	public static final String GW4E_MANUAL_BUTTON_UPDATE_IF_TESTCASE_ID= "id.gw4e.manual.btnUpdateIfTestcaseid";
 	
 	protected SaveTestPage(String pageName, String projectname,String component) {
 		super(pageName);
@@ -75,6 +81,7 @@ public class SaveTestPage extends WizardPage {
 		grpExportChoice.setLayout(new GridLayout(1, false));
 
 		exportAsTestResultButton = new Button(grpExportChoice, SWT.RADIO);
+		exportAsTestResultButton.setData(GW4E_MANUAL_ELEMENT_ID , GW4E_MANUAL_BUTTON_EXPORT_AS_RESULT );
 		exportAsTestResultButton.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		exportAsTestResultButton.setText(MessageUtil.getString("manual_export_as_test"));
 		exportAsTestResultButton.setSelection(true);
@@ -88,6 +95,7 @@ public class SaveTestPage extends WizardPage {
 			}
 		});
 		exportAsTestTemplateButton = new Button(grpExportChoice, SWT.RADIO);
+		exportAsTestTemplateButton.setData(GW4E_MANUAL_ELEMENT_ID , GW4E_MANUAL_BUTTON_EXPORT_AS_TEMPLATE );
 		exportAsTestTemplateButton.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		exportAsTestTemplateButton.setText(MessageUtil.getString("manual_export_as_template"));
 		exportAsTestTemplateButton.addListener(SWT.Selection, new Listener() {
@@ -105,6 +113,8 @@ public class SaveTestPage extends WizardPage {
 
 		comboWorkBookViewer = new ComboViewer(control, SWT.NONE);
 		Combo comboWorkbook = comboWorkBookViewer.getCombo();
+		comboWorkbook.setData(GW4E_MANUAL_ELEMENT_ID , GW4E_MANUAL_COMBO_WORKBOOK_ID);
+		
 		comboWorkbook.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
 		comboWorkBookViewer.setContentProvider(ArrayContentProvider.getInstance());
@@ -138,6 +148,7 @@ public class SaveTestPage extends WizardPage {
 		});
 
 		textWorkBook = new Text(control, SWT.BORDER);
+		textWorkBook.setData(GW4E_MANUAL_ELEMENT_ID , GW4E_MANUAL_TEXT_WORKBOOK_ID);
 		textWorkBook.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		textWorkBook.setToolTipText(MessageUtil.getString("manual_export_enter_a_workbook_name_toolitp"));
 		textWorkBook.addModifyListener (new ModifyListener () {
@@ -173,6 +184,7 @@ public class SaveTestPage extends WizardPage {
 			}
 		});
 		btnUpdateIfTestcaseid = new Button(control, SWT.CHECK);
+		btnUpdateIfTestcaseid.setData(GW4E_MANUAL_ELEMENT_ID , GW4E_MANUAL_BUTTON_UPDATE_IF_TESTCASE_ID );
 		btnUpdateIfTestcaseid.setText(MessageUtil.getString("manual_export_update_item_if_exists"));
 		btnUpdateIfTestcaseid.addListener(SWT.Selection, new Listener() {
 			public void handleEvent(Event e) {
@@ -187,6 +199,7 @@ public class SaveTestPage extends WizardPage {
 		lblNewLabel_5.setText(MessageUtil.getString("manual_export_enter_a_component"));
 
 		textComponentName = new Text(control, SWT.BORDER);
+		textComponentName.setData(GW4E_MANUAL_ELEMENT_ID , GW4E_MANUAL_TEXT_COMPONENT);
 		textComponentName.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		textComponentName.addModifyListener (new ModifyListener () {
 			@Override
@@ -200,6 +213,7 @@ public class SaveTestPage extends WizardPage {
 
 		comboViewerPriority = new ComboViewer(control, SWT.NONE);
 		Combo combo = comboViewerPriority.getCombo();
+		combo.setData(GW4E_MANUAL_ELEMENT_ID , GW4E_MANUAL_COMBO_PRIORITY );
 		combo.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		comboViewerPriority.setContentProvider(ArrayContentProvider.getInstance());
 		comboViewerPriority.setLabelProvider(new LabelProvider() {

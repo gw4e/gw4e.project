@@ -54,51 +54,65 @@ public class ImportHelper {
 		bot.menu("File").menu("Import...").click();
 		bot.waitUntil(Conditions.shellIsActive("Import"));
 		SWTBotShell shell = bot.shell("Import").activate();
-		
+
 		shell.bot().tree().expandNode("General").select("Existing Projects into Workspace");
 		shell.bot().button("Next >").click();
 		shell.bot().radio("Select archive file:").click();
-		 
-       
-		 
+
 		shell.bot().comboBox(1).setText(path);
 		shell.bot().comboBox(1).pressShortcut(SWT.CR, SWT.LF);
 		SWTBotButton finishButton = shell.bot().button("Finish");
-		ICondition  buttonEnabled = new DefaultCondition () {
+		ICondition buttonEnabled = new DefaultCondition() {
 			@Override
 			public boolean test() throws Exception {
 				return finishButton.isEnabled();
 			}
+
 			@Override
 			public String getFailureMessage() {
 				return "Finish button not enabled";
 			}
 		};
-		
-		shell.bot().waitUntil(buttonEnabled,timeout);
+
+		shell.bot().waitUntil(buttonEnabled, timeout);
 		finishButton.click();
-		
-        bot.waitUntil(Conditions.shellCloses(shell),timeout);
+
+		bot.waitUntil(Conditions.shellCloses(shell), timeout);
 	}
 
-	public static void copyFiles (File srcFolder, IContainer destFolder) throws CoreException, FileNotFoundException {
-	    for (File f: srcFolder.listFiles()) {
-	        if (f.isDirectory()) {
-	            IFolder newFolder = destFolder.getFolder(new Path(f.getName()));
-	            newFolder.create(true, true, null);
-	            copyFiles(f, newFolder);
-	        } else {
-	            IFile newFile = destFolder.getFile(new Path(f.getName()));
-	            InputStream in =  new FileInputStream(f);
-	            try {
+	public static void copyFile(File f, IContainer destFolder) throws CoreException, FileNotFoundException {
+		IFile newFile = destFolder.getFile(new Path(f.getName()));
+		InputStream in = new FileInputStream(f);
+		try {
+			newFile.create(in, true, null);
+		} finally {
+			try {
+				if (in != null)
+					in.close();
+			} catch (IOException e) {
+			}
+		}
+	}
+
+	public static void copyFiles(File srcFolder, IContainer destFolder) throws CoreException, FileNotFoundException {
+		for (File f : srcFolder.listFiles()) {
+			if (f.isDirectory()) {
+				IFolder newFolder = destFolder.getFolder(new Path(f.getName()));
+				newFolder.create(true, true, null);
+				copyFiles(f, newFolder);
+			} else {
+				IFile newFile = destFolder.getFile(new Path(f.getName()));
+				InputStream in = new FileInputStream(f);
+				try {
 					newFile.create(in, true, null);
 				} finally {
 					try {
-						if (in!=null) in.close();
+						if (in != null)
+							in.close();
 					} catch (IOException e) {
 					}
 				}
-	        }
-	    }
+			}
+		}
 	}
 }

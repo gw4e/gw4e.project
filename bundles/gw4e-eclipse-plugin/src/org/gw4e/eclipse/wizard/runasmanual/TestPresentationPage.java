@@ -21,6 +21,9 @@ public class TestPresentationPage extends WizardPage {
 	String startnode;
 	boolean removeBlockedElement;
 
+	public static final String GW4E_MANUAL_ELEMENT_ID = "id.gw4e.manual.id";
+	public static final String GW4E_MANUAL_SUMMARY_TEXT_ID = "id.gw4e.manual.summary.text";
+	
 	protected TestPresentationPage(String pageName, String modelPath, ModelData[] additionalModels,
 			String generatorstopcondition, String startnode, boolean removeBlockedElement) {
 		super(pageName);
@@ -39,7 +42,9 @@ public class TestPresentationPage extends WizardPage {
 		control.setLayout(new GridLayout(1, false));
 
 		StyledText summaryText = new StyledText(control, SWT.BORDER);
-		summaryText.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
+		summaryText.setData(GW4E_MANUAL_ELEMENT_ID,GW4E_MANUAL_SUMMARY_TEXT_ID);
+ 		
+ 		summaryText.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 
 		StringBuffer text = new StringBuffer();
 		text.append(MessageUtil.getString("your_test_will_be_based_on_the_following") + "\n\n");

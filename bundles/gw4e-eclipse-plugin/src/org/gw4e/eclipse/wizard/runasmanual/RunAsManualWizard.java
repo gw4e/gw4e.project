@@ -37,7 +37,8 @@ public class RunAsManualWizard extends Wizard implements INewWizard {
 
 	static final ImageDescriptor WIZARD_BANNER;
 	public static String ENTER_DEFAULT_RESULT_MESSAGE = MessageUtil.getString("enter_a_result_if_verification_failed");
-
+	
+	 
 	static {
 		WIZARD_BANNER = Activator.getDefaultImageDescriptor();
 	}

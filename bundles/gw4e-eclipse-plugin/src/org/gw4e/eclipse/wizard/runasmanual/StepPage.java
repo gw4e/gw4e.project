@@ -21,7 +21,10 @@ import org.gw4e.eclipse.message.MessageUtil;
 
 public class StepPage extends WizardPage {
 
-	
+	public static String GW4E_LAUNCH_CONFIGURATION_CONTROL_ID = "gw4e.runasmanual.steppage.control.id";
+	public static String GW4E_STEP_PAGE_DESCRIPTION_ID = "gw4e.runasmanual.steppage.action.id";
+	public static String GW4E_STEP_PAGE_RESULT_ID = "gw4e.runasmanual.steppage.result.id";
+
 	StepDetail detail;
 
 	protected StepPage(StepDetail detail) {
@@ -40,6 +43,9 @@ public class StepPage extends WizardPage {
 		descriptionLabel.setText(MessageUtil.getString("description"));
 
 		StyledText descriptionText = new StyledText(control, SWT.BORDER);
+		descriptionText.setData(GW4E_LAUNCH_CONFIGURATION_CONTROL_ID, GW4E_STEP_PAGE_DESCRIPTION_ID);
+	 	 
+		
 		descriptionText.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 15, 1));
 		descriptionText.setText(detail.getDescription());
 		descriptionText.setEditable(false);
@@ -50,6 +56,9 @@ public class StepPage extends WizardPage {
 		resultLabel.setEnabled(detail.isVertex());
 
 		StyledText resultText = new StyledText(control, SWT.BORDER);
+		resultText.setData(GW4E_LAUNCH_CONFIGURATION_CONTROL_ID, GW4E_STEP_PAGE_RESULT_ID);
+ 
+
 		resultText.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 15, 1));
 		resultText.setEnabled(detail.isVertex());
 		if (detail.isVertex()) {

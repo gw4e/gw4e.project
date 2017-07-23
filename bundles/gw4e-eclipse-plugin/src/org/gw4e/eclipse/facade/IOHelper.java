@@ -29,6 +29,7 @@ package org.gw4e.eclipse.facade;
  */
 
 import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Scanner;
@@ -42,6 +43,10 @@ import org.gw4e.eclipse.builder.Location;
 
 public class IOHelper {
 
+	public static void loadInWorkspace (File file, String target) throws IOException {
+		
+	}	
+	
 	public static void replace(IFile file, String target, String replacement) throws CoreException, IOException {
 		String newline = System.getProperty("line.separator");
 		InputStream input = file.getContents();

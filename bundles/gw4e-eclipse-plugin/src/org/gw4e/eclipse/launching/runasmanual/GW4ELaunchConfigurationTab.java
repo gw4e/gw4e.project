@@ -108,9 +108,9 @@ public class GW4ELaunchConfigurationTab extends AbstractLaunchConfigurationTab i
 	public static String GW4E_LAUNCH_CONFIGURATION_BROWSER_BUTTON_ID_METHOD = "gw4e.launch.configuration.browse.button.id.model";
 	public static String GW4E_LAUNCH_CONFIGURATION_TEXT_ID_START_ELEMENT = "gw4e.launch.configuration.text.id.start.element";
 	public static String GW4E_LAUNCH_CONFIGURATION_TEXT_ID_GENERATOR = "gw4e.launch.configuration.text.id.generator";
-
 	public static String GW4E_LAUNCH_CONFIGURATION_TEXT_ID_PROJECT = "gw4e.launch.configuration.text.id.project";
 	public static String GW4E_LAUNCH_CONFIGURATION_TEXT_ID_MODEL = "gw4e.launch.configuration.text.id.model";
+	public static String GW4E_LAUNCH_CONFIGURATION_COMBO_PATH_GENERATOR = "gw4e.launch.configuration.combo.path.generator";
 
 	private Composite parent_1;
 	GridData gd;
@@ -270,6 +270,7 @@ public class GW4ELaunchConfigurationTab extends AbstractLaunchConfigurationTab i
 
 		comboViewer = new ComboViewer(parent, SWT.READ_ONLY);
 		combo = comboViewer.getCombo();
+		combo.setData(GW4E_LAUNCH_CONFIGURATION_CONTROL_ID,GW4E_LAUNCH_CONFIGURATION_COMBO_PATH_GENERATOR);
 		combo.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
 		comboViewer.setContentProvider(ArrayContentProvider.getInstance());

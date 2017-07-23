@@ -45,7 +45,6 @@ public class FolderExists extends DefaultCondition {
 
 	@Override
 	public String getFailureMessage() {
-		// TODO Auto-generated method stub
 		return   folder  + " does not exists" ;
 	}
 

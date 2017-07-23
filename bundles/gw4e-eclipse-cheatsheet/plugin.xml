@@ -63,6 +63,13 @@
             id="gw4e-eclipse-cheatsheet.generating.manual.path">
          	<description>GW4E Plugin Tutorials</description>
       </cheatsheet>       
-
+     <cheatsheet
+            name="8 - Offline Runner Tutorial"
+            category="gw4e-eclipse-cheatsheet.category"
+             contentFile="src/org/gw4e/eclipse/cheatsheet/offlinerunner/en/gw4e_composite.xml"
+            composite="true"
+            id="gw4e-eclipse-cheatsheet.generating.offline.path">
+         	<description>GW4E Plugin Tutorials</description>
+      </cheatsheet>       
    </extension>
 </plugin>

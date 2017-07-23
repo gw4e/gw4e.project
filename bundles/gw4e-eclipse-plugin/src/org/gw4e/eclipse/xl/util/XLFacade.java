@@ -44,6 +44,10 @@ public class XLFacade implements ITestPersistence {
 		return new XLFacade ();
 	}
 
+	public static XLFacade getWorkbook(File file) throws IOException {
+		return  createWorkbook(file,null);
+	}
+	
 	public static XLFacade createWorkbook(File file, String title) throws IOException {
 		XSSFWorkbook wb = null;
 		if (file.exists()) {
@@ -52,8 +56,10 @@ public class XLFacade implements ITestPersistence {
 		} else {
 			wb = new XSSFWorkbook();
 		}
-		POIXMLProperties xmlProps = wb.getProperties();
-		xmlProps.getCoreProperties().setTitle(title);
+		if (title!=null){
+			POIXMLProperties xmlProps = wb.getProperties();
+			xmlProps.getCoreProperties().setTitle(title);
+		}
 		return new XLFacade(wb, file);
 	}
 
@@ -111,17 +117,7 @@ public class XLFacade implements ITestPersistence {
 				if (defaultResult.equalsIgnoreCase(sd.getResult())) {
 					result = "";
 				}
-				int status = 0;
-				if (sd.isPerformed()) {
-					if (sd.isFailed()) {
-						failed=true;
-						status = 0;
-					} else {
-						status = 1;
-					}
-				} else {
-					status = 2;
-				}
+				int status = sd.getStatus();
 				XLTestStep step = new XLTestStep(sd.getName(), sd.getDescription(), result, status) ;
 				steps.add(step);
 			}
@@ -145,7 +141,6 @@ public class XLFacade implements ITestPersistence {
 			ResourceManager.logException(e);
 			DialogManager.displayErrorMessage(MessageUtil.getString("error"), MessageUtil.getString("manual_export_an_error_has_occured_while_generating_spreadsheet"), e);
 		}
-		
 	}
 
  

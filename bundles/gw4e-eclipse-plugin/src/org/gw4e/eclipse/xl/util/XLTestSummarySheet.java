@@ -35,6 +35,42 @@ public class XLTestSummarySheet extends XLTest {
 		title = xmlProps.getCoreProperties().getTitle();
 	}
 	
+	private String getValue(int index, int column) {
+		Sheet sheet =  getOrCreateSummary();
+		Row row = sheet.getRow(index);
+		Cell cell = row.getCell(column);
+		return cell.getStringCellValue();
+	}
+	
+	public Date getDate (int index) {
+		Sheet sheet =  getOrCreateSummary();
+		Row row = sheet.getRow(index);
+		Cell cell = row.getCell(DATE_FORMAT_COLUMN_INDEX);
+		return cell.getDateCellValue();
+	}
+
+	public String getCaseId(int index) {
+		return getValue(index,TESTCASE_ID_COLUMN_INDEX);
+	}
+	public String getComponent(int index) {
+		return getValue(index,COMPONENT_COLUMN_INDEX);
+	}
+	public String getStatus(int index) {
+		return getValue(index,STATUS_COLUMN_INDEX);
+	}
+	public String getPriority(int index) {
+		return getValue(index,PRIORiTY_COLUMN_INDEX);
+	}
+	public String getDescription(int index) {
+		return getValue(index,DESCRIPTION_COLUMN_INDEX);
+	}
+	public String getTitle ( ) {
+		Sheet sheet =  getOrCreateSummary();
+		Row row = sheet.getRow(0);
+		Cell cell = row.getCell(0);
+		return cell.getStringCellValue();
+	}
+	
 	public void addSummaryResultEntry(Sheet sheet, boolean update,  boolean exportAsTemplate, Date date, String dateFormat, String testcaseid,
 			String component, int status, String priority, String description, String sheetDetailsName) {
 		Row row = null;

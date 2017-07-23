@@ -44,14 +44,18 @@ public class SummaryExecutionPage extends WizardPage {
 	private Table table;
 	private List<StepDetail> details;
 	public static String NAME = "SummaryExecutionPage";
+	
+	TableViewer tv;
+	Map<Object, Button> buttons = new HashMap<Object, Button>();
+	
+	public static final String GW4E_MANUAL_ELEMENT_ID = "id.gw4e.manual.id";
+	public static final String GW4E_MANUAL_TABLE_VIEWER_SUMMARY_ID = "id.gw4e.manual.tableviewer.summary";
 
+	
 	protected SummaryExecutionPage(String pageName, List<StepDetail> details) {
 		super(pageName);
 		this.details = details;
 	}
-
-	TableViewer tv;
-	Map<Object, Button> buttons = new HashMap<Object, Button>();
 
 	@Override
 	public void createControl(Composite parent) {
@@ -62,6 +66,8 @@ public class SummaryExecutionPage extends WizardPage {
 		tv = new TableViewer(control, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION | SWT.BORDER);
 		ColumnViewerToolTipSupport.enableFor(tv);
 		table = tv.getTable();
+		table.setData(GW4E_MANUAL_ELEMENT_ID,GW4E_MANUAL_TABLE_VIEWER_SUMMARY_ID);
+	 	
 		table.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 		table.setHeaderVisible(true);
 		table.setLinesVisible(true);

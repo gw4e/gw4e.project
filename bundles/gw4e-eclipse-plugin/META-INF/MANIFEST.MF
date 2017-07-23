@@ -64,6 +64,7 @@ Export-Package: org.gw4e.eclipse,
  org.gw4e.eclipse.handlers,
  org.gw4e.eclipse.launching,
  org.gw4e.eclipse.launching.offline,
+ org.gw4e.eclipse.launching.runasmanual,
  org.gw4e.eclipse.launching.test,
  org.gw4e.eclipse.launching.ui,
  org.gw4e.eclipse.menu,
@@ -81,5 +82,6 @@ Export-Package: org.gw4e.eclipse,
  org.gw4e.eclipse.wizard.project,
  org.gw4e.eclipse.wizard.runasmanual,
  org.gw4e.eclipse.wizard.staticgenerator,
- org.gw4e.eclipse.wizard.template
+ org.gw4e.eclipse.wizard.template,
+ org.gw4e.eclipse.xl.util
 Bundle-ActivationPolicy: lazy
