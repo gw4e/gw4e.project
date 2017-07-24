@@ -1,6 +1,9 @@
 package org.gw4e.eclipse.xl.util;
 
 import java.util.Date;
+import java.util.Iterator;
+import java.util.Spliterator;
+import java.util.function.Consumer;
 
 import org.apache.poi.POIXMLProperties;
 import org.apache.poi.ss.usermodel.Cell;
@@ -33,6 +36,27 @@ public class XLTestSummarySheet extends XLTest {
 		super(wb);
 		POIXMLProperties xmlProps  =  wb.getProperties();
 		title = xmlProps.getCoreProperties().getTitle();
+	}
+	
+	
+	public void print () {
+		Sheet sheet =  getOrCreateSummary();
+		Iterator<Row> rows = sheet.rowIterator();
+		int index=0;
+		while (rows.hasNext()) {
+			Row row = (Row) rows.next();
+			System.out.println("Row ---> " + index);
+			Spliterator<Cell> cells = row.spliterator();
+			cells.forEachRemaining(new Consumer<Cell> () {
+				@Override
+				public void accept(Cell cell) {
+					System.out.print(cell.toString());
+					System.out.print(";");
+				}
+			});
+			System.out.println();
+			index++;
+		}
 	}
 	
 	private String getValue(int index, int column) {

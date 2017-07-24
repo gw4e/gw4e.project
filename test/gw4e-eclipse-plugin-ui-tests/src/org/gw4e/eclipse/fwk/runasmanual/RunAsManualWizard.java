@@ -315,6 +315,9 @@ public class RunAsManualWizard {
 			File f = ResourceManager.toFile(resource.getFullPath());
 			XLFacade helper = XLFacade.getWorkbook(f);
 			XLTestSummarySheet summarySheet = helper.getSummary();
+			
+			summarySheet.print ();
+			
 			org.junit.Assert.assertEquals("Invalid Date", format.format(date),
 					format.format(summarySheet.getDate(row)));
 			 
