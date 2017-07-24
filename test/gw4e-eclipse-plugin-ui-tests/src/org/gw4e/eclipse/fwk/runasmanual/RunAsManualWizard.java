@@ -241,8 +241,8 @@ public class RunAsManualWizard {
 					org.gw4e.eclipse.wizard.runasmanual.SaveTestPage.GW4E_MANUAL_BUTTON_EXPORT_AS_RESULT);
 		}
 
-		private SWTBotRadio getBtnUpdateIfTestcaseid() {
-			return bot.radioWithId(org.gw4e.eclipse.wizard.runasmanual.SaveTestPage.GW4E_MANUAL_ELEMENT_ID,
+		private SWTBotCheckBox getBtnUpdateIfTestcaseid() {
+			return bot.checkBoxWithId(org.gw4e.eclipse.wizard.runasmanual.SaveTestPage.GW4E_MANUAL_ELEMENT_ID,
 					org.gw4e.eclipse.wizard.runasmanual.SaveTestPage.GW4E_MANUAL_BUTTON_UPDATE_IF_TESTCASE_ID);
 		}
 
