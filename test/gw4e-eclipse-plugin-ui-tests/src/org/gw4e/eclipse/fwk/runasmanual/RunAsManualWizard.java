@@ -312,7 +312,11 @@ public class RunAsManualWizard {
 
 		public void assertSummaryCase(int row,String status,boolean exportAsTemplate) throws IOException {
 			IResource resource = ResourceManager.getResource(workbookfile);
+		 
 			File f = ResourceManager.toFile(resource.getFullPath());
+			
+			System.out.println("XXX FILE DATE2 XXXXXXXXXXXXX " + f.lastModified());
+			
 			XLFacade helper = XLFacade.getWorkbook(f);
 			XLTestSummarySheet summarySheet = helper.getSummary();
 			

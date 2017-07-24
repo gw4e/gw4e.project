@@ -156,7 +156,12 @@ public class GW4ERunAsManualTestCase {
 	}
 	 
 	 
-	private long executeTest (String config , boolean updatemode, IFile modelFile, SummaryExecutionRow[] rows, String errorMsg, String status) throws CoreException, IOException, InterruptedException {
+	private long executeTest (String config ,
+			boolean updatemode,
+			IFile modelFile,
+			SummaryExecutionRow[] rows, 
+			String errorMsg, 
+			String status) throws CoreException, IOException, InterruptedException {
 		GW4EManualRunner runner = new GW4EManualRunner (bot);
 		runner.addRun(config, gwproject, modelFile.getFullPath().toString(), new String [0], "random(edge_coverage(100))", true, true, "e_startBrowser");
 		SWTBotShell page = runner.run(config);
@@ -255,7 +260,7 @@ public class GW4ERunAsManualTestCase {
 		rows[5] = new SummaryExecutionRow ("0", "v_searchResultDisplayed", "error wrong result", "Search results related to 'GW4E' are displayed");
 
 		long time = executeTest (config , updatemode, modelFile, rows,"error wrong result","0");
-		
+		System.out.println("XXX FILE DATE XXXXXXXXXXXXX " + time);
 		config = "testTwiceGenerateManualAsTestWithUpdateMode1";
 		updatemode = true;
 		rows[5] = new SummaryExecutionRow ("1", "v_searchResultDisplayed", defaultResult, "Search results related to 'GW4E' are displayed");
