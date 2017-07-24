@@ -66,7 +66,7 @@ public class RunAsManualWizard {
 		finishButton.click();
 	}
 
-	public void assertManuelTestTemplateSpreadSheet(String workbookfile, SummaryExecutionRow[] rows,
+	public long assertManuelTestTemplateSpreadSheet(String workbookfile, SummaryExecutionRow[] rows,
 			String workbooktitle, String caseid, String componentname, String priority, Date date, DateFormat format,
 			String description, int row,String status,boolean exportAsTemplate) throws IOException {
 		WorkBook wb = new WorkBook(workbookfile, rows, workbooktitle, caseid, componentname, priority, date, format,
@@ -74,8 +74,10 @@ public class RunAsManualWizard {
 		wb.exists();
 		wb.assertSummaryCase(row,status,exportAsTemplate);
 		wb.assertDetailCase(exportAsTemplate);
+		return wb.lastModified();
 	}
 
+ 
 	public class TestPresentatioPage {
 		public void assertTexts(SWTBotShell page, String[] texts) {
 			SWTBotStyledText styledText = page.bot().styledText();
@@ -297,6 +299,11 @@ public class RunAsManualWizard {
 			this.description = description;
 			this.format = format;
 		}
+		
+		public WorkBook(String workbookfile) {
+			super();
+			this.workbookfile = workbookfile;
+		}
 
 		public void exists() {
 			ICondition condition = new ResourceExists(new Path(workbookfile));
@@ -320,6 +327,12 @@ public class RunAsManualWizard {
 			org.junit.Assert.assertEquals("Invalid Title", workbooktitle, summarySheet.getTitle());
 		}
 
+		public long lastModified() throws IOException {
+			IResource resource = ResourceManager.getResource(workbookfile);
+			File f = ResourceManager.toFile(resource.getFullPath());
+			return f.lastModified();
+		}	
+		
 		public void assertDetailCase(boolean exportAsTemplate) throws IOException {
 			IResource resource = ResourceManager.getResource(workbookfile);
 			File f = ResourceManager.toFile(resource.getFullPath());

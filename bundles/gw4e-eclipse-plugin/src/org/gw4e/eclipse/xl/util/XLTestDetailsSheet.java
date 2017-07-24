@@ -67,7 +67,7 @@ public class XLTestDetailsSheet extends XLTest {
 			if (exportAsTemplate)
 				cell.setCellValue("");
 			else
-				cell.setCellValue(xLTestStep.getStatus());
+				cell.setCellValue(Integer.parseInt(xLTestStep.getStatus()));
 		}
 		this.autoSize(sheet, new int[] { 0, 1, 2, 3 });
 	}
