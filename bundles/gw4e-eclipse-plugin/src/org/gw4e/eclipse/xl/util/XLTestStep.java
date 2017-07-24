@@ -4,9 +4,9 @@ public class XLTestStep {
 	String name;
 	String expected;
 	String actual;
-	int status;
+	String status;
 
-	public XLTestStep(String name, String expected, String actual, int status) {
+	public XLTestStep(String name, String expected, String actual, String status) {
 		super();
 		this.name = name;
 		this.expected = expected;
@@ -32,7 +32,7 @@ public class XLTestStep {
 		return actual;
 	}
 
-	public int getStatus() {
+	public String getStatus() {
 		return status;
 	};
 }

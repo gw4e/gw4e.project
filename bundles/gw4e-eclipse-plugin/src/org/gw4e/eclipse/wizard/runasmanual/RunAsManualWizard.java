@@ -241,7 +241,6 @@ public class RunAsManualWizard extends Wizard implements INewWizard {
 	private void persist() {
 		Display.getDefault().syncExec(() -> {
 			try {
-				List<StepDetail> details = this.summaryPage.getStepDetails();
 				File file = stp.getWorkbookFile();
 				String title = stp.getWorkbookTitle();
 				boolean exportAsTemplate = stp.exportAsTemplate();
@@ -251,6 +250,8 @@ public class RunAsManualWizard extends Wizard implements INewWizard {
 				String priority = stp.getPriority();
 				String description = engine.getDescription() + "";
 				boolean updateDetailSheet = stp.isUpdateMode();
+				List<StepDetail> details = this.summaryPage.getStepDetails();
+				details = details.stream().map(x -> x.setVoidStatus(exportAsTemplate)).collect(Collectors.toList());
 				XLFacade.getPersistenceService().persist(file, title, exportAsTemplate, dateFormat, testcaseid,
 						component, priority, description, updateDetailSheet, details);
 				ResourceManager.resfresh(ResourceManager.getProject(projectname));

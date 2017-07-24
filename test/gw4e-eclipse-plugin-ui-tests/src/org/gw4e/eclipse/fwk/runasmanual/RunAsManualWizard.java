@@ -11,6 +11,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.swt.finder.waits.ICondition;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotButton;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotCheckBox;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotCombo;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotRadio;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
@@ -20,7 +21,9 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotTableItem;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotText;
 import org.gw4e.eclipse.facade.ResourceManager;
 import org.gw4e.eclipse.fwk.conditions.ResourceExists;
+import org.gw4e.eclipse.message.MessageUtil;
 import org.gw4e.eclipse.xl.util.XLFacade;
+import org.gw4e.eclipse.xl.util.XLTestDetailsSheet;
 import org.gw4e.eclipse.xl.util.XLTestSummarySheet;
 
 public class RunAsManualWizard {
@@ -37,6 +40,10 @@ public class RunAsManualWizard {
 	public void assertNextStepPage(SWTBotShell page, String description, String result) {
 		SWTBotButton nextButton = bot.button("&Next >");
 		nextButton.click();
+		String defaultResult = MessageUtil.getString("enter_a_result_if_verification_failed");
+		if (result != null && result.trim().length() > 0 && !result.equals(defaultResult)) {
+			new StepPage().setResult(page, result).setFailed(page);
+		}
 		new StepPage().assertActionAndResult(page, description, result);
 	}
 
@@ -60,10 +67,13 @@ public class RunAsManualWizard {
 	}
 
 	public void assertManuelTestTemplateSpreadSheet(String workbookfile, SummaryExecutionRow[] rows,
-			String workbooktitle, String caseid, String componentname, String priority,Date date,DateFormat format,String description, int row) throws IOException {
-		WorkBook wb = new WorkBook(workbookfile, rows, workbooktitle, caseid, componentname, priority, date, format, description );
+			String workbooktitle, String caseid, String componentname, String priority, Date date, DateFormat format,
+			String description, int row,String status,boolean exportAsTemplate) throws IOException {
+		WorkBook wb = new WorkBook(workbookfile, rows, workbooktitle, caseid, componentname, priority, date, format,
+				description);
 		wb.exists();
-		wb.assertSummaryCase(row);
+		wb.assertSummaryCase(row,status,exportAsTemplate);
+		wb.assertDetailCase(exportAsTemplate);
 	}
 
 	public class TestPresentatioPage {
@@ -89,15 +99,32 @@ public class RunAsManualWizard {
 			org.junit.Assert.assertEquals("Invalid Result", result, styledTextResult.getText());
 			org.junit.Assert.assertEquals("Invalid Description", description, styledTextDescription.getText());
 		}
+
+		public StepPage setResult(SWTBotShell page, String result) {
+			SWTBotStyledText styledTextResult = page.bot().styledTextWithId(
+					org.gw4e.eclipse.wizard.runasmanual.StepPage.GW4E_LAUNCH_CONFIGURATION_CONTROL_ID,
+					org.gw4e.eclipse.wizard.runasmanual.StepPage.GW4E_STEP_PAGE_RESULT_ID);
+			styledTextResult.setText(result);
+			return this;
+		}
+
+		public void setFailed(SWTBotShell page) {
+			SWTBotCheckBox button = page.bot().checkBoxWithId(
+					org.gw4e.eclipse.wizard.runasmanual.StepPage.GW4E_LAUNCH_CONFIGURATION_CONTROL_ID,
+					org.gw4e.eclipse.wizard.runasmanual.StepPage.GW4E_STEP_PAGE_BUTTON_FAILED_ID);
+			if (!button.isChecked())
+				button.click();
+		}
+
 	}
 
 	public static class SummaryExecutionRow {
-		int status;
+		String status;
 		String stepname;
 		String result;
 		String description;
 
-		public SummaryExecutionRow(int status, String stepname, String result, String description) {
+		public SummaryExecutionRow(String status, String stepname, String result, String description) {
 			super();
 			this.status = status;
 			this.stepname = stepname;
@@ -105,7 +132,7 @@ public class RunAsManualWizard {
 			this.description = description;
 		}
 
-		public int getStatus() {
+		public String getStatus() {
 			return status;
 		}
 
@@ -140,6 +167,7 @@ public class RunAsManualWizard {
 			int max = table.rowCount();
 			for (int i = 0; i < max; i++) {
 				SWTBotTableItem item = table.getTableItem(i);
+
 				String status = getStatus(item);
 				String step = item.getText(1);
 				String result = item.getText(2);
@@ -148,12 +176,17 @@ public class RunAsManualWizard {
 				String statusExpected = rows[i].getStatus() + "";
 				String stepExpected = rows[i].getStepname();
 				String resultExpected = rows[i].getResult();
-				String descriptionExpected = rows[i].getDescription();
 
-				org.junit.Assert.assertEquals("Invalid status", status, statusExpected);
-				org.junit.Assert.assertEquals("Invalid step", step, stepExpected);
-				org.junit.Assert.assertEquals("Invalid result", result, resultExpected);
-				org.junit.Assert.assertEquals("Invalid description", description, descriptionExpected);
+				String defaultResult = MessageUtil.getString("enter_a_result_if_verification_failed");
+				if (defaultResult.equalsIgnoreCase(resultExpected)) {
+					resultExpected = "";
+				}
+
+				String descriptionExpected = rows[i].getDescription();
+				org.junit.Assert.assertEquals("Invalid status", statusExpected, status);
+				org.junit.Assert.assertEquals("Invalid step", stepExpected, step);
+				org.junit.Assert.assertEquals("Invalid result", resultExpected, result);
+				org.junit.Assert.assertEquals("Invalid description", descriptionExpected, description);
 			}
 
 		}
@@ -250,8 +283,9 @@ public class RunAsManualWizard {
 		String description;
 		Date date;
 		DateFormat format;
+
 		public WorkBook(String workbookfile, SummaryExecutionRow[] rows, String workbooktitle, String caseid,
-				String componentname, String priority,Date date,DateFormat format,String description) {
+				String componentname, String priority, Date date, DateFormat format, String description) {
 			super();
 			this.workbookfile = workbookfile;
 			this.rows = rows;
@@ -269,18 +303,44 @@ public class RunAsManualWizard {
 			bot.waitUntil(condition);
 		}
 
-		public void assertSummaryCase (int row) throws IOException {
+		public void assertSummaryCase(int row,String status,boolean exportAsTemplate) throws IOException {
 			IResource resource = ResourceManager.getResource(workbookfile);
 			File f = ResourceManager.toFile(resource.getFullPath());
 			XLFacade helper = XLFacade.getWorkbook(f);
 			XLTestSummarySheet summarySheet = helper.getSummary();
-			org.junit.Assert.assertEquals("Invalid Date", format.format(summarySheet.getDate(row)), format.format(date));  
-			org.junit.Assert.assertEquals("Invalid Status", summarySheet.getStatus(row), "");  
-			org.junit.Assert.assertEquals("Invalid Case Id", summarySheet.getCaseId(row), caseid);  
-			org.junit.Assert.assertEquals("Invalid Component", summarySheet.getComponent(row), componentname);  
-			org.junit.Assert.assertEquals("Invalid Priority", summarySheet.getPriority(row), priority);  
-			org.junit.Assert.assertEquals("Invalid Description", summarySheet.getDescription(row), description);  
-			org.junit.Assert.assertEquals("Invalid Title", summarySheet.getTitle(), workbooktitle);  
+			org.junit.Assert.assertEquals("Invalid Date", format.format(date),
+					format.format(summarySheet.getDate(row)));
+			 
+			if (exportAsTemplate) status =  "";
+			org.junit.Assert.assertEquals("Invalid Status", status, summarySheet.getStatus(row));
+			org.junit.Assert.assertEquals("Invalid Case Id", caseid, summarySheet.getCaseId(row));
+			org.junit.Assert.assertEquals("Invalid Component", componentname, summarySheet.getComponent(row));
+			org.junit.Assert.assertEquals("Invalid Priority", priority, summarySheet.getPriority(row));
+			org.junit.Assert.assertEquals("Invalid Description", description, summarySheet.getDescription(row));
+			org.junit.Assert.assertEquals("Invalid Title", workbooktitle, summarySheet.getTitle());
+		}
+
+		public void assertDetailCase(boolean exportAsTemplate) throws IOException {
+			IResource resource = ResourceManager.getResource(workbookfile);
+			File f = ResourceManager.toFile(resource.getFullPath());
+			XLFacade helper = XLFacade.getWorkbook(f);
+			XLTestDetailsSheet details = helper.getDetails();
+			for (int i = 0; i < rows.length; i++) {
+				SummaryExecutionRow row = rows[i];
+				String statusExpected  = row.getStatus();
+				if (exportAsTemplate) statusExpected =  "";
+				org.junit.Assert.assertEquals("Invalid Status", statusExpected, details.getStatus(caseid, i + 1));
+				org.junit.Assert.assertEquals("Invalid Expected/Action",row.getDescription(), details.getExpectedOrAction(caseid, i + 1));
+				
+				String resultExpected = row.getResult();
+				String defaultResult = MessageUtil.getString("enter_a_result_if_verification_failed");
+				if (defaultResult.equalsIgnoreCase(resultExpected)) {
+					resultExpected = "";
+				}
+				
+				org.junit.Assert.assertEquals("Invalid Result", details.getResult(caseid, i + 1),resultExpected);
+				org.junit.Assert.assertEquals("Invalid Step", details.getStep(caseid, i + 1), row.getStepname());
+			}
 		}
 	}
 

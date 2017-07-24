@@ -4,6 +4,8 @@ import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StyleRange;
 import org.eclipse.swt.custom.StyledText;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -24,6 +26,7 @@ public class StepPage extends WizardPage {
 	public static String GW4E_LAUNCH_CONFIGURATION_CONTROL_ID = "gw4e.runasmanual.steppage.control.id";
 	public static String GW4E_STEP_PAGE_DESCRIPTION_ID = "gw4e.runasmanual.steppage.action.id";
 	public static String GW4E_STEP_PAGE_RESULT_ID = "gw4e.runasmanual.steppage.result.id";
+	public static String GW4E_STEP_PAGE_BUTTON_FAILED_ID = "gw4e.runasmanual.steppage.button.failed.id";
 
 	StepDetail detail;
 
@@ -45,7 +48,6 @@ public class StepPage extends WizardPage {
 		StyledText descriptionText = new StyledText(control, SWT.BORDER);
 		descriptionText.setData(GW4E_LAUNCH_CONFIGURATION_CONTROL_ID, GW4E_STEP_PAGE_DESCRIPTION_ID);
 	 	 
-		
 		descriptionText.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 15, 1));
 		descriptionText.setText(detail.getDescription());
 		descriptionText.setEditable(false);
@@ -57,7 +59,6 @@ public class StepPage extends WizardPage {
 
 		StyledText resultText = new StyledText(control, SWT.BORDER);
 		resultText.setData(GW4E_LAUNCH_CONFIGURATION_CONTROL_ID, GW4E_STEP_PAGE_RESULT_ID);
- 
 
 		resultText.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 15, 1));
 		resultText.setEnabled(detail.isVertex());
@@ -86,13 +87,14 @@ public class StepPage extends WizardPage {
 				public void mouseUp(MouseEvent e) {
 				}
 			});
-			resultText.addListener(SWT.FocusOut, new Listener() {
-				public void handleEvent(Event e) {
-					if (resultText.getText().trim().length()>0) {
+			ModifyListener listener = new ModifyListener() {
+			    public void modifyText(ModifyEvent e) {
+			    	if (resultText.getText().trim().length()>0) {
 						detail.setResult(resultText.getText().trim());
 					}
-				}
-			});
+			    }
+			};
+			resultText.addModifyListener(listener);
 		}
 
 		Label filler = new Label(control, SWT.NONE);
@@ -106,7 +108,8 @@ public class StepPage extends WizardPage {
 		Button btnFailedCheckButton = new Button(comp, SWT.CHECK);
 		btnFailedCheckButton.setText(MessageUtil.getString("failed"));
 		btnFailedCheckButton.setEnabled(detail.isVertex());
-		
+		btnFailedCheckButton.setData(GW4E_LAUNCH_CONFIGURATION_CONTROL_ID , GW4E_STEP_PAGE_BUTTON_FAILED_ID); 
+		 
 		Button skipButton = new Button(comp, SWT.CHECK);
 		skipButton.setText(MessageUtil.getString("skip_to_summary"));
 		skipButton.setEnabled(false);

@@ -117,7 +117,7 @@ public class XLFacade implements ITestPersistence {
 				if (defaultResult.equalsIgnoreCase(sd.getResult())) {
 					result = "";
 				}
-				int status = sd.getStatus();
+				String status = sd.getStatus();
 				XLTestStep step = new XLTestStep(sd.getName(), sd.getDescription(), result, status) ;
 				steps.add(step);
 			}

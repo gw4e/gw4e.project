@@ -82,9 +82,6 @@ public class Engine {
 			return null;
 		}
 		String name = context.getCurrentElement().getName();
-		System.out.println(context.getModel().getName());
-		System.out.println(name);
-		System.out.println(context.getCurrentElement().getId());
 		String elementId = context.getCurrentElement().getId();
 		Element elt = context.getModel().getElementById(elementId);
 		String description = (String) elt.getProperty("description");

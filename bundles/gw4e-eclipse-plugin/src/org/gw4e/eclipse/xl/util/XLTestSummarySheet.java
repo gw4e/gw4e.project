@@ -41,7 +41,12 @@ public class XLTestSummarySheet extends XLTest {
 		Cell cell = row.getCell(column);
 		return cell.getStringCellValue();
 	}
-	
+	private String getValueAsInt(int index, int column) {
+		Sheet sheet =  getOrCreateSummary();
+		Row row = sheet.getRow(index);
+		Cell cell = row.getCell(column);
+		return ((int)cell.getNumericCellValue())+"";
+	}
 	public Date getDate (int index) {
 		Sheet sheet =  getOrCreateSummary();
 		Row row = sheet.getRow(index);
@@ -56,7 +61,11 @@ public class XLTestSummarySheet extends XLTest {
 		return getValue(index,COMPONENT_COLUMN_INDEX);
 	}
 	public String getStatus(int index) {
-		return getValue(index,STATUS_COLUMN_INDEX);
+		try {
+			return getValue(index,STATUS_COLUMN_INDEX);
+		} catch (Exception e) {
+			return getValueAsInt(index,STATUS_COLUMN_INDEX);
+		}
 	}
 	public String getPriority(int index) {
 		return getValue(index,PRIORiTY_COLUMN_INDEX);

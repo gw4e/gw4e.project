@@ -87,7 +87,7 @@ public class GW4ERunAsManualTestCase {
 	}
 	 
 	@Test
-	public void testGenerateManualSimpleTest () throws CoreException, IOException, InterruptedException {
+	public void testGenerateManualAsTemplate () throws CoreException, IOException, InterruptedException {
 		GW4EProject project = new GW4EProject(bot, gwproject);
 		FileParameters fp = project.createSimpleProject ();
  
@@ -95,7 +95,7 @@ public class GW4ERunAsManualTestCase {
 		String targetFolder =  "/gwproject/src/main/resources/com/company";
 		IFile modelFile = runner.importJSONModel("search.json", targetFolder);
 		BuildPolicyManager.addDefaultPolicies(modelFile, new NullProgressMonitor ());
-		String config = "test";
+		String config = "testGenerateManualAsTemplate";
 		runner.addRun(config, gwproject, modelFile.getFullPath().toString(), new String [0], "random(edge_coverage(100))", true, true, "e_startBrowser");
 		SWTBotShell page = runner.run(config);
 		
@@ -116,12 +116,12 @@ public class GW4ERunAsManualTestCase {
 		String defaultResult = MessageUtil.getString("enter_a_result_if_verification_failed");
 
 		SummaryExecutionRow[] rows = new SummaryExecutionRow[6];
-		rows[0] = new SummaryExecutionRow (1, "e_startBrowser", "", "Start a browser");
-		rows[1] = new SummaryExecutionRow (1, "v_browserStarted", "", "Browser is started");
-		rows[2] = new SummaryExecutionRow (1, "e_enterURL", "", "Write the url - http://google.com in the browser's URL bar and press enter.");
-		rows[3] = new SummaryExecutionRow (1, "v_enterURL", "", "Google home page is displayed.");
-		rows[4] = new SummaryExecutionRow (1, "e_enterSearchedWord", "", "Enter the search term - “GW4E” in the google search bar and Press enter.");
-		rows[5] = new SummaryExecutionRow (1, "v_searchResultDisplayed", "", "Search results related to 'GW4E' are displayed");
+		rows[0] = new SummaryExecutionRow ("1", "e_startBrowser", "", "Start a browser");
+		rows[1] = new SummaryExecutionRow ("1", "v_browserStarted", "", "Browser is started");
+		rows[2] = new SummaryExecutionRow ("1", "e_enterURL", "", "Write the url - http://google.com in the browser's URL bar and press enter.");
+		rows[3] = new SummaryExecutionRow ("1", "v_enterURL", "", "Google home page is displayed.");
+		rows[4] = new SummaryExecutionRow ("1", "e_enterSearchedWord", "", "Enter the search term - “GW4E” in the google search bar and Press enter.");
+		rows[5] = new SummaryExecutionRow ("1", "v_searchResultDisplayed", "", "Search results related to 'GW4E' are displayed");
 		
 		wizard.assertNextStepPage (page,  rows[0].getDescription(), "");
 		wizard.assertNextStepPage (page,  rows[1].getDescription(), defaultResult);
@@ -149,10 +149,78 @@ public class GW4ERunAsManualTestCase {
 		Date date = new Date ();
 		String description = "Verify that when a user writes a search term and presses enter, search results should be displayed.";
 		int row = 2;
-		wizard.assertManuelTestTemplateSpreadSheet ("/gwproject/"+workbookfile,rows,workbooktitle,caseid,componentname,priority,date,dateFormat,description,row);
+		wizard.assertManuelTestTemplateSpreadSheet ("/gwproject/"+workbookfile,
+				rows,workbooktitle,caseid,componentname,priority,date,dateFormat,description,row,"",true);
 		
 		System.out.println("ended");
 	}
 	 
+	@Test
+	public void testGenerateManualAsTest () throws CoreException, IOException, InterruptedException {
+		GW4EProject project = new GW4EProject(bot, gwproject);
+		FileParameters fp = project.createSimpleProject ();
+ 
+		GW4EManualRunner runner = new GW4EManualRunner (bot);
+		String targetFolder =  "/gwproject/src/main/resources/com/company";
+		IFile modelFile = runner.importJSONModel("search.json", targetFolder);
+		BuildPolicyManager.addDefaultPolicies(modelFile, new NullProgressMonitor ());
+		String config = "testGenerateManualAsTest";
+		runner.addRun(config, gwproject, modelFile.getFullPath().toString(), new String [0], "random(edge_coverage(100))", true, true, "e_startBrowser");
+		SWTBotShell page = runner.run(config);
+		
+		String [] expected  = new String []  {
+				"/gwproject/src/main/resources/com/company/search.json",
+				"Additional model(s) :",
+				"Generator/Stop Condition :", 
+				"random(edge_coverage(100))",
+				"Start Element :", 
+				"e_startBrowser",
+				"Remove Blocked Element :",
+				"Yes",
+		};
+		
+		RunAsManualWizard wizard = new RunAsManualWizard (bot);
+		wizard.assertTestPresentatioPageContainsTexts(page, expected);
+		
+		String defaultResult = MessageUtil.getString("enter_a_result_if_verification_failed");
+
+		SummaryExecutionRow[] rows = new SummaryExecutionRow[6];
+		rows[0] = new SummaryExecutionRow ("1", "e_startBrowser", "", "Start a browser");
+		rows[1] = new SummaryExecutionRow ("1", "v_browserStarted", defaultResult, "Browser is started");
+		rows[2] = new SummaryExecutionRow ("1", "e_enterURL", "", "Write the url - http://google.com in the browser's URL bar and press enter.");
+		rows[3] = new SummaryExecutionRow ("1", "v_enterURL", defaultResult, "Google home page is displayed.");
+		rows[4] = new SummaryExecutionRow ("1", "e_enterSearchedWord", "", "Enter the search term - “GW4E” in the google search bar and Press enter.");
+		rows[5] = new SummaryExecutionRow ("0", "v_searchResultDisplayed", "error wrong result", "Search results related to 'GW4E' are displayed");
+		
+		wizard.assertNextStepPage (page,  rows[0].getDescription(), "");
+		wizard.assertNextStepPage (page,  rows[1].getDescription(), defaultResult);
+		wizard.assertNextStepPage (page,  rows[2].getDescription(), "");
+		wizard.assertNextStepPage (page,  rows[3].getDescription(), defaultResult);
+		wizard.assertNextStepPage (page,  rows[4].getDescription(), "");
+		wizard.assertNextStepPage (page,  rows[5].getDescription(), "error wrong result");
+		
+		wizard.assertSummaryExecution(page,  rows);
+	 
+		boolean exportAsTest = true;
+		String workbookfile = "mycampaign.xlsx";
+		String workbooktitle = "Web Campaign";
+		String caseid = "Case Search Happy Path - 1";
+		boolean updatemode = false;
+		String componentname = "Web Search Component";
+		String priority = "High";
+		String dateformat = null;
+		wizard.feed (exportAsTest,workbookfile,workbooktitle,caseid,updatemode,componentname,priority,dateformat);
+		
+		wizard.finish();
+		 
+		String format = "MM/dd/yy";
+		DateFormat dateFormat =  new SimpleDateFormat (format);
+		Date date = new Date ();
+		String description = "Verify that when a user writes a search term and presses enter, search results should be displayed.";
+		int row = 2;
+		wizard.assertManuelTestTemplateSpreadSheet ("/gwproject/"+workbookfile,rows,workbooktitle,caseid,componentname,priority,date,dateFormat,description,row,"0",false);
+		
+		System.out.println("ended");
+	}
 	 
 }

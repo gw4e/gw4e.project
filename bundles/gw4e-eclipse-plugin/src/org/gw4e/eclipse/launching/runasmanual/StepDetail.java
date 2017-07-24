@@ -11,7 +11,8 @@ public class StepDetail {
 	String name;
 	boolean failed;
 	boolean performed;
-
+    boolean voidStatus = false;
+    
 	public StepDetail(String name, String description, List<String> requirements, boolean vertex) {
 		super();
 		this.name = name;
@@ -68,17 +69,27 @@ public class StepDetail {
 		this.performed = performed;
 	}
 
-	public int getStatus() {
-		int status = 0;
+	public String getStatus() {
+		String status = "";
+		if (isVoidStatus()) return "";
 		if (isPerformed()) {
 			if (isFailed()) {
-				status = 0;
+				status = "0";
 			} else {
-				status = 1;
+				status = "1";
 			}
 		} else {
-			status = 2;
+			status = "2";
 		}
 		return status;
+	}
+
+	public boolean isVoidStatus() {
+		return voidStatus;
+	}
+
+	public StepDetail setVoidStatus(boolean voidStatus) {
+		this.voidStatus = voidStatus;
+		return this;
 	}
 }
