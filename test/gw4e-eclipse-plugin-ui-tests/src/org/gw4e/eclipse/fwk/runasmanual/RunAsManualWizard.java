@@ -9,6 +9,7 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
+import org.eclipse.swtbot.swt.finder.waits.DefaultCondition;
 import org.eclipse.swtbot.swt.finder.waits.ICondition;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotButton;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotCheckBox;
@@ -72,6 +73,7 @@ public class RunAsManualWizard {
 		WorkBook wb = new WorkBook(workbookfile, rows, workbooktitle, caseid, componentname, priority, date, format,
 				description);
 		wb.exists();
+		if (exportAsTemplate) status =  "";
 		wb.assertSummaryCase(row,status,exportAsTemplate);
 		wb.assertDetailCase(exportAsTemplate);
 		return wb.lastModified();
@@ -310,23 +312,43 @@ public class RunAsManualWizard {
 			bot.waitUntil(condition);
 		}
 
-		public void assertSummaryCase(int row,String status,boolean exportAsTemplate) throws IOException {
+		public void assertSummaryCase(int row,final String status,boolean exportAsTemplate) throws IOException {
 			IResource resource = ResourceManager.getResource(workbookfile);
 		 
 			File f = ResourceManager.toFile(resource.getFullPath());
 			
 			System.out.println("XXX FILE DATE2 XXXXXXXXXXXXX " + f.lastModified());
 			
+			ICondition condition = new DefaultCondition () {
+				@Override
+				public boolean test() throws Exception {
+					try {
+						XLFacade helper = XLFacade.getWorkbook(f);
+						XLTestSummarySheet summarySheet = helper.getSummary();
+						summarySheet.print ();
+						org.junit.Assert.assertEquals("Invalid Status", status, summarySheet.getStatus(row));
+						return true;
+					} catch (Throwable e) {
+						 return false;
+					}
+				}
+				@Override
+				public String getFailureMessage() {
+					try {
+						XLFacade helper = XLFacade.getWorkbook(f);
+						XLTestSummarySheet summarySheet = helper.getSummary();
+						return "Invalid Status. Was expecting " + status + " but found " + summarySheet.getStatus(row) ;
+					} catch (IOException e) {
+						org.junit.Assert.fail ("Unable to read the spreadsheet");
+						return "Unable to read the spreadsheet";
+					}
+				}
+				
+			};
+			bot.waitUntil(condition,15*1000);
 			XLFacade helper = XLFacade.getWorkbook(f);
 			XLTestSummarySheet summarySheet = helper.getSummary();
-			
-			summarySheet.print ();
-			
-			org.junit.Assert.assertEquals("Invalid Date", format.format(date),
-					format.format(summarySheet.getDate(row)));
-			 
-			if (exportAsTemplate) status =  "";
-			org.junit.Assert.assertEquals("Invalid Status", status, summarySheet.getStatus(row));
+			org.junit.Assert.assertEquals("Invalid Date", format.format(date),format.format(summarySheet.getDate(row)));
 			org.junit.Assert.assertEquals("Invalid Case Id", caseid, summarySheet.getCaseId(row));
 			org.junit.Assert.assertEquals("Invalid Component", componentname, summarySheet.getComponent(row));
 			org.junit.Assert.assertEquals("Invalid Priority", priority, summarySheet.getPriority(row));

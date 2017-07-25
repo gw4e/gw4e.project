@@ -238,6 +238,7 @@ public class GW4ERunAsManualTestCase {
 
 	@Test
 	public void testTwiceGenerateManualAsTestWithUpdateMode () throws CoreException, IOException, InterruptedException {
+		System.out.println("testTwiceGenerateManualAsTestWithUpdateMode started");
 		String config = "testTwiceGenerateManualAsTestWithUpdateMode";
 		boolean updatemode = false;
 
@@ -266,6 +267,6 @@ public class GW4ERunAsManualTestCase {
 		rows[5] = new SummaryExecutionRow ("1", "v_searchResultDisplayed", defaultResult, "Search results related to 'GW4E' are displayed");
 		executeTest (config , updatemode, modelFile,rows,defaultResult,"1");
 		
-		System.out.println("ended");
+		System.out.println("testTwiceGenerateManualAsTestWithUpdateMode ended");
 	}
 }
