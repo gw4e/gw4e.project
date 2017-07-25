@@ -161,7 +161,9 @@ public class GW4ERunAsManualTestCase {
 			IFile modelFile,
 			SummaryExecutionRow[] rows, 
 			String errorMsg, 
-			String status) throws CoreException, IOException, InterruptedException {
+			String status,
+			int row,
+			String caseid) throws CoreException, IOException, InterruptedException {
 		GW4EManualRunner runner = new GW4EManualRunner (bot);
 		runner.addRun(config, gwproject, modelFile.getFullPath().toString(), new String [0], "random(edge_coverage(100))", true, true, "e_startBrowser");
 		SWTBotShell page = runner.run(config);
@@ -194,7 +196,7 @@ public class GW4ERunAsManualTestCase {
 		boolean exportAsTest = true;
 		String workbookfile = "mycampaign.xlsx";
 		String workbooktitle = "Web Campaign";
-		String caseid = "Case Search Happy Path - 1";
+
 		String componentname = "Web Search Component";
 		String priority = "High";
 		String dateformat = null;
@@ -206,7 +208,6 @@ public class GW4ERunAsManualTestCase {
 		DateFormat dateFormat =  new SimpleDateFormat (format);
 		Date date = new Date ();
 		String description = "Verify that when a user writes a search term and presses enter, search results should be displayed.";
-		int row = 2;
 		return wizard.assertManuelTestTemplateSpreadSheet ("/gwproject/"+workbookfile,rows,workbooktitle,caseid,componentname,priority,date,dateFormat,description,row,status,false);
 	}
 	 
@@ -233,7 +234,8 @@ public class GW4ERunAsManualTestCase {
 		rows[4] = new SummaryExecutionRow ("1", "e_enterSearchedWord", "", "Enter the search term - “GW4E” in the google search bar and Press enter.");
 		rows[5] = new SummaryExecutionRow ("0", "v_searchResultDisplayed", "error wrong result", "Search results related to 'GW4E' are displayed");
 		
-		executeTest (config , updatemode, modelFile,rows,"error wrong result","0");
+		String caseid = "Case Search Happy Path - 1";
+		executeTest (config , updatemode, modelFile,rows,"error wrong result","0",2,caseid);
 	}
 
 	@Test
@@ -260,13 +262,83 @@ public class GW4ERunAsManualTestCase {
 		rows[4] = new SummaryExecutionRow ("1", "e_enterSearchedWord", "", "Enter the search term - “GW4E” in the google search bar and Press enter.");
 		rows[5] = new SummaryExecutionRow ("0", "v_searchResultDisplayed", "error wrong result", "Search results related to 'GW4E' are displayed");
 
-		long time = executeTest (config , updatemode, modelFile, rows,"error wrong result","0");
-		System.out.println("XXX FILE DATE XXXXXXXXXXXXX " + time);
+		String caseid = "Case Search Happy Path - 1";
+		long time = executeTest (config , updatemode, modelFile, rows,"error wrong result","0",2,caseid);
 		config = "testTwiceGenerateManualAsTestWithUpdateMode1";
 		updatemode = true;
 		rows[5] = new SummaryExecutionRow ("1", "v_searchResultDisplayed", defaultResult, "Search results related to 'GW4E' are displayed");
-		executeTest (config , updatemode, modelFile,rows,defaultResult,"1");
+		executeTest (config , updatemode, modelFile,rows,defaultResult,"1",2,caseid);
 		
 		System.out.println("testTwiceGenerateManualAsTestWithUpdateMode ended");
+	}
+
+	@Test
+	public void testTwiceGenerateManualAsTestWithNoUpdateMode () throws CoreException, IOException, InterruptedException {
+		System.out.println("testTwiceGenerateManualAsTestWithNoUpdateMode started");
+		String config = "testTwiceGenerateManualAsTestWithNoUpdateMode";
+		boolean updatemode = false;
+
+		GW4EProject project = new GW4EProject(bot, gwproject);
+		FileParameters fp = project.createSimpleProject ();
+ 
+		GW4EManualRunner runner = new GW4EManualRunner (bot);
+		String targetFolder =  "/gwproject/src/main/resources/com/company";
+		IFile modelFile = runner.importJSONModel("search.json", targetFolder);
+		BuildPolicyManager.addDefaultPolicies(modelFile, new NullProgressMonitor ());
+		
+		String defaultResult = MessageUtil.getString("enter_a_result_if_verification_failed");
+		
+		SummaryExecutionRow[] rows = new SummaryExecutionRow[6];
+		rows[0] = new SummaryExecutionRow ("1", "e_startBrowser", "", "Start a browser");
+		rows[1] = new SummaryExecutionRow ("1", "v_browserStarted", defaultResult, "Browser is started");
+		rows[2] = new SummaryExecutionRow ("1", "e_enterURL", "", "Write the url - http://google.com in the browser's URL bar and press enter.");
+		rows[3] = new SummaryExecutionRow ("1", "v_enterURL", defaultResult, "Google home page is displayed.");
+		rows[4] = new SummaryExecutionRow ("1", "e_enterSearchedWord", "", "Enter the search term - “GW4E” in the google search bar and Press enter.");
+		rows[5] = new SummaryExecutionRow ("0", "v_searchResultDisplayed", "error wrong result", "Search results related to 'GW4E' are displayed");
+
+		String caseid = "Case Search Happy Path - 1";
+		long time = executeTest (config , updatemode, modelFile, rows,"error wrong result","0",2,caseid);
+		config = "testTwiceGenerateManualAsTestWithNoUpdateMode1";
+		rows[5] = new SummaryExecutionRow ("0", "v_searchResultDisplayed", "error wrong result 1", "Search results related to 'GW4E' are displayed");
+		 
+ 		executeTest (config , updatemode, modelFile, rows,"error wrong result 1","0",3,caseid);
+		
+		System.out.println("testTwiceGenerateManualAsTestWithUpdateMode ended");
+	}
+	
+	@Test
+	public void testTwiceGenerateManualAsTestWithDiffCaseid () throws CoreException, IOException, InterruptedException {
+		System.out.println("testTwiceGenerateManualAsTestWithDiffCaseid started");
+		String config = "testTwiceGenerateManualAsTestWithDiffCaseid";
+		boolean updatemode = false;
+
+		GW4EProject project = new GW4EProject(bot, gwproject);
+		FileParameters fp = project.createSimpleProject ();
+ 
+		GW4EManualRunner runner = new GW4EManualRunner (bot);
+		String targetFolder =  "/gwproject/src/main/resources/com/company";
+		IFile modelFile = runner.importJSONModel("search.json", targetFolder);
+		BuildPolicyManager.addDefaultPolicies(modelFile, new NullProgressMonitor ());
+		
+		String defaultResult = MessageUtil.getString("enter_a_result_if_verification_failed");
+		
+		SummaryExecutionRow[] rows = new SummaryExecutionRow[6];
+		rows[0] = new SummaryExecutionRow ("1", "e_startBrowser", "", "Start a browser");
+		rows[1] = new SummaryExecutionRow ("1", "v_browserStarted", defaultResult, "Browser is started");
+		rows[2] = new SummaryExecutionRow ("1", "e_enterURL", "", "Write the url - http://google.com in the browser's URL bar and press enter.");
+		rows[3] = new SummaryExecutionRow ("1", "v_enterURL", defaultResult, "Google home page is displayed.");
+		rows[4] = new SummaryExecutionRow ("1", "e_enterSearchedWord", "", "Enter the search term - “GW4E” in the google search bar and Press enter.");
+		rows[5] = new SummaryExecutionRow ("0", "v_searchResultDisplayed", "error wrong result", "Search results related to 'GW4E' are displayed");
+
+		String caseid = "Case Search Happy Path - 1";
+		long time = executeTest (config , updatemode, modelFile, rows,"error wrong result","0",2,caseid);
+		
+		
+		config = "testTwiceGenerateManualAsTestWithDiffCaseid1";
+		rows[5] = new SummaryExecutionRow ("0", "v_searchResultDisplayed", "error wrong result 1", "Search results related to 'GW4E' are displayed");
+		caseid = "Case Search Happy Path - 2";
+		executeTest (config , updatemode, modelFile, rows,"error wrong result 1","0",3,caseid);
+		
+		System.out.println("testTwiceGenerateManualAsTestWithDiffCaseid ended");
 	}
 }

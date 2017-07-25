@@ -75,7 +75,7 @@ public class RunAsManualWizard {
 		wb.exists();
 		if (exportAsTemplate) status =  "";
 		wb.assertSummaryCase(row,status,exportAsTemplate);
-		wb.assertDetailCase(exportAsTemplate);
+		wb.assertDetailCase(exportAsTemplate,row);
 		return wb.lastModified();
 	}
 
@@ -362,17 +362,18 @@ public class RunAsManualWizard {
 			return f.lastModified();
 		}	
 		
-		public void assertDetailCase(boolean exportAsTemplate) throws IOException {
+		public void assertDetailCase(boolean exportAsTemplate, int rowInSummary) throws IOException {
 			IResource resource = ResourceManager.getResource(workbookfile);
 			File f = ResourceManager.toFile(resource.getFullPath());
 			XLFacade helper = XLFacade.getWorkbook(f);
-			XLTestDetailsSheet details = helper.getDetails();
+			 helper.getDetails(rowInSummary);
+			XLTestDetailsSheet details = helper.getDetails(rowInSummary);
 			for (int i = 0; i < rows.length; i++) {
 				SummaryExecutionRow row = rows[i];
 				String statusExpected  = row.getStatus();
 				if (exportAsTemplate) statusExpected =  "";
-				org.junit.Assert.assertEquals("Invalid Status", statusExpected, details.getStatus(caseid, i + 1));
-				org.junit.Assert.assertEquals("Invalid Expected/Action",row.getDescription(), details.getExpectedOrAction(caseid, i + 1));
+				org.junit.Assert.assertEquals("Invalid Status", statusExpected, details.getStatus( i + 1));
+				org.junit.Assert.assertEquals("Invalid Expected/Action",row.getDescription(), details.getExpectedOrAction( i + 1));
 				
 				String resultExpected = row.getResult();
 				String defaultResult = MessageUtil.getString("enter_a_result_if_verification_failed");
@@ -380,8 +381,8 @@ public class RunAsManualWizard {
 					resultExpected = "";
 				}
 				
-				org.junit.Assert.assertEquals("Invalid Result", details.getResult(caseid, i + 1),resultExpected);
-				org.junit.Assert.assertEquals("Invalid Step", details.getStep(caseid, i + 1), row.getStepname());
+				org.junit.Assert.assertEquals("Invalid Result", details.getResult( i + 1),resultExpected);
+				org.junit.Assert.assertEquals("Invalid Step", details.getStep( i + 1), row.getStepname());
 			}
 		}
 	}

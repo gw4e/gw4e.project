@@ -9,9 +9,10 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.gw4e.eclipse.message.MessageUtil;
 
 public class XLTestDetailsSheet extends XLTest {
-
-	public XLTestDetailsSheet(XSSFWorkbook wb) {
+	String caseid;
+	public XLTestDetailsSheet(XSSFWorkbook wb,String caseid) {
 		super(wb);
+		this.caseid = caseid;
 	}
 
 	static int STEPNAME_INDEX = 0;
@@ -19,32 +20,32 @@ public class XLTestDetailsSheet extends XLTest {
 	static int RESULT_INDEX = 2;
 	static int STATUS_INDEX = 3;
 
-	private String getValueAsString(String caseid, int rowindex, int column) {
+	private String getValueAsString(  int rowindex, int column) {
 		Sheet sheet = wb.getSheet(caseid);
 		Row row = sheet.getRow(rowindex);
 		return row.getCell(column).getStringCellValue();
 	}
 	
-	private String getValueAsInt(String caseid, int rowindex, int column) {
+	private String getValueAsInt(  int rowindex, int column) {
 		Sheet sheet = wb.getSheet(caseid);
 		Row row = sheet.getRow(rowindex);
 		return ((int)row.getCell(column).getNumericCellValue())+"";
 	}
 
-	public String getStep(String caseid, int rowindex) {
-		return getValueAsString(caseid, rowindex, STEPNAME_INDEX);
+	public String getStep(   int rowindex) {
+		return getValueAsString(  rowindex, STEPNAME_INDEX);
 	}
-	public String getExpectedOrAction(String caseid, int rowindex) {
-		return getValueAsString(caseid, rowindex, EXPECTED_OR_ACTION_INDEX);
+	public String getExpectedOrAction(  int rowindex) {
+		return getValueAsString(  rowindex, EXPECTED_OR_ACTION_INDEX);
 	}
-	public String getResult(String caseid, int rowindex) {
-		return getValueAsString(caseid, rowindex, RESULT_INDEX);
+	public String getResult( int rowindex) {
+		return getValueAsString(  rowindex, RESULT_INDEX);
 	}	
-	public String getStatus(String caseid, int rowindex) {
+	public String getStatus( int rowindex) {
 		try {
-			return getValueAsString(caseid, rowindex, STATUS_INDEX);
+			return getValueAsString(  rowindex, STATUS_INDEX);
 		} catch (Exception e) {
-			return getValueAsInt(caseid, rowindex, STATUS_INDEX);
+			return getValueAsInt(  rowindex, STATUS_INDEX);
 		}
 	}	
 	

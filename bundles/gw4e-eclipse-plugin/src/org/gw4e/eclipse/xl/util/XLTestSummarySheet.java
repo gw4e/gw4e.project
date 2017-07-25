@@ -65,6 +65,14 @@ public class XLTestSummarySheet extends XLTest {
 		Cell cell = row.getCell(column);
 		return cell.getStringCellValue();
 	}
+	
+	private String getValueForURL(int index, int column) {
+		Sheet sheet =  getOrCreateSummary();
+		Row row = sheet.getRow(index);
+		Cell cell = row.getCell(column);
+		return cell.getHyperlink().getAddress();
+	}
+	
 	private String getValueAsInt(int index, int column) {
 		Sheet sheet =  getOrCreateSummary();
 		Row row = sheet.getRow(index);
@@ -81,6 +89,11 @@ public class XLTestSummarySheet extends XLTest {
 	public String getCaseId(int index) {
 		return getValue(index,TESTCASE_ID_COLUMN_INDEX);
 	}
+	public String getCaseIdURL(int index) {
+		return getValueForURL(index,TESTCASE_ID_COLUMN_INDEX);
+	}	
+	 
+	
 	public String getComponent(int index) {
 		return getValue(index,COMPONENT_COLUMN_INDEX);
 	}

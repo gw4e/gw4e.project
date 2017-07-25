@@ -8,6 +8,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.poi.POIXMLProperties;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -22,32 +24,30 @@ import org.gw4e.eclipse.message.MessageUtil;
 import org.gw4e.eclipse.wizard.runasmanual.ITestPersistence;
 
 public class XLFacade implements ITestPersistence {
-	private Workbook wb;
+	private XSSFWorkbook wb;
 	private File file;
 	private XLTestSummarySheet summary;
 	private XLTestDetailsSheet details;
 
 	private XLFacade() {
-		
+
 	}
-	
+
 	public XLFacade(XSSFWorkbook wb, File file) {
 		super();
 		this.file = file;
 		this.wb = wb;
 		this.summary = new XLTestSummarySheet(wb);
-		this.details = new XLTestDetailsSheet(wb);
 	}
-	
-	
-	public static ITestPersistence getPersistenceService  () {
-		return new XLFacade ();
+
+	public static ITestPersistence getPersistenceService() {
+		return new XLFacade();
 	}
 
 	public static XLFacade getWorkbook(File file) throws IOException {
-		return  createWorkbook(file,null);
+		return createWorkbook(file, null);
 	}
-	
+
 	public static XLFacade createWorkbook(File file, String title) throws IOException {
 		XSSFWorkbook wb = null;
 		if (file.exists()) {
@@ -56,7 +56,7 @@ public class XLFacade implements ITestPersistence {
 		} else {
 			wb = new XSSFWorkbook();
 		}
-		if (title!=null){
+		if (title != null) {
 			POIXMLProperties xmlProps = wb.getProperties();
 			xmlProps.getCoreProperties().setTitle(title);
 		}
@@ -99,49 +99,54 @@ public class XLFacade implements ITestPersistence {
 	}
 
 	public XLTestDetailsSheet getDetails() {
-		return details;
+		return new XLTestDetailsSheet(wb,null);
+	}
+
+	public XLTestDetailsSheet getDetails(int rowInSummary) {
+		String id = summary.getCaseIdURL(rowInSummary);
+		Pattern p = Pattern.compile("'([^\"]*)'");
+		Matcher m = p.matcher(id);
+		if (m.find()) {
+			String pageId = m.group(1);
+			return new XLTestDetailsSheet(wb, pageId);
+
+		}
+		return null;
 	}
 
 	@Override
-	public void persist(File file, String title, boolean exportAsTemplate,String dateFormat,String testcaseid, String component,  String priority,
-			String description,boolean updateDetailSheet, List<StepDetail> details) {
+	public void persist(File file, String title, boolean exportAsTemplate, String dateFormat, String testcaseid,
+			String component, String priority, String description, boolean updateDetailSheet,
+			List<StepDetail> details) {
 		try {
-			XLFacade helper = XLFacade.createWorkbook(file,title);
+			XLFacade helper = XLFacade.createWorkbook(file, title);
 			Sheet summarySheet = helper.getSummary().getOrCreateSummary();
-			List<XLTestStep> steps = new ArrayList<XLTestStep> ();
+			List<XLTestStep> steps = new ArrayList<XLTestStep>();
 			boolean failed = false;
 			for (StepDetail sd : details) {
-				if (sd.isFailed()) failed=true;
+				if (sd.isFailed())
+					failed = true;
 				String defaultResult = MessageUtil.getString("enter_a_result_if_verification_failed");
 				String result = sd.getResult();
 				if (defaultResult.equalsIgnoreCase(sd.getResult())) {
 					result = "";
 				}
 				String status = sd.getStatus();
-				XLTestStep step = new XLTestStep(sd.getName(), sd.getDescription(), result, status) ;
+				XLTestStep step = new XLTestStep(sd.getName(), sd.getDescription(), result, status);
 				steps.add(step);
 			}
-			Sheet sheetDetails = helper.getDetails().getOrCreateDetailsSheet(testcaseid, updateDetailSheet);
-			helper.getDetails().feedDetailsSheet(sheetDetails,exportAsTemplate, steps);
+			Sheet sheetDetails = helper.getDetails( ).getOrCreateDetailsSheet(testcaseid, updateDetailSheet);
+			helper.getDetails( ).feedDetailsSheet(sheetDetails, exportAsTemplate, steps);
 
-			helper.getSummary().addSummaryResultEntry(
-					summarySheet, 
-					updateDetailSheet,
-					exportAsTemplate,
-					new Date (), 
-					dateFormat, 
-					testcaseid,
-					component, 
-					failed ? 0 : 1, 
-					priority,
-					description,
+			helper.getSummary().addSummaryResultEntry(summarySheet, updateDetailSheet, exportAsTemplate, new Date(),
+					dateFormat, testcaseid, component, failed ? 0 : 1, priority, description,
 					sheetDetails.getSheetName());
 			helper.save();
 		} catch (IOException e) {
 			ResourceManager.logException(e);
-			DialogManager.displayErrorMessage(MessageUtil.getString("error"), MessageUtil.getString("manual_export_an_error_has_occured_while_generating_spreadsheet"), e);
+			DialogManager.displayErrorMessage(MessageUtil.getString("error"),
+					MessageUtil.getString("manual_export_an_error_has_occured_while_generating_spreadsheet"), e);
 		}
 	}
 
- 
 }
