@@ -106,7 +106,7 @@ public abstract class InitialBuildPolicies implements Runnable {
 		@Override
 		public void run() {
 			try {
-				BuildPolicyManager.addSyncPolicies(file, new NullProgressMonitor());
+				BuildPolicyManager.addNoCheckPolicies(file, new NullProgressMonitor());
 			} catch (IOException | CoreException | InterruptedException e) {
 				ResourceManager.logException(e);
 			}
