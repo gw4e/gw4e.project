@@ -232,6 +232,13 @@ SOFTWARE.
          install-size="0"
          version="0.0.0"
          unpack="false"/>
+         
+   <plugin
+         id="org.eclipse.xtext.ui.codetemplates"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
 
    <plugin
          id="org.eclipse.xtext.xbase.ui"
@@ -246,7 +253,35 @@ SOFTWARE.
          install-size="0"
          version="0.0.0"
          unpack="false"/>
+         
+  <plugin
+         id="org.eclipse.xtext.builder"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
 
+   <plugin
+         id="org.eclipse.xtext.ide"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+         
+   <plugin
+         id="org.eclipse.xtext.xbase.ide"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>   
+         
+   <plugin
+         id="org.antlr.runtime"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/> 
+               
    <plugin
          id="org.gw4e.tycho.dsl.policies"
          download-size="0"

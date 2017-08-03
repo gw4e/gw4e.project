@@ -61,8 +61,8 @@ class DSLPoliciesLabelProvider extends XbaseLabelProvider {
 
 	protected def String text(StopCondition condition) {
 		var gelt = condition.getGraphelement();
-		val ge = gelt.getName();
-		if (ge !== null) {
+		if (gelt !== null) {
+			val ge = gelt.getName();
 			return condition.getPathtype() + "(" + ge + ")";
 		} else {
 			val percentage = condition.getPercentage();
@@ -98,7 +98,7 @@ class DSLPoliciesLabelProvider extends XbaseLabelProvider {
 	protected def String text(PathGeneratorStopCondition pgsc) {
 		val ge = pgsc.getStopCondition().getGraphelement();
 		if (ge !== null) {
-			return pgsc.getAlgorithmType().getType() + "(" + pgsc.getStopCondition().getPathtype() + "(" + ge + ")" +
+			return pgsc.getAlgorithmType().getType() + "(" + pgsc.getStopCondition().getPathtype() + "(" + ge.getName() + ")" +
 				")";
 		} else {
 			val percentage = pgsc.getStopCondition().getPercentage() + "";

@@ -78,8 +78,8 @@ public class DSLPoliciesLabelProvider extends XbaseLabelProvider {
   
   protected String text(final StopCondition condition) {
     GraphElement gelt = condition.getGraphelement();
-    final String ge = gelt.getName();
-    if ((ge != null)) {
+    if ((gelt != null)) {
+      final String ge = gelt.getName();
       String _pathtype = condition.getPathtype();
       String _plus = (_pathtype + "(");
       String _plus_1 = (_plus + ge);
@@ -143,7 +143,8 @@ public class DSLPoliciesLabelProvider extends XbaseLabelProvider {
       String _pathtype = pgsc.getStopCondition().getPathtype();
       String _plus_1 = (_plus + _pathtype);
       String _plus_2 = (_plus_1 + "(");
-      String _plus_3 = (_plus_2 + ge);
+      String _name = ge.getName();
+      String _plus_3 = (_plus_2 + _name);
       String _plus_4 = (_plus_3 + ")");
       return (_plus_4 + 
         ")");
