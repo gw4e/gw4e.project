@@ -10,7 +10,7 @@
 			extensions="policies"
 			id="gw4e.eclipse.dsl.DSLPolicies"
 			matchingStrategy="gw4e.eclipse.dsl.ui.DSLPoliciesExecutableExtensionFactory:org.eclipse.xtext.xbase.ui.editor.JavaEditorInputMatcher"
-			name="DSLPolicies Editor">
+			name="GW4E DSL Build Policies Editor">
 		</editor>
 	</extension>
 	<extension

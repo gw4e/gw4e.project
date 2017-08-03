@@ -607,15 +607,7 @@
             id="org.gw4e.eclipse.perspective.GW4EPerspective">
       </perspective>
    </extension>
-   
-    <extension point="org.eclipse.ui.editors">
-  <editor
-    class="org.eclipse.ui.editors.text.TextEditor"
-    default="true"
-    filenames="*.policies"
-    id="org.eclipse.ui.DefaultTextEditor"
-    name="GW4E Build Policies Editor"/>
-	</extension>
+  
 
 	<extension point="org.eclipse.ltk.core.refactoring.moveParticipants">
     <moveParticipant
