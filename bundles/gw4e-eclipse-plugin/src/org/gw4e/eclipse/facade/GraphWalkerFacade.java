@@ -46,6 +46,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.TreeSet;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import org.apache.commons.io.FilenameUtils;
 import org.eclipse.core.resources.IContainer;
@@ -253,7 +254,28 @@ public class GraphWalkerFacade {
 		ContextFactory factory = getContextFactory (file.toPath());
 		List<Context> readContexts = factory.create(file.toPath());
 		RuntimeModel model = readContexts.get(0).getModel();
+	
 		return model;
+	}
+	
+	public static List<String> getVertices(File file) throws IOException {
+		List<RuntimeVertex> vertices = getModel(file).getVertices();
+		List<String> ret = vertices.stream().map(vertex -> vertex.getName()).collect(Collectors.toList());
+		return ret;
+	}
+	
+	public static List<String> getEdges(File file) throws IOException {
+		List<RuntimeEdge> edges = getModel(file).getEdges();
+		List<String> ret = edges.stream().map(edge -> edge.getName()).collect(Collectors.toList());
+		return ret;
+	}
+	
+	public static boolean isValidEdge(File file,String edge) throws IOException {
+		return getModel(file).findEdges(edge) != null;
+	}
+	
+	public static boolean isValidVertex(File file,String vertex) throws IOException {
+		return getModel(file).findVertices(vertex) != null;
 	}
 	
 	/**

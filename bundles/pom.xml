@@ -18,6 +18,7 @@
         <module>gw4e-eclipse-core</module>
         <module>gw4e-eclipse-plugin</module>
         <module>gw4e-eclipse-studio-plugin</module>
+        <module>editor</module>
     </modules>
 
 	<build>

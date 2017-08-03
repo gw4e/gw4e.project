@@ -146,6 +146,30 @@ public class BuildPolicyManager implements ProjectPropertyChangeListener {
 				PreferenceManager.getBuildPoliciesFileName(resource.getProject().getName()));
 		return p;
 	}
+	
+	
+	public static List<String> getMissingModelFiles (IFile resource)   {
+		List<String> ret = new ArrayList<String> ();
+		try {
+			Properties properties = loadBuildPolicies(resource);
+			List<IFile> files = new ArrayList<IFile> ();
+			ResourceManager.getAllGraphFiles(resource.getParent(), files); 
+			Iterator iter = properties.keySet().iterator();
+			while (iter.hasNext()) {
+				String filename = (String) iter.next();
+				IFile f = resource.getParent().getFile(new Path(filename));
+				files.remove(f);
+			}
+			for (IFile f : files) {
+				ret.add(f.getName());
+			}
+
+		} catch (Exception e) {
+			 ResourceManager.logException(e);
+		} 
+		return ret;
+	}
+	
 
 	/**
 	 * Build and return a string that correspond to the default policy to parse

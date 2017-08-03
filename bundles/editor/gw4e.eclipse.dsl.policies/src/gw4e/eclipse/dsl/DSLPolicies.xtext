@@ -1,0 +1,56 @@
+grammar gw4e.eclipse.dsl.DSLPolicies  with org.eclipse.xtext.xbase.Xbase
+
+generate dSLPolicies "http://www.eclipse.gw4e/dsl/DSLPolicies"
+
+import "http://www.eclipse.org/emf/2002/Ecore" as ecore
+
+Model:
+	(NEWLINE* Comment)?
+	(NEWLINE* graphPolicies+=GraphPolicies)+ | (NEWLINE)*;
+	
+terminal SEV:
+	'W' | 'I' | 'E';
+
+terminal FORMAT_COMMENT: 
+    '#' !('\n'|'\r')* ('\r'? '\n')?;
+
+terminal NEWLINE:
+	('\r'? '\n');
+
+Comment:
+	FORMAT_COMMENT;
+
+GraphPolicies:
+	 graphModelPolicies=ModelName "=" policies+=Policies+;
+	
+ModelName:
+	ID '.json' | ID '.graphml' 
+;	
+
+Severity:
+	level=SEV;
+ 
+Policies:
+	 {Policies} nocheck?='nocheck'  | sync?='sync'  |  (pathgenerator=PathGeneratorStopCondition ';' severity=Severity ';');
+
+PathGeneratorStopCondition hidden(WS, ML_COMMENT, SL_COMMENT):
+	  {PathGeneratorStopCondition} algorithmType=AlgorithmType  '(' ( stopCondition = StringCondition |  stopConditionype = IntegerStopCondition | stopCondition =  PercentageCondition ) ')' (WS*);
+
+AlgorithmType:
+	type='random' | type='quick_random' | type='a_star'
+;
+  
+IntegerStopCondition returns StopCondition:
+	 pathtype = 'time_duration' '(' (value = INT) ')' | pathtype = 'dependency_edge_coverage' '('  (value = INT) ')'  ;	
+ 
+PercentageCondition returns StopCondition:
+	(pathtype = 'edge_coverage' '(' percentage=(Percent) ')') | pathtype =  'vertex_coverage' '(' percentage=(Percent) ')' | pathtype = 'requirement_coverage' '(' percentage =(Percent) ')'  ;		
+
+StringCondition returns StopCondition hidden(WS, ML_COMMENT, SL_COMMENT):
+	(pathtype = 'reached_vertex' '(' graphelement=(GraphElement) ')') | (pathtype = 'reached_edge' '(' graphelement=(GraphElement) ')') ;	
+
+Percent:
+	INT; 
+
+GraphElement: name=ID;
+	

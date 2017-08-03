@@ -6,13 +6,16 @@
  <packaging>pom</packaging>
 
  <properties>
-  <tycho.version>0.26.0</tycho.version>
+  <tycho.version>1.0.0</tycho.version>
   <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   <neon-repo.url>http://download.eclipse.org/eclipse/updates/4.6/</neon-repo.url>
   <swtbot-repo.url>http://download.eclipse.org/technology/swtbot/snapshots/</swtbot-repo.url>
   <gef3-repo.url>http://download.eclipse.org/tools/gef/updates/legacy/releases/</gef3-repo.url>
   <gef-repo.url>http://download.eclipse.org/tools/gef/gef4/updates/releases</gef-repo.url>
   <wtp-repo.url>http://download.eclipse.org/webtools/repository/neon/</wtp-repo.url>
+  <xtext-repo.url>http://download.eclipse.org/modeling/tmf/xtext/updates/releases/2.12.0/</xtext-repo.url>
+  <emf-repo.url>http://download.eclipse.org/modeling/emf/emf/updates/2.10.x</emf-repo.url>
+  <antlr-repo.url>http://antlreclipse.sourceforge.net/updates/</antlr-repo.url>
  </properties>
 
  <repositories>
@@ -40,7 +43,24 @@
       <id>wtp</id>
     <url>${wtp-repo.url}</url>
     <layout>p2</layout>
+  </repository>   
+  <repository>
+      <id>xtext</id>
+    <url>${xtext-repo.url}</url>
+    <layout>p2</layout>
+  </repository>
+   <repository>
+   <id>emf</id>
+   <url>${emf-repo.url}</url>
+   <layout>p2</layout>
+  </repository>  
+  <repository>
+   <id>antlr</id>
+   <url>${antlr-repo.url}</url>
+   <layout>p2</layout>
   </repository>    
+  
+  
  </repositories>
 
  <build>

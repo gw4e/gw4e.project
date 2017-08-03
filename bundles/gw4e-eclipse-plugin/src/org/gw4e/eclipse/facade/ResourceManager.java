@@ -771,6 +771,8 @@ public class ResourceManager implements IResourceChangeListener {
 		return ifile;
 	}
 
+ 
+	
 	/**
 	 * Return the passed parameters (a file) as an IFolder
 	 * 
