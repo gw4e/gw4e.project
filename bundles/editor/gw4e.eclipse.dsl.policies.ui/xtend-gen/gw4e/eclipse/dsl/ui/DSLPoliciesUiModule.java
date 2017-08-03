@@ -6,6 +6,7 @@ package gw4e.eclipse.dsl.ui;
 import gw4e.eclipse.dsl.ui.AbstractDSLPoliciesUiModule;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.eclipse.xtend.lib.annotations.FinalFieldsConstructor;
+import org.eclipse.xtext.ui.editor.IXtextEditorCallback;
 
 /**
  * Use this class to register components to be used within the Eclipse IDE.
@@ -13,7 +14,12 @@ import org.eclipse.xtend.lib.annotations.FinalFieldsConstructor;
 @FinalFieldsConstructor
 @SuppressWarnings("all")
 public class DSLPoliciesUiModule extends AbstractDSLPoliciesUiModule {
-  public DSLPoliciesUiModule(final AbstractUIPlugin arg0) {
-    super(arg0);
+  @Override
+  public Class<? extends IXtextEditorCallback> bindIXtextEditorCallback() {
+    return null;
+  }
+  
+  public DSLPoliciesUiModule(final AbstractUIPlugin plugin) {
+    super(plugin);
   }
 }
