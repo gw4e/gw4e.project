@@ -2399,6 +2399,12 @@ rule__AlgorithmType__Alternatives
 		(rule__AlgorithmType__TypeAssignment_2)
 		{ after(grammarAccess.getAlgorithmTypeAccess().getTypeAssignment_2()); }
 	)
+	|
+	(
+		{ before(grammarAccess.getAlgorithmTypeAccess().getTypeAssignment_3()); }
+		(rule__AlgorithmType__TypeAssignment_3)
+		{ after(grammarAccess.getAlgorithmTypeAccess().getTypeAssignment_3()); }
+	)
 ;
 finally {
 	restoreStackSize(stackSize);
@@ -16878,6 +16884,25 @@ rule__AlgorithmType__TypeAssignment_2
 			{ after(grammarAccess.getAlgorithmTypeAccess().getTypeA_starKeyword_2_0()); }
 		)
 		{ after(grammarAccess.getAlgorithmTypeAccess().getTypeA_starKeyword_2_0()); }
+	)
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+rule__AlgorithmType__TypeAssignment_3
+	@init {
+		int stackSize = keepStackSize();
+	}
+:
+	(
+		{ before(grammarAccess.getAlgorithmTypeAccess().getTypeWeighted_randomKeyword_3_0()); }
+		(
+			{ before(grammarAccess.getAlgorithmTypeAccess().getTypeWeighted_randomKeyword_3_0()); }
+			'weighted_random'
+			{ after(grammarAccess.getAlgorithmTypeAccess().getTypeWeighted_randomKeyword_3_0()); }
+		)
+		{ after(grammarAccess.getAlgorithmTypeAccess().getTypeWeighted_randomKeyword_3_0()); }
 	)
 ;
 finally {

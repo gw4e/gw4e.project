@@ -85,6 +85,8 @@ ruleAlgorithmType:
 		'quick_random'
 		    |
 		'a_star'
+		    |
+		'weighted_random'
 	)
 ;
 

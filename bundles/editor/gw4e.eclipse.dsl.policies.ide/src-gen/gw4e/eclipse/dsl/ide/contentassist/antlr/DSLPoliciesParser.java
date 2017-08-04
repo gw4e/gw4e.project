@@ -288,6 +288,7 @@ public class DSLPoliciesParser extends AbstractContentAssistParser {
 					put(grammarAccess.getAlgorithmTypeAccess().getTypeAssignment_0(), "rule__AlgorithmType__TypeAssignment_0");
 					put(grammarAccess.getAlgorithmTypeAccess().getTypeAssignment_1(), "rule__AlgorithmType__TypeAssignment_1");
 					put(grammarAccess.getAlgorithmTypeAccess().getTypeAssignment_2(), "rule__AlgorithmType__TypeAssignment_2");
+					put(grammarAccess.getAlgorithmTypeAccess().getTypeAssignment_3(), "rule__AlgorithmType__TypeAssignment_3");
 					put(grammarAccess.getIntegerStopConditionAccess().getPathtypeAssignment_0_0(), "rule__IntegerStopCondition__PathtypeAssignment_0_0");
 					put(grammarAccess.getIntegerStopConditionAccess().getValueAssignment_0_2(), "rule__IntegerStopCondition__ValueAssignment_0_2");
 					put(grammarAccess.getIntegerStopConditionAccess().getPathtypeAssignment_1_0(), "rule__IntegerStopCondition__PathtypeAssignment_1_0");

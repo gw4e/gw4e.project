@@ -300,12 +300,14 @@ public class DSLPoliciesGrammarAccess extends AbstractGrammarElementFinder {
 		private final Keyword cTypeQuick_randomKeyword_1_0 = (Keyword)cTypeAssignment_1.eContents().get(0);
 		private final Assignment cTypeAssignment_2 = (Assignment)cAlternatives.eContents().get(2);
 		private final Keyword cTypeA_starKeyword_2_0 = (Keyword)cTypeAssignment_2.eContents().get(0);
+		private final Assignment cTypeAssignment_3 = (Assignment)cAlternatives.eContents().get(3);
+		private final Keyword cTypeWeighted_randomKeyword_3_0 = (Keyword)cTypeAssignment_3.eContents().get(0);
 		
 		//AlgorithmType:
-		//	type='random' | type='quick_random' | type='a_star';
+		//	type='random' | type='quick_random' | type='a_star' | type='weighted_random';
 		@Override public ParserRule getRule() { return rule; }
 		
-		//type='random' | type='quick_random' | type='a_star'
+		//type='random' | type='quick_random' | type='a_star' | type='weighted_random'
 		public Alternatives getAlternatives() { return cAlternatives; }
 		
 		//type='random'
@@ -325,6 +327,12 @@ public class DSLPoliciesGrammarAccess extends AbstractGrammarElementFinder {
 		
 		//'a_star'
 		public Keyword getTypeA_starKeyword_2_0() { return cTypeA_starKeyword_2_0; }
+		
+		//type='weighted_random'
+		public Assignment getTypeAssignment_3() { return cTypeAssignment_3; }
+		
+		//'weighted_random'
+		public Keyword getTypeWeighted_randomKeyword_3_0() { return cTypeWeighted_randomKeyword_3_0; }
 	}
 	public class IntegerStopConditionElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "gw4e.eclipse.dsl.DSLPolicies.IntegerStopCondition");
@@ -755,7 +763,7 @@ public class DSLPoliciesGrammarAccess extends AbstractGrammarElementFinder {
 	}
 	
 	//AlgorithmType:
-	//	type='random' | type='quick_random' | type='a_star';
+	//	type='random' | type='quick_random' | type='a_star' | type='weighted_random';
 	public AlgorithmTypeElements getAlgorithmTypeAccess() {
 		return pAlgorithmType;
 	}

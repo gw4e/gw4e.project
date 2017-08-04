@@ -368,7 +368,7 @@ public class DSLPoliciesSemanticSequencer extends XbaseSemanticSequencer {
 	 *     AlgorithmType returns AlgorithmType
 	 *
 	 * Constraint:
-	 *     (type='random' | type='quick_random' | type='a_star')
+	 *     (type='random' | type='quick_random' | type='a_star' | type='weighted_random')
 	 */
 	protected void sequence_AlgorithmType(ISerializationContext context, AlgorithmType semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);

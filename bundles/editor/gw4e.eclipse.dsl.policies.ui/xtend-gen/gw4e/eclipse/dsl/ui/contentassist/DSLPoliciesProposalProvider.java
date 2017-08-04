@@ -139,6 +139,13 @@ public class DSLPoliciesProposalProvider extends AbstractDSLPoliciesProposalProv
     acceptor.accept(this.createCompletionProposal("random(vertex_coverage(100))", context));
     acceptor.accept(this.createCompletionProposal("random(requirement_coverage(100))", context));
     acceptor.accept(this.createCompletionProposal("random(time_duration(30))", context));
+    acceptor.accept(this.createCompletionProposal("weighted_random(reached_vertex(...))", context));
+    acceptor.accept(this.createCompletionProposal("weighted_random(reached_edge(...))", context));
+    acceptor.accept(this.createCompletionProposal("weighted_random(dependency_edge_coverage(1))", context));
+    acceptor.accept(this.createCompletionProposal("weighted_random(edge_coverage(100))", context));
+    acceptor.accept(this.createCompletionProposal("weighted_random(vertex_coverage(100))", context));
+    acceptor.accept(this.createCompletionProposal("weighted_random(requirement_coverage(100))", context));
+    acceptor.accept(this.createCompletionProposal("weighted_random(time_duration(30))", context));
     acceptor.accept(this.createCompletionProposal("quick_random(reached_vertex(...))", context));
     acceptor.accept(this.createCompletionProposal("quick_random(reached_edge(...))", context));
     acceptor.accept(this.createCompletionProposal("quick_random(dependency_edge_coverage(1))", context));

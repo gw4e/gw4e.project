@@ -70,12 +70,16 @@
       <br/> 
       For more information on Checking model visit :  http://graphwalker.github.io/cli-check/  
       <br /><br/>
-      In the Package Explorer, right click your the build.policies file and select Open With... -&gt; GW4E Build Policies Editor.<br/> 
+      In the Package Explorer, right click your the build.policies file and select Open With... -&gt; GW4E DSL Build Policies Editor.<br/> 
       The editor opens the file and you can read the syntax as follows : <br/><br/>
       'Graph file name' =  COMMA_SEPARATED_LIST_OF_GENERATOR(STOP_CONDITION);<br/><br/>
       <b>COMMA_SEPARATED_LIST_OF_GENERATOR(STOP_CONDITION)</b> : (GENERATOR(STOP_CONDITION);SEVERITY;)*<br/>
       <b>SEVERITY</b> : I | W | E<br/>
       <b>GENERATOR(STOP_CONDITION)</b> :  See GraphWalker documentation<br/>
+      <br/><br/>
+      <b>Tips</b> The editor can guide you to write policies. Press <b>ctrl-space</b> on your keyboard for grammar prediction. For example <br/>
+      If you use the following syntax <b>Simple.json=random(reached_edge(e_StartApp));I;</b>, pressing <b>ctrl-space</b> will open a list all edges defined in the Simple.json model file.<br/>
+      
 	<br/> 
       The build.policies file contains default policies. The default can be managed in the GW4E preference, you will learn how to do so in a different tutorial. 
   	   As you can see, the configuration leads to 2 checks when building the project. The plugin must check and analyze the graph file with the following GENERATOR(STOPCONDITION);SEVERITY<br/>

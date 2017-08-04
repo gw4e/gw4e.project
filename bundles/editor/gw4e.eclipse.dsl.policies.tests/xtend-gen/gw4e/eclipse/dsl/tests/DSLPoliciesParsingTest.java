@@ -102,6 +102,83 @@ public class DSLPoliciesParsingTest {
   }
   
   @Test
+  public void testWeightedRandomReachedVertex() {
+    try {
+      final Model result = this.parseHelper.parse(("\n" + "Simple.json=weighted_random(reached_vertex(v_VerifyAppRunning));I;"));
+      Assert.assertNotNull(result);
+      Assert.assertTrue(result.eResource().getErrors().isEmpty());
+    } catch (Throwable _e) {
+      throw Exceptions.sneakyThrow(_e);
+    }
+  }
+  
+  @Test
+  public void testWeightedRandomReachedEdge() {
+    try {
+      final Model result = this.parseHelper.parse(("\n" + "Simple.json=weighted_random(reached_edge(v_VerifyAppRunning));I;"));
+      Assert.assertNotNull(result);
+      Assert.assertTrue(result.eResource().getErrors().isEmpty());
+    } catch (Throwable _e) {
+      throw Exceptions.sneakyThrow(_e);
+    }
+  }
+  
+  @Test
+  public void testWeightedRandomDependencyEdgeCoverage() {
+    try {
+      final Model result = this.parseHelper.parse(("\n" + "Simple.json=weighted_random(dependency_edge_coverage(100));I;"));
+      Assert.assertNotNull(result);
+      Assert.assertTrue(result.eResource().getErrors().isEmpty());
+    } catch (Throwable _e) {
+      throw Exceptions.sneakyThrow(_e);
+    }
+  }
+  
+  @Test
+  public void testWeightedRandomEdgeCoverage() {
+    try {
+      final Model result = this.parseHelper.parse(("\n" + "Simple.json=weighted_random(edge_coverage(100));I;"));
+      Assert.assertNotNull(result);
+      Assert.assertTrue(result.eResource().getErrors().isEmpty());
+    } catch (Throwable _e) {
+      throw Exceptions.sneakyThrow(_e);
+    }
+  }
+  
+  @Test
+  public void testWeightedRandomVertexCoverage() {
+    try {
+      final Model result = this.parseHelper.parse(("\n" + "Simple.json=weighted_random(vertex_coverage(100));I;"));
+      Assert.assertNotNull(result);
+      Assert.assertTrue(result.eResource().getErrors().isEmpty());
+    } catch (Throwable _e) {
+      throw Exceptions.sneakyThrow(_e);
+    }
+  }
+  
+  @Test
+  public void testWeightedRandomRequirementCoverage() {
+    try {
+      final Model result = this.parseHelper.parse(("\n" + "Simple.json=weighted_random(requirement_coverage(100));I;"));
+      Assert.assertNotNull(result);
+      Assert.assertTrue(result.eResource().getErrors().isEmpty());
+    } catch (Throwable _e) {
+      throw Exceptions.sneakyThrow(_e);
+    }
+  }
+  
+  @Test
+  public void testWeightedRandomTimeDuration() {
+    try {
+      final Model result = this.parseHelper.parse(("\n" + "Simple.json=weighted_random(time_duration(100));I;"));
+      Assert.assertNotNull(result);
+      Assert.assertTrue(result.eResource().getErrors().isEmpty());
+    } catch (Throwable _e) {
+      throw Exceptions.sneakyThrow(_e);
+    }
+  }
+  
+  @Test
   public void testQuickRandomReachedVertex() {
     try {
       final Model result = this.parseHelper.parse(("\n" + "Simple.json=quick_random(reached_vertex(v_VerifyAppRunning));I;"));

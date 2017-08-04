@@ -67,6 +67,57 @@ class DSLPoliciesParsingTest {
 		Assert.assertTrue(result.eResource.errors.isEmpty)
 	}
 		  
+		  
+	@Test
+	def void testWeightedRandomReachedVertex() {
+		val result = parseHelper.parse('\n' + 'Simple.json=weighted_random(reached_vertex(v_VerifyAppRunning));I;' )
+		Assert.assertNotNull(result)
+		Assert.assertTrue(result.eResource.errors.isEmpty)
+	}
+	
+	@Test
+	def void testWeightedRandomReachedEdge() {
+		val result = parseHelper.parse('\n' + 'Simple.json=weighted_random(reached_edge(v_VerifyAppRunning));I;' )
+		Assert.assertNotNull(result)
+		Assert.assertTrue(result.eResource.errors.isEmpty)
+	}
+
+	@Test
+	def void testWeightedRandomDependencyEdgeCoverage() {
+		val result = parseHelper.parse('\n' + 'Simple.json=weighted_random(dependency_edge_coverage(100));I;' )
+		Assert.assertNotNull(result)
+		Assert.assertTrue(result.eResource.errors.isEmpty)
+	}		
+	 	
+ 	@Test
+	def void testWeightedRandomEdgeCoverage() {
+		val result = parseHelper.parse('\n' + 'Simple.json=weighted_random(edge_coverage(100));I;' )
+		Assert.assertNotNull(result)
+		Assert.assertTrue(result.eResource.errors.isEmpty)
+	}
+		 	
+ 	@Test
+	def void testWeightedRandomVertexCoverage() {
+		val result = parseHelper.parse('\n' + 'Simple.json=weighted_random(vertex_coverage(100));I;' )
+		Assert.assertNotNull(result)
+		Assert.assertTrue(result.eResource.errors.isEmpty)
+	}
+	
+ 	@Test
+	def void testWeightedRandomRequirementCoverage() {
+		val result = parseHelper.parse('\n' + 'Simple.json=weighted_random(requirement_coverage(100));I;' )
+		Assert.assertNotNull(result)
+		Assert.assertTrue(result.eResource.errors.isEmpty)
+	}
+	
+ 	@Test
+	def void testWeightedRandomTimeDuration() {
+		val result = parseHelper.parse('\n' + 'Simple.json=weighted_random(time_duration(100));I;' )
+		Assert.assertNotNull(result)
+		Assert.assertTrue(result.eResource.errors.isEmpty)
+	}		  
+		  
+		  
  	@Test
 	def void testQuickRandomReachedVertex() {
 		val result = parseHelper.parse('\n' + 'Simple.json=quick_random(reached_vertex(v_VerifyAppRunning));I;' )

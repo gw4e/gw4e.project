@@ -593,6 +593,21 @@ ruleAlgorithmType returns [EObject current=null]
 				}
 			)
 		)
+		    |
+		(
+			(
+				lv_type_3_0='weighted_random'
+				{
+					newLeafNode(lv_type_3_0, grammarAccess.getAlgorithmTypeAccess().getTypeWeighted_randomKeyword_3_0());
+				}
+				{
+					if ($current==null) {
+						$current = createModelElement(grammarAccess.getAlgorithmTypeRule());
+					}
+					setWithLastConsumed($current, "type", lv_type_3_0, "weighted_random");
+				}
+			)
+		)
 	)
 ;
 
