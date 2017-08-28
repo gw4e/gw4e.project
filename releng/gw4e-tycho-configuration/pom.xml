@@ -13,7 +13,7 @@
   <gef3-repo.url>http://download.eclipse.org/tools/gef/updates/legacy/releases/</gef3-repo.url>
   <gef-repo.url>http://download.eclipse.org/tools/gef/gef4/updates/releases</gef-repo.url>
   <wtp-repo.url>http://download.eclipse.org/webtools/repository/neon/</wtp-repo.url>
-  <xtext-repo.url> http://download.eclipse.org/modeling/tmf/xtext/updates/composite/releases/</xtext-repo.url>
+  <xtext-repo.url>http://download.eclipse.org/modeling/tmf/xtext/updates/composite/releases/</xtext-repo.url>
   <emf-repo.url>http://download.eclipse.org/modeling/emf/emf/updates/2.10.x</emf-repo.url>
   <antlr-repo.url>http://antlreclipse.sourceforge.net/updates/</antlr-repo.url>
  </properties>

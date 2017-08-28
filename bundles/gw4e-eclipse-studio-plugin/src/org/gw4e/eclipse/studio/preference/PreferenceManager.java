@@ -1,5 +1,7 @@
 package org.gw4e.eclipse.studio.preference;
 
+import java.io.File;
+
 /*-
  * #%L
  * gw4e
@@ -29,8 +31,10 @@ package org.gw4e.eclipse.studio.preference;
  */
 
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
 
+import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.resource.ImageDescriptor;
@@ -38,6 +42,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Display;
+import org.gw4e.eclipse.facade.ResourceManager;
 import org.gw4e.eclipse.studio.Activator;
 
 public class PreferenceManager implements PreferenceConstants {
@@ -122,19 +127,33 @@ public class PreferenceManager implements PreferenceConstants {
 		return imageBlocked;		
 	}
 
+	
+
+	
 	/**
 	 * @return the imageactionscripted
 	 */
 	public static Image getImageActionScripted() {
 		if (imageActionScripted==null) {
 			try {
-				imageActionScripted = ImageDescriptor.createFromURL(
-						new URL("platform:/plugin/org.eclipse.debug.ui/icons/full/obj16/debugt_obj.gif")).createImage();
+				URL url = new URL("platform:/plugin/org.eclipse.debug.ui/icons/full/obj16/debugt_obj.gif");
+				String location = FileLocator.toFileURL(url).toString();
+				URI u = new URI(location.trim().replaceAll("\\u0020", "%20"));
+			    File file = new File(u.getPath());
+				if (file.exists()) {
+					imageActionScripted = ImageDescriptor.createFromURL(url).createImage();
+				}  
 			} catch (Exception e) {
 				try {
-					imageActionScripted = ImageDescriptor.createFromURL(
-							new URL("platform:/plugin/org.eclipse.debug.ui/icons/full/obj16/debugt_obj.png")).createImage();
-				} catch (MalformedURLException e1) {
+					URL url = new URL("platform:/plugin/org.eclipse.debug.ui/icons/full/obj16/debugt_obj.png");
+					String location = FileLocator.toFileURL(url).toString();
+					URI u = new URI(location.trim().replaceAll("\\u0020", "%20"));
+				    File file = new File(u.getPath());
+					if (file.exists()) {
+						imageActionScripted = ImageDescriptor.createFromURL(url).createImage();
+					}  
+				} catch (Exception e1) {
+				    ResourceManager.logException(e1);
 				}
 			}
 		}
@@ -162,13 +181,24 @@ public class PreferenceManager implements PreferenceConstants {
 	public static Image getImageGuardScripted() {
 		if (imageGuardScripted==null) {
 			try {
-				imageGuardScripted = ImageDescriptor.createFromURL(
-					 	new URL("platform:/plugin/org.eclipse.debug.ui/icons/full/elcl16/stepbystep_co.gif")).createImage();
+				URL url = new URL("platform:/plugin/org.eclipse.debug.ui/icons/full/elcl16/stepbystep_co.gif");
+				String location = FileLocator.toFileURL(url).toString();
+				URI u = new URI(location.trim().replaceAll("\\u0020", "%20"));
+			    File file = new File(u.getPath());
+				if (file.exists()) {
+					imageGuardScripted = ImageDescriptor.createFromURL(url).createImage();
+				}  
 			} catch (Exception e) {
 				try {
-					imageGuardScripted = ImageDescriptor.createFromURL(
-						 	new URL("platform:/plugin/org.eclipse.debug.ui/icons/full/elcl16/stepbystep_co.png")).createImage();
-				} catch (MalformedURLException e1) {
+					URL url = new URL("platform:/plugin/org.eclipse.debug.ui/icons/full/elcl16/stepbystep_co.png");
+					String location = FileLocator.toFileURL(url).toString();
+					URI u = new URI(location.trim().replaceAll("\\u0020", "%20"));
+				    File file = new File(u.getPath());
+					if (file.exists()) {
+						imageGuardScripted = ImageDescriptor.createFromURL(url).createImage();
+					}  
+				} catch (Exception e1) {
+				    ResourceManager.logException(e1);
 				}
 			}
 		}

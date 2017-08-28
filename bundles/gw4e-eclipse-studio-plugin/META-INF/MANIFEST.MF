@@ -4,7 +4,9 @@ Bundle-Name: gw4e-eclipse-studio-plugin
 Bundle-SymbolicName: gw4e-eclipse-studio-plugin;singleton:=true
 Bundle-Version: 4.0.0.qualifier
 Bundle-Activator: org.gw4e.eclipse.studio.Activator
-Require-Bundle: org.eclipse.ui,
+Require-Bundle: org.eclipse.gef4.graph;bundle-version="1.1.0",
+ org.eclipse.gef4.layout;bundle-version="1.0.1",
+ org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.jface.text,
  org.eclipse.ui.editors,
@@ -16,11 +18,9 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.ui.navigator;bundle-version="3.6.101",
  org.eclipse.core.resources;bundle-version="3.11.1",
  org.eclipse.ui.ide;bundle-version="3.12.2",
- org.eclipse.gef4.graph;bundle-version="1.1.0",
- org.eclipse.gef4.layout;bundle-version="1.0.1",
  org.eclipse.gef4.geometry;bundle-version="1.0.1",
- gw4e-eclipse-core;bundle-version="4.0.0",
- gw4e-eclipse-plugin;bundle-version="4.0.0"
+ gw4e-eclipse-plugin;bundle-version="4.0.0",
+ gw4e-eclipse-core;bundle-version="4.0.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Bundle-ClassPath: .
