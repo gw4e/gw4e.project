@@ -130,7 +130,12 @@ public class PreferenceManager implements PreferenceConstants {
 			try {
 				imageActionScripted = ImageDescriptor.createFromURL(
 						new URL("platform:/plugin/org.eclipse.debug.ui/icons/full/obj16/debugt_obj.gif")).createImage();
-			} catch (MalformedURLException e) {
+			} catch (Exception e) {
+				try {
+					imageActionScripted = ImageDescriptor.createFromURL(
+							new URL("platform:/plugin/org.eclipse.debug.ui/icons/full/obj16/debugt_obj.png")).createImage();
+				} catch (MalformedURLException e1) {
+				}
 			}
 		}
 		return imageActionScripted;
@@ -159,7 +164,12 @@ public class PreferenceManager implements PreferenceConstants {
 			try {
 				imageGuardScripted = ImageDescriptor.createFromURL(
 					 	new URL("platform:/plugin/org.eclipse.debug.ui/icons/full/elcl16/stepbystep_co.gif")).createImage();
-			} catch (MalformedURLException e) {
+			} catch (Exception e) {
+				try {
+					imageGuardScripted = ImageDescriptor.createFromURL(
+						 	new URL("platform:/plugin/org.eclipse.debug.ui/icons/full/elcl16/stepbystep_co.png")).createImage();
+				} catch (MalformedURLException e1) {
+				}
 			}
 		}
 		return imageGuardScripted;
