@@ -46,6 +46,7 @@ import org.eclipse.gef4.graph.Node;
 import org.gw4e.eclipse.studio.facade.LayoutAlgoritmManager;
 import org.gw4e.eclipse.studio.part.editor.EdgePart;
 import org.gw4e.eclipse.studio.preference.PreferenceManager;
+import org.osgi.framework.Bundle;
   
 
 public class GWGraph extends GWNode {
@@ -322,7 +323,7 @@ public class GWGraph extends GWNode {
 		if (key.equals(Graph.class)) {
 			int maxWidth  = -1;
 			int maxHeight = -1;
-			Graph graph = new Graph ();
+ 			Graph graph = new Graph ();
 			 
 			Collection<Vertex> vertices = this.vertices.values();
 			Map<Vertex,Node> dic = new HashMap<Vertex,Node> ();
