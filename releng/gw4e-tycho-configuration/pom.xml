@@ -16,6 +16,7 @@
   <xtext-repo.url>http://download.eclipse.org/modeling/tmf/xtext/updates/composite/releases/</xtext-repo.url>
   <emf-repo.url>http://download.eclipse.org/modeling/emf/emf/updates/2.10.x</emf-repo.url>
   <antlr-repo.url>http://antlreclipse.sourceforge.net/updates/</antlr-repo.url>
+  <efxclipse-repo.url>http://download.eclipse.org/efxclipse/runtime-shared-released/2.0.0/site</efxclipse-repo.url>
  </properties>
 
  <repositories>
@@ -59,8 +60,11 @@
    <url>${antlr-repo.url}</url>
    <layout>p2</layout>
   </repository>    
-  
-  
+  <repository>
+   <id>efxclipse</id>
+   <url>${efxclipse-repo.url}</url>
+   <layout>p2</layout>
+  </repository>      
  </repositories>
 
  <build>
