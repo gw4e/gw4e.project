@@ -506,7 +506,7 @@ public class DSLPoliciesPackageImpl extends EPackageImpl implements DSLPoliciesP
     initEClass(policiesEClass, Policies.class, "Policies", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEAttribute(getPolicies_Nocheck(), ecorePackage.getEBoolean(), "nocheck", null, 0, 1, Policies.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEAttribute(getPolicies_Sync(), ecorePackage.getEBoolean(), "sync", null, 0, 1, Policies.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getPolicies_Pathgenerator(), this.getPathGeneratorStopCondition(), null, "pathgenerator", null, 0, 1, Policies.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getPolicies_Pathgenerator(), this.getPathGeneratorStopCondition(), null, "pathgenerator", null, 0, -1, Policies.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getPolicies_Severity(), this.getSeverity(), null, "severity", null, 0, 1, Policies.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(pathGeneratorStopConditionEClass, PathGeneratorStopCondition.class, "PathGeneratorStopCondition", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);

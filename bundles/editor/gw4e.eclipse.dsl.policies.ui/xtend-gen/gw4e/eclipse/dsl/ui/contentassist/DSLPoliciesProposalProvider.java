@@ -128,38 +128,25 @@ public class DSLPoliciesProposalProvider extends AbstractDSLPoliciesProposalProv
     InputOutput.println();
   }
   
+  private final String[] proposals = { "random(reached_vertex(...))", "random(reached_edge(...))", "random(dependency_edge_coverage(1))", "random(edge_coverage(100))", "random(vertex_coverage(100))", "random(requirement_coverage(100))", "random(time_duration(30))", "weighted_random(reached_vertex(...))", "weighted_random(reached_edge(...))", "weighted_random(dependency_edge_coverage(1))", "weighted_random(edge_coverage(100))", "weighted_random(vertex_coverage(100))", "weighted_random(requirement_coverage(100))", "weighted_random(time_duration(30))", "quick_random(reached_vertex(...))", "quick_random(reached_edge(...))", "quick_random(dependency_edge_coverage(1))", "quick_random(edge_coverage(100))", "quick_random(vertex_coverage(100))", "quick_random(requirement_coverage(100))", "quick_random(time_duration(30))", "a_star(reached_vertex(...))", "a_star(reached_edge(...))", "a_star(dependency_edge_coverage(1))", "a_star(edge_coverage(100))", "a_star(vertex_coverage(100))", "a_star(requirement_coverage(100))", "a_star(time_duration(30))" };
+  
+  @Override
+  public void complete_WS(final EObject model, final RuleCall ruleCall, final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
+    System.out.println("---> complete_WS");
+    super.complete_PathGeneratorStopCondition(model, ruleCall, context, acceptor);
+    acceptor.accept(this.createCompletionProposal(";", context));
+    for (final String elt : this.proposals) {
+      acceptor.accept(this.createCompletionProposal((" " + elt), context));
+    }
+  }
+  
   @Override
   public void complete_PathGeneratorStopCondition(final EObject model, final RuleCall ruleCall, final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
     System.out.println("---> complete_PathGeneratorStopCondition");
     super.complete_PathGeneratorStopCondition(model, ruleCall, context, acceptor);
-    acceptor.accept(this.createCompletionProposal("random(reached_vertex(...))", context));
-    acceptor.accept(this.createCompletionProposal("random(reached_edge(...))", context));
-    acceptor.accept(this.createCompletionProposal("random(dependency_edge_coverage(1))", context));
-    acceptor.accept(this.createCompletionProposal("random(edge_coverage(100))", context));
-    acceptor.accept(this.createCompletionProposal("random(vertex_coverage(100))", context));
-    acceptor.accept(this.createCompletionProposal("random(requirement_coverage(100))", context));
-    acceptor.accept(this.createCompletionProposal("random(time_duration(30))", context));
-    acceptor.accept(this.createCompletionProposal("weighted_random(reached_vertex(...))", context));
-    acceptor.accept(this.createCompletionProposal("weighted_random(reached_edge(...))", context));
-    acceptor.accept(this.createCompletionProposal("weighted_random(dependency_edge_coverage(1))", context));
-    acceptor.accept(this.createCompletionProposal("weighted_random(edge_coverage(100))", context));
-    acceptor.accept(this.createCompletionProposal("weighted_random(vertex_coverage(100))", context));
-    acceptor.accept(this.createCompletionProposal("weighted_random(requirement_coverage(100))", context));
-    acceptor.accept(this.createCompletionProposal("weighted_random(time_duration(30))", context));
-    acceptor.accept(this.createCompletionProposal("quick_random(reached_vertex(...))", context));
-    acceptor.accept(this.createCompletionProposal("quick_random(reached_edge(...))", context));
-    acceptor.accept(this.createCompletionProposal("quick_random(dependency_edge_coverage(1))", context));
-    acceptor.accept(this.createCompletionProposal("quick_random(edge_coverage(100))", context));
-    acceptor.accept(this.createCompletionProposal("quick_random(vertex_coverage(100))", context));
-    acceptor.accept(this.createCompletionProposal("quick_random(requirement_coverage(100))", context));
-    acceptor.accept(this.createCompletionProposal("quick_random(time_duration(30))", context));
-    acceptor.accept(this.createCompletionProposal("a_star(reached_vertex(...))", context));
-    acceptor.accept(this.createCompletionProposal("a_star(reached_edge(...))", context));
-    acceptor.accept(this.createCompletionProposal("a_star(dependency_edge_coverage(1))", context));
-    acceptor.accept(this.createCompletionProposal("a_star(edge_coverage(100))", context));
-    acceptor.accept(this.createCompletionProposal("a_star(vertex_coverage(100))", context));
-    acceptor.accept(this.createCompletionProposal("a_star(requirement_coverage(100))", context));
-    acceptor.accept(this.createCompletionProposal("a_star(time_duration(30))", context));
+    for (final String elt : this.proposals) {
+      acceptor.accept(this.createCompletionProposal(elt, context));
+    }
   }
   
   @Override

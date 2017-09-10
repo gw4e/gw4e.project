@@ -16,7 +16,7 @@ import org.eclipse.xtext.ui.editor.outline.impl.DefaultOutlineTreeProvider
 class DSLPoliciesOutlineTreeProvider extends DefaultOutlineTreeProvider {
 	override void _createChildren(IOutlineNode parentNode, EObject modelElement) {
 		if (modelElement instanceof Policies) {
-			createNode(parentNode,  modelElement.getPathgenerator()); 
+			//createNode(parentNode,  modelElement.getPathgenerator().size()); 
 			createNode(parentNode,  modelElement.getSeverity()); 
 		} else {
 			 super._createChildren(parentNode, modelElement); 

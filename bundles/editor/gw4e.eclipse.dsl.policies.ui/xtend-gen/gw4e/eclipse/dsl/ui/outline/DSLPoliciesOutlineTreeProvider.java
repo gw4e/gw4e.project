@@ -18,7 +18,6 @@ public class DSLPoliciesOutlineTreeProvider extends DefaultOutlineTreeProvider {
   @Override
   public void _createChildren(final IOutlineNode parentNode, final EObject modelElement) {
     if ((modelElement instanceof Policies)) {
-      this.createNode(parentNode, ((Policies)modelElement).getPathgenerator());
       this.createNode(parentNode, ((Policies)modelElement).getSeverity());
     } else {
       super._createChildren(parentNode, modelElement);

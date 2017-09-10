@@ -15,6 +15,7 @@ import org.eclipse.emf.edit.ui.provider.AdapterFactoryLabelProvider
 import org.eclipse.jface.resource.ImageDescriptor
 import org.eclipse.ui.plugin.AbstractUIPlugin
 import org.eclipse.xtext.xbase.ui.labeling.XbaseLabelProvider
+import org.eclipse.emf.common.util.EList
 
 /**
  * Provides labels for EObjects.
@@ -92,14 +93,21 @@ class DSLPoliciesLabelProvider extends XbaseLabelProvider {
 		if (policies.isNocheck()) {
 			return "nocheck";
 		}
-		return policies.getPathgenerator().getAlgorithmType().getType() + "(...)";
-	}
+		val EList<PathGeneratorStopCondition> list = policies.getPathgenerator();
+		if (list.size()==0) {
+			return "?";
+		}
+		if (list.size()==1) {
+			return list.get(0).getAlgorithmType().getType() + "(...)";
+		}
+		return list.get(0).getAlgorithmType().getType() + "(...), ...";
+ 	}
 
 	protected def String text(PathGeneratorStopCondition pgsc) {
 		val ge = pgsc.getStopCondition().getGraphelement();
 		if (ge !== null) {
-			return pgsc.getAlgorithmType().getType() + "(" + pgsc.getStopCondition().getPathtype() + "(" + ge.getName() + ")" +
-				")";
+			return pgsc.getAlgorithmType().getType() + "(" + pgsc.getStopCondition().getPathtype() + "(" +
+				ge.getName() + ")" + ")";
 		} else {
 			val percentage = pgsc.getStopCondition().getPercentage() + "";
 			if (percentage !== null) {

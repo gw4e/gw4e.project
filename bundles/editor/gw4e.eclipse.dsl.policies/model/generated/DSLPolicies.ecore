@@ -17,8 +17,8 @@
   <eClassifiers xsi:type="ecore:EClass" name="Policies">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="nocheck" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="sync" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="pathgenerator" eType="#//PathGeneratorStopCondition"
-        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="pathgenerator" upperBound="-1"
+        eType="#//PathGeneratorStopCondition" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="severity" eType="#//Severity"
         containment="true"/>
   </eClassifiers>

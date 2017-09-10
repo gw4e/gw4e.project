@@ -462,7 +462,7 @@ public class DSLPoliciesSemanticSequencer extends XbaseSemanticSequencer {
 	 *     Policies returns Policies
 	 *
 	 * Constraint:
-	 *     (nocheck?='nocheck' | sync?='sync' | (pathgenerator=PathGeneratorStopCondition severity=Severity))
+	 *     (nocheck?='nocheck' | sync?='sync' | (pathgenerator+=PathGeneratorStopCondition pathgenerator+=PathGeneratorStopCondition* severity=Severity))
 	 */
 	protected void sequence_Policies(ISerializationContext context, Policies semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);

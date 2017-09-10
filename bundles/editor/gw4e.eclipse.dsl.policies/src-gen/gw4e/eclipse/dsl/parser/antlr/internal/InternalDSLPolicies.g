@@ -299,16 +299,22 @@ ruleSeverity returns [EObject current=null]
 ;
 
 // Entry rule entryRulePolicies
-entryRulePolicies returns [EObject current=null]:
+entryRulePolicies returns [EObject current=null]@init {
+	HiddenTokens myHiddenTokenState = ((XtextTokenStream)input).setHiddenTokens("RULE_WS", "RULE_ML_COMMENT", "RULE_SL_COMMENT");
+}:
 	{ newCompositeNode(grammarAccess.getPoliciesRule()); }
 	iv_rulePolicies=rulePolicies
 	{ $current=$iv_rulePolicies.current; }
 	EOF;
+finally {
+	myHiddenTokenState.restore();
+}
 
 // Rule Policies
 rulePolicies returns [EObject current=null]
 @init {
 	enterRule();
+	HiddenTokens myHiddenTokenState = ((XtextTokenStream)input).setHiddenTokens("RULE_WS", "RULE_ML_COMMENT", "RULE_SL_COMMENT");
 }
 @after {
 	leaveRule();
@@ -364,7 +370,7 @@ rulePolicies returns [EObject current=null]
 						if ($current==null) {
 							$current = createModelElementForParent(grammarAccess.getPoliciesRule());
 						}
-						set(
+						add(
 							$current,
 							"pathgenerator",
 							lv_pathgenerator_3_0,
@@ -373,16 +379,41 @@ rulePolicies returns [EObject current=null]
 					}
 				)
 			)
-			otherlv_4=';'
+			(
+				otherlv_4=' '
+				{
+					newLeafNode(otherlv_4, grammarAccess.getPoliciesAccess().getSpaceKeyword_2_1_0());
+				}
+				(
+					(
+						{
+							newCompositeNode(grammarAccess.getPoliciesAccess().getPathgeneratorPathGeneratorStopConditionParserRuleCall_2_1_1_0());
+						}
+						lv_pathgenerator_5_0=rulePathGeneratorStopCondition
+						{
+							if ($current==null) {
+								$current = createModelElementForParent(grammarAccess.getPoliciesRule());
+							}
+							add(
+								$current,
+								"pathgenerator",
+								lv_pathgenerator_5_0,
+								"gw4e.eclipse.dsl.DSLPolicies.PathGeneratorStopCondition");
+							afterParserOrEnumRuleCall();
+						}
+					)
+				)
+			)*
+			otherlv_6=';'
 			{
-				newLeafNode(otherlv_4, grammarAccess.getPoliciesAccess().getSemicolonKeyword_2_1());
+				newLeafNode(otherlv_6, grammarAccess.getPoliciesAccess().getSemicolonKeyword_2_2());
 			}
 			(
 				(
 					{
-						newCompositeNode(grammarAccess.getPoliciesAccess().getSeveritySeverityParserRuleCall_2_2_0());
+						newCompositeNode(grammarAccess.getPoliciesAccess().getSeveritySeverityParserRuleCall_2_3_0());
 					}
-					lv_severity_5_0=ruleSeverity
+					lv_severity_7_0=ruleSeverity
 					{
 						if ($current==null) {
 							$current = createModelElementForParent(grammarAccess.getPoliciesRule());
@@ -390,19 +421,22 @@ rulePolicies returns [EObject current=null]
 						set(
 							$current,
 							"severity",
-							lv_severity_5_0,
+							lv_severity_7_0,
 							"gw4e.eclipse.dsl.DSLPolicies.Severity");
 						afterParserOrEnumRuleCall();
 					}
 				)
 			)
-			otherlv_6=';'
+			otherlv_8=';'
 			{
-				newLeafNode(otherlv_6, grammarAccess.getPoliciesAccess().getSemicolonKeyword_2_3());
+				newLeafNode(otherlv_8, grammarAccess.getPoliciesAccess().getSemicolonKeyword_2_4());
 			}
 		)
 	)
 ;
+finally {
+	myHiddenTokenState.restore();
+}
 
 // Entry rule entryRulePathGeneratorStopCondition
 entryRulePathGeneratorStopCondition returns [EObject current=null]@init {

@@ -25,6 +25,17 @@ public class DSLPoliciesParsingTest {
   private ParseHelper<Model> parseHelper;
   
   @Test
+  public void testMultipleGeneratorStopConditionSpaceSeparated() {
+    try {
+      final Model result = this.parseHelper.parse(("\n" + "Simple.json=random(reached_vertex(v_VerifyAppRunning)) a_star(reached_edge(e_enterSearchedWord));I;"));
+      Assert.assertNotNull(result);
+      Assert.assertTrue(result.eResource().getErrors().isEmpty());
+    } catch (Throwable _e) {
+      throw Exceptions.sneakyThrow(_e);
+    }
+  }
+  
+  @Test
   public void testRandomReachedVertex() {
     try {
       final Model result = this.parseHelper.parse(("\n" + "Simple.json=random(reached_vertex(v_VerifyAppRunning));I;"));

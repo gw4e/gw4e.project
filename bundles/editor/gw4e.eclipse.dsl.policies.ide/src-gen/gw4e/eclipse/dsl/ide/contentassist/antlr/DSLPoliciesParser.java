@@ -86,6 +86,7 @@ public class DSLPoliciesParser extends AbstractContentAssistParser {
 					put(grammarAccess.getModelNameAccess().getGroup_1(), "rule__ModelName__Group_1__0");
 					put(grammarAccess.getPoliciesAccess().getGroup_0(), "rule__Policies__Group_0__0");
 					put(grammarAccess.getPoliciesAccess().getGroup_2(), "rule__Policies__Group_2__0");
+					put(grammarAccess.getPoliciesAccess().getGroup_2_1(), "rule__Policies__Group_2_1__0");
 					put(grammarAccess.getPathGeneratorStopConditionAccess().getGroup(), "rule__PathGeneratorStopCondition__Group__0");
 					put(grammarAccess.getIntegerStopConditionAccess().getGroup_0(), "rule__IntegerStopCondition__Group_0__0");
 					put(grammarAccess.getIntegerStopConditionAccess().getGroup_1(), "rule__IntegerStopCondition__Group_1__0");
@@ -280,7 +281,8 @@ public class DSLPoliciesParser extends AbstractContentAssistParser {
 					put(grammarAccess.getPoliciesAccess().getNocheckAssignment_0_1(), "rule__Policies__NocheckAssignment_0_1");
 					put(grammarAccess.getPoliciesAccess().getSyncAssignment_1(), "rule__Policies__SyncAssignment_1");
 					put(grammarAccess.getPoliciesAccess().getPathgeneratorAssignment_2_0(), "rule__Policies__PathgeneratorAssignment_2_0");
-					put(grammarAccess.getPoliciesAccess().getSeverityAssignment_2_2(), "rule__Policies__SeverityAssignment_2_2");
+					put(grammarAccess.getPoliciesAccess().getPathgeneratorAssignment_2_1_1(), "rule__Policies__PathgeneratorAssignment_2_1_1");
+					put(grammarAccess.getPoliciesAccess().getSeverityAssignment_2_3(), "rule__Policies__SeverityAssignment_2_3");
 					put(grammarAccess.getPathGeneratorStopConditionAccess().getAlgorithmTypeAssignment_1(), "rule__PathGeneratorStopCondition__AlgorithmTypeAssignment_1");
 					put(grammarAccess.getPathGeneratorStopConditionAccess().getStopConditionAssignment_3_0(), "rule__PathGeneratorStopCondition__StopConditionAssignment_3_0");
 					put(grammarAccess.getPathGeneratorStopConditionAccess().getStopConditionypeAssignment_3_1(), "rule__PathGeneratorStopCondition__StopConditionypeAssignment_3_1");

@@ -27,11 +27,12 @@ ModelName:
 	ID '.json' | ID '.graphml' 
 ;	
 
-Severity:
+Severity :
 	level=SEV;
  
-Policies:
-	 {Policies} nocheck?='nocheck'  | sync?='sync'  |  (pathgenerator=PathGeneratorStopCondition ';' severity=Severity ';');
+Policies hidden(WS, ML_COMMENT, SL_COMMENT):
+	 {Policies} nocheck?='nocheck'  | sync?='sync'  |  (pathgenerator+=PathGeneratorStopCondition (' ' pathgenerator+=PathGeneratorStopCondition)* ';' severity=Severity ';');
+
 
 PathGeneratorStopCondition hidden(WS, ML_COMMENT, SL_COMMENT):
 	  {PathGeneratorStopCondition} algorithmType=AlgorithmType  '(' ( stopCondition = StringCondition |  stopConditionype = IntegerStopCondition | stopCondition =  PercentageCondition ) ')' (WS*);

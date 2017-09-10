@@ -3,6 +3,8 @@
  */
 package gw4e.eclipse.dsl.dSLPolicies;
 
+import org.eclipse.emf.common.util.EList;
+
 import org.eclipse.emf.ecore.EObject;
 
 /**
@@ -79,30 +81,20 @@ public interface Policies extends EObject
   void setSync(boolean value);
 
   /**
-   * Returns the value of the '<em><b>Pathgenerator</b></em>' containment reference.
+   * Returns the value of the '<em><b>Pathgenerator</b></em>' containment reference list.
+   * The list contents are of type {@link gw4e.eclipse.dsl.dSLPolicies.PathGeneratorStopCondition}.
    * <!-- begin-user-doc -->
    * <p>
-   * If the meaning of the '<em>Pathgenerator</em>' containment reference isn't clear,
+   * If the meaning of the '<em>Pathgenerator</em>' containment reference list isn't clear,
    * there really should be more of a description here...
    * </p>
    * <!-- end-user-doc -->
-   * @return the value of the '<em>Pathgenerator</em>' containment reference.
-   * @see #setPathgenerator(PathGeneratorStopCondition)
+   * @return the value of the '<em>Pathgenerator</em>' containment reference list.
    * @see gw4e.eclipse.dsl.dSLPolicies.DSLPoliciesPackage#getPolicies_Pathgenerator()
    * @model containment="true"
    * @generated
    */
-  PathGeneratorStopCondition getPathgenerator();
-
-  /**
-   * Sets the value of the '{@link gw4e.eclipse.dsl.dSLPolicies.Policies#getPathgenerator <em>Pathgenerator</em>}' containment reference.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @param value the new value of the '<em>Pathgenerator</em>' containment reference.
-   * @see #getPathgenerator()
-   * @generated
-   */
-  void setPathgenerator(PathGeneratorStopCondition value);
+  EList<PathGeneratorStopCondition> getPathgenerator();
 
   /**
    * Returns the value of the '<em><b>Severity</b></em>' containment reference.

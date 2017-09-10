@@ -56,6 +56,10 @@ rulePolicies:
 		'sync'
 		    |
 		rulePathGeneratorStopCondition
+		(
+			' '
+			rulePathGeneratorStopCondition
+		)*
 		';'
 		ruleSeverity
 		';'

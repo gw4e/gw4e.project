@@ -8,14 +8,21 @@ import gw4e.eclipse.dsl.dSLPolicies.PathGeneratorStopCondition;
 import gw4e.eclipse.dsl.dSLPolicies.Policies;
 import gw4e.eclipse.dsl.dSLPolicies.Severity;
 
+import java.util.Collection;
+
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
+
+import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
+
+import org.eclipse.emf.ecore.util.EObjectContainmentEList;
+import org.eclipse.emf.ecore.util.InternalEList;
 
 /**
  * <!-- begin-user-doc -->
@@ -76,14 +83,14 @@ public class PoliciesImpl extends MinimalEObjectImpl.Container implements Polici
   protected boolean sync = SYNC_EDEFAULT;
 
   /**
-   * The cached value of the '{@link #getPathgenerator() <em>Pathgenerator</em>}' containment reference.
+   * The cached value of the '{@link #getPathgenerator() <em>Pathgenerator</em>}' containment reference list.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @see #getPathgenerator()
    * @generated
    * @ordered
    */
-  protected PathGeneratorStopCondition pathgenerator;
+  protected EList<PathGeneratorStopCondition> pathgenerator;
 
   /**
    * The cached value of the '{@link #getSeverity() <em>Severity</em>}' containment reference.
@@ -167,47 +174,13 @@ public class PoliciesImpl extends MinimalEObjectImpl.Container implements Polici
    * <!-- end-user-doc -->
    * @generated
    */
-  public PathGeneratorStopCondition getPathgenerator()
+  public EList<PathGeneratorStopCondition> getPathgenerator()
   {
+    if (pathgenerator == null)
+    {
+      pathgenerator = new EObjectContainmentEList<PathGeneratorStopCondition>(PathGeneratorStopCondition.class, this, DSLPoliciesPackage.POLICIES__PATHGENERATOR);
+    }
     return pathgenerator;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public NotificationChain basicSetPathgenerator(PathGeneratorStopCondition newPathgenerator, NotificationChain msgs)
-  {
-    PathGeneratorStopCondition oldPathgenerator = pathgenerator;
-    pathgenerator = newPathgenerator;
-    if (eNotificationRequired())
-    {
-      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, DSLPoliciesPackage.POLICIES__PATHGENERATOR, oldPathgenerator, newPathgenerator);
-      if (msgs == null) msgs = notification; else msgs.add(notification);
-    }
-    return msgs;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public void setPathgenerator(PathGeneratorStopCondition newPathgenerator)
-  {
-    if (newPathgenerator != pathgenerator)
-    {
-      NotificationChain msgs = null;
-      if (pathgenerator != null)
-        msgs = ((InternalEObject)pathgenerator).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - DSLPoliciesPackage.POLICIES__PATHGENERATOR, null, msgs);
-      if (newPathgenerator != null)
-        msgs = ((InternalEObject)newPathgenerator).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - DSLPoliciesPackage.POLICIES__PATHGENERATOR, null, msgs);
-      msgs = basicSetPathgenerator(newPathgenerator, msgs);
-      if (msgs != null) msgs.dispatch();
-    }
-    else if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, DSLPoliciesPackage.POLICIES__PATHGENERATOR, newPathgenerator, newPathgenerator));
   }
 
   /**
@@ -269,7 +242,7 @@ public class PoliciesImpl extends MinimalEObjectImpl.Container implements Polici
     switch (featureID)
     {
       case DSLPoliciesPackage.POLICIES__PATHGENERATOR:
-        return basicSetPathgenerator(null, msgs);
+        return ((InternalEList<?>)getPathgenerator()).basicRemove(otherEnd, msgs);
       case DSLPoliciesPackage.POLICIES__SEVERITY:
         return basicSetSeverity(null, msgs);
     }
@@ -303,6 +276,7 @@ public class PoliciesImpl extends MinimalEObjectImpl.Container implements Polici
    * <!-- end-user-doc -->
    * @generated
    */
+  @SuppressWarnings("unchecked")
   @Override
   public void eSet(int featureID, Object newValue)
   {
@@ -315,7 +289,8 @@ public class PoliciesImpl extends MinimalEObjectImpl.Container implements Polici
         setSync((Boolean)newValue);
         return;
       case DSLPoliciesPackage.POLICIES__PATHGENERATOR:
-        setPathgenerator((PathGeneratorStopCondition)newValue);
+        getPathgenerator().clear();
+        getPathgenerator().addAll((Collection<? extends PathGeneratorStopCondition>)newValue);
         return;
       case DSLPoliciesPackage.POLICIES__SEVERITY:
         setSeverity((Severity)newValue);
@@ -341,7 +316,7 @@ public class PoliciesImpl extends MinimalEObjectImpl.Container implements Polici
         setSync(SYNC_EDEFAULT);
         return;
       case DSLPoliciesPackage.POLICIES__PATHGENERATOR:
-        setPathgenerator((PathGeneratorStopCondition)null);
+        getPathgenerator().clear();
         return;
       case DSLPoliciesPackage.POLICIES__SEVERITY:
         setSeverity((Severity)null);
@@ -365,7 +340,7 @@ public class PoliciesImpl extends MinimalEObjectImpl.Container implements Polici
       case DSLPoliciesPackage.POLICIES__SYNC:
         return sync != SYNC_EDEFAULT;
       case DSLPoliciesPackage.POLICIES__PATHGENERATOR:
-        return pathgenerator != null;
+        return pathgenerator != null && !pathgenerator.isEmpty();
       case DSLPoliciesPackage.POLICIES__SEVERITY:
         return severity != null;
     }

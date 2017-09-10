@@ -13,6 +13,7 @@ import gw4e.eclipse.dsl.dSLPolicies.Policies;
 import gw4e.eclipse.dsl.dSLPolicies.Severity;
 import gw4e.eclipse.dsl.dSLPolicies.StopCondition;
 import java.util.Arrays;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.edit.ui.provider.AdapterFactoryLabelProvider;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
@@ -131,8 +132,20 @@ public class DSLPoliciesLabelProvider extends XbaseLabelProvider {
     if (_isNocheck) {
       return "nocheck";
     }
-    String _type = policies.getPathgenerator().getAlgorithmType().getType();
-    return (_type + "(...)");
+    final EList<PathGeneratorStopCondition> list = policies.getPathgenerator();
+    int _size = list.size();
+    boolean _equals = (_size == 0);
+    if (_equals) {
+      return "?";
+    }
+    int _size_1 = list.size();
+    boolean _equals_1 = (_size_1 == 1);
+    if (_equals_1) {
+      String _type = list.get(0).getAlgorithmType().getType();
+      return (_type + "(...)");
+    }
+    String _type_1 = list.get(0).getAlgorithmType().getType();
+    return (_type_1 + "(...), ...");
   }
   
   protected String text(final PathGeneratorStopCondition pgsc) {
@@ -146,8 +159,7 @@ public class DSLPoliciesLabelProvider extends XbaseLabelProvider {
       String _name = ge.getName();
       String _plus_3 = (_plus_2 + _name);
       String _plus_4 = (_plus_3 + ")");
-      return (_plus_4 + 
-        ")");
+      return (_plus_4 + ")");
     } else {
       String _percentage = pgsc.getStopCondition().getPercentage();
       final String percentage = (_percentage + "");

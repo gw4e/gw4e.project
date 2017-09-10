@@ -179,7 +179,7 @@ public interface DSLPoliciesPackage extends EPackage
   int POLICIES__SYNC = 1;
 
   /**
-   * The feature id for the '<em><b>Pathgenerator</b></em>' containment reference.
+   * The feature id for the '<em><b>Pathgenerator</b></em>' containment reference list.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
@@ -470,10 +470,10 @@ public interface DSLPoliciesPackage extends EPackage
   EAttribute getPolicies_Sync();
 
   /**
-   * Returns the meta object for the containment reference '{@link gw4e.eclipse.dsl.dSLPolicies.Policies#getPathgenerator <em>Pathgenerator</em>}'.
+   * Returns the meta object for the containment reference list '{@link gw4e.eclipse.dsl.dSLPolicies.Policies#getPathgenerator <em>Pathgenerator</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for the containment reference '<em>Pathgenerator</em>'.
+   * @return the meta object for the containment reference list '<em>Pathgenerator</em>'.
    * @see gw4e.eclipse.dsl.dSLPolicies.Policies#getPathgenerator()
    * @see #getPolicies()
    * @generated
@@ -742,7 +742,7 @@ public interface DSLPoliciesPackage extends EPackage
     EAttribute POLICIES__SYNC = eINSTANCE.getPolicies_Sync();
 
     /**
-     * The meta object literal for the '<em><b>Pathgenerator</b></em>' containment reference feature.
+     * The meta object literal for the '<em><b>Pathgenerator</b></em>' containment reference list feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated

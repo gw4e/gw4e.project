@@ -175,16 +175,22 @@ public class DSLPoliciesGrammarAccess extends AbstractGrammarElementFinder {
 		private final Group cGroup_2 = (Group)cAlternatives.eContents().get(2);
 		private final Assignment cPathgeneratorAssignment_2_0 = (Assignment)cGroup_2.eContents().get(0);
 		private final RuleCall cPathgeneratorPathGeneratorStopConditionParserRuleCall_2_0_0 = (RuleCall)cPathgeneratorAssignment_2_0.eContents().get(0);
-		private final Keyword cSemicolonKeyword_2_1 = (Keyword)cGroup_2.eContents().get(1);
-		private final Assignment cSeverityAssignment_2_2 = (Assignment)cGroup_2.eContents().get(2);
-		private final RuleCall cSeveritySeverityParserRuleCall_2_2_0 = (RuleCall)cSeverityAssignment_2_2.eContents().get(0);
-		private final Keyword cSemicolonKeyword_2_3 = (Keyword)cGroup_2.eContents().get(3);
+		private final Group cGroup_2_1 = (Group)cGroup_2.eContents().get(1);
+		private final Keyword cSpaceKeyword_2_1_0 = (Keyword)cGroup_2_1.eContents().get(0);
+		private final Assignment cPathgeneratorAssignment_2_1_1 = (Assignment)cGroup_2_1.eContents().get(1);
+		private final RuleCall cPathgeneratorPathGeneratorStopConditionParserRuleCall_2_1_1_0 = (RuleCall)cPathgeneratorAssignment_2_1_1.eContents().get(0);
+		private final Keyword cSemicolonKeyword_2_2 = (Keyword)cGroup_2.eContents().get(2);
+		private final Assignment cSeverityAssignment_2_3 = (Assignment)cGroup_2.eContents().get(3);
+		private final RuleCall cSeveritySeverityParserRuleCall_2_3_0 = (RuleCall)cSeverityAssignment_2_3.eContents().get(0);
+		private final Keyword cSemicolonKeyword_2_4 = (Keyword)cGroup_2.eContents().get(4);
 		
-		//Policies:
-		//	{Policies} nocheck?='nocheck' | sync?='sync' | pathgenerator=PathGeneratorStopCondition ';' severity=Severity ';';
+		//Policies hidden(WS, ML_COMMENT, SL_COMMENT):
+		//	{Policies} nocheck?='nocheck' | sync?='sync' | pathgenerator+=PathGeneratorStopCondition (' '
+		//	pathgenerator+=PathGeneratorStopCondition)* ';' severity=Severity ';';
 		@Override public ParserRule getRule() { return rule; }
 		
-		//{Policies} nocheck?='nocheck' | sync?='sync' | pathgenerator=PathGeneratorStopCondition ';' severity=Severity ';'
+		//{Policies} nocheck?='nocheck' | sync?='sync' | pathgenerator+=PathGeneratorStopCondition (' '
+		//pathgenerator+=PathGeneratorStopCondition)* ';' severity=Severity ';'
 		public Alternatives getAlternatives() { return cAlternatives; }
 		
 		//{Policies} nocheck?='nocheck'
@@ -205,26 +211,38 @@ public class DSLPoliciesGrammarAccess extends AbstractGrammarElementFinder {
 		//'sync'
 		public Keyword getSyncSyncKeyword_1_0() { return cSyncSyncKeyword_1_0; }
 		
-		//pathgenerator=PathGeneratorStopCondition ';' severity=Severity ';'
+		//pathgenerator+=PathGeneratorStopCondition (' ' pathgenerator+=PathGeneratorStopCondition)* ';' severity=Severity ';'
 		public Group getGroup_2() { return cGroup_2; }
 		
-		//pathgenerator=PathGeneratorStopCondition
+		//pathgenerator+=PathGeneratorStopCondition
 		public Assignment getPathgeneratorAssignment_2_0() { return cPathgeneratorAssignment_2_0; }
 		
 		//PathGeneratorStopCondition
 		public RuleCall getPathgeneratorPathGeneratorStopConditionParserRuleCall_2_0_0() { return cPathgeneratorPathGeneratorStopConditionParserRuleCall_2_0_0; }
 		
+		//(' ' pathgenerator+=PathGeneratorStopCondition)*
+		public Group getGroup_2_1() { return cGroup_2_1; }
+		
+		//' '
+		public Keyword getSpaceKeyword_2_1_0() { return cSpaceKeyword_2_1_0; }
+		
+		//pathgenerator+=PathGeneratorStopCondition
+		public Assignment getPathgeneratorAssignment_2_1_1() { return cPathgeneratorAssignment_2_1_1; }
+		
+		//PathGeneratorStopCondition
+		public RuleCall getPathgeneratorPathGeneratorStopConditionParserRuleCall_2_1_1_0() { return cPathgeneratorPathGeneratorStopConditionParserRuleCall_2_1_1_0; }
+		
 		//';'
-		public Keyword getSemicolonKeyword_2_1() { return cSemicolonKeyword_2_1; }
+		public Keyword getSemicolonKeyword_2_2() { return cSemicolonKeyword_2_2; }
 		
 		//severity=Severity
-		public Assignment getSeverityAssignment_2_2() { return cSeverityAssignment_2_2; }
+		public Assignment getSeverityAssignment_2_3() { return cSeverityAssignment_2_3; }
 		
 		//Severity
-		public RuleCall getSeveritySeverityParserRuleCall_2_2_0() { return cSeveritySeverityParserRuleCall_2_2_0; }
+		public RuleCall getSeveritySeverityParserRuleCall_2_3_0() { return cSeveritySeverityParserRuleCall_2_3_0; }
 		
 		//';'
-		public Keyword getSemicolonKeyword_2_3() { return cSemicolonKeyword_2_3; }
+		public Keyword getSemicolonKeyword_2_4() { return cSemicolonKeyword_2_4; }
 	}
 	public class PathGeneratorStopConditionElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "gw4e.eclipse.dsl.DSLPolicies.PathGeneratorStopCondition");
@@ -741,8 +759,9 @@ public class DSLPoliciesGrammarAccess extends AbstractGrammarElementFinder {
 		return getSeverityAccess().getRule();
 	}
 	
-	//Policies:
-	//	{Policies} nocheck?='nocheck' | sync?='sync' | pathgenerator=PathGeneratorStopCondition ';' severity=Severity ';';
+	//Policies hidden(WS, ML_COMMENT, SL_COMMENT):
+	//	{Policies} nocheck?='nocheck' | sync?='sync' | pathgenerator+=PathGeneratorStopCondition (' '
+	//	pathgenerator+=PathGeneratorStopCondition)* ';' severity=Severity ';';
 	public PoliciesElements getPoliciesAccess() {
 		return pPolicies;
 	}
