@@ -17,7 +17,7 @@ echo "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
 echo "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
 echo "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
 if [ "$1" != "" ]; then
-    mvn clean install -P$1  
+    mvn clean install -P$1,deflt,release  
 else
     echo "Positional parameter 1 is empty"
 fi
