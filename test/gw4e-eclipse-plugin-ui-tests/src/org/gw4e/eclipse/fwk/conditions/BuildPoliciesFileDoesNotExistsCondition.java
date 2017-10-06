@@ -31,6 +31,7 @@ package org.gw4e.eclipse.fwk.conditions;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.waits.ICondition;
+ 
 
 public class BuildPoliciesFileDoesNotExistsCondition implements ICondition {
 	IFile buildPolicyFile;

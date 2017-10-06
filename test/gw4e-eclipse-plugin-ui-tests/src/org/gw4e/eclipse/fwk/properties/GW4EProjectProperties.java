@@ -38,6 +38,7 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTable;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTableItem;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotText;
+import org.gw4e.eclipse.fwk.platform.GW4EPlatform;
 import org.gw4e.eclipse.property.ProjectPropertyPage;
 import org.gw4e.eclipse.property.checkbox.LabelizedCheckBoxes;
 import org.gw4e.eclipse.property.text.LabelizedTexts;
@@ -56,7 +57,11 @@ public class GW4EProjectProperties {
 	}
 
 	public void ok ( ) {
-		SWTBotButton button = shell.bot().button("OK");
+		String name="OK";
+		if (GW4EPlatform.isEclipse47()) {
+			name = "Apply and Close";
+		}
+		SWTBotButton button = shell.bot().button(name);
 		button.click();
 		parentBot.waitUntil(Conditions.shellCloses(shell));	
 	}

@@ -44,6 +44,7 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotText;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotToolbarButton;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.gw4e.eclipse.fwk.conditions.ViewOpened;
+import org.gw4e.eclipse.fwk.platform.GW4EPlatform;
 import org.gw4e.eclipse.views.PerformanceView;
 
 public class GW4EPerformanceView {
@@ -104,8 +105,9 @@ public class GW4EPerformanceView {
 			}
 
 		});
- 
-		shell.bot().button("OK").click();
+		String name = "OK";
+		if (GW4EPlatform.isEclipse47()) name = "Open";
+		shell.bot().button(name).click();
 		
 		bot.waitUntil(new ViewOpened(bot, VIEW_TITLE));
 		botView = getBotView();

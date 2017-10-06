@@ -46,6 +46,7 @@ import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 import org.gw4e.eclipse.fwk.conditions.ShellActiveCondition;
+import org.gw4e.eclipse.fwk.platform.GW4EPlatform;
 import org.gw4e.eclipse.launching.test.OSUtils;
 import org.hamcrest.Matcher;
 
@@ -88,7 +89,9 @@ public class ConsolePreferencePage {
 		} catch (Exception e) {
 		}
 		
-		bot.button("OK").click();
+		String name = "OK";
+		if (GW4EPlatform.isEclipse47()) name = "Apply and Close";
+		bot.button(name).click();
 	}
 	
 	private SWTBotShell showPreferenceDialog() {

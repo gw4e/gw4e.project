@@ -110,7 +110,9 @@ public class OutLineView   extends GraphHelper {
 			}
 
 		});
-		shell.bot().button("OK").click();
+		String name = "OK";
+		if (GW4EPlatform.isEclipse47()) name = "Open";
+		shell.bot().button(name).click();
 
 		bot.waitUntil(new ViewOpened(bot, OUTLINE));
 		botView = getBotView();

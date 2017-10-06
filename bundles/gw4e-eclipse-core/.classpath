@@ -8,7 +8,7 @@
 	<classpathentry exported="true" kind="lib" path="lib/poi-ooxml-schemas-3.16.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/stax-api-1.0.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/xmlbeans-2.6.0.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/graphwalker-cli-4.0.0-SNAPSHOT.jar" sourcepath="/graphwalker-core/src/main/java"/>
+	<classpathentry exported="true" kind="lib" path="lib/graphwalker-cli-4.0.0-SNAPSHOT.jar" sourcepath="/Users/hamma/graphwalker-project"/>
 	<classpathentry exported="true" kind="lib" path="lib/hamcrest-core-1.3.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/junit-4.12.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/slf4j-api-1.7.25.jar"/>

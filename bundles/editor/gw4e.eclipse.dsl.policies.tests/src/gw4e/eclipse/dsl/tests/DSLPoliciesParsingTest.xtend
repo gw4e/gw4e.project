@@ -20,7 +20,7 @@ class DSLPoliciesParsingTest {
 	
 	@Test
 	def void testMultipleGeneratorStopConditionSpaceSeparated() {
-		val result = parseHelper.parse('\n' + 'Simple.json=random(reached_vertex(v_VerifyAppRunning)) a_star(reached_edge(e_enterSearchedWord));I;' )
+		val result = parseHelper.parse('\n' + 'Simple.json=random(reached_vertex(v_VerifyAppRunning)) a_star(reached_edge(e_enterSearchedWord));I;a_star(reached_edge(e_enterSearchedWord));I;' )
 		Assert.assertNotNull(result)
 		Assert.assertTrue(result.eResource.errors.isEmpty)
 	}

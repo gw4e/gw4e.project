@@ -31,8 +31,6 @@ package org.gw4e.eclipse.fwk.perpective;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import java.util.function.Function;
-
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotPerspective;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
@@ -42,6 +40,7 @@ import org.eclipse.swtbot.swt.finder.waits.ICondition;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.gw4e.eclipse.fwk.conditions.ShellActiveCondition;
+import org.gw4e.eclipse.fwk.platform.GW4EPlatform;
 public class GW4EPerspective {
 	
 	public static void openNewGW4EProject(SWTWorkbenchBot bot) {
@@ -88,7 +87,8 @@ public class GW4EPerspective {
 	public static void resetGWPerspective(SWTWorkbenchBot bot) {
 		resetPerspective(bot, "GW4E Perspective");
 	}
-	
+
+
 	public static void openPerspective(SWTWorkbenchBot bot,String perspectiveLabel) {
 		SWTBotShell shell = null;
 		try {
@@ -99,8 +99,11 @@ public class GW4EPerspective {
 			assertTrue(shell.isOpen());
 
 			shell.bot().table().select(perspectiveLabel);
-
-			shell.bot().button("OK").click();
+			
+			 
+			String buttonName ="OK";
+			if (GW4EPlatform.isEclipse47 ()) buttonName = "Open";
+			shell.bot().button(buttonName).click();
 			bot.waitUntil(Conditions.shellCloses(shell));
 		} catch (Exception e) {
 			if (shell != null && shell.isOpen())

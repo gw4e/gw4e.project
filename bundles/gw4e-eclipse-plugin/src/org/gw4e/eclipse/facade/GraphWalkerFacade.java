@@ -507,6 +507,85 @@ public class GraphWalkerFacade {
 				
 				ret.add(type);
 
+				 
+							  type = ret.get(ret.size()-1) ;
+							JDTManager.enrichClass(type, dcp, monitor);
+							JDTManager.formatUnitSourceCode(type , monitor);
+							JDTManager.openEditor(type, ww);
+						 
+				ICompilationUnit cu = JavaCore.createCompilationUnitFrom(type);
+				int count = 0;
+				CompilationUnit ast = null;
+				while (ast==null && count < 10) {
+					Thread.sleep(200);
+					ast = JDTManager.parse(cu);
+					count++;
+				}
+
+				 
+							  type = ret.get(ret.size()-1) ;
+							JDTManager.reorganizeImport(JavaCore.createCompilationUnitFrom(type));
+						 	
+				cache.add(dcp.getInputPath(), new CacheEntry(dcp.getInputPath().toFile().lastModified(), true));
+				IFile iFileCache = ResourceManager.toIFile(dcp.getOutputPath().toFile());
+				ResourceManager.resfresh(iFileCache.getParent());
+
+			} catch (Exception e) {
+				ResourceManager.logException(e);
+				cache.add(dcp.getInputPath(), new CacheEntry(dcp.getInputPath().toFile().lastModified(), false));
+			} finally {
+				subMonitor.split(1);
+			}
+		}
+		return ret;
+	}
+	
+	
+	public static List<IFile> generateFromFile1(IWorkbenchWindow ww, TestResourceGeneration dcp,
+			IProgressMonitor monitor) throws IOException, CoreException, InterruptedException {
+		List<IFile> ret = new ArrayList<IFile>();
+		List<IFile> additionals = dcp.getClassExtension().getAdditionalContexts();
+		int max = additionals.size() + 1;
+
+		SubMonitor subMonitor = SubMonitor.convert(monitor, max);
+		if (additionals != null) {
+			for (IFile iFile : additionals) {
+				subMonitor.setTaskName("Processing " + iFile);
+				try {
+					try {
+						GraphWalkerContextManager.generateDefaultGraphConversion(ww, iFile, monitor);
+					} catch (InvocationTargetException e) {
+						ResourceManager.logException(e);
+					}
+				} finally {
+					subMonitor.split(1);
+				}
+			}
+		}
+		final SimpleCache cache = new SimpleCache(dcp.getOutputPath());
+		if (!PreferenceManager.isCacheEnabled() || isNotGenerated(cache, dcp.getInputPath())
+				|| isModified(cache, dcp.getInputPath()) || dcp.isOffline() ) {
+			try {
+				subMonitor.setTaskName("Processing " + dcp.getInputPath().getFileName());
+				// write interface
+				SourceFile sourceFile = new SourceFile(dcp.getInputPath(), dcp.getBasePath(), dcp.getOutputPath());
+				ContextFactory factory = getContextFactory(sourceFile.getInputPath());
+				List<IPath> interfaces = write(factory, sourceFile, true, monitor);
+				
+				if (dcp.isGenerateOnlyInterface())
+					return ret;
+				
+				// write implementation
+				IFile type = null;
+				if (dcp.isAppendSource()) {
+				    type = dcp.toIFile();
+				} else {
+				    type = JDTManager.generateTestImplementation(dcp, monitor);
+					ResourceManager.updateBuildPolicyFileFor(type);
+				}
+				
+				ret.add(type);
+
 				Display.getDefault().syncExec(new Runnable() {
 					public void run() {
 						try {
@@ -552,9 +631,6 @@ public class GraphWalkerFacade {
 		}
 		return ret;
 	}
-	
-	
- 
 
 	/**
 	 * @param factory

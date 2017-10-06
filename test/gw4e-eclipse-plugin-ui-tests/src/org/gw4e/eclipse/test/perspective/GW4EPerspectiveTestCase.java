@@ -29,7 +29,7 @@ package org.gw4e.eclipse.test.perspective;
  */
 
 import java.io.FileNotFoundException;
-
+ 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.swt.finder.junit.SWTBotJunit4ClassRunner;
@@ -40,9 +40,9 @@ import org.gw4e.eclipse.fwk.project.GW4EProject;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
-import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
+import org.junit.Test;
 
 @RunWith(SWTBotJunit4ClassRunner.class)
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
@@ -74,6 +74,8 @@ public class GW4EPerspectiveTestCase {
 		GW4EProject.cleanWorkspace();
 	}
 
+ 
+	
  	@Test
 	public void testDisplayGW4EPerspective () throws CoreException, FileNotFoundException {
  		GW4EPerspective.resetGWPerspective(bot);
@@ -85,13 +87,13 @@ public class GW4EPerspectiveTestCase {
 	}
  	
 	@Test
-	public void testWizarProjectdMenus () throws CoreException, FileNotFoundException {
+	public void atestWizarProjectdMenus () throws CoreException, FileNotFoundException {
 		GW4EPerspective.openPerspective(bot, "GW4E Perspective");
 		GW4EPerspective.openNewGW4EProject(bot);
 	}
 	
 	@Test
-	public void testWizarModeldMenus () throws CoreException, FileNotFoundException {
+	public void atestWizarModeldMenus () throws CoreException, FileNotFoundException {
 		GW4EPerspective.openPerspective(bot, "GW4E Perspective");
 		GW4EPerspective.openNewGraphWalkerModel(bot);
 	}

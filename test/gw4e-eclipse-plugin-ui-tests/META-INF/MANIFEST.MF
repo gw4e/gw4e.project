@@ -6,7 +6,7 @@ Bundle-Version: 4.0.0.qualifier
 Bundle-ActivationPolicy: lazy
 Bundle-Vendor: 
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Require-Bundle: org.eclipse.swtbot.go,
+Require-Bundle: org.junit;bundle-version="4.0.0",
  org.eclipse.jdt.ui;bundle-version="3.11.2",
  org.eclipse.core.resources;bundle-version="3.10.0",
  org.eclipse.jdt.core;bundle-version="3.11.2",
@@ -18,7 +18,8 @@ Require-Bundle: org.eclipse.swtbot.go,
  org.eclipse.ui.ide;bundle-version="3.12.2",
  org.eclipse.jface.text;bundle-version="3.11.2",
  gw4e-eclipse-plugin;bundle-version="4.0.0",
- gw4e-eclipse-studio-plugin;bundle-version="4.0.0"
+ gw4e-eclipse-studio-plugin;bundle-version="4.0.0",
+ org.eclipse.swtbot.go;bundle-version="2.7.0"
 Import-Package: org.eclipse.jface.text
 Export-Package: org.gw4e.eclipse.fwk.conditions,
  org.gw4e.eclipse.fwk.project

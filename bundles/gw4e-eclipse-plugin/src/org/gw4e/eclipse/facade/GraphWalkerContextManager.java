@@ -65,6 +65,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.ElementListSelectionDialog;
+import org.eclipse.ui.progress.UIJob;
 import org.gw4e.eclipse.builder.BuildPolicy;
 import org.gw4e.eclipse.constant.Constant;
 import org.gw4e.eclipse.conversion.ClassExtension;
@@ -493,9 +494,9 @@ public class GraphWalkerContextManager {
 			throws CoreException, InterruptedException {
 		List<AbstractPostConversion> converters = new ArrayList<AbstractPostConversion>();
 
-		Job job = new Job("GW4E Generation Source Job") {
+		Job job = new UIJob("GW4E Generation Source Job") {
 			@Override
-			public IStatus run(IProgressMonitor monitor) {
+			public IStatus runInUIThread(IProgressMonitor monitor) {
 				try {
 					SubMonitor subMonitor = SubMonitor.convert(monitor, 120);
 					selectedResource.accept(new IResourceVisitor() {
@@ -535,10 +536,11 @@ public class GraphWalkerContextManager {
 				}
 				return Status.OK_STATUS;
 			}
+ 
 		};
 		job.setUser(true);
 		job.schedule();
-		job.join();
+	//	job.join();
 	}
 
 	/**

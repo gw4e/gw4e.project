@@ -18,10 +18,10 @@
 		<profile>
 			<id>gw4e-eclipse-all-tests</id>
 			<modules>
-				<module>gw4e-eclipse-plugin-tests</module>
+			    <module>gw4e-eclipse-plugin-tests</module> 
 				<module>gw4e-eclipse-plugin-ui-tests</module>
-				<module>gw4e-eclipse-studio-tests</module>
-				<module>gw4e-eclipse-studio-ui-tests</module>
+			    <module>gw4e-eclipse-studio-tests</module>
+				<module>gw4e-eclipse-studio-ui-tests</module> 
 			</modules>
    			<activation>
     		   <activeByDefault>true</activeByDefault>
