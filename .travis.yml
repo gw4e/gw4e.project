@@ -27,8 +27,9 @@ before_install:
 jobs:
   include:
   - stage: test
-    script: ./runmvnprofile.sh gw4e-eclipse-plugin-tests
-  - script: ./runmvnprofile.sh gw4e-eclipse-plugin-ui-tests
+    script: ./runmvnprofile.sh gw4e-eclipse-plugin-tests 
+  - script: ./runmvnprofile.sh gw4e-eclipse-plugin-ui-tests gw4e-eclipse-plugin-ui-testsPart1
+  - script: ./runmvnprofile.sh gw4e-eclipse-plugin-ui-tests gw4e-eclipse-plugin-ui-testsPart2
   - script: ./runmvnprofile.sh gw4e-eclipse-studio-tests
   - script: ./runmvnprofile.sh gw4e-eclipse-studio-ui-tests
   - stage: deploy
