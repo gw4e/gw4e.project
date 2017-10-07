@@ -45,7 +45,7 @@
 				</os>
 			</activation>
 			<properties>
-				<ui.test.vmargs>-Xmx512m -XX:MaxPermSize=256m -XstartOnFirstThread</ui.test.vmargs>
+				<ui.test.vmargs>-Xms512m -Xmx1024m -XX:MaxPermSize=256m -XstartOnFirstThread</ui.test.vmargs>
 			</properties>
 		</profile>
 		<profile>
@@ -124,11 +124,8 @@
 							<useUIThread>false</useUIThread>
 							<product>org.eclipse.sdk.ide</product>
 							<application>org.eclipse.ui.ide.workbench</application>
-							<argLine>-Xms512m -Xmx1024m
-								-Dgw.mvn.repository=${user.home}/.m2/repository
-								${ui.test.vmargs}</argLine>
-							<appArgLine>-data ${project.basedir}/target/workspace -nl en
-								-consoleLog</appArgLine>
+							<argLine>-Dgw.mvn.repository=${user.home}/.m2/repository ${ui.test.vmargs}</argLine>
+							<appArgLine>-data ${project.basedir}/target/workspace -nl en -consoleLog</appArgLine>
 							<includes>
 								<include>**/org/gw4e/eclipse/test/perspective/*.class</include>
 								<include>**/org/gw4e/eclipse/test/preferences/*.class</include>
@@ -165,11 +162,8 @@
 							<useUIThread>false</useUIThread>
 							<product>org.eclipse.sdk.ide</product>
 							<application>org.eclipse.ui.ide.workbench</application>
-							<argLine>-Xms512m -Xmx1024m
-								-Dgw.mvn.repository=${user.home}/.m2/repository
-								${ui.test.vmargs}</argLine>
-							<appArgLine>-data ${project.basedir}/target/workspace -nl en
-								-consoleLog</appArgLine>
+							<argLine>-Dgw.mvn.repository=${user.home}/.m2/repository ${ui.test.vmargs}</argLine>
+							<appArgLine>-data ${project.basedir}/target/workspace -nl en -consoleLog</appArgLine>
 							<includes>
 								<include>**/org/gw4e/eclipse/test/runasmanual/*.class</include>
 								<include>**/org/gw4e/eclipse/test/staticgenerator/*.class</include>
