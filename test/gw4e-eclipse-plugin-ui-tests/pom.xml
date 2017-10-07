@@ -57,7 +57,7 @@
 				</os>
 			</activation>
 			<properties>
-				<ui.test.vmargs>-Xmx512m -XX:MaxPermSize=256m</ui.test.vmargs>
+				<ui.test.vmargs>-Xms512m -Xmx1024m -XX:MaxPermSize=256m</ui.test.vmargs>
 			</properties>
 		</profile>
 		<profile>
