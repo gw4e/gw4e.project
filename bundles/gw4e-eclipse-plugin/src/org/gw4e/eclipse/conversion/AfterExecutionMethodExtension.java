@@ -51,16 +51,21 @@ public class AfterExecutionMethodExtension extends StubMethodExtension {
 				"String newline = System.getProperty(\"line.separator\");" + newline + 
 				"String quote = \"" + "\\" + "\"\";" + newline + 
 				"Profiler profiler = this.getProfiler();" + newline + 
-				"Profile profile = profiler.getProfile();" + newline + 
+				"List<Profile> profiles = profiler.getProfiles();" + newline + 
 				"StringBuffer sb = new StringBuffer ();" + newline + 
 				"sb.append(\"{\").append(newline);" + newline + 
 				"sb.append(quote).append(\"performance\").append(quote).append(\" : {\").append(newline);" + newline + 
 				"sb.append(quote).append(\"items\").append(quote).append(\" : [\").append(newline);" + newline + 
-				"Iterator<Element> iter = profile.keySet().iterator();" + newline + 
+				"Iterator<Profile> iter = profiles.iterator();" + newline + 
 				"while (iter.hasNext()) {" + newline + 
-				"	Element element = iter.next();" + newline + 
-				"	ProfileUnit profileUnit = profile.get(element);" + newline + 
+				"	Profile profile = iter.next();" + newline + 
+				"	Element element = profile.getElement();" + newline + 
+				"	String contextModel = profile.getContext().getModel().getName();" + newline + 
+				"	String contextName = profile.getContext().getClass().getName();" + newline + 
+				"	String pathGenerator = profile.getContext().getPathGenerator().toString();" + newline + 
 				"	sb.append(\"{\").append(newline).append(quote).append(\"name\").append(quote).append(\":\").append(quote).append(element.getName()).append(quote).append(\",\").append(newline);" + newline + 
+				"	sb.append(quote).append(\"contextName\").append(quote).append(\":\").append(quote).append(contextName).append(quote).append(\",\").append(newline);" + newline + 
+				"	sb.append(quote).append(\"pathGenerator\").append(quote).append(\":\").append(quote).append(pathGenerator).append(quote).append(\",\").append(newline);" + newline + 
 				"	if (element instanceof Edge.RuntimeEdge) {" + newline + 
 				"		Edge.RuntimeEdge re = (Edge.RuntimeEdge) element;" + newline + 
 				"		sb.append(quote).append(\"type\").append(quote).append(\":\").append(quote).append(\"EDGE\").append(quote).append(\",\").append(newline);" + newline + 
@@ -69,12 +74,13 @@ public class AfterExecutionMethodExtension extends StubMethodExtension {
 				"	} else {" + newline + 
 				"		sb.append(quote).append(\"kind\").append(quote).append(\":\").append(quote).append(\"VERTEX\").append(quote).append(\",\").append(newline);" + newline + 
 				"	}" + newline + 
-				"	sb.append(quote).append(\"FirstExecutionTime\").append(quote).append(\":\").append(quote).append(profileUnit.getFirstExecutionTime(TimeUnit.MILLISECONDS)).append(quote).append(\",\").append(newline);" + newline + 
-				"	sb.append(quote).append(\"LastExecutionTime\").append(quote).append(\":\").append(quote).append(profileUnit.getLastExecutionTime(TimeUnit.MILLISECONDS)).append(quote).append(\",\").append(newline);" + newline + 
-				"	sb.append(quote).append(\"MaxExecutionTime\").append(quote).append(\":\").append(quote).append(profileUnit.getMaxExecutionTime(TimeUnit.MILLISECONDS)).append(quote).append(\",\").append(newline);" + newline + 
-				"	sb.append(quote).append(\"MinExecutionTime\").append(quote).append(\":\").append(quote).append(profileUnit.getMinExecutionTime(TimeUnit.MILLISECONDS)).append(quote).append(\",\").append(newline);" + newline + 
-				"	sb.append(quote).append(\"TotalExecutionTime\").append(quote).append(\":\").append(quote).append(profileUnit.getTotalExecutionTime(TimeUnit.MILLISECONDS)).append(quote).append(\",\").append(newline);" + newline + 
-				"	sb.append(quote).append(\"AverageExecutionTime\").append(quote).append(\":\").append(quote).append(profileUnit.getAverageExecutionTime(TimeUnit.MILLISECONDS)).append(quote).append(newline);" + newline + 
+				"	sb.append(quote).append(\"ExecutionCount\").append(quote).append(\":\").append(quote).append(profile.getExecutionCount()).append(quote).append(\",\").append(newline);" + newline + 
+				"	sb.append(quote).append(\"FirstExecutionTime\").append(quote).append(\":\").append(quote).append(profile.getFirstExecutionTime(TimeUnit.MILLISECONDS)).append(quote).append(\",\").append(newline);" + newline + 
+				"	sb.append(quote).append(\"LastExecutionTime\").append(quote).append(\":\").append(quote).append(profile.getLastExecutionTime(TimeUnit.MILLISECONDS)).append(quote).append(\",\").append(newline);" + newline + 
+				"	sb.append(quote).append(\"MaxExecutionTime\").append(quote).append(\":\").append(quote).append(profile.getMaxExecutionTime(TimeUnit.MILLISECONDS)).append(quote).append(\",\").append(newline);" + newline + 
+				"	sb.append(quote).append(\"MinExecutionTime\").append(quote).append(\":\").append(quote).append(profile.getMinExecutionTime(TimeUnit.MILLISECONDS)).append(quote).append(\",\").append(newline);" + newline + 
+				"	sb.append(quote).append(\"TotalExecutionTime\").append(quote).append(\":\").append(quote).append(profile.getTotalExecutionTime(TimeUnit.MILLISECONDS)).append(quote).append(\",\").append(newline);" + newline + 
+				"	sb.append(quote).append(\"AverageExecutionTime\").append(quote).append(\":\").append(quote).append(profile.getAverageExecutionTime(TimeUnit.MILLISECONDS)).append(quote).append(newline);" + newline + 
 				"	sb.append(\"}\").append(newline);" + newline + 
 				"	if (iter.hasNext()) sb.append(\",\");" + newline + 
 				"}" + newline + 
@@ -87,13 +93,15 @@ public class AfterExecutionMethodExtension extends StubMethodExtension {
 		return new String [] {
 				annotation.getName(), 
 				java.util.Iterator.class.getName(),
+				java.util.List.class.getName(),
 				org.graphwalker.core.statistics.Profile.class.getName(),
 				org.graphwalker.core.statistics.Profiler.class.getName(),
 				org.graphwalker.core.model.Edge.class.getName(),
 				org.graphwalker.core.model.Element.class.getName(),
-				org.graphwalker.core.statistics.ProfileUnit.class.getName(),
+				// org.graphwalker.core.statistics.ProfileUnit.class.getName(),
 				java.util.concurrent.TimeUnit.class.getName()};
 	}
+	 
 }
 
  
