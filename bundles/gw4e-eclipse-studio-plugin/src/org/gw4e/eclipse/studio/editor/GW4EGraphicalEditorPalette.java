@@ -79,7 +79,7 @@ public class GW4EGraphicalEditorPalette extends PaletteRoot   {
 		entry.setToolClass(CreationAndDirectEditTool.class);
 		group.add(entry);		
 		entry = new CreationToolEntry(TOOL_EDGE_LABEL, "Create a new Edge", new EdgeFactory(),
-				Activator.getImageDescriptor("icons/connection.gif"), null);
+				Activator.getImageDescriptor("icons/connection.png"), null);
 		entry.setToolClass(ConnectionCreationTool.class);
 		entry.setToolProperty(AbstractTool.PROPERTY_UNLOAD_WHEN_FINISHED,true); 
 		group.add(entry);

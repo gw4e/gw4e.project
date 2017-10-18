@@ -147,7 +147,7 @@ public class Activator extends AbstractUIPlugin {
 	
 	public static Image getEdgeImage () {
 		if (edgeImage==null) {
-			edgeImage = getImageDescriptor("icons/connection.gif").createImage();
+			edgeImage = getImageDescriptor("icons/connection.png").createImage();
 		}
 		return edgeImage;
 	}
