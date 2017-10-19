@@ -38,17 +38,16 @@ PathGeneratorStopCondition hidden(WS, ML_COMMENT, SL_COMMENT):
 	  {PathGeneratorStopCondition} algorithmType=AlgorithmType  '(' ( stopCondition = StringCondition |  stopConditionype = IntegerStopCondition | stopCondition =  PercentageCondition ) ')' (WS*);
 
 AlgorithmType:
-	type='random' | type='quick_random' | type='a_star' | type='weighted_random'
-;
+	type='random' | type ='RandomPath' | type='quick_random' | type='QuickRandomPath' | type='a_star' | type='AStarPath' | type='weighted_random' | type='WeightedRandomPath';
   
 IntegerStopCondition returns StopCondition:
-	 pathtype = 'time_duration' '(' (value = INT) ')' | pathtype = 'dependency_edge_coverage' '('  (value = INT) ')'  ;	
+	 pathtype = 'time_duration' '(' (value = INT) ')' | pathtype = 'TimeDuration' '(' (value = INT) ')' |  pathtype = 'dependency_edge_coverage' '('  (value = INT) ')' | pathtype = 'DependencyEdgeCoverage' '('  (value = INT) ')'  ;	
  
 PercentageCondition returns StopCondition:
-	(pathtype = 'edge_coverage' '(' percentage=(Percent) ')') | pathtype =  'vertex_coverage' '(' percentage=(Percent) ')' | pathtype = 'requirement_coverage' '(' percentage =(Percent) ')'  ;		
+	(pathtype = 'edge_coverage' '(' percentage=(Percent) ')') | (pathtype = 'EdgeCoverage' '(' percentage=(Percent) ')') | pathtype =  'vertex_coverage' '(' percentage=(Percent) ')' | pathtype =  'VertexCoverage' '(' percentage=(Percent) ')' | pathtype = 'requirement_coverage' '(' percentage =(Percent) ')'  | pathtype = 'RequirementCoverage' '(' percentage =(Percent) ')'  ;		
 
 StringCondition returns StopCondition hidden(WS, ML_COMMENT, SL_COMMENT):
-	(pathtype = 'reached_vertex' '(' graphelement=(GraphElement) ')') | (pathtype = 'reached_edge' '(' graphelement=(GraphElement) ')') ;	
+	(pathtype = 'reached_vertex' '(' graphelement=(GraphElement) ')') | (pathtype = 'ReachedVertex' '(' graphelement=(GraphElement) ')') | (pathtype = 'reached_edge' '(' graphelement=(GraphElement) ')') | (pathtype = 'ReachedEdge' '(' graphelement=(GraphElement) ')') ;	
 
  
 Percent:

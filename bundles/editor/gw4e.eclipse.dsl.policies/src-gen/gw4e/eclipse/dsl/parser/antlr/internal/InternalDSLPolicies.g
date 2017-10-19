@@ -600,45 +600,105 @@ ruleAlgorithmType returns [EObject current=null]
 		    |
 		(
 			(
-				lv_type_1_0='quick_random'
+				lv_type_1_0='RandomPath'
 				{
-					newLeafNode(lv_type_1_0, grammarAccess.getAlgorithmTypeAccess().getTypeQuick_randomKeyword_1_0());
+					newLeafNode(lv_type_1_0, grammarAccess.getAlgorithmTypeAccess().getTypeRandomPathKeyword_1_0());
 				}
 				{
 					if ($current==null) {
 						$current = createModelElement(grammarAccess.getAlgorithmTypeRule());
 					}
-					setWithLastConsumed($current, "type", lv_type_1_0, "quick_random");
+					setWithLastConsumed($current, "type", lv_type_1_0, "RandomPath");
 				}
 			)
 		)
 		    |
 		(
 			(
-				lv_type_2_0='a_star'
+				lv_type_2_0='quick_random'
 				{
-					newLeafNode(lv_type_2_0, grammarAccess.getAlgorithmTypeAccess().getTypeA_starKeyword_2_0());
+					newLeafNode(lv_type_2_0, grammarAccess.getAlgorithmTypeAccess().getTypeQuick_randomKeyword_2_0());
 				}
 				{
 					if ($current==null) {
 						$current = createModelElement(grammarAccess.getAlgorithmTypeRule());
 					}
-					setWithLastConsumed($current, "type", lv_type_2_0, "a_star");
+					setWithLastConsumed($current, "type", lv_type_2_0, "quick_random");
 				}
 			)
 		)
 		    |
 		(
 			(
-				lv_type_3_0='weighted_random'
+				lv_type_3_0='QuickRandomPath'
 				{
-					newLeafNode(lv_type_3_0, grammarAccess.getAlgorithmTypeAccess().getTypeWeighted_randomKeyword_3_0());
+					newLeafNode(lv_type_3_0, grammarAccess.getAlgorithmTypeAccess().getTypeQuickRandomPathKeyword_3_0());
 				}
 				{
 					if ($current==null) {
 						$current = createModelElement(grammarAccess.getAlgorithmTypeRule());
 					}
-					setWithLastConsumed($current, "type", lv_type_3_0, "weighted_random");
+					setWithLastConsumed($current, "type", lv_type_3_0, "QuickRandomPath");
+				}
+			)
+		)
+		    |
+		(
+			(
+				lv_type_4_0='a_star'
+				{
+					newLeafNode(lv_type_4_0, grammarAccess.getAlgorithmTypeAccess().getTypeA_starKeyword_4_0());
+				}
+				{
+					if ($current==null) {
+						$current = createModelElement(grammarAccess.getAlgorithmTypeRule());
+					}
+					setWithLastConsumed($current, "type", lv_type_4_0, "a_star");
+				}
+			)
+		)
+		    |
+		(
+			(
+				lv_type_5_0='AStarPath'
+				{
+					newLeafNode(lv_type_5_0, grammarAccess.getAlgorithmTypeAccess().getTypeAStarPathKeyword_5_0());
+				}
+				{
+					if ($current==null) {
+						$current = createModelElement(grammarAccess.getAlgorithmTypeRule());
+					}
+					setWithLastConsumed($current, "type", lv_type_5_0, "AStarPath");
+				}
+			)
+		)
+		    |
+		(
+			(
+				lv_type_6_0='weighted_random'
+				{
+					newLeafNode(lv_type_6_0, grammarAccess.getAlgorithmTypeAccess().getTypeWeighted_randomKeyword_6_0());
+				}
+				{
+					if ($current==null) {
+						$current = createModelElement(grammarAccess.getAlgorithmTypeRule());
+					}
+					setWithLastConsumed($current, "type", lv_type_6_0, "weighted_random");
+				}
+			)
+		)
+		    |
+		(
+			(
+				lv_type_7_0='WeightedRandomPath'
+				{
+					newLeafNode(lv_type_7_0, grammarAccess.getAlgorithmTypeAccess().getTypeWeightedRandomPathKeyword_7_0());
+				}
+				{
+					if ($current==null) {
+						$current = createModelElement(grammarAccess.getAlgorithmTypeRule());
+					}
+					setWithLastConsumed($current, "type", lv_type_7_0, "WeightedRandomPath");
 				}
 			)
 		)
@@ -707,15 +767,15 @@ ruleIntegerStopCondition returns [EObject current=null]
 		(
 			(
 				(
-					lv_pathtype_4_0='dependency_edge_coverage'
+					lv_pathtype_4_0='TimeDuration'
 					{
-						newLeafNode(lv_pathtype_4_0, grammarAccess.getIntegerStopConditionAccess().getPathtypeDependency_edge_coverageKeyword_1_0_0());
+						newLeafNode(lv_pathtype_4_0, grammarAccess.getIntegerStopConditionAccess().getPathtypeTimeDurationKeyword_1_0_0());
 					}
 					{
 						if ($current==null) {
 							$current = createModelElement(grammarAccess.getIntegerStopConditionRule());
 						}
-						setWithLastConsumed($current, "pathtype", lv_pathtype_4_0, "dependency_edge_coverage");
+						setWithLastConsumed($current, "pathtype", lv_pathtype_4_0, "TimeDuration");
 					}
 				)
 			)
@@ -744,6 +804,92 @@ ruleIntegerStopCondition returns [EObject current=null]
 			otherlv_7=')'
 			{
 				newLeafNode(otherlv_7, grammarAccess.getIntegerStopConditionAccess().getRightParenthesisKeyword_1_3());
+			}
+		)
+		    |
+		(
+			(
+				(
+					lv_pathtype_8_0='dependency_edge_coverage'
+					{
+						newLeafNode(lv_pathtype_8_0, grammarAccess.getIntegerStopConditionAccess().getPathtypeDependency_edge_coverageKeyword_2_0_0());
+					}
+					{
+						if ($current==null) {
+							$current = createModelElement(grammarAccess.getIntegerStopConditionRule());
+						}
+						setWithLastConsumed($current, "pathtype", lv_pathtype_8_0, "dependency_edge_coverage");
+					}
+				)
+			)
+			otherlv_9='('
+			{
+				newLeafNode(otherlv_9, grammarAccess.getIntegerStopConditionAccess().getLeftParenthesisKeyword_2_1());
+			}
+			(
+				(
+					lv_value_10_0=RULE_INT
+					{
+						newLeafNode(lv_value_10_0, grammarAccess.getIntegerStopConditionAccess().getValueINTTerminalRuleCall_2_2_0());
+					}
+					{
+						if ($current==null) {
+							$current = createModelElement(grammarAccess.getIntegerStopConditionRule());
+						}
+						setWithLastConsumed(
+							$current,
+							"value",
+							lv_value_10_0,
+							"org.eclipse.xtext.xbase.Xbase.INT");
+					}
+				)
+			)
+			otherlv_11=')'
+			{
+				newLeafNode(otherlv_11, grammarAccess.getIntegerStopConditionAccess().getRightParenthesisKeyword_2_3());
+			}
+		)
+		    |
+		(
+			(
+				(
+					lv_pathtype_12_0='DependencyEdgeCoverage'
+					{
+						newLeafNode(lv_pathtype_12_0, grammarAccess.getIntegerStopConditionAccess().getPathtypeDependencyEdgeCoverageKeyword_3_0_0());
+					}
+					{
+						if ($current==null) {
+							$current = createModelElement(grammarAccess.getIntegerStopConditionRule());
+						}
+						setWithLastConsumed($current, "pathtype", lv_pathtype_12_0, "DependencyEdgeCoverage");
+					}
+				)
+			)
+			otherlv_13='('
+			{
+				newLeafNode(otherlv_13, grammarAccess.getIntegerStopConditionAccess().getLeftParenthesisKeyword_3_1());
+			}
+			(
+				(
+					lv_value_14_0=RULE_INT
+					{
+						newLeafNode(lv_value_14_0, grammarAccess.getIntegerStopConditionAccess().getValueINTTerminalRuleCall_3_2_0());
+					}
+					{
+						if ($current==null) {
+							$current = createModelElement(grammarAccess.getIntegerStopConditionRule());
+						}
+						setWithLastConsumed(
+							$current,
+							"value",
+							lv_value_14_0,
+							"org.eclipse.xtext.xbase.Xbase.INT");
+					}
+				)
+			)
+			otherlv_15=')'
+			{
+				newLeafNode(otherlv_15, grammarAccess.getIntegerStopConditionAccess().getRightParenthesisKeyword_3_3());
 			}
 		)
 	)
@@ -812,15 +958,15 @@ rulePercentageCondition returns [EObject current=null]
 		(
 			(
 				(
-					lv_pathtype_4_0='vertex_coverage'
+					lv_pathtype_4_0='EdgeCoverage'
 					{
-						newLeafNode(lv_pathtype_4_0, grammarAccess.getPercentageConditionAccess().getPathtypeVertex_coverageKeyword_1_0_0());
+						newLeafNode(lv_pathtype_4_0, grammarAccess.getPercentageConditionAccess().getPathtypeEdgeCoverageKeyword_1_0_0());
 					}
 					{
 						if ($current==null) {
 							$current = createModelElement(grammarAccess.getPercentageConditionRule());
 						}
-						setWithLastConsumed($current, "pathtype", lv_pathtype_4_0, "vertex_coverage");
+						setWithLastConsumed($current, "pathtype", lv_pathtype_4_0, "EdgeCoverage");
 					}
 				)
 			)
@@ -856,15 +1002,15 @@ rulePercentageCondition returns [EObject current=null]
 		(
 			(
 				(
-					lv_pathtype_8_0='requirement_coverage'
+					lv_pathtype_8_0='vertex_coverage'
 					{
-						newLeafNode(lv_pathtype_8_0, grammarAccess.getPercentageConditionAccess().getPathtypeRequirement_coverageKeyword_2_0_0());
+						newLeafNode(lv_pathtype_8_0, grammarAccess.getPercentageConditionAccess().getPathtypeVertex_coverageKeyword_2_0_0());
 					}
 					{
 						if ($current==null) {
 							$current = createModelElement(grammarAccess.getPercentageConditionRule());
 						}
-						setWithLastConsumed($current, "pathtype", lv_pathtype_8_0, "requirement_coverage");
+						setWithLastConsumed($current, "pathtype", lv_pathtype_8_0, "vertex_coverage");
 					}
 				)
 			)
@@ -894,6 +1040,138 @@ rulePercentageCondition returns [EObject current=null]
 			otherlv_11=')'
 			{
 				newLeafNode(otherlv_11, grammarAccess.getPercentageConditionAccess().getRightParenthesisKeyword_2_3());
+			}
+		)
+		    |
+		(
+			(
+				(
+					lv_pathtype_12_0='VertexCoverage'
+					{
+						newLeafNode(lv_pathtype_12_0, grammarAccess.getPercentageConditionAccess().getPathtypeVertexCoverageKeyword_3_0_0());
+					}
+					{
+						if ($current==null) {
+							$current = createModelElement(grammarAccess.getPercentageConditionRule());
+						}
+						setWithLastConsumed($current, "pathtype", lv_pathtype_12_0, "VertexCoverage");
+					}
+				)
+			)
+			otherlv_13='('
+			{
+				newLeafNode(otherlv_13, grammarAccess.getPercentageConditionAccess().getLeftParenthesisKeyword_3_1());
+			}
+			(
+				(
+					{
+						newCompositeNode(grammarAccess.getPercentageConditionAccess().getPercentagePercentParserRuleCall_3_2_0());
+					}
+					lv_percentage_14_0=rulePercent
+					{
+						if ($current==null) {
+							$current = createModelElementForParent(grammarAccess.getPercentageConditionRule());
+						}
+						set(
+							$current,
+							"percentage",
+							lv_percentage_14_0,
+							"gw4e.eclipse.dsl.DSLPolicies.Percent");
+						afterParserOrEnumRuleCall();
+					}
+				)
+			)
+			otherlv_15=')'
+			{
+				newLeafNode(otherlv_15, grammarAccess.getPercentageConditionAccess().getRightParenthesisKeyword_3_3());
+			}
+		)
+		    |
+		(
+			(
+				(
+					lv_pathtype_16_0='requirement_coverage'
+					{
+						newLeafNode(lv_pathtype_16_0, grammarAccess.getPercentageConditionAccess().getPathtypeRequirement_coverageKeyword_4_0_0());
+					}
+					{
+						if ($current==null) {
+							$current = createModelElement(grammarAccess.getPercentageConditionRule());
+						}
+						setWithLastConsumed($current, "pathtype", lv_pathtype_16_0, "requirement_coverage");
+					}
+				)
+			)
+			otherlv_17='('
+			{
+				newLeafNode(otherlv_17, grammarAccess.getPercentageConditionAccess().getLeftParenthesisKeyword_4_1());
+			}
+			(
+				(
+					{
+						newCompositeNode(grammarAccess.getPercentageConditionAccess().getPercentagePercentParserRuleCall_4_2_0());
+					}
+					lv_percentage_18_0=rulePercent
+					{
+						if ($current==null) {
+							$current = createModelElementForParent(grammarAccess.getPercentageConditionRule());
+						}
+						set(
+							$current,
+							"percentage",
+							lv_percentage_18_0,
+							"gw4e.eclipse.dsl.DSLPolicies.Percent");
+						afterParserOrEnumRuleCall();
+					}
+				)
+			)
+			otherlv_19=')'
+			{
+				newLeafNode(otherlv_19, grammarAccess.getPercentageConditionAccess().getRightParenthesisKeyword_4_3());
+			}
+		)
+		    |
+		(
+			(
+				(
+					lv_pathtype_20_0='RequirementCoverage'
+					{
+						newLeafNode(lv_pathtype_20_0, grammarAccess.getPercentageConditionAccess().getPathtypeRequirementCoverageKeyword_5_0_0());
+					}
+					{
+						if ($current==null) {
+							$current = createModelElement(grammarAccess.getPercentageConditionRule());
+						}
+						setWithLastConsumed($current, "pathtype", lv_pathtype_20_0, "RequirementCoverage");
+					}
+				)
+			)
+			otherlv_21='('
+			{
+				newLeafNode(otherlv_21, grammarAccess.getPercentageConditionAccess().getLeftParenthesisKeyword_5_1());
+			}
+			(
+				(
+					{
+						newCompositeNode(grammarAccess.getPercentageConditionAccess().getPercentagePercentParserRuleCall_5_2_0());
+					}
+					lv_percentage_22_0=rulePercent
+					{
+						if ($current==null) {
+							$current = createModelElementForParent(grammarAccess.getPercentageConditionRule());
+						}
+						set(
+							$current,
+							"percentage",
+							lv_percentage_22_0,
+							"gw4e.eclipse.dsl.DSLPolicies.Percent");
+						afterParserOrEnumRuleCall();
+					}
+				)
+			)
+			otherlv_23=')'
+			{
+				newLeafNode(otherlv_23, grammarAccess.getPercentageConditionAccess().getRightParenthesisKeyword_5_3());
 			}
 		)
 	)
@@ -968,15 +1246,15 @@ ruleStringCondition returns [EObject current=null]
 		(
 			(
 				(
-					lv_pathtype_4_0='reached_edge'
+					lv_pathtype_4_0='ReachedVertex'
 					{
-						newLeafNode(lv_pathtype_4_0, grammarAccess.getStringConditionAccess().getPathtypeReached_edgeKeyword_1_0_0());
+						newLeafNode(lv_pathtype_4_0, grammarAccess.getStringConditionAccess().getPathtypeReachedVertexKeyword_1_0_0());
 					}
 					{
 						if ($current==null) {
 							$current = createModelElement(grammarAccess.getStringConditionRule());
 						}
-						setWithLastConsumed($current, "pathtype", lv_pathtype_4_0, "reached_edge");
+						setWithLastConsumed($current, "pathtype", lv_pathtype_4_0, "ReachedVertex");
 					}
 				)
 			)
@@ -1006,6 +1284,94 @@ ruleStringCondition returns [EObject current=null]
 			otherlv_7=')'
 			{
 				newLeafNode(otherlv_7, grammarAccess.getStringConditionAccess().getRightParenthesisKeyword_1_3());
+			}
+		)
+		    |
+		(
+			(
+				(
+					lv_pathtype_8_0='reached_edge'
+					{
+						newLeafNode(lv_pathtype_8_0, grammarAccess.getStringConditionAccess().getPathtypeReached_edgeKeyword_2_0_0());
+					}
+					{
+						if ($current==null) {
+							$current = createModelElement(grammarAccess.getStringConditionRule());
+						}
+						setWithLastConsumed($current, "pathtype", lv_pathtype_8_0, "reached_edge");
+					}
+				)
+			)
+			otherlv_9='('
+			{
+				newLeafNode(otherlv_9, grammarAccess.getStringConditionAccess().getLeftParenthesisKeyword_2_1());
+			}
+			(
+				(
+					{
+						newCompositeNode(grammarAccess.getStringConditionAccess().getGraphelementGraphElementParserRuleCall_2_2_0());
+					}
+					lv_graphelement_10_0=ruleGraphElement
+					{
+						if ($current==null) {
+							$current = createModelElementForParent(grammarAccess.getStringConditionRule());
+						}
+						set(
+							$current,
+							"graphelement",
+							lv_graphelement_10_0,
+							"gw4e.eclipse.dsl.DSLPolicies.GraphElement");
+						afterParserOrEnumRuleCall();
+					}
+				)
+			)
+			otherlv_11=')'
+			{
+				newLeafNode(otherlv_11, grammarAccess.getStringConditionAccess().getRightParenthesisKeyword_2_3());
+			}
+		)
+		    |
+		(
+			(
+				(
+					lv_pathtype_12_0='ReachedEdge'
+					{
+						newLeafNode(lv_pathtype_12_0, grammarAccess.getStringConditionAccess().getPathtypeReachedEdgeKeyword_3_0_0());
+					}
+					{
+						if ($current==null) {
+							$current = createModelElement(grammarAccess.getStringConditionRule());
+						}
+						setWithLastConsumed($current, "pathtype", lv_pathtype_12_0, "ReachedEdge");
+					}
+				)
+			)
+			otherlv_13='('
+			{
+				newLeafNode(otherlv_13, grammarAccess.getStringConditionAccess().getLeftParenthesisKeyword_3_1());
+			}
+			(
+				(
+					{
+						newCompositeNode(grammarAccess.getStringConditionAccess().getGraphelementGraphElementParserRuleCall_3_2_0());
+					}
+					lv_graphelement_14_0=ruleGraphElement
+					{
+						if ($current==null) {
+							$current = createModelElementForParent(grammarAccess.getStringConditionRule());
+						}
+						set(
+							$current,
+							"graphelement",
+							lv_graphelement_14_0,
+							"gw4e.eclipse.dsl.DSLPolicies.GraphElement");
+						afterParserOrEnumRuleCall();
+					}
+				)
+			)
+			otherlv_15=')'
+			{
+				newLeafNode(otherlv_15, grammarAccess.getStringConditionAccess().getRightParenthesisKeyword_3_3());
 			}
 		)
 	)

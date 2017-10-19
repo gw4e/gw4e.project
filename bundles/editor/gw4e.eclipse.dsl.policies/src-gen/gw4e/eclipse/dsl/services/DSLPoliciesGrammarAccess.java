@@ -315,17 +315,27 @@ public class DSLPoliciesGrammarAccess extends AbstractGrammarElementFinder {
 		private final Assignment cTypeAssignment_0 = (Assignment)cAlternatives.eContents().get(0);
 		private final Keyword cTypeRandomKeyword_0_0 = (Keyword)cTypeAssignment_0.eContents().get(0);
 		private final Assignment cTypeAssignment_1 = (Assignment)cAlternatives.eContents().get(1);
-		private final Keyword cTypeQuick_randomKeyword_1_0 = (Keyword)cTypeAssignment_1.eContents().get(0);
+		private final Keyword cTypeRandomPathKeyword_1_0 = (Keyword)cTypeAssignment_1.eContents().get(0);
 		private final Assignment cTypeAssignment_2 = (Assignment)cAlternatives.eContents().get(2);
-		private final Keyword cTypeA_starKeyword_2_0 = (Keyword)cTypeAssignment_2.eContents().get(0);
+		private final Keyword cTypeQuick_randomKeyword_2_0 = (Keyword)cTypeAssignment_2.eContents().get(0);
 		private final Assignment cTypeAssignment_3 = (Assignment)cAlternatives.eContents().get(3);
-		private final Keyword cTypeWeighted_randomKeyword_3_0 = (Keyword)cTypeAssignment_3.eContents().get(0);
+		private final Keyword cTypeQuickRandomPathKeyword_3_0 = (Keyword)cTypeAssignment_3.eContents().get(0);
+		private final Assignment cTypeAssignment_4 = (Assignment)cAlternatives.eContents().get(4);
+		private final Keyword cTypeA_starKeyword_4_0 = (Keyword)cTypeAssignment_4.eContents().get(0);
+		private final Assignment cTypeAssignment_5 = (Assignment)cAlternatives.eContents().get(5);
+		private final Keyword cTypeAStarPathKeyword_5_0 = (Keyword)cTypeAssignment_5.eContents().get(0);
+		private final Assignment cTypeAssignment_6 = (Assignment)cAlternatives.eContents().get(6);
+		private final Keyword cTypeWeighted_randomKeyword_6_0 = (Keyword)cTypeAssignment_6.eContents().get(0);
+		private final Assignment cTypeAssignment_7 = (Assignment)cAlternatives.eContents().get(7);
+		private final Keyword cTypeWeightedRandomPathKeyword_7_0 = (Keyword)cTypeAssignment_7.eContents().get(0);
 		
 		//AlgorithmType:
-		//	type='random' | type='quick_random' | type='a_star' | type='weighted_random';
+		//	type='random' | type='RandomPath' | type='quick_random' | type='QuickRandomPath' | type='a_star' | type='AStarPath' |
+		//	type='weighted_random' | type='WeightedRandomPath';
 		@Override public ParserRule getRule() { return rule; }
 		
-		//type='random' | type='quick_random' | type='a_star' | type='weighted_random'
+		//type='random' | type='RandomPath' | type='quick_random' | type='QuickRandomPath' | type='a_star' | type='AStarPath' |
+		//type='weighted_random' | type='WeightedRandomPath'
 		public Alternatives getAlternatives() { return cAlternatives; }
 		
 		//type='random'
@@ -334,23 +344,47 @@ public class DSLPoliciesGrammarAccess extends AbstractGrammarElementFinder {
 		//'random'
 		public Keyword getTypeRandomKeyword_0_0() { return cTypeRandomKeyword_0_0; }
 		
-		//type='quick_random'
+		//type='RandomPath'
 		public Assignment getTypeAssignment_1() { return cTypeAssignment_1; }
 		
-		//'quick_random'
-		public Keyword getTypeQuick_randomKeyword_1_0() { return cTypeQuick_randomKeyword_1_0; }
+		//'RandomPath'
+		public Keyword getTypeRandomPathKeyword_1_0() { return cTypeRandomPathKeyword_1_0; }
 		
-		//type='a_star'
+		//type='quick_random'
 		public Assignment getTypeAssignment_2() { return cTypeAssignment_2; }
 		
-		//'a_star'
-		public Keyword getTypeA_starKeyword_2_0() { return cTypeA_starKeyword_2_0; }
+		//'quick_random'
+		public Keyword getTypeQuick_randomKeyword_2_0() { return cTypeQuick_randomKeyword_2_0; }
 		
-		//type='weighted_random'
+		//type='QuickRandomPath'
 		public Assignment getTypeAssignment_3() { return cTypeAssignment_3; }
 		
+		//'QuickRandomPath'
+		public Keyword getTypeQuickRandomPathKeyword_3_0() { return cTypeQuickRandomPathKeyword_3_0; }
+		
+		//type='a_star'
+		public Assignment getTypeAssignment_4() { return cTypeAssignment_4; }
+		
+		//'a_star'
+		public Keyword getTypeA_starKeyword_4_0() { return cTypeA_starKeyword_4_0; }
+		
+		//type='AStarPath'
+		public Assignment getTypeAssignment_5() { return cTypeAssignment_5; }
+		
+		//'AStarPath'
+		public Keyword getTypeAStarPathKeyword_5_0() { return cTypeAStarPathKeyword_5_0; }
+		
+		//type='weighted_random'
+		public Assignment getTypeAssignment_6() { return cTypeAssignment_6; }
+		
 		//'weighted_random'
-		public Keyword getTypeWeighted_randomKeyword_3_0() { return cTypeWeighted_randomKeyword_3_0; }
+		public Keyword getTypeWeighted_randomKeyword_6_0() { return cTypeWeighted_randomKeyword_6_0; }
+		
+		//type='WeightedRandomPath'
+		public Assignment getTypeAssignment_7() { return cTypeAssignment_7; }
+		
+		//'WeightedRandomPath'
+		public Keyword getTypeWeightedRandomPathKeyword_7_0() { return cTypeWeightedRandomPathKeyword_7_0; }
 	}
 	public class IntegerStopConditionElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "gw4e.eclipse.dsl.DSLPolicies.IntegerStopCondition");
@@ -364,17 +398,33 @@ public class DSLPoliciesGrammarAccess extends AbstractGrammarElementFinder {
 		private final Keyword cRightParenthesisKeyword_0_3 = (Keyword)cGroup_0.eContents().get(3);
 		private final Group cGroup_1 = (Group)cAlternatives.eContents().get(1);
 		private final Assignment cPathtypeAssignment_1_0 = (Assignment)cGroup_1.eContents().get(0);
-		private final Keyword cPathtypeDependency_edge_coverageKeyword_1_0_0 = (Keyword)cPathtypeAssignment_1_0.eContents().get(0);
+		private final Keyword cPathtypeTimeDurationKeyword_1_0_0 = (Keyword)cPathtypeAssignment_1_0.eContents().get(0);
 		private final Keyword cLeftParenthesisKeyword_1_1 = (Keyword)cGroup_1.eContents().get(1);
 		private final Assignment cValueAssignment_1_2 = (Assignment)cGroup_1.eContents().get(2);
 		private final RuleCall cValueINTTerminalRuleCall_1_2_0 = (RuleCall)cValueAssignment_1_2.eContents().get(0);
 		private final Keyword cRightParenthesisKeyword_1_3 = (Keyword)cGroup_1.eContents().get(3);
+		private final Group cGroup_2 = (Group)cAlternatives.eContents().get(2);
+		private final Assignment cPathtypeAssignment_2_0 = (Assignment)cGroup_2.eContents().get(0);
+		private final Keyword cPathtypeDependency_edge_coverageKeyword_2_0_0 = (Keyword)cPathtypeAssignment_2_0.eContents().get(0);
+		private final Keyword cLeftParenthesisKeyword_2_1 = (Keyword)cGroup_2.eContents().get(1);
+		private final Assignment cValueAssignment_2_2 = (Assignment)cGroup_2.eContents().get(2);
+		private final RuleCall cValueINTTerminalRuleCall_2_2_0 = (RuleCall)cValueAssignment_2_2.eContents().get(0);
+		private final Keyword cRightParenthesisKeyword_2_3 = (Keyword)cGroup_2.eContents().get(3);
+		private final Group cGroup_3 = (Group)cAlternatives.eContents().get(3);
+		private final Assignment cPathtypeAssignment_3_0 = (Assignment)cGroup_3.eContents().get(0);
+		private final Keyword cPathtypeDependencyEdgeCoverageKeyword_3_0_0 = (Keyword)cPathtypeAssignment_3_0.eContents().get(0);
+		private final Keyword cLeftParenthesisKeyword_3_1 = (Keyword)cGroup_3.eContents().get(1);
+		private final Assignment cValueAssignment_3_2 = (Assignment)cGroup_3.eContents().get(2);
+		private final RuleCall cValueINTTerminalRuleCall_3_2_0 = (RuleCall)cValueAssignment_3_2.eContents().get(0);
+		private final Keyword cRightParenthesisKeyword_3_3 = (Keyword)cGroup_3.eContents().get(3);
 		
 		//IntegerStopCondition StopCondition:
-		//	pathtype='time_duration' '(' value=INT ')' | pathtype='dependency_edge_coverage' '(' value=INT ')';
+		//	pathtype='time_duration' '(' value=INT ')' | pathtype='TimeDuration' '(' value=INT ')' |
+		//	pathtype='dependency_edge_coverage' '(' value=INT ')' | pathtype='DependencyEdgeCoverage' '(' value=INT ')';
 		@Override public ParserRule getRule() { return rule; }
 		
-		//pathtype='time_duration' '(' value=INT ')' | pathtype='dependency_edge_coverage' '(' value=INT ')'
+		//pathtype='time_duration' '(' value=INT ')' | pathtype='TimeDuration' '(' value=INT ')' |
+		//pathtype='dependency_edge_coverage' '(' value=INT ')' | pathtype='DependencyEdgeCoverage' '(' value=INT ')'
 		public Alternatives getAlternatives() { return cAlternatives; }
 		
 		//pathtype='time_duration' '(' value=INT ')'
@@ -398,14 +448,14 @@ public class DSLPoliciesGrammarAccess extends AbstractGrammarElementFinder {
 		//')'
 		public Keyword getRightParenthesisKeyword_0_3() { return cRightParenthesisKeyword_0_3; }
 		
-		//pathtype='dependency_edge_coverage' '(' value=INT ')'
+		//pathtype='TimeDuration' '(' value=INT ')'
 		public Group getGroup_1() { return cGroup_1; }
 		
-		//pathtype='dependency_edge_coverage'
+		//pathtype='TimeDuration'
 		public Assignment getPathtypeAssignment_1_0() { return cPathtypeAssignment_1_0; }
 		
-		//'dependency_edge_coverage'
-		public Keyword getPathtypeDependency_edge_coverageKeyword_1_0_0() { return cPathtypeDependency_edge_coverageKeyword_1_0_0; }
+		//'TimeDuration'
+		public Keyword getPathtypeTimeDurationKeyword_1_0_0() { return cPathtypeTimeDurationKeyword_1_0_0; }
 		
 		//'('
 		public Keyword getLeftParenthesisKeyword_1_1() { return cLeftParenthesisKeyword_1_1; }
@@ -418,6 +468,48 @@ public class DSLPoliciesGrammarAccess extends AbstractGrammarElementFinder {
 		
 		//')'
 		public Keyword getRightParenthesisKeyword_1_3() { return cRightParenthesisKeyword_1_3; }
+		
+		//pathtype='dependency_edge_coverage' '(' value=INT ')'
+		public Group getGroup_2() { return cGroup_2; }
+		
+		//pathtype='dependency_edge_coverage'
+		public Assignment getPathtypeAssignment_2_0() { return cPathtypeAssignment_2_0; }
+		
+		//'dependency_edge_coverage'
+		public Keyword getPathtypeDependency_edge_coverageKeyword_2_0_0() { return cPathtypeDependency_edge_coverageKeyword_2_0_0; }
+		
+		//'('
+		public Keyword getLeftParenthesisKeyword_2_1() { return cLeftParenthesisKeyword_2_1; }
+		
+		//value=INT
+		public Assignment getValueAssignment_2_2() { return cValueAssignment_2_2; }
+		
+		//INT
+		public RuleCall getValueINTTerminalRuleCall_2_2_0() { return cValueINTTerminalRuleCall_2_2_0; }
+		
+		//')'
+		public Keyword getRightParenthesisKeyword_2_3() { return cRightParenthesisKeyword_2_3; }
+		
+		//pathtype='DependencyEdgeCoverage' '(' value=INT ')'
+		public Group getGroup_3() { return cGroup_3; }
+		
+		//pathtype='DependencyEdgeCoverage'
+		public Assignment getPathtypeAssignment_3_0() { return cPathtypeAssignment_3_0; }
+		
+		//'DependencyEdgeCoverage'
+		public Keyword getPathtypeDependencyEdgeCoverageKeyword_3_0_0() { return cPathtypeDependencyEdgeCoverageKeyword_3_0_0; }
+		
+		//'('
+		public Keyword getLeftParenthesisKeyword_3_1() { return cLeftParenthesisKeyword_3_1; }
+		
+		//value=INT
+		public Assignment getValueAssignment_3_2() { return cValueAssignment_3_2; }
+		
+		//INT
+		public RuleCall getValueINTTerminalRuleCall_3_2_0() { return cValueINTTerminalRuleCall_3_2_0; }
+		
+		//')'
+		public Keyword getRightParenthesisKeyword_3_3() { return cRightParenthesisKeyword_3_3; }
 	}
 	public class PercentageConditionElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "gw4e.eclipse.dsl.DSLPolicies.PercentageCondition");
@@ -431,26 +523,50 @@ public class DSLPoliciesGrammarAccess extends AbstractGrammarElementFinder {
 		private final Keyword cRightParenthesisKeyword_0_3 = (Keyword)cGroup_0.eContents().get(3);
 		private final Group cGroup_1 = (Group)cAlternatives.eContents().get(1);
 		private final Assignment cPathtypeAssignment_1_0 = (Assignment)cGroup_1.eContents().get(0);
-		private final Keyword cPathtypeVertex_coverageKeyword_1_0_0 = (Keyword)cPathtypeAssignment_1_0.eContents().get(0);
+		private final Keyword cPathtypeEdgeCoverageKeyword_1_0_0 = (Keyword)cPathtypeAssignment_1_0.eContents().get(0);
 		private final Keyword cLeftParenthesisKeyword_1_1 = (Keyword)cGroup_1.eContents().get(1);
 		private final Assignment cPercentageAssignment_1_2 = (Assignment)cGroup_1.eContents().get(2);
 		private final RuleCall cPercentagePercentParserRuleCall_1_2_0 = (RuleCall)cPercentageAssignment_1_2.eContents().get(0);
 		private final Keyword cRightParenthesisKeyword_1_3 = (Keyword)cGroup_1.eContents().get(3);
 		private final Group cGroup_2 = (Group)cAlternatives.eContents().get(2);
 		private final Assignment cPathtypeAssignment_2_0 = (Assignment)cGroup_2.eContents().get(0);
-		private final Keyword cPathtypeRequirement_coverageKeyword_2_0_0 = (Keyword)cPathtypeAssignment_2_0.eContents().get(0);
+		private final Keyword cPathtypeVertex_coverageKeyword_2_0_0 = (Keyword)cPathtypeAssignment_2_0.eContents().get(0);
 		private final Keyword cLeftParenthesisKeyword_2_1 = (Keyword)cGroup_2.eContents().get(1);
 		private final Assignment cPercentageAssignment_2_2 = (Assignment)cGroup_2.eContents().get(2);
 		private final RuleCall cPercentagePercentParserRuleCall_2_2_0 = (RuleCall)cPercentageAssignment_2_2.eContents().get(0);
 		private final Keyword cRightParenthesisKeyword_2_3 = (Keyword)cGroup_2.eContents().get(3);
+		private final Group cGroup_3 = (Group)cAlternatives.eContents().get(3);
+		private final Assignment cPathtypeAssignment_3_0 = (Assignment)cGroup_3.eContents().get(0);
+		private final Keyword cPathtypeVertexCoverageKeyword_3_0_0 = (Keyword)cPathtypeAssignment_3_0.eContents().get(0);
+		private final Keyword cLeftParenthesisKeyword_3_1 = (Keyword)cGroup_3.eContents().get(1);
+		private final Assignment cPercentageAssignment_3_2 = (Assignment)cGroup_3.eContents().get(2);
+		private final RuleCall cPercentagePercentParserRuleCall_3_2_0 = (RuleCall)cPercentageAssignment_3_2.eContents().get(0);
+		private final Keyword cRightParenthesisKeyword_3_3 = (Keyword)cGroup_3.eContents().get(3);
+		private final Group cGroup_4 = (Group)cAlternatives.eContents().get(4);
+		private final Assignment cPathtypeAssignment_4_0 = (Assignment)cGroup_4.eContents().get(0);
+		private final Keyword cPathtypeRequirement_coverageKeyword_4_0_0 = (Keyword)cPathtypeAssignment_4_0.eContents().get(0);
+		private final Keyword cLeftParenthesisKeyword_4_1 = (Keyword)cGroup_4.eContents().get(1);
+		private final Assignment cPercentageAssignment_4_2 = (Assignment)cGroup_4.eContents().get(2);
+		private final RuleCall cPercentagePercentParserRuleCall_4_2_0 = (RuleCall)cPercentageAssignment_4_2.eContents().get(0);
+		private final Keyword cRightParenthesisKeyword_4_3 = (Keyword)cGroup_4.eContents().get(3);
+		private final Group cGroup_5 = (Group)cAlternatives.eContents().get(5);
+		private final Assignment cPathtypeAssignment_5_0 = (Assignment)cGroup_5.eContents().get(0);
+		private final Keyword cPathtypeRequirementCoverageKeyword_5_0_0 = (Keyword)cPathtypeAssignment_5_0.eContents().get(0);
+		private final Keyword cLeftParenthesisKeyword_5_1 = (Keyword)cGroup_5.eContents().get(1);
+		private final Assignment cPercentageAssignment_5_2 = (Assignment)cGroup_5.eContents().get(2);
+		private final RuleCall cPercentagePercentParserRuleCall_5_2_0 = (RuleCall)cPercentageAssignment_5_2.eContents().get(0);
+		private final Keyword cRightParenthesisKeyword_5_3 = (Keyword)cGroup_5.eContents().get(3);
 		
 		//PercentageCondition StopCondition:
-		//	pathtype='edge_coverage' '(' percentage=Percent ')' | pathtype='vertex_coverage' '(' percentage=Percent ')' |
-		//	pathtype='requirement_coverage' '(' percentage=Percent ')';
+		//	pathtype='edge_coverage' '(' percentage=Percent ')' | pathtype='EdgeCoverage' '(' percentage=Percent ')' |
+		//	pathtype='vertex_coverage' '(' percentage=Percent ')' | pathtype='VertexCoverage' '(' percentage=Percent ')' |
+		//	pathtype='requirement_coverage' '(' percentage=Percent ')' | pathtype='RequirementCoverage' '(' percentage=Percent
+		//	')';
 		@Override public ParserRule getRule() { return rule; }
 		
-		//pathtype='edge_coverage' '(' percentage=Percent ')' | pathtype='vertex_coverage' '(' percentage=Percent ')' |
-		//pathtype='requirement_coverage' '(' percentage=Percent ')'
+		//pathtype='edge_coverage' '(' percentage=Percent ')' | pathtype='EdgeCoverage' '(' percentage=Percent ')' |
+		//pathtype='vertex_coverage' '(' percentage=Percent ')' | pathtype='VertexCoverage' '(' percentage=Percent ')' |
+		//pathtype='requirement_coverage' '(' percentage=Percent ')' | pathtype='RequirementCoverage' '(' percentage=Percent ')'
 		public Alternatives getAlternatives() { return cAlternatives; }
 		
 		//pathtype='edge_coverage' '(' percentage=Percent ')'
@@ -474,14 +590,14 @@ public class DSLPoliciesGrammarAccess extends AbstractGrammarElementFinder {
 		//')'
 		public Keyword getRightParenthesisKeyword_0_3() { return cRightParenthesisKeyword_0_3; }
 		
-		//pathtype='vertex_coverage' '(' percentage=Percent ')'
+		//pathtype='EdgeCoverage' '(' percentage=Percent ')'
 		public Group getGroup_1() { return cGroup_1; }
 		
-		//pathtype='vertex_coverage'
+		//pathtype='EdgeCoverage'
 		public Assignment getPathtypeAssignment_1_0() { return cPathtypeAssignment_1_0; }
 		
-		//'vertex_coverage'
-		public Keyword getPathtypeVertex_coverageKeyword_1_0_0() { return cPathtypeVertex_coverageKeyword_1_0_0; }
+		//'EdgeCoverage'
+		public Keyword getPathtypeEdgeCoverageKeyword_1_0_0() { return cPathtypeEdgeCoverageKeyword_1_0_0; }
 		
 		//'('
 		public Keyword getLeftParenthesisKeyword_1_1() { return cLeftParenthesisKeyword_1_1; }
@@ -495,14 +611,14 @@ public class DSLPoliciesGrammarAccess extends AbstractGrammarElementFinder {
 		//')'
 		public Keyword getRightParenthesisKeyword_1_3() { return cRightParenthesisKeyword_1_3; }
 		
-		//pathtype='requirement_coverage' '(' percentage=Percent ')'
+		//pathtype='vertex_coverage' '(' percentage=Percent ')'
 		public Group getGroup_2() { return cGroup_2; }
 		
-		//pathtype='requirement_coverage'
+		//pathtype='vertex_coverage'
 		public Assignment getPathtypeAssignment_2_0() { return cPathtypeAssignment_2_0; }
 		
-		//'requirement_coverage'
-		public Keyword getPathtypeRequirement_coverageKeyword_2_0_0() { return cPathtypeRequirement_coverageKeyword_2_0_0; }
+		//'vertex_coverage'
+		public Keyword getPathtypeVertex_coverageKeyword_2_0_0() { return cPathtypeVertex_coverageKeyword_2_0_0; }
 		
 		//'('
 		public Keyword getLeftParenthesisKeyword_2_1() { return cLeftParenthesisKeyword_2_1; }
@@ -515,6 +631,69 @@ public class DSLPoliciesGrammarAccess extends AbstractGrammarElementFinder {
 		
 		//')'
 		public Keyword getRightParenthesisKeyword_2_3() { return cRightParenthesisKeyword_2_3; }
+		
+		//pathtype='VertexCoverage' '(' percentage=Percent ')'
+		public Group getGroup_3() { return cGroup_3; }
+		
+		//pathtype='VertexCoverage'
+		public Assignment getPathtypeAssignment_3_0() { return cPathtypeAssignment_3_0; }
+		
+		//'VertexCoverage'
+		public Keyword getPathtypeVertexCoverageKeyword_3_0_0() { return cPathtypeVertexCoverageKeyword_3_0_0; }
+		
+		//'('
+		public Keyword getLeftParenthesisKeyword_3_1() { return cLeftParenthesisKeyword_3_1; }
+		
+		//percentage=Percent
+		public Assignment getPercentageAssignment_3_2() { return cPercentageAssignment_3_2; }
+		
+		//Percent
+		public RuleCall getPercentagePercentParserRuleCall_3_2_0() { return cPercentagePercentParserRuleCall_3_2_0; }
+		
+		//')'
+		public Keyword getRightParenthesisKeyword_3_3() { return cRightParenthesisKeyword_3_3; }
+		
+		//pathtype='requirement_coverage' '(' percentage=Percent ')'
+		public Group getGroup_4() { return cGroup_4; }
+		
+		//pathtype='requirement_coverage'
+		public Assignment getPathtypeAssignment_4_0() { return cPathtypeAssignment_4_0; }
+		
+		//'requirement_coverage'
+		public Keyword getPathtypeRequirement_coverageKeyword_4_0_0() { return cPathtypeRequirement_coverageKeyword_4_0_0; }
+		
+		//'('
+		public Keyword getLeftParenthesisKeyword_4_1() { return cLeftParenthesisKeyword_4_1; }
+		
+		//percentage=Percent
+		public Assignment getPercentageAssignment_4_2() { return cPercentageAssignment_4_2; }
+		
+		//Percent
+		public RuleCall getPercentagePercentParserRuleCall_4_2_0() { return cPercentagePercentParserRuleCall_4_2_0; }
+		
+		//')'
+		public Keyword getRightParenthesisKeyword_4_3() { return cRightParenthesisKeyword_4_3; }
+		
+		//pathtype='RequirementCoverage' '(' percentage=Percent ')'
+		public Group getGroup_5() { return cGroup_5; }
+		
+		//pathtype='RequirementCoverage'
+		public Assignment getPathtypeAssignment_5_0() { return cPathtypeAssignment_5_0; }
+		
+		//'RequirementCoverage'
+		public Keyword getPathtypeRequirementCoverageKeyword_5_0_0() { return cPathtypeRequirementCoverageKeyword_5_0_0; }
+		
+		//'('
+		public Keyword getLeftParenthesisKeyword_5_1() { return cLeftParenthesisKeyword_5_1; }
+		
+		//percentage=Percent
+		public Assignment getPercentageAssignment_5_2() { return cPercentageAssignment_5_2; }
+		
+		//Percent
+		public RuleCall getPercentagePercentParserRuleCall_5_2_0() { return cPercentagePercentParserRuleCall_5_2_0; }
+		
+		//')'
+		public Keyword getRightParenthesisKeyword_5_3() { return cRightParenthesisKeyword_5_3; }
 	}
 	public class StringConditionElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "gw4e.eclipse.dsl.DSLPolicies.StringCondition");
@@ -528,18 +707,34 @@ public class DSLPoliciesGrammarAccess extends AbstractGrammarElementFinder {
 		private final Keyword cRightParenthesisKeyword_0_3 = (Keyword)cGroup_0.eContents().get(3);
 		private final Group cGroup_1 = (Group)cAlternatives.eContents().get(1);
 		private final Assignment cPathtypeAssignment_1_0 = (Assignment)cGroup_1.eContents().get(0);
-		private final Keyword cPathtypeReached_edgeKeyword_1_0_0 = (Keyword)cPathtypeAssignment_1_0.eContents().get(0);
+		private final Keyword cPathtypeReachedVertexKeyword_1_0_0 = (Keyword)cPathtypeAssignment_1_0.eContents().get(0);
 		private final Keyword cLeftParenthesisKeyword_1_1 = (Keyword)cGroup_1.eContents().get(1);
 		private final Assignment cGraphelementAssignment_1_2 = (Assignment)cGroup_1.eContents().get(2);
 		private final RuleCall cGraphelementGraphElementParserRuleCall_1_2_0 = (RuleCall)cGraphelementAssignment_1_2.eContents().get(0);
 		private final Keyword cRightParenthesisKeyword_1_3 = (Keyword)cGroup_1.eContents().get(3);
+		private final Group cGroup_2 = (Group)cAlternatives.eContents().get(2);
+		private final Assignment cPathtypeAssignment_2_0 = (Assignment)cGroup_2.eContents().get(0);
+		private final Keyword cPathtypeReached_edgeKeyword_2_0_0 = (Keyword)cPathtypeAssignment_2_0.eContents().get(0);
+		private final Keyword cLeftParenthesisKeyword_2_1 = (Keyword)cGroup_2.eContents().get(1);
+		private final Assignment cGraphelementAssignment_2_2 = (Assignment)cGroup_2.eContents().get(2);
+		private final RuleCall cGraphelementGraphElementParserRuleCall_2_2_0 = (RuleCall)cGraphelementAssignment_2_2.eContents().get(0);
+		private final Keyword cRightParenthesisKeyword_2_3 = (Keyword)cGroup_2.eContents().get(3);
+		private final Group cGroup_3 = (Group)cAlternatives.eContents().get(3);
+		private final Assignment cPathtypeAssignment_3_0 = (Assignment)cGroup_3.eContents().get(0);
+		private final Keyword cPathtypeReachedEdgeKeyword_3_0_0 = (Keyword)cPathtypeAssignment_3_0.eContents().get(0);
+		private final Keyword cLeftParenthesisKeyword_3_1 = (Keyword)cGroup_3.eContents().get(1);
+		private final Assignment cGraphelementAssignment_3_2 = (Assignment)cGroup_3.eContents().get(2);
+		private final RuleCall cGraphelementGraphElementParserRuleCall_3_2_0 = (RuleCall)cGraphelementAssignment_3_2.eContents().get(0);
+		private final Keyword cRightParenthesisKeyword_3_3 = (Keyword)cGroup_3.eContents().get(3);
 		
 		//StringCondition StopCondition hidden(WS, ML_COMMENT, SL_COMMENT):
-		//	pathtype='reached_vertex' '(' graphelement=GraphElement ')' | pathtype='reached_edge' '(' graphelement=GraphElement
+		//	pathtype='reached_vertex' '(' graphelement=GraphElement ')' | pathtype='ReachedVertex' '(' graphelement=GraphElement
+		//	')' | pathtype='reached_edge' '(' graphelement=GraphElement ')' | pathtype='ReachedEdge' '(' graphelement=GraphElement
 		//	')';
 		@Override public ParserRule getRule() { return rule; }
 		
-		//pathtype='reached_vertex' '(' graphelement=GraphElement ')' | pathtype='reached_edge' '(' graphelement=GraphElement ')'
+		//pathtype='reached_vertex' '(' graphelement=GraphElement ')' | pathtype='ReachedVertex' '(' graphelement=GraphElement ')'
+		//| pathtype='reached_edge' '(' graphelement=GraphElement ')' | pathtype='ReachedEdge' '(' graphelement=GraphElement ')'
 		public Alternatives getAlternatives() { return cAlternatives; }
 		
 		//pathtype='reached_vertex' '(' graphelement=GraphElement ')'
@@ -563,14 +758,14 @@ public class DSLPoliciesGrammarAccess extends AbstractGrammarElementFinder {
 		//')'
 		public Keyword getRightParenthesisKeyword_0_3() { return cRightParenthesisKeyword_0_3; }
 		
-		//pathtype='reached_edge' '(' graphelement=GraphElement ')'
+		//pathtype='ReachedVertex' '(' graphelement=GraphElement ')'
 		public Group getGroup_1() { return cGroup_1; }
 		
-		//pathtype='reached_edge'
+		//pathtype='ReachedVertex'
 		public Assignment getPathtypeAssignment_1_0() { return cPathtypeAssignment_1_0; }
 		
-		//'reached_edge'
-		public Keyword getPathtypeReached_edgeKeyword_1_0_0() { return cPathtypeReached_edgeKeyword_1_0_0; }
+		//'ReachedVertex'
+		public Keyword getPathtypeReachedVertexKeyword_1_0_0() { return cPathtypeReachedVertexKeyword_1_0_0; }
 		
 		//'('
 		public Keyword getLeftParenthesisKeyword_1_1() { return cLeftParenthesisKeyword_1_1; }
@@ -583,6 +778,48 @@ public class DSLPoliciesGrammarAccess extends AbstractGrammarElementFinder {
 		
 		//')'
 		public Keyword getRightParenthesisKeyword_1_3() { return cRightParenthesisKeyword_1_3; }
+		
+		//pathtype='reached_edge' '(' graphelement=GraphElement ')'
+		public Group getGroup_2() { return cGroup_2; }
+		
+		//pathtype='reached_edge'
+		public Assignment getPathtypeAssignment_2_0() { return cPathtypeAssignment_2_0; }
+		
+		//'reached_edge'
+		public Keyword getPathtypeReached_edgeKeyword_2_0_0() { return cPathtypeReached_edgeKeyword_2_0_0; }
+		
+		//'('
+		public Keyword getLeftParenthesisKeyword_2_1() { return cLeftParenthesisKeyword_2_1; }
+		
+		//graphelement=GraphElement
+		public Assignment getGraphelementAssignment_2_2() { return cGraphelementAssignment_2_2; }
+		
+		//GraphElement
+		public RuleCall getGraphelementGraphElementParserRuleCall_2_2_0() { return cGraphelementGraphElementParserRuleCall_2_2_0; }
+		
+		//')'
+		public Keyword getRightParenthesisKeyword_2_3() { return cRightParenthesisKeyword_2_3; }
+		
+		//pathtype='ReachedEdge' '(' graphelement=GraphElement ')'
+		public Group getGroup_3() { return cGroup_3; }
+		
+		//pathtype='ReachedEdge'
+		public Assignment getPathtypeAssignment_3_0() { return cPathtypeAssignment_3_0; }
+		
+		//'ReachedEdge'
+		public Keyword getPathtypeReachedEdgeKeyword_3_0_0() { return cPathtypeReachedEdgeKeyword_3_0_0; }
+		
+		//'('
+		public Keyword getLeftParenthesisKeyword_3_1() { return cLeftParenthesisKeyword_3_1; }
+		
+		//graphelement=GraphElement
+		public Assignment getGraphelementAssignment_3_2() { return cGraphelementAssignment_3_2; }
+		
+		//GraphElement
+		public RuleCall getGraphelementGraphElementParserRuleCall_3_2_0() { return cGraphelementGraphElementParserRuleCall_3_2_0; }
+		
+		//')'
+		public Keyword getRightParenthesisKeyword_3_3() { return cRightParenthesisKeyword_3_3; }
 	}
 	public class PercentElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "gw4e.eclipse.dsl.DSLPolicies.Percent");
@@ -782,7 +1019,8 @@ public class DSLPoliciesGrammarAccess extends AbstractGrammarElementFinder {
 	}
 	
 	//AlgorithmType:
-	//	type='random' | type='quick_random' | type='a_star' | type='weighted_random';
+	//	type='random' | type='RandomPath' | type='quick_random' | type='QuickRandomPath' | type='a_star' | type='AStarPath' |
+	//	type='weighted_random' | type='WeightedRandomPath';
 	public AlgorithmTypeElements getAlgorithmTypeAccess() {
 		return pAlgorithmType;
 	}
@@ -792,7 +1030,8 @@ public class DSLPoliciesGrammarAccess extends AbstractGrammarElementFinder {
 	}
 	
 	//IntegerStopCondition StopCondition:
-	//	pathtype='time_duration' '(' value=INT ')' | pathtype='dependency_edge_coverage' '(' value=INT ')';
+	//	pathtype='time_duration' '(' value=INT ')' | pathtype='TimeDuration' '(' value=INT ')' |
+	//	pathtype='dependency_edge_coverage' '(' value=INT ')' | pathtype='DependencyEdgeCoverage' '(' value=INT ')';
 	public IntegerStopConditionElements getIntegerStopConditionAccess() {
 		return pIntegerStopCondition;
 	}
@@ -802,8 +1041,10 @@ public class DSLPoliciesGrammarAccess extends AbstractGrammarElementFinder {
 	}
 	
 	//PercentageCondition StopCondition:
-	//	pathtype='edge_coverage' '(' percentage=Percent ')' | pathtype='vertex_coverage' '(' percentage=Percent ')' |
-	//	pathtype='requirement_coverage' '(' percentage=Percent ')';
+	//	pathtype='edge_coverage' '(' percentage=Percent ')' | pathtype='EdgeCoverage' '(' percentage=Percent ')' |
+	//	pathtype='vertex_coverage' '(' percentage=Percent ')' | pathtype='VertexCoverage' '(' percentage=Percent ')' |
+	//	pathtype='requirement_coverage' '(' percentage=Percent ')' | pathtype='RequirementCoverage' '(' percentage=Percent
+	//	')';
 	public PercentageConditionElements getPercentageConditionAccess() {
 		return pPercentageCondition;
 	}
@@ -813,7 +1054,8 @@ public class DSLPoliciesGrammarAccess extends AbstractGrammarElementFinder {
 	}
 	
 	//StringCondition StopCondition hidden(WS, ML_COMMENT, SL_COMMENT):
-	//	pathtype='reached_vertex' '(' graphelement=GraphElement ')' | pathtype='reached_edge' '(' graphelement=GraphElement
+	//	pathtype='reached_vertex' '(' graphelement=GraphElement ')' | pathtype='ReachedVertex' '(' graphelement=GraphElement
+	//	')' | pathtype='reached_edge' '(' graphelement=GraphElement ')' | pathtype='ReachedEdge' '(' graphelement=GraphElement
 	//	')';
 	public StringConditionElements getStringConditionAccess() {
 		return pStringCondition;

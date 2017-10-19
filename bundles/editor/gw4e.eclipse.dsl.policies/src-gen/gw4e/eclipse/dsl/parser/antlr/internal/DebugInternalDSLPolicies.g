@@ -86,11 +86,19 @@ ruleAlgorithmType:
 	(
 		'random'
 		    |
+		'RandomPath'
+		    |
 		'quick_random'
+		    |
+		'QuickRandomPath'
 		    |
 		'a_star'
 		    |
+		'AStarPath'
+		    |
 		'weighted_random'
+		    |
+		'WeightedRandomPath'
 	)
 ;
 
@@ -102,7 +110,17 @@ ruleIntegerStopCondition:
 		RULE_INT
 		')'
 		    |
+		'TimeDuration'
+		'('
+		RULE_INT
+		')'
+		    |
 		'dependency_edge_coverage'
+		'('
+		RULE_INT
+		')'
+		    |
+		'DependencyEdgeCoverage'
 		'('
 		RULE_INT
 		')'
@@ -117,12 +135,27 @@ rulePercentageCondition:
 		rulePercent
 		')'
 		    |
+		'EdgeCoverage'
+		'('
+		rulePercent
+		')'
+		    |
 		'vertex_coverage'
 		'('
 		rulePercent
 		')'
 		    |
+		'VertexCoverage'
+		'('
+		rulePercent
+		')'
+		    |
 		'requirement_coverage'
+		'('
+		rulePercent
+		')'
+		    |
+		'RequirementCoverage'
 		'('
 		rulePercent
 		')'
@@ -137,7 +170,17 @@ ruleStringCondition:
 		ruleGraphElement
 		')'
 		    |
+		'ReachedVertex'
+		'('
+		ruleGraphElement
+		')'
+		    |
 		'reached_edge'
+		'('
+		ruleGraphElement
+		')'
+		    |
+		'ReachedEdge'
 		'('
 		ruleGraphElement
 		')'

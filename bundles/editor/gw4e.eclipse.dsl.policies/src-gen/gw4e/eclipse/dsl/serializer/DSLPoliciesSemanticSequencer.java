@@ -368,7 +368,16 @@ public class DSLPoliciesSemanticSequencer extends XbaseSemanticSequencer {
 	 *     AlgorithmType returns AlgorithmType
 	 *
 	 * Constraint:
-	 *     (type='random' | type='quick_random' | type='a_star' | type='weighted_random')
+	 *     (
+	 *         type='random' | 
+	 *         type='RandomPath' | 
+	 *         type='quick_random' | 
+	 *         type='QuickRandomPath' | 
+	 *         type='a_star' | 
+	 *         type='AStarPath' | 
+	 *         type='weighted_random' | 
+	 *         type='WeightedRandomPath'
+	 *     )
 	 */
 	protected void sequence_AlgorithmType(ISerializationContext context, AlgorithmType semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -410,7 +419,12 @@ public class DSLPoliciesSemanticSequencer extends XbaseSemanticSequencer {
 	 *     IntegerStopCondition returns StopCondition
 	 *
 	 * Constraint:
-	 *     ((pathtype='time_duration' value=INT) | (pathtype='dependency_edge_coverage' value=INT))
+	 *     (
+	 *         (pathtype='time_duration' value=INT) | 
+	 *         (pathtype='TimeDuration' value=INT) | 
+	 *         (pathtype='dependency_edge_coverage' value=INT) | 
+	 *         (pathtype='DependencyEdgeCoverage' value=INT)
+	 *     )
 	 */
 	protected void sequence_IntegerStopCondition(ISerializationContext context, StopCondition semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -448,8 +462,11 @@ public class DSLPoliciesSemanticSequencer extends XbaseSemanticSequencer {
 	 * Constraint:
 	 *     (
 	 *         (pathtype='edge_coverage' percentage=Percent) | 
+	 *         (pathtype='EdgeCoverage' percentage=Percent) | 
 	 *         (pathtype='vertex_coverage' percentage=Percent) | 
-	 *         (pathtype='requirement_coverage' percentage=Percent)
+	 *         (pathtype='VertexCoverage' percentage=Percent) | 
+	 *         (pathtype='requirement_coverage' percentage=Percent) | 
+	 *         (pathtype='RequirementCoverage' percentage=Percent)
 	 *     )
 	 */
 	protected void sequence_PercentageCondition(ISerializationContext context, StopCondition semanticObject) {
@@ -492,7 +509,12 @@ public class DSLPoliciesSemanticSequencer extends XbaseSemanticSequencer {
 	 *     StringCondition returns StopCondition
 	 *
 	 * Constraint:
-	 *     ((pathtype='reached_vertex' graphelement=GraphElement) | (pathtype='reached_edge' graphelement=GraphElement))
+	 *     (
+	 *         (pathtype='reached_vertex' graphelement=GraphElement) | 
+	 *         (pathtype='ReachedVertex' graphelement=GraphElement) | 
+	 *         (pathtype='reached_edge' graphelement=GraphElement) | 
+	 *         (pathtype='ReachedEdge' graphelement=GraphElement)
+	 *     )
 	 */
 	protected void sequence_StringCondition(ISerializationContext context, StopCondition semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
