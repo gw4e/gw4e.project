@@ -814,8 +814,12 @@ public class JDTManager {
 			String typeNname = type.getFullyQualifiedName();
 			String compilationUnitName = JDTManager.getJavaFullyQualifiedName(unit);
 			if (typeNname.equals(compilationUnitName)) {
-				ITypeHierarchy th = types[0].newTypeHierarchy(new NullProgressMonitor());
-				return th.contains(execContextType);
+				try {
+					ITypeHierarchy th = types[0].newTypeHierarchy(new NullProgressMonitor());
+					return th.contains(execContextType);
+				} catch (Exception e) {
+					ResourceManager.logException(e);
+				}
 			}
 		}
 		return false;
