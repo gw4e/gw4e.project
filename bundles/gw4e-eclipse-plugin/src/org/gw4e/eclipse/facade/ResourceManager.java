@@ -116,7 +116,7 @@ import org.gw4e.eclipse.product.GW4ENature;
 
 public class ResourceManager implements IResourceChangeListener {
  
-	public static void waitForTestResult(IProcess process, String projectname, List<IFile> files) throws CoreException {
+	public static void waitForTestResult(IProcess process, String projectname, List<IFile> files, IProgressMonitor monitor) throws CoreException {
 
 		ExecutorService executor = Executors.newSingleThreadExecutor();
 		Future<IFile> future = executor.submit(new Callable<IFile>() {
@@ -124,6 +124,10 @@ public class ResourceManager implements IResourceChangeListener {
 			public IFile call() throws Exception {
 				try {
 					while (true) {
+						if (monitor.isCanceled()) {
+							return null;
+						}
+						
 						List<IFile> temp = new ArrayList<IFile>();
 						ResourceManager.getAllJUnitResultFiles(projectname, temp);
 						temp.removeAll(files);

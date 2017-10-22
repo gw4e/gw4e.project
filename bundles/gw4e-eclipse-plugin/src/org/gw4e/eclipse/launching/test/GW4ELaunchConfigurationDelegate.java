@@ -66,7 +66,9 @@ public class GW4ELaunchConfigurationDelegate extends AbstractJavaLaunchConfigura
 		if (monitor == null) {
 			monitor = new NullProgressMonitor();
 		}
-
+		if (monitor.isCanceled()) {
+			return;
+		}
 		try {
 			// A VM runner starts a Java VM running a Java program. 
 			IVMRunner runner= getVMRunner(configuration, mode);
@@ -113,6 +115,10 @@ public class GW4ELaunchConfigurationDelegate extends AbstractJavaLaunchConfigura
 			progArgs.add("-port");  
 			progArgs.add(String.valueOf(fPort));
 			 
+			if (monitor.isCanceled()) {
+				return;
+			}
+			
 			// VM-specific attributes
 			Map<String, Object> vmAttributesMap= getVMSpecificAttributesMap(configuration);
 			// Set the properties 
@@ -126,16 +132,36 @@ public class GW4ELaunchConfigurationDelegate extends AbstractJavaLaunchConfigura
 			
 			setDefaultSourceLocator(launch, configuration);
 			
+			if (monitor.isCanceled()) {
+				return;
+			}
+			
 			String project = configuration.getAttribute(IJavaLaunchConfigurationConstants.ATTR_PROJECT_NAME,(String)null);
 			List<IFile> files = new ArrayList<IFile>  ();
 		 	ResourceManager.getAllJUnitResultFiles(project, files);
 		 	System.out.println(this.getLaunchManager().getProcesses().length);
+		 	
+		 	if (monitor.isCanceled()) {
+				return;
+			}
+		 	
 			runner.run(runConfig, launch, monitor);
-			 
+			
+			if (monitor.isCanceled()) {
+				return;
+			}
+			
 			IProcess process = getLaunchManager().getProcesses() [getLaunchManager().getProcesses().length-1];
-			
-			ResourceManager.waitForTestResult (process, project,files);
-			
+			IProgressMonitor[] monitors = new IProgressMonitor[] {monitor};
+			Runnable task = () -> {
+			    try {
+					ResourceManager.waitForTestResult (process, project,files,monitors[0]);
+				} catch (CoreException e) {
+					ResourceManager.logException(e);
+				}
+			};
+			Thread thread = new Thread(task);
+			thread.start();
 		} finally {
 			monitor.done();
 		}
