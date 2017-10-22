@@ -5,4 +5,4 @@ GraphWalker (http://graphwalker.github.io) is an open source Model-based testing
 
 For more information, see the documentation at http://gw4e.github.io
 
-You can also jump to the sample at (https://github.com/gw4e/gw4e.samples/blob/master/README.md)
+You can also jump to the samples page at (https://github.com/gw4e/gw4e.samples/blob/master/README.md)
