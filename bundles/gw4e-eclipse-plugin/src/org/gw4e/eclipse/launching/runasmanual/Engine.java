@@ -67,7 +67,6 @@ public class Engine {
 		if (machine.hasNextStep()) {
 			machine.getNextStep();
 			Context context = machine.getCurrentContext();
-			System.out.println("* " + context.getCurrentElement().getName());
 			return createStepDetail (context);
 		}
 		return null;

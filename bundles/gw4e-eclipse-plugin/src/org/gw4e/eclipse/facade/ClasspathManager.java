@@ -93,7 +93,7 @@ public class ClasspathManager   {
 		IClasspathEntry libEntry = JavaCore.newContainerEntry(lcp, true);
 		newEntries[entries.length] = JavaCore.newContainerEntry(libEntry.getPath(), true);
 		javaProject.setRawClasspath(newEntries, null);
-
+		 
 	  	addJunit4Libraries(project);
 	}
 

@@ -19,7 +19,7 @@ public class DSLPoliciesUiModule extends AbstractDSLPoliciesUiModule {
     return null;
   }
   
-  public DSLPoliciesUiModule(final AbstractUIPlugin arg0) {
-    super(arg0);
+  public DSLPoliciesUiModule(final AbstractUIPlugin plugin) {
+    super(plugin);
   }
 }

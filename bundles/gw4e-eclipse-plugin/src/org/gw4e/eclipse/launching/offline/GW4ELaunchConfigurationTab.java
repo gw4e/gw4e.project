@@ -293,7 +293,7 @@ public class GW4ELaunchConfigurationTab extends AbstractLaunchConfigurationTab i
 		    }
 		});
 		combo.setData(GW4ELaunchConfigurationTab.GW4E_LAUNCH_CONFIGURATION_CONTROL_ID,GW4ELaunchConfigurationTab.GW4E_LAUNCH_CONFIGURATION_COMBO_PATH_GENERATOR_ID_MODEL);
-		System.out.println(comboViewer.getControl());
+		 
 		Label lblFiller = new Label(parent, SWT.NONE);
 
 	}

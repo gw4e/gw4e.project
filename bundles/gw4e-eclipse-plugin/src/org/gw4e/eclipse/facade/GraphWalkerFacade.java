@@ -39,6 +39,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.SortedSet;
@@ -47,6 +48,7 @@ import java.util.TimerTask;
 import java.util.TreeSet;
 import java.util.UUID;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.apache.commons.io.FilenameUtils;
 import org.eclipse.core.resources.IContainer;
@@ -231,11 +233,11 @@ public class GraphWalkerFacade {
 	 * @throws IOException
 	 */
 	private static boolean isNotGenerated(SimpleCache cache, Path file) throws IOException {
-		return  !cache.contains(file) || (!cache.get(file).isGenerated());
+		return !cache.contains(file) || (!cache.get(file).isGenerated());
 	}
 
 	public static String getStartElement(File file) throws IOException {
-		ContextFactory factory = getContextFactory (file.toPath());
+		ContextFactory factory = getContextFactory(file.toPath());
 		List<Context> readContexts = factory.create(file.toPath());
 
 		// RuntimeModel model = readContexts.get(0).getModel();
@@ -244,51 +246,53 @@ public class GraphWalkerFacade {
 			return null;
 		return startElement.getName();
 	}
-	
+
 	public static List<Element> getElements(File file) throws IOException {
 		List<Element> elements = getModel(file).getElements();
 		return elements;
 	}
 
 	public static RuntimeModel getModel(File file) throws IOException {
-		ContextFactory factory = getContextFactory (file.toPath());
+		ContextFactory factory = getContextFactory(file.toPath());
 		List<Context> readContexts = factory.create(file.toPath());
 		RuntimeModel model = readContexts.get(0).getModel();
-	
+
 		return model;
 	}
-	
+
 	public static List<String> getVertices(File file) throws IOException {
 		List<RuntimeVertex> vertices = getModel(file).getVertices();
 		List<String> ret = vertices.stream().map(vertex -> vertex.getName()).collect(Collectors.toList());
 		return ret;
 	}
-	
+
 	public static List<String> getEdges(File file) throws IOException {
 		List<RuntimeEdge> edges = getModel(file).getEdges();
 		List<String> ret = edges.stream().map(edge -> edge.getName()).collect(Collectors.toList());
 		return ret;
 	}
-	
-	public static boolean isValidEdge(File file,String edge) throws IOException {
+
+	public static boolean isValidEdge(File file, String edge) throws IOException {
 		return getModel(file).findEdges(edge) != null;
 	}
-	
-	public static boolean isValidVertex(File file,String vertex) throws IOException {
+
+	public static boolean isValidVertex(File file, String vertex) throws IOException {
 		return getModel(file).findVertices(vertex) != null;
 	}
-	
+
 	/**
-	 * Filter a model. It keeps only the passed element in the source model (removing the others) 
+	 * Filter a model. It keeps only the passed element in the source model
+	 * (removing the others)
+	 * 
 	 * @param sourceFileModel
 	 * @param elements
 	 * @return a string representation of the reduced model on json format
 	 * @throws IOException
 	 */
-	public static String reduceModel (File sourceFileModel,String name,Element[] elements) throws IOException {
-		Map<RuntimeVertex,Vertex> mapping = new HashMap<RuntimeVertex,Vertex>();
+	public static String reduceModel(File sourceFileModel, String name, Element[] elements) throws IOException {
+		Map<RuntimeVertex, Vertex> mapping = new HashMap<RuntimeVertex, Vertex>();
 		Builder<? extends Element> startElement = null;
-		 
+
 		RuntimeModel sourceModel = GraphWalkerFacade.getModel(sourceFileModel);
 		Model model = new Model();
 		model.setName(name);
@@ -296,7 +300,7 @@ public class GraphWalkerFacade {
 		model.setId(UUID.randomUUID().toString());
 		List<Vertex.RuntimeVertex> vertices = sourceModel.getVertices();
 		for (RuntimeVertex v : vertices) {
-			boolean found  = false;
+			boolean found = false;
 			for (int i = 0; i < elements.length; i++) {
 				Element element = elements[i];
 				if (element.getId().equals(v.getId())) {
@@ -304,8 +308,10 @@ public class GraphWalkerFacade {
 					break;
 				}
 			}
-			if (!found) continue;
-			org.graphwalker.core.model.Vertex vertex = new org.graphwalker.core.model.Vertex().setName(v.getName()).setId(v.getId());
+			if (!found)
+				continue;
+			org.graphwalker.core.model.Vertex vertex = new org.graphwalker.core.model.Vertex().setName(v.getName())
+					.setId(v.getId());
 			if (elements[0].equals(v)) {
 				startElement = vertex;
 			}
@@ -322,7 +328,7 @@ public class GraphWalkerFacade {
 		}
 		List<Edge.RuntimeEdge> edges = sourceModel.getEdges();
 		for (RuntimeEdge runtimeEdge : edges) {
-			boolean found  = false;
+			boolean found = false;
 			for (int i = 0; i < elements.length; i++) {
 				Element element = elements[i];
 				if (element.getId().equals(runtimeEdge.getId())) {
@@ -330,15 +336,13 @@ public class GraphWalkerFacade {
 					break;
 				}
 			}
-			if (!found) continue;
-			
+			if (!found)
+				continue;
+
 			org.graphwalker.core.model.Vertex sourceVertex = mapping.get(runtimeEdge.getSourceVertex());
 			org.graphwalker.core.model.Vertex targetVertex = mapping.get(runtimeEdge.getTargetVertex());
-			Edge edge = new Edge()
-					.setSourceVertex(sourceVertex)
-					.setTargetVertex(targetVertex)
-					.setName(runtimeEdge.getName())
-					.setId(UUID.randomUUID().toString());
+			Edge edge = new Edge().setSourceVertex(sourceVertex).setTargetVertex(targetVertex)
+					.setName(runtimeEdge.getName()).setId(UUID.randomUUID().toString());
 
 			if (elements[0].getId().equals(runtimeEdge.getId())) {
 				startElement = edge;
@@ -349,28 +353,28 @@ public class GraphWalkerFacade {
 			edge.setDependency(runtimeEdge.getDependency());
 			edge.setRequirements(runtimeEdge.getRequirements());
 			edge.setWeight(runtimeEdge.getWeight());
-			
+
 			model.addEdge(edge);
 		}
 		Context writeContext = new ExecutionContext() {
 		};
 		writeContext.setModel(model.build());
-		if (startElement!=null) {
+		if (startElement != null) {
 			writeContext.setNextElement(startElement);
 		}
-		
+
 		List<Context> writeContexts = new ArrayList<>();
 		writeContexts.add(writeContext);
 
-		ContextFactory factory =  new JsonContextFactory ();
+		ContextFactory factory = new JsonContextFactory();
 		String content = factory.getAsString(writeContexts);
 		return content;
 	}
-	
+
 	private static void addContexts(List<Context> executionContexts, Path modelFileName, String generator,
 			String startElement) throws IOException {
- 
-		ContextFactory factory = getContextFactory (modelFileName);
+
+		ContextFactory factory = getContextFactory(modelFileName);
 		List<Context> contexts = factory.create(modelFileName);
 		contexts.get(0).setPathGenerator(GeneratorFactory.parse(generator));
 		Element element = contexts.get(0).getModel().findElements(startElement).get(0);
@@ -381,8 +385,39 @@ public class GraphWalkerFacade {
 	public static List<IFile> generateOffLineFromFile(IWorkbenchWindow ww, TestResourceGeneration dcp,
 			BuildPolicy[] generators, int timeout, IProgressMonitor monitor)
 			throws IOException, CoreException, InterruptedException {
-		List<IFile> ret = new ArrayList<IFile>();
+
 		IFile graphModel = dcp.getGraphIFile();
+		String startElement = getStartElement(dcp.getGraphFile());
+
+		List<IFile> ret = new ArrayList<IFile>();
+		try {
+			for (BuildPolicy policy : generators) {
+				OfflineContext oc = new OfflineContext(policy);
+				dcp.addOfflineContext(oc);
+				File shellFile = ProcessFacade.buildOfflineShellFile(dcp.getJavaProject(), graphModel, policy.getPathGenerator(), startElement);
+				ProcessFacade.execute(shellFile, (long) timeout).forEach(oc::addMethodName);
+			}
+		} catch (Exception e) {
+			ResourceManager.logException(e);
+			if (!ErrorDialog.AUTOMATED_MODE) { // Avoid displaying a window while running automated mode
+				DialogManager.asyncDisplayErrorMessage(MessageUtil.getString("error"),
+						MessageUtil.getString("an_error_occured_while_running_offline_tool"), e);
+			}
+		}
+		
+		dcp.updateWithOfflines();
+
+		generateFromFile(ww, dcp, monitor);
+		return ret;
+
+	}
+ 
+	public static List<IFile> generateOffLineFromFile1(IWorkbenchWindow ww, TestResourceGeneration dcp,
+			BuildPolicy[] generators, int timeout, IProgressMonitor monitor)
+			throws IOException, CoreException, InterruptedException {
+		IFile graphModel = dcp.getGraphIFile();
+
+		List<IFile> ret = new ArrayList<IFile>();
 
 		List<Context> executionContexts = new ArrayList<Context>();
 		for (BuildPolicy policy : generators) {
@@ -406,7 +441,8 @@ public class GraphWalkerFacade {
 					if (EventType.BEFORE_ELEMENT.equals(type)) {
 						oc.addMethodName(element.getName());
 						if (monitor.isCanceled()) {
-							throw new RuntimeException(new InterruptedException(MessageUtil.getString("timeoutofflineorcancelled")));
+							throw new RuntimeException(
+									new InterruptedException(MessageUtil.getString("timeoutofflineorcancelled")));
 						}
 					}
 				}
@@ -417,13 +453,13 @@ public class GraphWalkerFacade {
 				@Override
 				public void run() {
 					try {
-						 monitor.setCanceled(true);
+						monitor.setCanceled(true);
 					} catch (Throwable e) {
 					}
 				}
 
 			}, timeout * 1000);
-			
+
 			try {
 				Result result = executor.execute();
 				canceller.cancel();
@@ -432,10 +468,9 @@ public class GraphWalkerFacade {
 				String reason = e.getResult().getResultsAsString();
 				canceller.cancel();
 				ResourceManager.logException(e, reason);
-				 
+
 				if (!ErrorDialog.AUTOMATED_MODE) { // Avoid displaying a window while running automated mode
-					DialogManager.asyncDisplayErrorMessage(MessageUtil.getString("error"),
-							reason, e);
+					DialogManager.asyncDisplayErrorMessage(MessageUtil.getString("error"), reason, e);
 				}
 			} catch (Throwable e) {
 				canceller.cancel();
@@ -485,47 +520,45 @@ public class GraphWalkerFacade {
 		}
 		final SimpleCache cache = new SimpleCache(dcp.getOutputPath());
 		if (!PreferenceManager.isCacheEnabled() || isNotGenerated(cache, dcp.getInputPath())
-				|| isModified(cache, dcp.getInputPath()) || dcp.isOffline() ) {
+				|| isModified(cache, dcp.getInputPath()) || dcp.isOffline()) {
 			try {
 				subMonitor.setTaskName("Processing " + dcp.getInputPath().getFileName());
 				// write interface
 				SourceFile sourceFile = new SourceFile(dcp.getInputPath(), dcp.getBasePath(), dcp.getOutputPath());
 				ContextFactory factory = getContextFactory(sourceFile.getInputPath());
 				List<IPath> interfaces = write(factory, sourceFile, true, monitor);
-				
+
 				if (dcp.isGenerateOnlyInterface())
 					return ret;
-				
+
 				// write implementation
 				IFile type = null;
 				if (dcp.isAppendSource()) {
-				    type = dcp.toIFile();
+					type = dcp.toIFile();
 				} else {
-				    type = JDTManager.generateTestImplementation(dcp, monitor);
+					type = JDTManager.generateTestImplementation(dcp, monitor);
 					ResourceManager.updateBuildPolicyFileFor(type);
 				}
-				
+
 				ret.add(type);
 
-				 
-							  type = ret.get(ret.size()-1) ;
-							JDTManager.enrichClass(type, dcp, monitor);
-							JDTManager.formatUnitSourceCode(type , monitor);
-							JDTManager.openEditor(type, ww);
-						 
+				type = ret.get(ret.size() - 1);
+				JDTManager.enrichClass(type, dcp, monitor);
+				JDTManager.formatUnitSourceCode(type, monitor);
+				JDTManager.openEditor(type, ww);
+
 				ICompilationUnit cu = JavaCore.createCompilationUnitFrom(type);
 				int count = 0;
 				CompilationUnit ast = null;
-				while (ast==null && count < 10) {
+				while (ast == null && count < 10) {
 					Thread.sleep(200);
 					ast = JDTManager.parse(cu);
 					count++;
 				}
 
-				 
-							  type = ret.get(ret.size()-1) ;
-							JDTManager.reorganizeImport(JavaCore.createCompilationUnitFrom(type));
-						 	
+				type = ret.get(ret.size() - 1);
+				JDTManager.reorganizeImport(JavaCore.createCompilationUnitFrom(type));
+
 				cache.add(dcp.getInputPath(), new CacheEntry(dcp.getInputPath().toFile().lastModified(), true));
 				IFile iFileCache = ResourceManager.toIFile(dcp.getOutputPath().toFile());
 				ResourceManager.resfresh(iFileCache.getParent());
@@ -539,8 +572,7 @@ public class GraphWalkerFacade {
 		}
 		return ret;
 	}
-	
-	
+
 	public static List<IFile> generateFromFile1(IWorkbenchWindow ww, TestResourceGeneration dcp,
 			IProgressMonitor monitor) throws IOException, CoreException, InterruptedException {
 		List<IFile> ret = new ArrayList<IFile>();
@@ -564,34 +596,34 @@ public class GraphWalkerFacade {
 		}
 		final SimpleCache cache = new SimpleCache(dcp.getOutputPath());
 		if (!PreferenceManager.isCacheEnabled() || isNotGenerated(cache, dcp.getInputPath())
-				|| isModified(cache, dcp.getInputPath()) || dcp.isOffline() ) {
+				|| isModified(cache, dcp.getInputPath()) || dcp.isOffline()) {
 			try {
 				subMonitor.setTaskName("Processing " + dcp.getInputPath().getFileName());
 				// write interface
 				SourceFile sourceFile = new SourceFile(dcp.getInputPath(), dcp.getBasePath(), dcp.getOutputPath());
 				ContextFactory factory = getContextFactory(sourceFile.getInputPath());
 				List<IPath> interfaces = write(factory, sourceFile, true, monitor);
-				
+
 				if (dcp.isGenerateOnlyInterface())
 					return ret;
-				
+
 				// write implementation
 				IFile type = null;
 				if (dcp.isAppendSource()) {
-				    type = dcp.toIFile();
+					type = dcp.toIFile();
 				} else {
-				    type = JDTManager.generateTestImplementation(dcp, monitor);
+					type = JDTManager.generateTestImplementation(dcp, monitor);
 					ResourceManager.updateBuildPolicyFileFor(type);
 				}
-				
+
 				ret.add(type);
 
 				Display.getDefault().syncExec(new Runnable() {
 					public void run() {
 						try {
-							IFile type = ret.get(ret.size()-1) ;
+							IFile type = ret.get(ret.size() - 1);
 							JDTManager.enrichClass(type, dcp, monitor);
-							JDTManager.formatUnitSourceCode(type , monitor);
+							JDTManager.formatUnitSourceCode(type, monitor);
 							JDTManager.openEditor(type, ww);
 						} catch (Exception e) {
 							ResourceManager.logException(e);
@@ -602,7 +634,7 @@ public class GraphWalkerFacade {
 				ICompilationUnit cu = JavaCore.createCompilationUnitFrom(type);
 				int count = 0;
 				CompilationUnit ast = null;
-				while (ast==null && count < 10) {
+				while (ast == null && count < 10) {
 					Thread.sleep(1000);
 					ast = JDTManager.parse(cu);
 					count++;
@@ -611,13 +643,13 @@ public class GraphWalkerFacade {
 				Display.getDefault().syncExec(new Runnable() {
 					public void run() {
 						try {
-							IFile type = ret.get(ret.size()-1) ;
+							IFile type = ret.get(ret.size() - 1);
 							JDTManager.reorganizeImport(JavaCore.createCompilationUnitFrom(type));
 						} catch (Exception e) {
 							ResourceManager.logException(e);
 						}
 					}
-				});				
+				});
 				cache.add(dcp.getInputPath(), new CacheEntry(dcp.getInputPath().toFile().lastModified(), true));
 				IFile iFileCache = ResourceManager.toIFile(dcp.getOutputPath().toFile());
 				ResourceManager.resfresh(iFileCache.getParent());
@@ -693,24 +725,24 @@ public class GraphWalkerFacade {
 
 	/**
 	 * Return the Context built after having read and parsed the passed graph model
-	 * GraphWalker lookup factory fails in OSGI env.  
+	 * GraphWalker lookup factory fails in OSGI env.
 	 * 
 	 * @param modelFileName
 	 * @return
 	 * @throws IOException
 	 */
 	static Map<String, ContextFactory> cache = new HashMap<String, ContextFactory>();
-    static {
-    	cache.put("json", new JsonContextFactory());
-    	cache.put("graphml", new YEdContextFactory());
-    	cache.put("dot", new  DotContextFactory());
-    	cache.put("java", new  JavaContextFactory());
-    }
-    
+	static {
+		cache.put("json", new JsonContextFactory());
+		cache.put("graphml", new YEdContextFactory());
+		cache.put("dot", new DotContextFactory());
+		cache.put("java", new JavaContextFactory());
+	}
+
 	public static ContextFactory getContextFactory(Path path) {
 		String extension = FilenameUtils.getExtension(path.toString());
 		ContextFactory factory = cache.get(extension);
-		if (factory ==null) {
+		if (factory == null) {
 			throw new NullPointerException(" No factory found for : " + path);
 		}
 		return factory;
@@ -856,14 +888,18 @@ public class GraphWalkerFacade {
 			return issues;
 		}
 		List<String> issues = ContextsChecker.hasIssues(contexts);
-		
-		// assess whether we have 100% coverage on vertex while having a start vertex and start element which is not the Start vertex
-		List<RuntimeVertex>  vertices = context.getModel().getVertices();
-		RuntimeVertex[] filteredVertex =  vertices.stream().filter(item -> item.getName().equalsIgnoreCase(Constant.START_VERTEX_NAME)).toArray(RuntimeVertex[]::new);
-		if (filteredVertex!=null && filteredVertex.length > 0 && context!=null && context.getNextElement()!=null && !context.getNextElement().getName().equalsIgnoreCase(Constant.START_VERTEX_NAME)) {
+
+		// assess whether we have 100% coverage on vertex while having a start vertex
+		// and start element which is not the Start vertex
+		List<RuntimeVertex> vertices = context.getModel().getVertices();
+		RuntimeVertex[] filteredVertex = vertices.stream()
+				.filter(item -> item.getName().equalsIgnoreCase(Constant.START_VERTEX_NAME))
+				.toArray(RuntimeVertex[]::new);
+		if (filteredVertex != null && filteredVertex.length > 0 && context != null && context.getNextElement() != null
+				&& !context.getNextElement().getName().equalsIgnoreCase(Constant.START_VERTEX_NAME)) {
 			PathGenerator<StopCondition> pg = GeneratorFactory.parse(pathgenerator);
 			StopCondition condition = pg.getStopCondition();
-			if (condition instanceof VertexCoverage && condition.getValue().trim().equals("100"))  {
+			if (condition instanceof VertexCoverage && condition.getValue().trim().equals("100")) {
 				issues.add(MessageUtil.getString("cannot_reach_one_hundred_vertex_coverage_with_start_vertex"));
 			}
 		}
@@ -882,8 +918,7 @@ public class GraphWalkerFacade {
 			return false;
 		}
 	}
-	
-	
+
 	/**
 	 * @param pathgenerator
 	 * @return
@@ -1003,12 +1038,12 @@ public class GraphWalkerFacade {
 		File reportDir;
 		boolean displayDetail;
 		boolean removedBlockedElements;
-		
+
 		public GW4EExecutor(List<String> classpathElements, List<String> classnames, File reportDir,
-				boolean displayDetail,boolean removedBlockedElements) {
+				boolean displayDetail, boolean removedBlockedElements) {
 			super();
 			this.classpathElements = classpathElements;
-			this.removedBlockedElements=removedBlockedElements;
+			this.removedBlockedElements = removedBlockedElements;
 			this.reportDir = reportDir;
 			this.displayDetail = displayDetail;
 			this.classnames = new ArrayList<String>();
@@ -1088,14 +1123,14 @@ public class GraphWalkerFacade {
 			TestExecutor executor;
 
 			switchClassLoader(contextClassLoader);
-		 
+
 			executor = new TestExecutor(contexts);
-			
+
 			List<Context> all = executor.getMachine().getContexts();
 			if (removedBlockedElements) {
 				org.graphwalker.io.common.Util.filterBlockedElements(all);
 			}
-			
+
 			installEntryPointExecutionContext(contexts, executor.getMachine().getContexts());
 			displayConfiguration(executor.getMachine().getContexts());
 			Result result = null;

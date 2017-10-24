@@ -139,8 +139,7 @@ public class GW4ELaunchConfigurationDelegate extends AbstractJavaLaunchConfigura
 			String project = configuration.getAttribute(IJavaLaunchConfigurationConstants.ATTR_PROJECT_NAME,(String)null);
 			List<IFile> files = new ArrayList<IFile>  ();
 		 	ResourceManager.getAllJUnitResultFiles(project, files);
-		 	System.out.println(this.getLaunchManager().getProcesses().length);
-		 	
+	 
 		 	if (monitor.isCanceled()) {
 				return;
 			}

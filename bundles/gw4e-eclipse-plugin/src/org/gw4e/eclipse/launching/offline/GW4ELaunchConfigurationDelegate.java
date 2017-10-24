@@ -57,9 +57,7 @@ import org.gw4e.eclipse.message.MessageUtil;
  */
 public class GW4ELaunchConfigurationDelegate extends AbstractJavaLaunchConfigurationDelegate implements LaunchingConstant {
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.debug.core.model.ILaunchConfigurationDelegate#launch(org.eclipse.debug.core.ILaunchConfiguration, java.lang.String, org.eclipse.debug.core.ILaunch, org.eclipse.core.runtime.IProgressMonitor)
-	 */
+	 
 	/* (non-Javadoc)
 	 * @see org.eclipse.debug.core.model.ILaunchConfigurationDelegate#launch(org.eclipse.debug.core.ILaunchConfiguration, java.lang.String, org.eclipse.debug.core.ILaunch, org.eclipse.core.runtime.IProgressMonitor)
 	 */
@@ -68,6 +66,8 @@ public class GW4ELaunchConfigurationDelegate extends AbstractJavaLaunchConfigura
 		if (monitor == null) {
 			monitor = new NullProgressMonitor();
 		}
+		
+		  ILaunchConfiguration b;
 
 		try {
 			// A VM runner starts a Java VM running a Java program. 

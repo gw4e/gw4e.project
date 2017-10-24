@@ -37,8 +37,14 @@ import java.util.regex.Pattern;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.jdt.core.IClasspathEntry;
+import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
+import org.eclipse.jdt.launching.IRuntimeClasspathEntry;
+import org.eclipse.jdt.launching.IVMInstall;
+import org.eclipse.jdt.launching.JavaRuntime;
+import org.eclipse.jdt.launching.environments.IExecutionEnvironment;
 import org.gw4e.eclipse.conversion.ClassExtension;
 import org.gw4e.eclipse.conversion.MethodExtension;
 import org.gw4e.eclipse.conversion.OfflineMethodExtension;
@@ -55,6 +61,7 @@ public class TestResourceGeneration {
 	ClassExtension classExtension;
     IFile graphIFile;
     File graphFile ;
+    IJavaProject jproject;
 	String filename; // ShoppingCartImpl.java for example
 	java.nio.file.Path inputPath; // /Users/xxxx/runtime-New_configuration/test/src/main/resources/ShoppingCart.graphml
 	java.nio.file.Path basePath; // /Users/xxxx/runtime-New_configuration/test/src/main/resources
@@ -73,6 +80,7 @@ public class TestResourceGeneration {
 		super();
 		this.implementationFragmentRoot = context.getPackageFragmentRoot();
 		this.targetPkg = context.getTargetPkg();
+		this.jproject = this.targetPkg.getJavaProject();
 		this.interfaceName = context.getInterfaceName();
 		this.filename = context.getSelectedFilename();
 		this.classExtension = context.getClassExtension();
@@ -98,6 +106,38 @@ public class TestResourceGeneration {
 		this.graphIFile = context.getSelectedFile();
 		this.mode = context.getMode();
 	}
+	
+	public IJavaProject getJavaProject () {
+		return this.jproject;
+	}
+	 
+	public static void getProjectClassPath(IJavaProject project, List<File> dst) throws Exception {
+		IRuntimeClasspathEntry [] rentries = JavaRuntime.computeUnresolvedRuntimeClasspath(project);
+		for (IRuntimeClasspathEntry entry : rentries) {
+			switch (entry.getType()) {
+			case IClasspathEntry.CPE_SOURCE: 
+				break;
+			case IClasspathEntry.CPE_PROJECT:
+				break;
+			case IClasspathEntry.CPE_LIBRARY:
+				break;
+			case IClasspathEntry.CPE_VARIABLE:
+				// JRE like entries
+				IRuntimeClasspathEntry [] variableEntries  = JavaRuntime.resolveRuntimeClasspathEntry(entry, project);
+				break;
+			case IClasspathEntry.CPE_CONTAINER:
+				IRuntimeClasspathEntry [] containerEntries  = JavaRuntime.resolveRuntimeClasspathEntry(entry, project);
+				for (IRuntimeClasspathEntry containerentry : containerEntries) {
+					dst.add(new File (containerentry.getLocation()));
+				}
+				break;
+			default:
+				throw new Exception("unsupported classpath entry "+entry);
+			}
+		}
+	}
+	
+
 	
 	public void updateWithOfflines () {
 		int max  = offlineContexts.size();

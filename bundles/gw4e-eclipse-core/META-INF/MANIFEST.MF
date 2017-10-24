@@ -9,6 +9,7 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Export-Package: com.google.common.io,
  com.google.gson,
+ org.apache.commons.exec,
  org.apache.commons.io,
  org.apache.poi,
  org.apache.poi.common.usermodel,
@@ -51,4 +52,5 @@ Bundle-ClassPath: lib/graphwalker-cli-4.0.0-SNAPSHOT.jar,
  lib/poi-ooxml-3.16.jar,
  lib/poi-ooxml-schemas-3.16.jar,
  lib/stax-api-1.0.1.jar,
- lib/xmlbeans-2.6.0.jar
+ lib/xmlbeans-2.6.0.jar,
+ lib/commons-exec-1.3.jar
