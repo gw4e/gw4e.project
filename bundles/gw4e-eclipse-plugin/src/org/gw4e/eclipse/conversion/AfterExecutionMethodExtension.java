@@ -47,7 +47,7 @@ public class AfterExecutionMethodExtension extends StubMethodExtension {
 		if (!generatePerformance) return super.getSource(additionalContext,value);
 		String newline = System.getProperty("line.separator");
 		return  "@" + this.getAnnotation()  + " " +   newline   +
-				"public void " + this.getName() +"() { " +   newline   +
+				"public void " + this.getName() +"() throws IOException { " +   newline   +
 				"String newline = System.getProperty(\"line.separator\");" + newline + 
 				"String quote = \"" + "\\" + "\"\";" + newline + 
 				"Profiler profiler = this.getProfiler();" + newline + 
@@ -84,8 +84,9 @@ public class AfterExecutionMethodExtension extends StubMethodExtension {
 				"	sb.append(\"}\").append(newline);" + newline + 
 				"	if (iter.hasNext()) sb.append(\",\");" + newline + 
 				"}" + newline + 
-				"sb.append(\"]\").append(\"}\").append(\"}\");" + newline + 			 
+				"sb.append(\"]\").append(\"}\").append(\"}\");"   + newline + 
 				"System.out.println(sb.toString());" + newline + 
+				"Files.write(Paths.get(this.getClass().getName() + \".json\"), sb.toString().getBytes());" + newline + 
 				"}";
 	}
 	@Override
@@ -98,7 +99,10 @@ public class AfterExecutionMethodExtension extends StubMethodExtension {
 				org.graphwalker.core.statistics.Profiler.class.getName(),
 				org.graphwalker.core.model.Edge.class.getName(),
 				org.graphwalker.core.model.Element.class.getName(),
-				// org.graphwalker.core.statistics.ProfileUnit.class.getName(),
+				java.nio.file.Files.class.getName(),
+				java.nio.file.Path.class.getName(),
+				java.nio.file.Paths.class.getName(),
+				java.io.IOException.class.getName(),
 				java.util.concurrent.TimeUnit.class.getName()};
 	}
 	 
