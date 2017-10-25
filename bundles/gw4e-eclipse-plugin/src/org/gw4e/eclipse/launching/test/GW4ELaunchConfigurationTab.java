@@ -429,7 +429,7 @@ public class GW4ELaunchConfigurationTab extends AbstractLaunchConfigurationTab i
 			};
 			fProjectText.setText(projectName);
 			removeBockedElementButton.setSelection(configuration.getAttribute(EXECUTION_TEST_REMOVE_BLOCKED_ELEMENT_CONFIGURATION, true));
-			displayDetailsButton.setSelection(configuration.getAttribute(EXECUTION_TEST_DISPLAY_CONFIGURATION, true));
+			displayDetailsButton.setSelection(new Boolean(configuration.getAttribute(EXECUTION_TEST_DISPLAY_CONFIGURATION, "true")).booleanValue());
 			String classes = configuration.getAttribute(CONFIG_TEST_CLASSES, "");  
 			StringTokenizer st = new StringTokenizer (classes,";");
 			if (st.hasMoreTokens()) {
