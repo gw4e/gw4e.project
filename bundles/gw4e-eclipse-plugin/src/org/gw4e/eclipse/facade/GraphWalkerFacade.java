@@ -34,6 +34,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -1084,7 +1086,7 @@ public class GraphWalkerFacade {
 			System.out.println("------------------------------------------------------------------------");
 		}
 
-		private void displayResult(boolean displayDetail, Result result) {
+		private void displayResult(boolean displayDetail, String classname, Result result) throws IOException {
 			if (!displayDetail)
 				return;
 			if (result.hasErrors()) {
@@ -1095,7 +1097,11 @@ public class GraphWalkerFacade {
 			}
 			System.out.println("------------------------------------------------------------------------");
 			System.out.println("Result :");
-			System.out.println(result.getResultsAsString());
+			String temp = result.getResultsAsString();
+			System.out.println(temp);
+			DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+		    String timestamp = formatter.format(new Date());
+		    Files.write(Paths.get("graphwalker-model-summary-" + classname + "-" + timestamp + ".json"), temp.getBytes());
 		}
 
 		private ClassLoader switchClassLoader(ClassLoader classLoader) {
@@ -1136,11 +1142,11 @@ public class GraphWalkerFacade {
 			Result result = null;
 			try {
 				executor.execute();
-			} catch (Exception e) {
+			} catch (Throwable e) {
 				e.printStackTrace();
 			}
 			result = executor.getResult();
-			displayResult(displayDetail, result);
+			displayResult(displayDetail, classnames.get(0) , result);
 			executor.reportResults(reportDir, starttime, System.getProperties());
 		}
 	}

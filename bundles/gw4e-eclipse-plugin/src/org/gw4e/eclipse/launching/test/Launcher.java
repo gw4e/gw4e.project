@@ -49,14 +49,17 @@ public class Launcher {
 	 */
 	public static void main(String[] args) throws ClassNotFoundException, IOException   {
 		Path file = Paths.get(args[0]);
+		System.out.println("gw4e.launcher classpath : " + file.toFile().getAbsolutePath());
 		List<String> cp = ClasspathSerializer.deserialize(file);
 		file =  Paths.get(args[1]);
+		System.out.println("gw4e.launcher test(s) : " + file.toFile().getAbsolutePath());
 		List<String> classnames  = TestsSerializer.deserialize(file);
 		File reportDir = new File (args[2]);
-		 
+		System.out.println("gw4e.launcher reportDir : " + reportDir); 
 		boolean displayDetail = Boolean.parseBoolean(args[3]);
+		System.out.println("gw4e.launcher displayDetail : " + displayDetail); 
 		boolean removedBlockedElements = Boolean.parseBoolean(args[4]);
-		
+		System.out.println("gw4e.launcher removedBlockedElements : " + removedBlockedElements); 
 		GW4EExecutor gwe  = new GW4EExecutor(cp, classnames, reportDir, displayDetail, removedBlockedElements);
 		gwe.execute();
 	}

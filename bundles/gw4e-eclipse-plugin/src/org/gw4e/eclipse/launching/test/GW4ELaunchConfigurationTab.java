@@ -102,6 +102,7 @@ public class GW4ELaunchConfigurationTab extends AbstractLaunchConfigurationTab i
 	 
 	private Button hintButton;
 	private Button removeBockedElementButton;
+	private Button displayDetailsButton;
 	private GridData gd_1;
 	
 	public GW4ELaunchConfigurationTab( ) {
@@ -131,6 +132,7 @@ public class GW4ELaunchConfigurationTab extends AbstractLaunchConfigurationTab i
 		createProjectSection (compositeContainer);
 		createTestContainerSelectionGroup(compositeContainer);
 		createRemoveBlockedElementGroup (compositeContainer);
+		createDisplayReportElementGroup(compositeContainer);
 		createAdditionalExecutionContextContainer (compositeContainer);
 
 	}
@@ -316,25 +318,47 @@ public class GW4ELaunchConfigurationTab extends AbstractLaunchConfigurationTab i
 	}
 	
 	private void createRemoveBlockedElementGroup (Composite parent) {
-		Label lfiller = new Label(compositeContainer, SWT.NONE);
+		Label lfiller = new Label(parent, SWT.NONE);
 		lfiller.setText("");
 		
-		Label lblRemoveBlockedElement = new Label(compositeContainer, SWT.NONE);
+		Label lblRemoveBlockedElement = new Label(parent, SWT.NONE);
 		lblRemoveBlockedElement.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblRemoveBlockedElement.setText(MessageUtil.getString("removeBlockedElement"));
 		
-		removeBockedElementButton = new Button(compositeContainer, SWT.CHECK);
+		removeBockedElementButton = new Button(parent, SWT.CHECK);
 		removeBockedElementButton.setText("");
 		removeBockedElementButton.setSelection(true);
-		new Label(compositeContainer, SWT.NONE);
+		 
 		removeBockedElementButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent evt) {
 				validatePage();
 			}
 		});
+		
+	
  	}
 	
+	private void createDisplayReportElementGroup (Composite parent) {
+		Label lfiller = new Label(parent, SWT.NONE);
+		lfiller.setText("");
+		
+		Label lblDisplayReporElement = new Label(parent, SWT.NONE);
+		lblDisplayReporElement.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
+		lblDisplayReporElement.setText(MessageUtil.getString("displayReport"));
+		
+		displayDetailsButton = new Button(parent, SWT.CHECK);
+		displayDetailsButton.setText("");
+		displayDetailsButton.setSelection(true);
+		new Label(parent, SWT.NONE);
+		displayDetailsButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent evt) {
+				validatePage();
+			}
+		});
+ 	}
+
 	 
 	private void hint ( ) {
 		this.doHint=!this.doHint;
@@ -405,6 +429,7 @@ public class GW4ELaunchConfigurationTab extends AbstractLaunchConfigurationTab i
 			};
 			fProjectText.setText(projectName);
 			removeBockedElementButton.setSelection(configuration.getAttribute(EXECUTION_TEST_REMOVE_BLOCKED_ELEMENT_CONFIGURATION, true));
+			displayDetailsButton.setSelection(configuration.getAttribute(EXECUTION_TEST_DISPLAY_CONFIGURATION, true));
 			String classes = configuration.getAttribute(CONFIG_TEST_CLASSES, "");  
 			StringTokenizer st = new StringTokenizer (classes,";");
 			if (st.hasMoreTokens()) {
@@ -451,6 +476,8 @@ public class GW4ELaunchConfigurationTab extends AbstractLaunchConfigurationTab i
  		 }
 		configuration.setAttribute(CONFIG_TEST_CLASSES, sb.toString());
 		configuration.setAttribute(EXECUTION_TEST_REMOVE_BLOCKED_ELEMENT_CONFIGURATION,removeBockedElementButton.getSelection());
+		configuration.setAttribute(EXECUTION_TEST_DISPLAY_CONFIGURATION,displayDetailsButton.getSelection()+"");
+		
  	}
  		
   

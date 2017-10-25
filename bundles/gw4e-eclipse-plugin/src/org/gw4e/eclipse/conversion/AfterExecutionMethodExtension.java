@@ -63,7 +63,7 @@ public class AfterExecutionMethodExtension extends StubMethodExtension {
 				"	String contextModel = profile.getContext().getModel().getName();" + newline + 
 				"	String contextName = profile.getContext().getClass().getName();" + newline + 
 				"	String pathGenerator = profile.getContext().getPathGenerator().toString();" + newline + 
-				"	sb.append(\"{\").append(newline).append(quote).append(\"name\").append(quote).append(\":\").append(quote).append(element.getName()).append(quote).append(\",\").append(newline);" + newline + 
+				"	sb.append(\"{\").append(newline).append(quote).append(\"name\").append(quote).append(\":\").append(quote).append(element==null? \"\" : element.getName()).append(quote).append(\",\").append(newline);" + newline + 
 				"	sb.append(quote).append(\"contextName\").append(quote).append(\":\").append(quote).append(contextName).append(quote).append(\",\").append(newline);" + newline + 
 				"	sb.append(quote).append(\"pathGenerator\").append(quote).append(\":\").append(quote).append(pathGenerator).append(quote).append(\",\").append(newline);" + newline + 
 				"	if (element instanceof Edge.RuntimeEdge) {" + newline + 
@@ -86,7 +86,9 @@ public class AfterExecutionMethodExtension extends StubMethodExtension {
 				"}" + newline + 
 				"sb.append(\"]\").append(\"}\").append(\"}\");"   + newline + 
 				"System.out.println(sb.toString());" + newline + 
-				"Files.write(Paths.get(this.getClass().getName() + \".json\"), sb.toString().getBytes());" + newline + 
+				"DateFormat formatter = new SimpleDateFormat(\"yyyy-MM-dd'T'HH:mm:ss\");" + newline + 
+				"String timestamp = formatter.format(new Date());" + newline + 
+				"Files.write(Paths.get(\"graphwalker-test-summary-\" + this.getClass().getName() + \"-\" + timestamp + \".json\"), sb.toString().getBytes());" + newline + 
 				"}";
 	}
 	@Override
@@ -95,6 +97,7 @@ public class AfterExecutionMethodExtension extends StubMethodExtension {
 				annotation.getName(), 
 				java.util.Iterator.class.getName(),
 				java.util.List.class.getName(),
+				java.util.Date.class.getName(),
 				org.graphwalker.core.statistics.Profile.class.getName(),
 				org.graphwalker.core.statistics.Profiler.class.getName(),
 				org.graphwalker.core.model.Edge.class.getName(),
