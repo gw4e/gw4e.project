@@ -50,10 +50,21 @@ public class AfterExecutionMethodExtension extends StubMethodExtension {
 				"public void " + this.getName() +"() throws IOException { " +   newline   +
 				"String newline = System.getProperty(\"line.separator\");" + newline + 
 				"String quote = \"" + "\\" + "\"\";" + newline + 
+				"DateFormat df = new SimpleDateFormat (\"yyyy-MM-dd'T'HH:mm:ss.SSS\");" + newline + 
 				"Profiler profiler = this.getProfiler();" + newline + 
 				"List<Profile> profiles = profiler.getProfiles();" + newline + 
 				"StringBuffer sb = new StringBuffer ();" + newline + 
 				"sb.append(\"{\").append(newline);" + newline + 
+				"sb.append(quote).append(\"timestamp\").append(quote).append(\" : \").append(quote).append(df.format(new Date ())).append(quote).append(\",\").append(newline);" + newline + 
+				"String index = (String)this.getModel().getProperty(\"gw4e.elk.index\");" + newline + 
+				"String type = (String)this.getModel().getProperty(\"gw4e.elk.type\");" + newline + 
+				"if (index!=null && index.trim().length()>0) {"+ newline + 
+				"  sb.append(quote).append(\"index\").append(quote).append(\":\").append(quote).append(index).append(quote).append(\",\").append(newline);"+ newline +
+				"  if (type==null || type.trim().length()==0) {" + newline + 
+				"     type = this.getClass().getName();"+ newline + 
+				"  }"+ newline + 
+				"  sb.append(quote).append(\"type\").append(quote).append(\":\").append(quote).append(type).append(quote).append(\",\").append(newline);"+ newline +
+				"}"+ newline + 
 				"sb.append(quote).append(\"performance\").append(quote).append(\" : {\").append(newline);" + newline + 
 				"sb.append(quote).append(\"items\").append(quote).append(\" : [\").append(newline);" + newline + 
 				"Iterator<Profile> iter = profiles.iterator();" + newline + 
@@ -64,23 +75,24 @@ public class AfterExecutionMethodExtension extends StubMethodExtension {
 				"	String contextName = profile.getContext().getClass().getName();" + newline + 
 				"	String pathGenerator = profile.getContext().getPathGenerator().toString();" + newline + 
 				"	sb.append(\"{\").append(newline).append(quote).append(\"name\").append(quote).append(\":\").append(quote).append(element==null? \"\" : element.getName()).append(quote).append(\",\").append(newline);" + newline + 
+				"	sb.append(quote).append(\"contextModel\").append(quote).append(\":\").append(quote).append(contextModel).append(quote).append(\",\").append(newline);" + newline + 
 				"	sb.append(quote).append(\"contextName\").append(quote).append(\":\").append(quote).append(contextName).append(quote).append(\",\").append(newline);" + newline + 
 				"	sb.append(quote).append(\"pathGenerator\").append(quote).append(\":\").append(quote).append(pathGenerator).append(quote).append(\",\").append(newline);" + newline + 
 				"	if (element instanceof Edge.RuntimeEdge) {" + newline + 
 				"		Edge.RuntimeEdge re = (Edge.RuntimeEdge) element;" + newline + 
-				"		sb.append(quote).append(\"type\").append(quote).append(\":\").append(quote).append(\"EDGE\").append(quote).append(\",\").append(newline);" + newline + 
+				"		sb.append(quote).append(\"kind\").append(quote).append(\":\").append(quote).append(\"EDGE\").append(quote).append(\",\").append(newline);" + newline + 
 				"		sb.append(quote).append(\"source\").append(quote).append(\":\").append(quote).append(re.getSourceVertex()==null ? \"\" : re.getSourceVertex().getName()).append(quote).append(\",\").append(newline);" + newline + 
 				"		sb.append(quote).append(\"target\").append(quote).append(\":\").append(quote).append(re.getTargetVertex()==null ? \"\" : re.getTargetVertex().getName()).append(quote).append(\",\").append(newline);" + newline + 
 				"	} else {" + newline + 
 				"		sb.append(quote).append(\"kind\").append(quote).append(\":\").append(quote).append(\"VERTEX\").append(quote).append(\",\").append(newline);" + newline + 
 				"	}" + newline + 
-				"	sb.append(quote).append(\"ExecutionCount\").append(quote).append(\":\").append(quote).append(profile.getExecutionCount()).append(quote).append(\",\").append(newline);" + newline + 
-				"	sb.append(quote).append(\"FirstExecutionTime\").append(quote).append(\":\").append(quote).append(profile.getFirstExecutionTime(TimeUnit.MILLISECONDS)).append(quote).append(\",\").append(newline);" + newline + 
-				"	sb.append(quote).append(\"LastExecutionTime\").append(quote).append(\":\").append(quote).append(profile.getLastExecutionTime(TimeUnit.MILLISECONDS)).append(quote).append(\",\").append(newline);" + newline + 
-				"	sb.append(quote).append(\"MaxExecutionTime\").append(quote).append(\":\").append(quote).append(profile.getMaxExecutionTime(TimeUnit.MILLISECONDS)).append(quote).append(\",\").append(newline);" + newline + 
-				"	sb.append(quote).append(\"MinExecutionTime\").append(quote).append(\":\").append(quote).append(profile.getMinExecutionTime(TimeUnit.MILLISECONDS)).append(quote).append(\",\").append(newline);" + newline + 
-				"	sb.append(quote).append(\"TotalExecutionTime\").append(quote).append(\":\").append(quote).append(profile.getTotalExecutionTime(TimeUnit.MILLISECONDS)).append(quote).append(\",\").append(newline);" + newline + 
-				"	sb.append(quote).append(\"AverageExecutionTime\").append(quote).append(\":\").append(quote).append(profile.getAverageExecutionTime(TimeUnit.MILLISECONDS)).append(quote).append(newline);" + newline + 
+				"	sb.append(quote).append(\"ExecutionCount\").append(quote).append(\":\").append(profile.getExecutionCount()) .append(\",\").append(newline);" + newline + 
+				"	sb.append(quote).append(\"FirstExecutionTime\").append(quote).append(\":\") .append(profile.getFirstExecutionTime(TimeUnit.MILLISECONDS)) .append(\",\").append(newline);" + newline + 
+				"	sb.append(quote).append(\"LastExecutionTime\").append(quote).append(\":\") .append(profile.getLastExecutionTime(TimeUnit.MILLISECONDS)) .append(\",\").append(newline);" + newline + 
+				"	sb.append(quote).append(\"MaxExecutionTime\").append(quote).append(\":\") .append(profile.getMaxExecutionTime(TimeUnit.MILLISECONDS)) .append(\",\").append(newline);" + newline + 
+				"	sb.append(quote).append(\"MinExecutionTime\").append(quote).append(\":\") .append(profile.getMinExecutionTime(TimeUnit.MILLISECONDS)) .append(\",\").append(newline);" + newline + 
+				"	sb.append(quote).append(\"TotalExecutionTime\").append(quote).append(\":\") .append(profile.getTotalExecutionTime(TimeUnit.MILLISECONDS)) .append(\",\").append(newline);" + newline + 
+				"	sb.append(quote).append(\"AverageExecutionTime\").append(quote).append(\":\") .append(profile.getAverageExecutionTime(TimeUnit.MILLISECONDS)) .append(newline);" + newline + 
 				"	sb.append(\"}\").append(newline);" + newline + 
 				"	if (iter.hasNext()) sb.append(\",\");" + newline + 
 				"}" + newline + 
@@ -98,6 +110,8 @@ public class AfterExecutionMethodExtension extends StubMethodExtension {
 				java.util.Iterator.class.getName(),
 				java.util.List.class.getName(),
 				java.util.Date.class.getName(),
+				java.text.DateFormat.class.getName(),
+				java.text.SimpleDateFormat.class.getName(),
 				org.graphwalker.core.statistics.Profile.class.getName(),
 				org.graphwalker.core.statistics.Profiler.class.getName(),
 				org.graphwalker.core.model.Edge.class.getName(),

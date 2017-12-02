@@ -101,7 +101,7 @@ public class ProcessFacade {
 
 		sb.append("\"").append(" org.graphwalker.cli.CLI ").append(" offline ").append(" -m ")
 				.append(ResourceManager.toFile(graphModel.getFullPath()).getAbsolutePath()).append(" \"")
-				.append(pathGenerator).append("\" ").append(" -e ").append(startElement).append(" ");
+				.append(pathGenerator).append("\" ").append(" -e ").append(startElement).append(" --verbose ");
 
 		 
 		String extension = isWindows() ? "bat" : "sh";

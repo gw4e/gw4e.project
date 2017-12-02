@@ -57,6 +57,7 @@ public class GW4EPerspectiveTestCase {
 		try {
 			bot.viewByTitle("Welcome").close();
 		} catch (Exception e) {
+			e.printStackTrace();
 		}
 
 	}
@@ -78,6 +79,7 @@ public class GW4EPerspectiveTestCase {
 	
  	@Test
 	public void testDisplayGW4EPerspective () throws CoreException, FileNotFoundException {
+ 		
  		GW4EPerspective.resetGWPerspective(bot);
  		bot.waitUntil(new ViewOpened(bot, "Package Explorer"));
  		bot.waitUntil(new ViewOpened(bot, "Properties"));
