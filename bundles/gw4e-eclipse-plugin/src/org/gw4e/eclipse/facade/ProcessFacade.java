@@ -24,6 +24,9 @@ import org.eclipse.jdt.launching.IVMInstall;
 import org.eclipse.jdt.launching.JavaRuntime;
 import org.gw4e.eclipse.message.MessageUtil;
 
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+
 public class ProcessFacade {
 
 	 public static Stream<String> execute(File shell, long timeout)
@@ -61,12 +64,14 @@ public class ProcessFacade {
 		return  Files.lines(path).map(ProcessFacade::extract) ;
 	}
 
-	private static String extract(String s) {
-		if (!s.startsWith("{\"currentElementName\":")) return "";
-		StringTokenizer st = new StringTokenizer(s, ":");
-		st.nextToken();
-		String value = st.nextToken();
-		return value.substring(1, value.lastIndexOf("\""));
+	 
+	// {"modelName":"Simple","data":[],"currentElementID":"b5fceb6b-d831-4528-acea-e53a6f3c3e7b","currentElementName":"v_VerifyAppRunning","properties":[{"blocked":false},{"gw.vertex.init.script":""},{"x":206},{"width":100},{"y":190},{"description":""},{"height":100}]}
+	
+	private static String extract(String json) {
+		JsonParser parser = new JsonParser();
+		JsonObject rootObj = parser.parse(json).getAsJsonObject();
+		String name = rootObj.get("currentElementName").getAsString();
+		return  name ; 
 	}
 
 	private static boolean isWindows() {
