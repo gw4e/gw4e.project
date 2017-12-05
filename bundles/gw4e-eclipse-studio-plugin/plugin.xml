@@ -162,5 +162,22 @@
             class="org.gw4e.eclipse.studio.preference.PreferenceInitializer">
       </initializer>
    </extension>
-   
+     <extension
+         point="org.eclipse.search.searchPages">
+      <page
+            class="org.gw4e.eclipse.studio.search.searchprovider.ui.ModelSearchPage"
+            id="org.gw4e.eclipse.studio.search.searchprovider.page"
+            label="GW4E Model Search">
+      </page>
+   </extension>
+   <extension
+         point="org.eclipse.search.searchResultViewPages">
+      <viewPage
+            class="org.gw4e.eclipse.studio.search.searchprovider.ui.ModelSearchResultPage"
+            id="org.gw4e.eclipse.studio.search.searchprovider.resultPage"
+            label="GW4E Model Search View Page"
+            searchResultClass="org.gw4e.eclipse.studio.search.searchprovider.ModelSearchResult">
+      </viewPage>
+   </extension>
+ 
 </plugin>

@@ -29,11 +29,13 @@ package org.gw4e.eclipse.test.facade;
  */
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IType;
@@ -42,6 +44,10 @@ import org.eclipse.ui.PlatformUI;
 import org.graphwalker.core.condition.StopCondition;
 import org.graphwalker.core.generator.PathGenerator;
 import org.graphwalker.core.machine.Context;
+import org.graphwalker.core.model.Edge;
+import org.graphwalker.core.model.Model;
+import org.graphwalker.core.model.Model.RuntimeModel;
+import org.graphwalker.core.model.Vertex;
 import org.gw4e.eclipse.builder.BuildPolicy;
 import org.gw4e.eclipse.facade.GraphWalkerFacade;
 import org.gw4e.eclipse.facade.ResourceManager;
@@ -277,5 +283,40 @@ public class GraphWalkerFacadeTest extends TestCase {
 		String conversion = GraphWalkerFacade.convert(fin.getAbsolutePath(), fout.getAbsolutePath());
 		assertTrue(conversion.length()>0);
 	}
+	
+	@Test
+	public void testFindModelProperties() throws Exception {
+		Vertex v1 = new Vertex().setId("ONE");
+		v1.setProperty("v1Property", "v1PropertyValue");
+	
+	    Vertex v2 = new Vertex().setId("TWO");
+	    v2.setProperty("v2Property", "v2PropertyValue");
+	    
+	    Edge e1 = new Edge().setId("THREE");
+	    e1.setProperty("e1Property", "e1PropertyValue");
+	    
+	    Edge e2 = new Edge().setId("FOUR");
+	    e2.setProperty("e2Property", "e2PropertyValue");
+	    
+	    RuntimeModel model = new Model().setProperty("gProperty", "gPropertyValue").addEdge(e1.setSourceVertex(v1).setTargetVertex(v2))
+	        .addEdge(e2.setSourceVertex(v1).setTargetVertex(v2)).build();
+	   
+		Set<String> value = GraphWalkerFacade.getPropertiesValue(model,"v1Property");
+		assertEquals("v1PropertyValue",value.stream().findFirst());
+		
+		value = GraphWalkerFacade.getPropertiesValue(model,"v2Property");
+		assertEquals("v2PropertyValue",value.stream().findFirst());
+
+		value = GraphWalkerFacade.getPropertiesValue(model,"e1Property");
+		assertEquals("e1PropertyValue",value.stream().findFirst());
+
+		value = GraphWalkerFacade.getPropertiesValue(model,"e2Property");
+		assertEquals("e2PropertyValue",value.stream().findFirst());
+	
+		value = GraphWalkerFacade.getPropertiesValue(model,"gProperty");
+		assertEquals("gPropertyValue",value.stream().findFirst());
+	}
+	
+	
 
 }

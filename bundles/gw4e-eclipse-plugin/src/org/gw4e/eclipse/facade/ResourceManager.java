@@ -1594,7 +1594,7 @@ public class ResourceManager implements IResourceChangeListener {
 	 * @param message
 	 */
 	public static void logInfo(String project, String message) {
-		if (!PreferenceManager.isLogInfoEnabled(project))
+		if (project !=null && !PreferenceManager.isLogInfoEnabled(project))
 			return;
 		ILog log = Activator.getDefault().getLog();
 		log.log(new Status(IStatus.INFO, Activator.PLUGIN_ID, message));

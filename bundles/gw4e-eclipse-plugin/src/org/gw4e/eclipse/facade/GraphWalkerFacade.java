@@ -29,6 +29,7 @@ package org.gw4e.eclipse.facade;
  */
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.nio.file.Files;
@@ -37,12 +38,13 @@ import java.nio.file.Paths;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.Timer;
@@ -118,6 +120,10 @@ import com.google.gson.JsonSyntaxException;
  *
  */
 public class GraphWalkerFacade {
+	
+ 
+	
+	
 	/**
 	 * Retrieve the graph models contained in the container
 	 * 
@@ -144,7 +150,97 @@ public class GraphWalkerFacade {
 			}
 		}
 	}
+	
+	public static final String REQUIREMENT = "Requirement";
+	
+	public static Set<String> getPropertiesValue(RuntimeModel rmodel,String property)   {
+		if (REQUIREMENT.equalsIgnoreCase(property)) {
+			 Set<String> modelReq = rmodel.getRequirements().stream().map(req -> req.getKey()).collect(Collectors.toSet());
+			 Set<String> edgesReq = rmodel.getEdges().stream().map(edge -> {return edge.getRequirements();}).flatMap(x -> x.stream() ).map(req -> req.getKey()).collect(Collectors.toSet());
+			 Set<String> vertexReq = rmodel.getVertices().stream().map(vertex -> {return vertex.getRequirements();}).flatMap(x -> x.stream() ).map(req -> req.getKey()).collect(Collectors.toSet());
+			 modelReq.addAll(edgesReq);
+			 modelReq.addAll(vertexReq);
+			 
+			 return modelReq.stream().distinct().collect(Collectors.toSet());
+		}
+		
+		Optional<Map.Entry<String, Object>> graphProperty = rmodel.getProperties().entrySet().stream().filter(entry -> entry.getKey().equalsIgnoreCase(property)).findFirst();
+		if (graphProperty.isPresent()) return Arrays.asList(String.valueOf(graphProperty.get().getValue())).stream().collect(Collectors.toSet());
+		
+		Optional<Map.Entry<String, Object>> edgePropertValue = rmodel.getEdges().stream().map(edge -> {return edge.getProperties();}).map(p-> { return p.entrySet(); }).flatMap( p -> p.stream()).filter(entry -> entry.getKey().equals(property)).findFirst();
+		if (edgePropertValue.isPresent()) return Arrays.asList(String.valueOf(edgePropertValue.get().getValue())).stream().collect(Collectors.toSet());
+		
+		Optional<Map.Entry<String, Object>> vertextPropertValue = rmodel.getVertices().stream().map(vertex -> { return   vertex.getProperties();}).map(p-> { return p.entrySet(); }).flatMap( p -> p.stream()).filter(entry -> entry.getKey().equals(property)).findFirst();
+		if (vertextPropertValue.isPresent()) return Arrays.asList(String.valueOf(vertextPropertValue.get().getValue())).stream().collect(Collectors.toSet());
+		
+		return null;
+	}
+	
+	/**
+	 * Retrieve the graph models contained in a projects list
+	 * 
+	 * @param container
+	 * @param models
+	 * @throws CoreException
+	 * @throws IOException 
+	 * @throws FileNotFoundException 
+	 */
+	public static List<String> getPropertiesForGraphModels(List<IProject> projects) throws CoreException, FileNotFoundException, IOException {
+		List<String> ret = null;
+		List<IFile> files = new ArrayList<IFile> ();
+		for (IProject project : projects) {
+			getGraphModels(project, files);
+		}
+		List<String> all = new ArrayList<String> ();
+		for (IFile model : files) {
+			RuntimeModel rmodel = GraphWalkerFacade.getModel(ResourceManager.toFile(model.getFullPath()));
+			Set set = rmodel.getProperties().keySet();
+			
+			List<String> edgeProperties = rmodel.getEdges().stream()
+			.map(edge -> {
+                return edge.getProperties();
+              })
+			.map(p -> { 
+				return  p.keySet(); 
+			  })
+			.flatMap(x -> x.stream()) 
+			.distinct()
+			.collect(Collectors.toList());
+			
+			List<String> vertexProperties = rmodel.getVertices().stream()
+			.map(vertex -> {
+                return vertex.getProperties();
+              })
+			.map(p -> { 
+				return   p.keySet(); 
+			  })
+			.flatMap(x -> x.stream()) 
+			.distinct()
+			.collect(Collectors.toList());
 
+			all.addAll(set);
+			all.addAll(edgeProperties);
+			all.addAll(vertexProperties);
+			ret = all.stream().distinct().filter(x -> !isPrivateProperties(x)).collect(Collectors.toList());
+		}
+		return ret;
+	}
+	
+	
+	private static List getPrivateProperties () {
+		List<String> all = new ArrayList<String> ();
+		all.add("x");
+		all.add("y");
+		all.add("width");
+		all.add("height");
+		all.add("gw.vertex.init.script");
+		return all;
+	}
+
+	private static boolean isPrivateProperties (String property) {
+		return property == null || property.startsWith("gw.edge.bendpoint.")  || property.startsWith("gw4e.elk.") || getPrivateProperties ().contains(property);
+	}
+	
 	/**
 	 * @param sharedName
 	 * @param container
