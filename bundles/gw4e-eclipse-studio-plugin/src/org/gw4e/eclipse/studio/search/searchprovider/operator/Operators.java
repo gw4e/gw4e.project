@@ -136,16 +136,14 @@ public class Operators extends AbstractCriteria {
 	    		 this.soperator.equals(other.soperator);
 	}
 	
-	private Operators(  String property, String soperator) {
+	private Operators(String property, String soperator) {
 		this.property = property;
 		this.soperator = soperator;
-		 
 	}
 
 	public Operators( String property, String soperator, Set<String> values) {
 		this(property, soperator);
 		challengedValues = values;
-
 	}
 
 	public Operators( String property, String soperator, String values) {

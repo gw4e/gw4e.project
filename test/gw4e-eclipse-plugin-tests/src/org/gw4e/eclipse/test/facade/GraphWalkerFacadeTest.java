@@ -302,19 +302,19 @@ public class GraphWalkerFacadeTest extends TestCase {
 	        .addEdge(e2.setSourceVertex(v1).setTargetVertex(v2)).build();
 	   
 		Set<String> value = GraphWalkerFacade.getPropertiesValue(model,"v1Property");
-		assertEquals("v1PropertyValue",value.stream().findFirst());
+		assertEquals("v1PropertyValue",value.stream().findFirst().get());
 		
 		value = GraphWalkerFacade.getPropertiesValue(model,"v2Property");
-		assertEquals("v2PropertyValue",value.stream().findFirst());
+		assertEquals("v2PropertyValue",value.stream().findFirst().get());
 
 		value = GraphWalkerFacade.getPropertiesValue(model,"e1Property");
-		assertEquals("e1PropertyValue",value.stream().findFirst());
+		assertEquals("e1PropertyValue",value.stream().findFirst().get());
 
 		value = GraphWalkerFacade.getPropertiesValue(model,"e2Property");
-		assertEquals("e2PropertyValue",value.stream().findFirst());
+		assertEquals("e2PropertyValue",value.stream().findFirst().get());
 	
 		value = GraphWalkerFacade.getPropertiesValue(model,"gProperty");
-		assertEquals("gPropertyValue",value.stream().findFirst());
+		assertEquals("gPropertyValue",value.stream().findFirst().get());
 	}
 	
 	
