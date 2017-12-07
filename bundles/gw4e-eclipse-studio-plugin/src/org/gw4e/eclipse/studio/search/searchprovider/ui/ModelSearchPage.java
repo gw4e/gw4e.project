@@ -375,7 +375,9 @@ public class ModelSearchPage extends DialogPage implements ISearchPage {
 		@Override
 		protected void setValue(Object element, Object value) {
 			Operators op = (Operators) element;
-			op.setSoperator(Operators.getAvailableOperators().get((Integer)value));
+			Integer index = (Integer)value;
+			if(index<0) return;
+			op.setSoperator(Operators.getAvailableOperators().get(index));
 			viewer.update(element, null);
 		}
 	}
@@ -426,7 +428,9 @@ public class ModelSearchPage extends DialogPage implements ISearchPage {
 		@Override
 		protected void setValue(Object element, Object value) {
 			Operators op = (Operators) element;
-			op.setProperty(properties [(Integer)value]);
+			Integer index = (Integer)value;
+			if(index<0) return;
+			op.setProperty(properties [index]);
 			viewer.update(element, null);
 		}
 	}
