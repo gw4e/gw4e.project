@@ -8,15 +8,19 @@
  <properties>
   <tycho.version>1.0.0</tycho.version>
   <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-  <neon-repo.url>http://download.eclipse.org/eclipse/updates/4.6/</neon-repo.url>
+  <neon-repo.url>http://download.eclipse.org/eclipse/updates/4.7/</neon-repo.url>
   <swtbot-repo.url>http://download.eclipse.org/technology/swtbot/snapshots/</swtbot-repo.url>
   <gef3-repo.url>http://download.eclipse.org/tools/gef/updates/legacy/releases/</gef3-repo.url>
   <gef-repo.url>http://download.eclipse.org/tools/gef/gef4/updates/releases</gef-repo.url>
-  <wtp-repo.url>http://download.eclipse.org/webtools/repository/neon/</wtp-repo.url>
+  <wtp-repo.url>http://download.eclipse.org/webtools/repository/oxygen</wtp-repo.url>
+  <to-get-protobuf.url>http://download.eclipse.org/tools/orbit/R-builds/R20170516192513/repository</to-get-protobuf.url>
   <xtext-repo.url>http://download.eclipse.org/modeling/tmf/xtext/updates/composite/releases/</xtext-repo.url>
   <emf-repo.url>http://download.eclipse.org/modeling/emf/emf/updates/2.10.x</emf-repo.url>
   <antlr-repo.url>http://antlreclipse.sourceforge.net/updates/</antlr-repo.url>
   <efxclipse-repo.url>http://download.eclipse.org/efxclipse/runtime-shared-released/2.0.0/site</efxclipse-repo.url>
+  <m2erepo-url>http://download.eclipse.org/technology/m2e/releases</m2erepo-url>
+  <m2erepo-wtp-url>http://download.eclipse.org/m2e-wtp/releases/</m2erepo-wtp-url>
+  
  </properties>
 
  <repositories>
@@ -64,7 +68,22 @@
    <id>efxclipse</id>
    <url>${efxclipse-repo.url}</url>
    <layout>p2</layout>
-  </repository>      
+  </repository>    
+  <repository>
+   <id>m2erepo</id>
+   <url>${m2erepo-url}</url>
+   <layout>p2</layout>
+  </repository>  
+  <repository>
+   <id>m2erepo-wtp-url</id>
+   <url>${m2erepo-wtp-url}</url>
+   <layout>p2</layout>
+  </repository>  
+  <repository>
+   <id>wtp1-url</id>
+   <url>${to-get-protobuf.url}</url>
+   <layout>p2</layout>
+  </repository>     
  </repositories>
 
  <build>

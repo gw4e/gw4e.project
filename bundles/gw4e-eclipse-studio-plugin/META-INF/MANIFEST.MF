@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: gw4e-eclipse-studio-plugin
 Bundle-SymbolicName: gw4e-eclipse-studio-plugin;singleton:=true
-Bundle-Version: 4.0.0.qualifier
+Bundle-Version: 4.0.0
 Bundle-Activator: org.gw4e.eclipse.studio.Activator
 Require-Bundle: org.eclipse.gef4.graph;bundle-version="1.1.0",
  org.eclipse.gef4.layout;bundle-version="1.0.1",

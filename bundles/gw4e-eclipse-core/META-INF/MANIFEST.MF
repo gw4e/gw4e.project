@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: gw4e-eclipse-core
 Bundle-SymbolicName: gw4e-eclipse-core;singleton:=true
-Bundle-Version: 4.0.0.qualifier
+Bundle-Version: 4.0.0
 Bundle-Activator: org.gw4e.eclipse.core.Activator
 Require-Bundle: org.eclipse.core.runtime
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8

@@ -50,7 +50,7 @@ public class AfterExecutionMethodExtension extends StubMethodExtension {
 				"public void " + this.getName() +"() throws IOException { " +   newline   +
 				"String newline = System.getProperty(\"line.separator\");" + newline + 
 				"String quote = \"" + "\\" + "\"\";" + newline + 
-				"DateFormat df = new SimpleDateFormat (\"yyyy-MM-dd'T'HH:mm:ss.SSS\");" + newline + 
+				"DateFormat df = new SimpleDateFormat (\"yyyy-MM-dd'T'HH-mm-ss.SSS\");" + newline + 
 				"Profiler profiler = this.getProfiler();" + newline + 
 				"List<Profile> profiles = profiler.getProfiles();" + newline + 
 				"StringBuffer sb = new StringBuffer ();" + newline + 
@@ -98,7 +98,7 @@ public class AfterExecutionMethodExtension extends StubMethodExtension {
 				"}" + newline + 
 				"sb.append(\"]\").append(\"}\").append(\"}\");"   + newline + 
 				"System.out.println(sb.toString());" + newline + 
-				"DateFormat formatter = new SimpleDateFormat(\"yyyy-MM-dd'T'HH:mm:ss\");" + newline + 
+				"DateFormat formatter = new SimpleDateFormat(\"yyyy-MM-dd'T'HH-mm-ss\");" + newline + 
 				"String timestamp = formatter.format(new Date());" + newline + 
 				"Files.write(Paths.get(\"graphwalker-test-summary-\" + this.getClass().getName() + \"-\" + timestamp + \".json\"), sb.toString().getBytes());" + newline + 
 				"}";

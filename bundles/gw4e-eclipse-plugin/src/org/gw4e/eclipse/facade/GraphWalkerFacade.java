@@ -1195,7 +1195,7 @@ public class GraphWalkerFacade {
 			System.out.println("Result :");
 			String temp = result.getResultsAsString();
 			System.out.println(temp);
-			DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+			DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH-mm-ss");
 		    String timestamp = formatter.format(new Date());
 		    Files.write(Paths.get("graphwalker-model-summary-" + classname + "-" + timestamp + ".json"), temp.getBytes());
 		}
