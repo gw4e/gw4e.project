@@ -332,7 +332,6 @@ public class GraphElementProperties   extends GraphHelper {
 		editor.show();
 		if (part==null) {
 			editor.click(1, 1);
-			
 			return null;
 		}
 		part.select();

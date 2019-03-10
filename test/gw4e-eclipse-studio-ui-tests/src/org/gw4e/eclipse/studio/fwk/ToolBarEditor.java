@@ -1,5 +1,8 @@
 package org.gw4e.eclipse.studio.fwk;
 
+import java.util.Iterator;
+import java.util.List;
+
 /*-
  * #%L
  * gw4e
@@ -29,12 +32,14 @@ package org.gw4e.eclipse.studio.fwk;
  */
 
 import org.eclipse.swtbot.eclipse.gef.finder.SWTGefBot;
+import org.eclipse.swtbot.eclipse.gef.finder.widgets.SWTBotGefEditPart;
 import org.eclipse.swtbot.eclipse.gef.finder.widgets.SWTBotGefEditor;
 import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.waits.ICondition;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotMenu;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotToolbarButton;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotToolbarPushButton;
+import org.gw4e.eclipse.studio.model.GraphElement;
 
 public class ToolBarEditor extends  AbstractToolBarEditor {
 	protected SWTGefBot bot;
@@ -75,6 +80,40 @@ public class ToolBarEditor extends  AbstractToolBarEditor {
 		copy(null);
 	}
 	
+	public void selectVertex (SWTBotGefEditor editor, VertexProperties gp, String elementName) {
+		ICondition condition = new org.eclipse.swtbot.swt.finder.waits.ICondition() {
+			@Override
+			public boolean test() throws Exception {
+				SWTBotGefEditPart vA = editor.getEditPart(elementName);
+				gp.selectPart(vA);
+				List<SWTBotGefEditPart> parts = editor.selectedEditParts();
+				Iterator<SWTBotGefEditPart> iter = parts.iterator();
+				while (iter.hasNext()) {
+					SWTBotGefEditPart p = iter.next();
+					return p == vA;
+				}
+				return false;
+			}
+
+			@Override
+			public void init(SWTBot bot) {
+			}
+
+			@Override
+			public String getFailureMessage() {
+			  return "Unable to select " + elementName;
+			}
+			
+		};
+		
+		bot.waitUntil(condition);
+	}
+ 	
+	
+	
+	
+	
+	
 	public void copy(ICondition condition) {
 		CopyAction button = new CopyAction();
 		button.click();
@@ -101,6 +140,10 @@ public class ToolBarEditor extends  AbstractToolBarEditor {
 		bot.waitUntil(condition);
 	}
 	 
+	public void paste() {
+		paste(null);
+	}
+	
 	public void paste(ICondition condition) {
 		PasteAction action = new PasteAction();
 		action.click();
