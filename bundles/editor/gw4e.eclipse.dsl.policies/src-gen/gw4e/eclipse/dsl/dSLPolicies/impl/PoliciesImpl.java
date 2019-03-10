@@ -357,7 +357,7 @@ public class PoliciesImpl extends MinimalEObjectImpl.Container implements Polici
   {
     if (eIsProxy()) return super.toString();
 
-    StringBuffer result = new StringBuffer(super.toString());
+    StringBuilder result = new StringBuilder(super.toString());
     result.append(" (nocheck: ");
     result.append(nocheck);
     result.append(", sync: ");

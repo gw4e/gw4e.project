@@ -114,7 +114,7 @@ public class DSLPoliciesPackageImpl extends EPackageImpl implements DSLPoliciesP
 
   /**
    * Creates, registers, and initializes the <b>Package</b> for this model, and for any others upon which it depends.
-   * 
+   *
    * <p>This method is used to initialize {@link DSLPoliciesPackage#eINSTANCE} when that field is accessed.
    * Clients should not invoke it directly. Instead, they should simply access that field to obtain the package.
    * <!-- begin-user-doc -->
@@ -129,7 +129,8 @@ public class DSLPoliciesPackageImpl extends EPackageImpl implements DSLPoliciesP
     if (isInited) return (DSLPoliciesPackage)EPackage.Registry.INSTANCE.getEPackage(DSLPoliciesPackage.eNS_URI);
 
     // Obtain or create and register package
-    DSLPoliciesPackageImpl theDSLPoliciesPackage = (DSLPoliciesPackageImpl)(EPackage.Registry.INSTANCE.get(eNS_URI) instanceof DSLPoliciesPackageImpl ? EPackage.Registry.INSTANCE.get(eNS_URI) : new DSLPoliciesPackageImpl());
+    Object registeredDSLPoliciesPackage = EPackage.Registry.INSTANCE.get(eNS_URI);
+    DSLPoliciesPackageImpl theDSLPoliciesPackage = registeredDSLPoliciesPackage instanceof DSLPoliciesPackageImpl ? (DSLPoliciesPackageImpl)registeredDSLPoliciesPackage : new DSLPoliciesPackageImpl();
 
     isInited = true;
 
@@ -142,7 +143,6 @@ public class DSLPoliciesPackageImpl extends EPackageImpl implements DSLPoliciesP
     // Mark meta-data to indicate it can't be changed
     theDSLPoliciesPackage.freeze();
 
-  
     // Update the registry and return the package
     EPackage.Registry.INSTANCE.put(DSLPoliciesPackage.eNS_URI, theDSLPoliciesPackage);
     return theDSLPoliciesPackage;

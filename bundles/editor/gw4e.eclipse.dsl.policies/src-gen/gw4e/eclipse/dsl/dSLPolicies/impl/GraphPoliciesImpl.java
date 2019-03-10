@@ -231,7 +231,7 @@ public class GraphPoliciesImpl extends MinimalEObjectImpl.Container implements G
   {
     if (eIsProxy()) return super.toString();
 
-    StringBuffer result = new StringBuffer(super.toString());
+    StringBuilder result = new StringBuilder(super.toString());
     result.append(" (graphModelPolicies: ");
     result.append(graphModelPolicies);
     result.append(')');

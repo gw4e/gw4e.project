@@ -168,7 +168,7 @@ public class SeverityImpl extends MinimalEObjectImpl.Container implements Severi
   {
     if (eIsProxy()) return super.toString();
 
-    StringBuffer result = new StringBuffer(super.toString());
+    StringBuilder result = new StringBuilder(super.toString());
     result.append(" (level: ");
     result.append(level);
     result.append(')');
