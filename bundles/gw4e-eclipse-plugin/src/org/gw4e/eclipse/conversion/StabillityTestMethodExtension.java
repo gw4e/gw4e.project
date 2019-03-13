@@ -54,7 +54,7 @@ public class StabillityTestMethodExtension extends JUnitTestMethodExtension {
 
 	@Override
 	protected String getMainSetPathGeneratorCall() {
-		return "context.setPathGenerator(" + getPathgenerator() + ");";
+		return  getPathgenerator() ;
 	}
 
 	@Override

@@ -162,6 +162,8 @@ public abstract class MethodExtension {
 	 */
 	public MethodDeclaration getMethodDeclaration (String [] additionalContext,String value) {
 		String source = getSource(additionalContext,value);
+		System.out.println ("--->" + source);
+		
 		ASTParser parser = ASTParser.newParser(AST.JLS8);
 		parser.setSource(source.toCharArray());
 		parser.setKind(ASTParser.K_CLASS_BODY_DECLARATIONS);

@@ -51,7 +51,7 @@ public class FunctionalTestMethodExtension extends JUnitTestMethodExtension {
 	 
 	@Override
 	protected String getMainSetPathGeneratorCall() {
-		return "context.setPathGenerator(" + getPathgenerator () +");";
+		return getPathgenerator () ;
 
 	}
 

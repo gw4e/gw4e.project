@@ -21,11 +21,11 @@ import org.gw4e.eclipse.facade.GraphWalkerFacade;
  */
 @SuppressWarnings("all")
 public class DSLPoliciesValidator extends AbstractDSLPoliciesValidator {
-  public final static String INVALID_PERCENTAGE = "Invalid percentage";
+  public static final String INVALID_PERCENTAGE = "Invalid percentage";
   
-  public final static String INVALID_VERTEX = "Invalid vertex";
+  public static final String INVALID_VERTEX = "Invalid vertex";
   
-  public final static String INVALID_EDGE = "Invalid edge";
+  public static final String INVALID_EDGE = "Invalid edge";
   
   @Check
   public void checkStopCondition(final StopCondition condition) {

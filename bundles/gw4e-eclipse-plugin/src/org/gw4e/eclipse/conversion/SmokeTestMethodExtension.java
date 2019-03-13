@@ -53,7 +53,8 @@ public class SmokeTestMethodExtension extends JUnitTestMethodExtension {
  
  	@Override
 	protected String getMainSetPathGeneratorCall() {
-		return "context.setPathGenerator(new AStarPath(new ReachedVertex(\"" + this.targetVertex + "\")));";
+		// return "context.setPathGenerator(new AStarPath(new ReachedVertex(\"" + this.targetVertex + "\")));";
+ 		return "new AStarPath(new ReachedVertex(\"" + this.targetVertex + "\"))";
 	}
 
 	@Override

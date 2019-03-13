@@ -103,8 +103,8 @@ public abstract class JUnitTestMethodExtension extends MethodExtension {
 		sb.append("@Test ").append(newline);
 		sb.append("public void "+ this.getName() + "() throws IOException {").append(newline);
 		sb.append("    Context context = new " + getClassname() + "();").append(newline);
-		sb.append("    TestBuilder builder = new TestBuilder().addContext(context,MODEL_PATH);").append(newline);
-		sb.append(getMainSetPathGeneratorCall ()).append(newline);
+		sb.append("    TestBuilder builder = new TestBuilder().addContext(context,MODEL_PATH,"+ getMainSetPathGeneratorCall () + ");").append(newline);
+		 
 		if (startElement!=null && startElement.trim().length() >0 ) {
 			sb.append("context.setNextElement(context.getModel().findElements(\"" + startElement + "\").get(0));").append(newline);
 		} 
