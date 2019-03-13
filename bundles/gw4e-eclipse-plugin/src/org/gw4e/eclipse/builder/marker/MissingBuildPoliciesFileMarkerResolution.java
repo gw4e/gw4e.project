@@ -114,13 +114,14 @@ public final class MissingBuildPoliciesFileMarkerResolution extends MultipleMark
 						}
 					}
 				}
-				Display.getDefault().syncExec(new Runnable () {
+				 
+				 Display.getDefault().syncExec(new Runnable () {
 					@Override
 					public void run() {
 						JDTManager.openEditor(buildFile, ww);
 						ResourceManager.touchFolderResources(file);
 					}
-				});
+				 });
 			} catch (Exception e) {
 				ResourceManager.logException(e);
 			}

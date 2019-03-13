@@ -166,20 +166,7 @@ public class JDTManagerTest extends  TestCase {
 
 	 
 
-	@Test
-	public void testFindSetPathGeneratorInvocation() throws Exception {
-		IJavaProject project = ProjectHelper.getOrCreateSimpleGW4EProject(PROJECT_NAME, true,true);
-		IFile impl = (IFile) ResourceManager
-				.getResource(project.getProject().getFullPath().append("src/test/java/SimpleImpl.java").toString());
-		ICompilationUnit compilationUnit = JavaCore.createCompilationUnitFrom(impl);
-		IType type = compilationUnit.getAllTypes()[0];
-		Map<String, List<String>> map = JDTManager.findSetPathGeneratorInvocation(project.getProject(), type);
-		List<String> list = map.get("SimpleImpl");
-		assertTrue (list.size()==1);
-		String value = list.get(0);
-		assertEquals("new RandomPath(new EdgeCoverage(100))", value);
-	}
-
+ 
 	@Test
 	public void testFindGeneratorFactoryParseInvocation() throws Exception {
 		IJavaProject project = ProjectHelper.getOrCreateSimpleGW4EProject(PROJECT_NAME, true,true);
