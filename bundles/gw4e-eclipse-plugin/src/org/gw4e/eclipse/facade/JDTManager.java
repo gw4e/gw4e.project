@@ -361,6 +361,7 @@ public class JDTManager {
 		return null;
 	}
 
+	 
 	private static boolean isContext(ITypeBinding tbinding) {
 		String executionContextClass = org.graphwalker.core.machine.ExecutionContext.class.getName();
 		String contextClass = org.graphwalker.core.machine.Context.class.getName();
@@ -382,6 +383,19 @@ public class JDTManager {
 
 	}
 
+	private static boolean isTestBuilder(ITypeBinding tbinding) {
+		 
+		String testBuilderClass = org.graphwalker.java.test.TestBuilder.class.getName();
+		while (tbinding != null) {
+			String clazz = tbinding.getQualifiedName();
+			if (testBuilderClass.equals(clazz))
+				return true;
+			 
+		}
+		return false;
+
+	}
+	
 	public static AnnotationParsing findAnnotationParsingInGeneratedAnnotation(ICompilationUnit cu, String attribut) {
 		AnnotationParsing annoParsing = resolveAnnotation(cu, Generated.class, attribut);
 		return annoParsing;
@@ -514,6 +528,54 @@ public class JDTManager {
 
 										if (bding instanceof IMethodBinding) {
 											IMethodBinding imb = (IMethodBinding) bding;
+											
+											
+											// TestBuilder builder = new TestBuilder().addContext(context, MODEL_PATH, new RandomPath(new EdgeCoverage(100)));
+											if ("addContext".equalsIgnoreCase(imb.getName())) {
+												ITypeBinding[] arguments = imb.getParameterTypes();
+												if (arguments.length == 3) {
+													if (isTestBuilder(imb.getDeclaringClass()) && 
+															PathGenerator.class.getName().equals(arguments[2].getQualifiedName())) {
+														System.out.println("--->" + arguments[2].getQualifiedName());
+														int start = node.getStartPosition();
+														int end = node.getLength();
+														try {
+															String code = cu.getSource().substring(start, start + end);
+															// System.out.println(code);
+														} catch (JavaModelException e) {
+															ResourceManager.logException(e);
+														}
+														List args = node.arguments();
+														Expression argumentExpression = (Expression) args.get(2);
+														ITypeBinding typeBinding = argumentExpression
+																.resolveTypeBinding();
+														String parameterName = "";
+														if (typeBinding != null) {
+															parameterName = argumentExpression.toString();
+															JDTManager.ExpressionVisitor ev = new ExpressionVisitor(
+																	variables);
+															Expression expression = node.getExpression();
+															expression.accept(ev);
+															if (ev.getValue() != null) {
+																// String contextClass = ev.getValue();
+																String contextClass = itype.getFullyQualifiedName();
+																
+																List<String> generators = ret.get(contextClass);
+																if (generators == null) {
+																	generators = new ArrayList<String>();
+																	ret.put(contextClass, generators);
+																}
+
+																if (!"null".equals(parameterName)
+																		&& !generators.contains(parameterName)) {
+																	generators.add(parameterName);
+																	System.out.println("*** "  + parameterName);
+																}
+															}
+														}
+													}
+												}
+											}
 											if ("setPathGenerator".equalsIgnoreCase(imb.getName())) {
 												ITypeBinding[] arguments = imb.getParameterTypes();
 												if (arguments.length == 1) {

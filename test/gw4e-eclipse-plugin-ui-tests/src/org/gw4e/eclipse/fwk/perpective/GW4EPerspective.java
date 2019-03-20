@@ -34,6 +34,7 @@ import static org.junit.Assert.assertTrue;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotPerspective;
 import org.eclipse.swtbot.eclipse.finder.widgets.SWTBotView;
+import org.eclipse.swtbot.swt.finder.SWTBot;
 import org.eclipse.swtbot.swt.finder.waits.Conditions;
 import org.eclipse.swtbot.swt.finder.waits.DefaultCondition;
 import org.eclipse.swtbot.swt.finder.waits.ICondition;
@@ -43,7 +44,7 @@ import org.gw4e.eclipse.fwk.conditions.ShellActiveCondition;
 import org.gw4e.eclipse.fwk.platform.GW4EPlatform;
 public class GW4EPerspective {
 	
-	public static void openNewGW4EProject(SWTWorkbenchBot bot) {
+	public static void openNewGW4EProject(SWTBot bot) {
 		
 
 		bot.menu("File").menu("New").menu("GW4E Project").click();
@@ -57,10 +58,10 @@ public class GW4EPerspective {
 	}
 	
 	public static void openNewGraphWalkerModel(SWTWorkbenchBot bot) {
-		
+		/*
 		SWTBotMenu all = bot.menu("File").menu("New");
 		
-		/*
+		
 		Function<String, String>   f =  new Function<String, String> () {
 
 			@Override

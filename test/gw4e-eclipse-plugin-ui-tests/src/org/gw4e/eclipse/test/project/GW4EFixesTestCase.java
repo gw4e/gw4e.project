@@ -266,7 +266,8 @@ public class GW4EFixesTestCase {
 		
 		String expectedValue = "AStarPath(ReachedVertex(v_ShoppingCart));I;RandomPath(EdgeCoverage(100));I;RandomPath(TimeDuration(30));I;random(edge_coverage(100));I;";
 		PropertyValueCondition condition = new PropertyValueCondition(buildPolicyFile,graphMLFilename,expectedValue);
-		bot.waitUntil(condition);
+		
+		 bot.waitUntil(condition);
 	}
 	
 	
